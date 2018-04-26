@@ -1,0 +1,22 @@
+/* your styles go here */
+
+.dashbord{
+    color: black;
+}
+
+.dashbord:hover{
+    color: dodgerblue;
+    text-decoration: none;
+}
+
+.dashbord:visited{
+    color: black;
+}
+
+.dashbord{
+    color: black;
+}
+
+#add_steps{
+    text-align: right;
+}
