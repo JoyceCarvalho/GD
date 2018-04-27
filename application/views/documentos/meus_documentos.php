@@ -54,23 +54,38 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                        foreach ($meus_documentos as $dados) {
-                                            ?>
-                                            <tr>
-                                                <td><?=$dados->protocolo;?></td>
-                                                <td>
-                                                    <?php
-                                                    echo $dados->documento . "<br/><strong>" . $dados->grupo . "</strong>";
-                                                    ?>
-                                                </td>                                                
-                                                <td><?=converte_data($dados->prazo);?></td>
-                                                <td><?=$dados->etapa;?></td>
-                                                <td><?=converte_data($dados->data_criacao);?></td>
-                                                <td>
-                                                    <?php ?>
-                                                </td>
-                                            </tr>
-                                            <?php
+                                        if ($documentos_cargo) {
+                                            foreach ($documentos_cargo as $documentos) {
+                                                ?>
+                                                <tr>
+                                                    <td><?=$documentos->protocolo;?></td>
+                                                    <td>
+                                                        <?=$documentos->documento;?>
+                                                        <strong><?=$documentos->grupo;?></strong>
+                                                    </td>
+                                                    <td><?=$documentos->prazo;?></td>
+                                                    <td><?=$documentos->etapa;?></td>
+                                                    <td><?=$documentos->data_criacao;?></td>
+                                                    <td></td>
+                                                </tr>
+                                                <?php
+                                            }
+                                        } elseif ($documentos_usuario) {
+                                            foreach ($documentos_usuario as $documentos) {
+                                                ?>
+                                                <tr>
+                                                    <td><?=$documentos->protocolo;?></td>
+                                                    <td>
+                                                        <?=$documentos->documento;?>
+                                                        <strong><?=$documento->grupo;?></strong>
+                                                    </td>
+                                                    <td><?=$documentos->prazo;?></td>
+                                                    <td><?=$documentos->etapa;?></td>
+                                                    <td><?=$documentos->data_criacao;?></td>
+                                                    <td></td>
+                                                </tr>
+                                                <?php
+                                            }
                                         }
                                     ?>
                                 </tbody>

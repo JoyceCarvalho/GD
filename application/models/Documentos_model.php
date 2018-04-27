@@ -136,8 +136,8 @@ class Documentos_model extends CI_Model {
         $this->db->join('tblog_documentos AS ld', 'ld.documento = d.id');
         $this->db->join('tbcompetencias AS comp', 'comp.fk_iddocumento = d.id');
         $this->db->join('tbusuario AS u', 'u.fk_idcargos = comp.fk_idcargo');
-        $this->db->where('ld.ultima_etapa = ', '"false"');
-        $this->db->where('comp.tipo = ', '"cargo"');
+        $this->db->where('ld.ultima_etapa = ', 'false');
+        $this->db->where('comp.tipo = ', 'cargo');
         $this->db->order_by('u.id = ', $usuario);
         return $this->db->get()->result();
     }
@@ -159,8 +159,8 @@ class Documentos_model extends CI_Model {
         $this->db->join('tblog_documentos AS ld', 'ld.documento = dc.id');
         $this->db->join('tbcompetencias AS c', 'c.fk_iddocumento = d.id');
         $this->db->join('tbusuario AS u', 'u.id = c.fk_idusuario');
-        $this->db->where('c.tipo = ', '"funcionario"');
-        $this->db->where('ld.ultima_etapa = ', '"false"');
+        $this->db->where('c.tipo = ', 'funcionario');
+        $this->db->where('ld.ultima_etapa = ', 'false');
         $this->db->where('u.id = ', $usuario);
         $this->db->order_by('de.ordem');
         return $this->db->get()->result();
