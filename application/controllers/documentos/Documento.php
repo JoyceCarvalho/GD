@@ -133,8 +133,9 @@ class Documento extends CI_Controller {
             $dados["pg"]        = "documentos";
             $dados["submenu"]   = "meusdocs";
 
-            $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["meus_documentos"]   = $this->docmodel->listar_meus_documentos($_SESSION["idempresa"], $_SESSION["idusuario"]);
+            $dados["nome_empresa"]       = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["documentos_cargo"]   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
+            $dados["documentos_usuario"] = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
