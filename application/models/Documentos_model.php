@@ -137,7 +137,6 @@ class Documentos_model extends CI_Model {
         $this->db->join('tbcompetencias AS comp', 'comp.fk_iddocumento = d.id');
         $this->db->join('tbusuario AS u', 'u.fk_idcargos = comp.fk_idcargo');
         $this->db->where('ld.ultima_etapa = ', '"false"');
-        $this->db->where('ld.descricao = ', '"CRIADO"');
         $this->db->where('comp.tipo = ', '"cargo"');
         $this->db->order_by('u.id = ', $usuario);
         return $this->db->get()->result();
@@ -167,7 +166,4 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->result();
     }
 
-    public function documento_cancelados(){
-        
-    }
 }
