@@ -161,7 +161,7 @@ class Documentos_model extends CI_Model {
         $this->db->join('tbusuario AS u', 'u.id = c.fk_idusuario');
         $this->db->where('c.tipo = ', 'funcionario');
         $this->db->where('ld.ultima_etapa = ', 'false');
-        $this->db->where("u.id = $usuario");
+        $this->db->where("c.fk_idusuario = $usuario");
         $this->db->order_by('de.ordem');
         return $this->db->get()->result();
     }
