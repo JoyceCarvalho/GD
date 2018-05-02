@@ -107,7 +107,25 @@ class Etapas_model extends CI_Model {
      * @return result retorna se a consulta foi realizada ou não
      */
     public function cadastrar_etapas_prazos($dados){
-        return $this->db->insert('tbprazoetapa', $dados);
+        $this->db->select('e.id as id, e.titulo as titulo, de.iddocumento as iddocumento');
+        $this->db->from('tbetapa as e');
+        $this->db->join('tbdocumentoetapa as de', 'de.idetapa = e.id');
+        $this->db->where('iddocumento = ', $documento);
+        $this->db->order_by('ordem asc');
+        $query = $this->db->get();
+
+        return json_encode($query->result());
+    }
+
+    public function listar_etapa_ordem($documento){
+        $this->db->select('e.id as id');
+        $this->db->from('tbetapa as e');
+        $this->db->join('tbdocumentoetapa as de', 'de.idetapa = e.id');
+        $this->db->where('iddocumento = ', $documento);
+        $this->db->order_by('ordem asc');
+        $this->db->limit(1);
+
+        return $this->db->get()->row('id');
     }
 
 }

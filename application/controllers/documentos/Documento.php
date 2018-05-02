@@ -72,6 +72,8 @@ class Documento extends CI_Controller {
 
             }
 
+            $recebido = $this->etapasmodel->listar_etapa_ordem($iddocumento);
+
             $log = array(
                 'descricao'     => "CRIADO",
                 'data_hora'     => date('Y-m-d H:i:s'),
@@ -83,27 +85,58 @@ class Documento extends CI_Controller {
 
             $documento_log = $this->docmodel->cadastrar_log_documento($log);
 
-            if($documento_log){
+            if ($documento_log) {
+                
+                $log2 = array(
+                    'descricao'     => "RECEBIDO",
+                    'data_hora'     => date('Y-m-d H:i:s'),
+                    'ultima_etapa'  => 'false',
+                    'usuario'       => $_SESSION["idusuario"],
+                    'etapa'         => $recebido,
+                    'documento'     => $iddocumento
+                );
+    
+                $documento_log2 = $this->docmodel->cadastrar_log_documento($log);
+                
+                if($documento_log2){
 
-                $data->success = "Documento de protocolo ".$this->input->post('protocolo')." cadastrado com sucesso!";
-
-                $dados["pagina"]    = "Novo Documento";
-                $dados["pg"]        = "documentos";
-                $dados["submenu"]   = "novodoc";
-
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-
-                $this->load->view("template/html_header", $dados);
-                $this->load->view('template/header');
-                $this->load->view('template/menu', $data);
-                $this->load->view('documentos/novo_documento');
-                $this->load->view('template/footer');
-                $this->load->view('template/html_footer');
+                    $data->success = "Documento de protocolo ".$this->input->post('protocolo')." cadastrado com sucesso!";
+    
+                    $dados["pagina"]    = "Novo Documento";
+                    $dados["pg"]        = "documentos";
+                    $dados["submenu"]   = "novodoc";
+    
+                    $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                    $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+    
+                    $this->load->view("template/html_header", $dados);
+                    $this->load->view('template/header');
+                    $this->load->view('template/menu', $data);
+                    $this->load->view('documentos/novo_documento');
+                    $this->load->view('template/footer');
+                    $this->load->view('template/html_footer');
+                } else {
+    
+                    $data->error = "Ocorreu um problema ao cadastra os dados! Favor entre em contato com o suporte e tente novamente mais tarde.";
+    
+                    $dados["pagina"]    = "Novo Documento";
+                    $dados["pg"]        = "documentos";
+                    $dados["submenu"]   = "novodoc";
+    
+                    $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                    $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+    
+                    $this->load->view("template/html_header", $dados);
+                    $this->load->view('template/header');
+                    $this->load->view('template/menu', $data);
+                    $this->load->view('documentos/novo_documento');
+                    $this->load->view('template/footer');
+                    $this->load->view('template/html_footer');
+                }
             } else {
-
+                
                 $data->error = "Ocorreu um problema ao cadastra os dados! Favor entre em contato com o suporte e tente novamente mais tarde.";
-
+    
                 $dados["pagina"]    = "Novo Documento";
                 $dados["pg"]        = "documentos";
                 $dados["submenu"]   = "novodoc";
