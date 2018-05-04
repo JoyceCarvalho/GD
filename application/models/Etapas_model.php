@@ -110,7 +110,7 @@ class Etapas_model extends CI_Model {
         $this->db->select('e.id as id, e.titulo as titulo, de.iddocumento as iddocumento');
         $this->db->from('tbetapa as e');
         $this->db->join('tbdocumentoetapa as de', 'de.idetapa = e.id');
-        $this->db->where('iddocumento = ', $documento);
+        $this->db->where('iddocumento = ', $dados);
         $this->db->order_by('ordem asc');
         $query = $this->db->get();
 

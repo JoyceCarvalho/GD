@@ -127,18 +127,17 @@ class Documentos_model extends CI_Model {
      */
     public function listar_meus_documentos_cargos($usuario){
         $this->db->select('dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, e.titulo AS etapa, 
-        ld.data_hora AS data_criacao, u.nome AS nome_usuario');
+        ldA.data_hora AS data_criacao, u.nome AS nome_usuario');
         $this->db->from('tbdocumentos_cad AS dc');
-        $this->db->join('tbdocumento AS d', 'dc.fk_iddocumento = d.id');
-        $this->db->join('tbgrupo AS g', 'd.fk_idgrupo = g.id');
-        $this->db->join('tbdocumentoetapa AS de', 'd.id = de.iddocumento');
-        $this->db->join('tbetapa AS e', 'e.id = de.idetapa');
-        $this->db->join('tblog_documentos AS ld', 'ld.documento = d.id');
-        $this->db->join('tbcompetencias AS comp', 'comp.fk_iddocumento = d.id');
-        $this->db->join('tbusuario AS u', 'u.fk_idcargos = comp.fk_idcargo');
-        $this->db->where('ld.ultima_etapa = ', 'false');
-        $this->db->where('comp.tipo = ', 'cargo');
-        $this->db->order_by("u.id", $usuario);
+        $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
+        $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
+        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
+        $this->db->where("ldB.usuario = $usuario");
+        $this->db->order_by('de.ordem');
         return $this->db->get()->result();
     }
 
@@ -150,21 +149,32 @@ class Documentos_model extends CI_Model {
      */
     public function listar_meus_documentos_funcionario($usuario){
         $this->db->select('dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, e.titulo AS etapa, 
-        ld.data_hora AS data_criacao, u.nome AS nome_usuario');
+        ldA.data_hora AS data_criacao, u.nome AS nome_usuario');
         $this->db->from('tbdocumentos_cad AS dc');
-        $this->db->join('tbdocumento AS d', 'dc.fk_iddocumento = d.id');
-        $this->db->join('tbgrupo AS g', 'd.fk_idgrupo = g.id');
-        $this->db->join('tbdocumentoetapa AS de', 'd.id = de.iddocumento');
-        $this->db->join('tbetapa AS e', 'e.id = de.idetapa');
-        $this->db->join('tblog_documentos AS ld', 'ld.documento = dc.id');
-        $this->db->join('tbcompetencias AS c', 'c.fk_iddocumento = d.id');
-        $this->db->join('tbusuario AS u', 'u.id = c.fk_idusuario');
-        $this->db->where('c.tipo = ', 'funcionario');
-        $this->db->where('ld.ultima_etapa = ', 'false');
-        $this->db->where("c.fk_idusuario = $usuario");
+        $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
+        $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
+        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
+        $this->db->where("ldB.usuario = $usuario");
         $this->db->order_by('de.ordem');
         return $this->db->get()->result();
     }
 
+    /**
+     * Método para pegar o id do documento
+     *
+     * @param int $caddoc
+     * @return array
+     */
+    public function documento_id($caddoc){
+        $this->db->select('d.id as id');
+        $this->db->from('tbdocumento as d');
+        $this->db->join('tbdocumentos_cad as dc', "d.id = dc.fk_iddocumento");
+        $this->db->where('dc.id = ', $caddoc);
+        return $this->db->get()->row('id');
+    }
 
 }

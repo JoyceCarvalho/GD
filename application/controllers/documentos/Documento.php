@@ -12,6 +12,7 @@ class Documento extends CI_Controller {
         $this->load->model('grupo_model', 'grupomodel');
         $this->load->model('etapas_model', 'etapasmodel');
         $this->load->model('documentos_model', 'docmodel');
+        $this->load->model('competencia_model', 'compmodel');
     }
 
     public function index(){
@@ -86,12 +87,16 @@ class Documento extends CI_Controller {
             $documento_log = $this->docmodel->cadastrar_log_documento($log);
 
             if ($documento_log) {
+
+                $documento = $this->docmodel->documento_id($iddocumento);
+
+                $usuario = $this->compmodel->competencia_user($documento, $recebido);
                 
                 $log2 = array(
                     'descricao'     => "RECEBIDO",
                     'data_hora'     => date('Y-m-d H:i:s'),
                     'ultima_etapa'  => 'false',
-                    'usuario'       => $_SESSION["idusuario"],
+                    'usuario'       => $usuario,
                     'etapa'         => $recebido,
                     'documento'     => $iddocumento
                 );
