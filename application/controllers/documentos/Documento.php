@@ -19,7 +19,7 @@ class Documento extends CI_Controller {
 
         if ((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)) {
             
-            $dados["pagina"] = "Férias Funcionário";
+            $dados["pagina"] = "Novo Documento";
             $dados["pg"] = "documentos";
             $dados["submenu"] = "novodoc";
 
