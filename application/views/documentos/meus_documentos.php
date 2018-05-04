@@ -60,10 +60,10 @@
                                                 <tr>
                                                     <td><?=$documentos->protocolo;?></td>
                                                     <td>
-                                                        <?=$documentos->documento;?>
+                                                        <?=$documentos->documento;?><br/>
                                                         <strong><?=$documentos->grupo;?></strong>
                                                     </td>
-                                                    <td><?=$documentos->prazo;?></td>
+                                                    <td><?=converte_data($documentos->prazo);?></td>
                                                     <td><?=$documentos->etapa;?></td>
                                                     <td><?=$documentos->data_criacao;?></td>
                                                     <td></td>
@@ -76,10 +76,10 @@
                                                 <tr>
                                                     <td><?=$documentos->protocolo;?></td>
                                                     <td>
-                                                        <?=$documentos->documento;?>
+                                                        <?=$documentos->documento;?><br/>
                                                         <strong><?=$documento->grupo;?></strong>
                                                     </td>
-                                                    <td><?=$documentos->prazo;?></td>
+                                                    <td><?=converte_data($documentos->prazo);?></td>
                                                     <td><?=$documentos->etapa;?></td>
                                                     <td><?=$documentos->data_criacao;?></td>
                                                     <td></td>
