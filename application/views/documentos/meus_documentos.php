@@ -1,3 +1,4 @@
+
 <!-- Breadcrumb-->
 <div class="breadcrumb-holder container-fluid">
     <ul class="breadcrumb">
@@ -44,12 +45,12 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Protocolo</th>
-                                        <th>Documento<br/>/Grupo</th>
-                                        <th>Prazo Documento</th>
-                                        <th>Etapas</th>
-                                        <th>Data de Criação</th>
-                                        <th></th>
+                                        <th width="10%">Protocolo</th>
+                                        <th width="25%">Documento<br/>/Grupo</th>
+                                        <th width="10%">Prazos Documento</th>
+                                        <th width="10%">Etapas</th>
+                                        <th width="20%">Data de Criação</th>
+                                        <th width="25%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -65,8 +66,40 @@
                                                     </td>
                                                     <td><?=converte_data($documentos->prazo);?></td>
                                                     <td><?=$documentos->etapa;?></td>
-                                                    <td><?=$documentos->data_criacao;?></td>
-                                                    <td></td>
+                                                    <td><?=converte_datetime($documentos->data_criacao);?></td>
+                                                    <td style="text-align: center;">
+                                                        <?php 
+                                                            $this->load->model('DocEtapas_model', 'docetapamodel');
+                                                            $last_step = $this->docetapamodel->ultima_etapa($documentos->iddocumento);
+                                                            if ($last_step == $documentos->idetapa) {
+                                                                ?>
+                                                                <a href="#">Finalizar Documento</a>
+                                                                <?php
+                                                            } else {
+                                                                ?>
+                                                                <a href="#">Encaminhar Próxima Etapa</a>
+                                                                <?php
+                                                            }
+                                                            
+                                                            if ($documentos->ordem > 1) {
+                                                                ?>
+                                                                <a href="#">Retornar Etapa Aterior</a>
+                                                                <?php
+                                                            }
+                                                            if($documentos->ordem == 1){
+                                                                ?>
+                                                                <a href="#">Editar Documento</a>
+                                                                <?php
+                                                            }
+                                                        ?>
+                                                        <a href="#">Ver Histórico Documento</a><br/>
+                                                        <a href="#">Suspender Documento</a><br/>
+                                                        <a href="#">Cancelar Documento</a><br/>
+                                                        <a href="#">Apontar Erro</a><br/>
+                                                        <div class="line"></div>
+                                                        <div class="timer_<?=$documentos->protocolo?>">0 segundos</div>
+                                                        <a class="btn btn-sm btn-info" href="#">Iniciar</a>
+                                                    </td>
                                                 </tr>
                                                 <?php
                                             }
@@ -81,8 +114,41 @@
                                                     </td>
                                                     <td><?=converte_data($documentos->prazo);?></td>
                                                     <td><?=$documentos->etapa;?></td>
-                                                    <td><?=$documentos->data_criacao;?></td>
-                                                    <td></td>
+                                                    <td><?=converte_datetime($documentos->data_criacao);?></td>
+                                                    <td style="text-align: center;">
+                                                        <?php 
+                                                            $this->load->model('DocEtapas_model', 'docetapamodel');
+                                                            $last_step = $this->docetapamodel->ultima_etapa($documentos->iddocumento);
+                                                            if ($last_step == $documentos->idetapa) {
+                                                                ?>
+                                                                <a href="#">Finalizar Documento</a>
+                                                                <?php
+                                                            } else {
+                                                                ?>
+                                                                <a href="#">Encaminhar Próxima Etapa</a>
+                                                                <?php
+                                                            }
+                                                            
+                                                            if ($documentos->ordem > 1) {
+                                                                ?>
+                                                                <a href="#">Retornar Etapa Aterior</a>
+                                                                <?php
+                                                            }
+                                                            if($documentos->ordem == 1){
+                                                                ?>
+                                                                <a href="#">Editar Documento</a>
+                                                                <?php
+                                                            }
+                                                        ?>
+                                                        <a href="#">Ver Histórico Documento</a><br/>
+                                                        <a href="#">Suspender Documento</a><br/>
+                                                        <a href="#">Cancelar Documento</a><br/>
+                                                        <a href="#">Apontar Erro</a><br/>
+                                                        <div class="line"></div>
+                                                        <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->protocolo;?>">
+                                                        <div class="timer_<?=$documentos->protocolo;?>">0 segundos</div>
+                                                        <a class="btn btn-sm btn-info" href="#">Iniciar</a>
+                                                    </td>
                                                 </tr>
                                                 <?php
                                             }
@@ -97,3 +163,104 @@
         </div>    
     </div>
 </section>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script>
+window.addEventListener("DOMContentLoaded", function() {
+	
+	var format = function(seconds) {
+		var tempos = {
+			segundos: 60
+		,   minutos: 60
+		,   horas: 24
+		,   dias: ''
+		};
+		var parts = [], string = '', resto, dias;
+		for (var unid in tempos) {
+			if (typeof tempos[unid] === 'number') {
+				resto = seconds % tempos[unid];
+				seconds = (seconds - resto) / tempos[unid];
+			} else {
+				resto = seconds;
+			}
+			parts.unshift(resto);
+		}
+		dias = parts.shift();
+		if (dias) {
+			string = dias + (dias > 1 ? ' dias ' : ' dia ');
+		}
+		for (var i = 0; i < 3; i++) {
+			parts[i] = ('0' + parts[i]).substr(-2);
+		}
+		string += parts.join(':');
+		return string;
+	};
+	
+
+	$(function(){
+			
+		$.each($('input[id=id_protocolo]'),function (){
+
+			var id_pro = $(this).val();
+			
+			var tempo = 0;
+			var interval = 0;
+			var timer = function(){ 
+				$('.timer_'+id_pro).html(format(++tempo));
+			};
+
+			//alert(id_pro);
+
+			//$(window).load(function(){ alert("here");
+
+			//var protocol = ($(this).val()); { pro: protocol }
+		
+			$.post('gd_get_timer.php', { pro: id_pro }, function(resp){
+				$('#post_'+id_pro).text(resp.running ? 'Pausar' : 'Iniciar');
+				tempo = resp.seconds;
+				timer();
+				if (resp.running) {
+					interval = setInterval(timer, 1000);
+				}
+				botao = $('#post_'+id_pro).text();
+				if(botao === "Pausar"){
+					$('#blockA').css("pointer-events", "none");
+					$('#blockB').css("pointer-events", "none");
+					$('#blockC').css("pointer-events", "none");
+					$('#blockD').css("pointer-events", "none");
+				}
+			});
+			
+			$('#post_'+id_pro).on('click', function(){ 
+				var btn = this;
+				btn.disabled = true;
+				$.post('gd_grava_acao.php', { pro: id_pro }, function(resp){
+					btn.disabled = false;
+					$(btn).text(resp.running ? 'Pausar' : 'Iniciar');
+					if (resp.running) {
+						timer();
+						interval = setInterval(timer, 1000);
+					} else {
+						clearInterval(interval);
+					}
+					botao = $('#post_'+id_pro).text();
+					if(botao === "Pausar"){
+						$('#blockA').css("pointer-events", "none");
+						$('#blockB').css("pointer-events", "none");
+						$('#blockC').css("pointer-events", "none");
+						$('#blockD').css("pointer-events", "none");
+					}else{
+						$('#blockA').css("pointer-events", "");
+						$('#blockB').css("pointer-events", "");
+						$('#blockC').css("pointer-events", "");
+						$('#blockD').css("pointer-events", "");
+					}
+				});
+			});
+
+		});
+		
+	});
+	
+});
+
+</script>

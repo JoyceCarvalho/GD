@@ -88,7 +88,7 @@ class DocEtapas_model extends CI_Model{
     public function ultima_etapa($documento){
         $this->db->select('idetapa');
         $this->db->from('tbdocumentoetapa');
-        $this->db->where('iddocumento = ', $iddocumento);
+        $this->db->where('iddocumento = ', $documento);
         $this->db->order_by('ordem desc');
         $this->db->limit(1);
         return $this->db->get('')->row('idetapa');

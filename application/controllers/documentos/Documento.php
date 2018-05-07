@@ -13,6 +13,7 @@ class Documento extends CI_Controller {
         $this->load->model('etapas_model', 'etapasmodel');
         $this->load->model('documentos_model', 'docmodel');
         $this->load->model('competencia_model', 'compmodel');
+        $this->load->model('DocEtapas_model', 'docetapamodel');
     }
 
     public function index(){

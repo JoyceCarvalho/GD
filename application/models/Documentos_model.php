@@ -126,8 +126,8 @@ class Documentos_model extends CI_Model {
      * @return object retorna um objeto de dados
      */
     public function listar_meus_documentos_cargos($usuario){
-        $this->db->select('dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, e.titulo AS etapa, 
-        ldA.data_hora AS data_criacao, u.nome AS nome_usuario');
+        $this->db->select('d.id as iddocumento, e.id as idetapa, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
+        e.titulo AS etapa, ldA.data_hora AS data_criacao, u.nome AS nome_usuario, de.ordem as ordem');
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
@@ -148,8 +148,8 @@ class Documentos_model extends CI_Model {
      * @return object retorna um objeto de dados
      */
     public function listar_meus_documentos_funcionario($usuario){
-        $this->db->select('dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, e.titulo AS etapa, 
-        ldA.data_hora AS data_criacao, u.nome AS nome_usuario');
+        $this->db->select('d.id as iddocumento, e.id as idetapa, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
+        e.titulo AS etapa, ldA.data_hora AS data_criacao, u.nome AS nome_usuario, de.ordem as ordem');
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
