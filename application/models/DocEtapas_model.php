@@ -8,7 +8,7 @@ class DocEtapas_model extends CI_Model{
     }
 
     /**
-     * Função para cadastro de etapas de documentos tbdocumentoetapa
+     * Método para cadastro de etapas de documentos tbdocumentoetapa
      * Utilizado no controller conf/Documento.php
      *
      * @param array $dados
@@ -19,7 +19,7 @@ class DocEtapas_model extends CI_Model{
     }
 
     /**
-     * Função para listar as etapas de documentos com titulo da etapa
+     * Método para listar as etapas de documentos com titulo da etapa
      * Utilizado no controller conf/Documento.php, conf/Competencia.php, e na view config/documento.php
      *
      * @param int $iddocumento
@@ -35,7 +35,7 @@ class DocEtapas_model extends CI_Model{
     }
 
     /**
-     * Função para listar etapas de documento pela ordem de etapas
+     * Método para listar etapas de documento pela ordem de etapas
      * Utilizado no controller conf/Documento.php 
      *
      * @param int $iddocumento
@@ -49,7 +49,8 @@ class DocEtapas_model extends CI_Model{
     }
 
     /**
-     * Função para editar etapas de documentos (Geralmente a ordem em que ela será realizada)
+     * Método para editar etapas de documentos (Geralmente a ordem em que ela será realizada)
+     * Utilizado no controller conf/Documento.php
      *
      * @param int $iddocumento
      * @param int $idetapa
@@ -63,7 +64,8 @@ class DocEtapas_model extends CI_Model{
     }
 
     /**
-     * Função para verificar etapas do documentos
+     * Método para verificar etapas do documentos
+     * Utilizado no controller conf/Documento.php
      *
      * @param int $iddocumento
      * @param int $idetapa
@@ -74,6 +76,22 @@ class DocEtapas_model extends CI_Model{
         $this->db->where('idetapa = ', $idetapa);
         $this->db->from('tbdocumentoetapa');
         return $this->db->get()->result();
+    }
+
+    /**
+     * Método para retornar a ultima etapa do documento
+     * Utilizado na view documentos/meus_documento.php
+     *
+     * @param int $documento
+     * @return int retorna o id da etapa
+     */
+    public function ultima_etapa($documento){
+        $this->db->select('idetapa');
+        $this->db->from('tbdocumentoetapa');
+        $this->db->where('iddocumento = ', $iddocumento);
+        $this->db->order_by('ordem desc');
+        $this->db->limit(1);
+        return $this->db->get('')->row('idetapa');
     }
 
 }

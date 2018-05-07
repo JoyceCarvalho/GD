@@ -165,9 +165,10 @@ class Documentos_model extends CI_Model {
 
     /**
      * Método para pegar o id do documento
+     * Utilizado no controller documento/Documento.php
      *
      * @param int $caddoc
-     * @return array
+     * @return int retorna o id do documento
      */
     public function documento_id($caddoc){
         $this->db->select('d.id as id');
