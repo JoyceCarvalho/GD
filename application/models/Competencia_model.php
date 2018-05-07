@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * Classe responsével pelo CRUD da tabela tbcompetência
+ */
 class Competencia_model extends CI_Model {    
     
     public function __construct(){
@@ -47,6 +50,13 @@ class Competencia_model extends CI_Model {
         return $this->db->get()->result();
     }
 
+    /**
+     * Método responsavel por retornar o usuario especifico da etapa do documento
+     *
+     * @param int $documento
+     * @param int $etapa
+     * @return int retorna o id do usuario
+     */
     public function competencia_user($documento,$etapa){
         $this->db->select('fk_idusuario');
         $this->db->from('tbcompetencias');
