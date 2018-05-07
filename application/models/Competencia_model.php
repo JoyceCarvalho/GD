@@ -48,11 +48,11 @@ class Competencia_model extends CI_Model {
     }
 
     public function competencia_user($documento,$etapa){
-        $this->db->select('usuario');
+        $this->db->select('fk_idusuario');
         $this->db->from('tbcompetencias');
         $this->db->where('fk_iddocumento =', $documento);
         $this->db->where('fk_idetapa = ', $etapa);
-        return $this->db->get()->row('usuario');
+        return $this->db->get()->row('fk_idusuario');
     }
 
 }

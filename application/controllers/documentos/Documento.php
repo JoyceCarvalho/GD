@@ -34,6 +34,7 @@ class Documento extends CI_Controller {
             $this->load->view('template/html_footer');
 
         } else {
+            // Redireciona para o root quando não estiver logado
             redirect('/');
         }
 
@@ -95,13 +96,13 @@ class Documento extends CI_Controller {
                 $log2 = array(
                     'descricao'     => "RECEBIDO",
                     'data_hora'     => date('Y-m-d H:i:s'),
-                    'ultima_etapa'  => 'false',
+                    'ultima_etapa'  => 'true',
                     'usuario'       => $usuario,
                     'etapa'         => $recebido,
                     'documento'     => $iddocumento
                 );
     
-                $documento_log2 = $this->docmodel->cadastrar_log_documento($log);
+                $documento_log2 = $this->docmodel->cadastrar_log_documento($log2);
                 
                 if($documento_log2){
 
@@ -158,6 +159,7 @@ class Documento extends CI_Controller {
             }
 
         } else {
+            // Redireciona para o root quando não estiver logado
             redirect("/");
         }
 
@@ -184,6 +186,7 @@ class Documento extends CI_Controller {
             $this->load->view('template/html_footer');
 
         } else {
+            // Redireciona para o root quando não estiver logado
             redirect("/");
         }
 

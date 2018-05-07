@@ -123,7 +123,8 @@ class Etapas_model extends CI_Model {
         $this->db->select('e.id as id');
         $this->db->from('tbetapa as e');
         $this->db->join('tbdocumentoetapa as de', 'de.idetapa = e.id');
-        $this->db->where('de.iddocumento = ', $documento);
+        $this->db->join('tbdocumentos_cad as dc', 'dc.fk_iddocumento = de.iddocumento');
+        $this->db->where('dc.id = ', $documento);
         $this->db->order_by('ordem asc');
         $this->db->limit(1);
 
