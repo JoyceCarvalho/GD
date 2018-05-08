@@ -242,4 +242,53 @@ class Documento extends CI_Controller {
             'running' => $action === 'start',
         ));
     }
+
+    public function grava_acao(){
+        
+        $idprotocolo = $this->input->post("pro");
+
+        $etapa_documento = $this->docmodel->etapa_documento($idprotocolo);
+
+        $usuario_documento = $this->docmodel->usuario_documento($idprotocolo);
+
+        $this->load->model('timer_model', 'timermodel');
+
+        $timer = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
+        $contador = $this->timermodel->contador($idprotocolo, $etapa_documento);
+        $ac = $this->timermodel->get_action($idprotocolo, $etapa_documento);
+
+        $newAction = 'start';
+        if (($contador > 0) && ($ac === 'start')) {
+            $newAction = 'pause';
+        }
+
+        $colunas = array(
+            "id_protocolo",
+            "id_etapa",
+            "action",
+            "timestamp",
+            "id_usuario"
+        );
+
+        $dados[] = $id_protocolo;
+        $dados[] = $etapa_documento;
+        $dados[] = $newAction;
+        $dados[] = time();
+        $dados[] = $id_user;
+
+        $dados = array(
+            'fk_iddoccad' => $idprotocolo,
+            'fk_idetapa'  => $etapa_documento,
+            'action'      => $newAction,
+            'timestamp'   => time(),
+            'id_usuario'
+        );
+
+        $xx->inserir_dados("gd_timer", $colunas, $dados);
+
+        header('Content-Type: application/json');
+        echo json_encode(array(
+        'running' => $newAction === 'start',
+        )); 
+    }
 }

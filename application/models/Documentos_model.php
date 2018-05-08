@@ -121,6 +121,7 @@ class Documentos_model extends CI_Model {
  
     /**
      * Fução reponsável por listar dados de meus documentos
+     * Utilizado no controller documentos/Documento.php
      *
      * @param int $usuario
      * @return object retorna um objeto de dados
@@ -143,6 +144,7 @@ class Documentos_model extends CI_Model {
 
     /**
      * Método responsável por listar dados de meus documentos
+     * Utilizado no controller documentos/Documento.php
      *
      * @param int $usuario
      * @return object retorna um objeto de dados
@@ -178,11 +180,36 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->row('id');
     }
 
+    /**
+     * Método responsável por retornar a etapa atual do documento cadastrado
+     * Utilizado no controller Documento/documentos.php
+     *
+     * @param int $documento
+     * @return int retorna o id da etapa
+     */
     public function etapa_documento($documento){
         $this->db->select('etapa');
         $this->db->from('tblog_documentos');
         $this->db->where('documento = ', $documento);
+        $this->db->where('ultima_etapa = ', '"true"');
+        $this->db->limit(1);
         return $this->db->get()->row('etapa');
+    }
+
+    /**
+     * Método responsável por retornar o usuario responsável pelo documento cadastrado
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param int $documento
+     * @return int retorna o id do usuario
+     */
+    public function usuario_documento($documento){
+        $this->db->select('usuario');
+        $this->db->from('tblog_documentos');
+        $this->db->where('documento = ', $documento);
+        $this->db->where('ultima_etapa = ', '"true"');
+        $this->db->limit(1);
+        return $this->db->get()->row('usuario');
     }
 
 }
