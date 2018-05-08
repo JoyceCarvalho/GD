@@ -267,7 +267,7 @@ class Documento extends CI_Controller {
             'fk_idetapa'  => $etapa_documento,
             'action'      => $newAction,
             'timestamp'   => time(),
-            'id_usuario'  => $usuario_documento
+            'fk_idusuario'  => $usuario_documento
         );
 
         $this->timermodel->cadastrar_tempo($dados);
