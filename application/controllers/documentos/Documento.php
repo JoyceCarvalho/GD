@@ -204,4 +204,43 @@ class Documento extends CI_Controller {
         echo $this->etapasmodel->listar_etapas_json($value);
 
     }
+
+    public function get_time(){
+        
+        $idprotocolo = $this->input->post("pro");
+
+        $etapa_documento = $this->docmodel->etapa_documento($idprotocolo);
+
+        $this->load->model('timer_model', 'timermodel');
+        $timer = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
+
+        $x->select("action, timestamp", "gd_timer", "WHERE id_protocolo = '$id_protocolo' AND id_etapa = '$etapa_documento' ORDER BY id");
+
+        $seconds = 0;
+        $action = 'pause'; // sempre inicia pausado
+
+        while ($lx = $x->f_arr()) {
+            $action = $lx["action"];
+            switch ($action) {
+                case 'start':
+                    $seconds -= $lx["timestamp"];
+                    break;
+                case 'pause':
+                    // para evitar erro se a primeira ação for pause
+                    if ($seconds !== 0) {
+                        $seconds += $lx["timestamp"];
+                    }
+                    break;
+            }
+        }
+        if ($action === 'start') {
+            $seconds += time();
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode(array(
+            'seconds' => $seconds,
+            'running' => $action === 'start',
+        ));
+    }
 }

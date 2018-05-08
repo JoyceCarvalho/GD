@@ -73,17 +73,17 @@
                                                             $last_step = $this->docetapamodel->ultima_etapa($documentos->iddocumento);
                                                             if ($last_step == $documentos->idetapa) {
                                                                 ?>
-                                                                <a href="#">Finalizar Documento</a>
+                                                                <a href="#" id="blockA">Finalizar Documento</a>
                                                                 <?php
                                                             } else {
                                                                 ?>
-                                                                <a href="#">Encaminhar Próxima Etapa</a>
+                                                                <a href="#" id="blockB">Encaminhar Próxima Etapa</a>
                                                                 <?php
                                                             }
                                                             
                                                             if ($documentos->ordem > 1) {
                                                                 ?>
-                                                                <a href="#">Retornar Etapa Aterior</a>
+                                                                <a href="#" id="blockC">Retornar Etapa Aterior</a>
                                                                 <?php
                                                             }
                                                             if($documentos->ordem == 1){
@@ -93,11 +93,12 @@
                                                             }
                                                         ?>
                                                         <a href="#">Ver Histórico Documento</a><br/>
-                                                        <a href="#">Suspender Documento</a><br/>
+                                                        <a href="#" id="blockD">Suspender Documento</a><br/>
                                                         <a href="#">Cancelar Documento</a><br/>
                                                         <a href="#">Apontar Erro</a><br/>
                                                         <div class="line"></div>
-                                                        <div class="timer_<?=$documentos->protocolo?>">0 segundos</div>
+                                                        <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
+                                                        <div class="timer_<?=$documentos->idprotocolo?>">0 segundos</div>
                                                         <a class="btn btn-sm btn-info" href="#">Iniciar</a>
                                                     </td>
                                                 </tr>
@@ -121,17 +122,17 @@
                                                             $last_step = $this->docetapamodel->ultima_etapa($documentos->iddocumento);
                                                             if ($last_step == $documentos->idetapa) {
                                                                 ?>
-                                                                <a href="#">Finalizar Documento</a>
+                                                                <a href="#" id="blockA">Finalizar Documento</a>
                                                                 <?php
                                                             } else {
                                                                 ?>
-                                                                <a href="#">Encaminhar Próxima Etapa</a>
+                                                                <a href="#" id="blockB">Encaminhar Próxima Etapa</a>
                                                                 <?php
                                                             }
                                                             
                                                             if ($documentos->ordem > 1) {
                                                                 ?>
-                                                                <a href="#">Retornar Etapa Aterior</a>
+                                                                <a href="#" id="blockC">Retornar Etapa Aterior</a>
                                                                 <?php
                                                             }
                                                             if($documentos->ordem == 1){
@@ -141,12 +142,12 @@
                                                             }
                                                         ?>
                                                         <a href="#">Ver Histórico Documento</a><br/>
-                                                        <a href="#">Suspender Documento</a><br/>
+                                                        <a href="#" id="blockD">Suspender Documento</a><br/>
                                                         <a href="#">Cancelar Documento</a><br/>
                                                         <a href="#">Apontar Erro</a><br/>
                                                         <div class="line"></div>
-                                                        <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->protocolo;?>">
-                                                        <div class="timer_<?=$documentos->protocolo;?>">0 segundos</div>
+                                                        <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
+                                                        <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
                                                         <a class="btn btn-sm btn-info" href="#">Iniciar</a>
                                                     </td>
                                                 </tr>
