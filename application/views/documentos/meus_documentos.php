@@ -146,7 +146,7 @@
                                                         <a href="#">Cancelar Documento</a><br/>
                                                         <a href="#">Apontar Erro</a><br/>
                                                         <div class="line"></div>
-                                                        <input class="id_protocolo" name="idprotocolo" id="idprotocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
+                                                        <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
                                                         <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
                                                         <button id="post_<?=$documentos->idprotocolo;?>" class="btn btn-sm btn-info" href="#">Iniciar</button>
                                                     </td>
@@ -202,7 +202,7 @@ window.addEventListener("DOMContentLoaded", function() {
 		$.each($('input[id=id_protocolo]'),function (){
 
 			var id_pro = $(this).val();
-			
+	
 			var tempo = 0;
 			var interval = 0;
 			var timer = function(){ 
@@ -234,7 +234,7 @@ window.addEventListener("DOMContentLoaded", function() {
 			$('#post_'+id_pro).on('click', function(){ 
 				var btn = this;
 				btn.disabled = true;
-				$.post('gd_grava_acao.php', { pro: id_pro }, function(resp){
+				$.post('grava_acao', { pro: id_pro }, function(resp){
 					btn.disabled = false;
 					$(btn).text(resp.running ? 'Pausar' : 'Iniciar');
 					if (resp.running) {

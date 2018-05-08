@@ -7,6 +7,7 @@ class Timer_model extends CI_Model {
 
     /**
      * Médoto responsável por retornar os dados de determinado documento
+     * Utilizado no controller documento/Documento.php
      *
      * @param int $protocolo
      * @param int $etapa
@@ -23,6 +24,7 @@ class Timer_model extends CI_Model {
 
     /**
      * Método responsável por retornar o total de linhas referentes ao objeto determinado
+     * Utilizado no controller documentos/Documento.php
      *
      * @param int $protocolo
      * @param int $etapa
@@ -39,6 +41,7 @@ class Timer_model extends CI_Model {
 
     /**
      * Método responsável por retornar o total de linhas referentes ao documento determinado
+     * Utilizado no controller documentos/Documento.php
      *
      * @param int $protocolo
      * @param int $etapa
@@ -51,5 +54,16 @@ class Timer_model extends CI_Model {
         $this->db->where('fk_idetapa =', $etapa);
         $this->db->order_by('id');
         return $this->db->get()->row('action');
+    }
+
+    /**
+     * Método responsável por retornar o total de linhas referentes ao documento determinado
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param array $dados
+     * @return int retorna o numero de linhas afetadas
+     */
+    public function cadastrar_tempo($dados){
+        return $this->db->insert('tbtimer', $dados);
     }
 }

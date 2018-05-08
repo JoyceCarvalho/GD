@@ -262,29 +262,15 @@ class Documento extends CI_Controller {
             $newAction = 'pause';
         }
 
-        $colunas = array(
-            "id_protocolo",
-            "id_etapa",
-            "action",
-            "timestamp",
-            "id_usuario"
-        );
-
-        $dados[] = $id_protocolo;
-        $dados[] = $etapa_documento;
-        $dados[] = $newAction;
-        $dados[] = time();
-        $dados[] = $id_user;
-
         $dados = array(
             'fk_iddoccad' => $idprotocolo,
             'fk_idetapa'  => $etapa_documento,
             'action'      => $newAction,
             'timestamp'   => time(),
-            'id_usuario'
+            'id_usuario'  => $usuario_documento
         );
 
-        $xx->inserir_dados("gd_timer", $colunas, $dados);
+        $this->timermodel->cadastrar_tempo($dados);
 
         header('Content-Type: application/json');
         echo json_encode(array(
