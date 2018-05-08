@@ -135,3 +135,4 @@ $route["find_doc/(:num)"]           = "documentos/Documento/busca_documentos/$1"
 $route["find_steps/(:num)"]         = "documentos/Documento/busca_etapas/$1";
 $route["cad_novo_doc"]              = "documentos/Documento/cadastrar_novo_documento";
 $route["meusdocumentos"]            = "documentos/Documento/meus_documentos";
+$route["get_time"]                  = "documentos/Documento/get_time";

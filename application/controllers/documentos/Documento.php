@@ -214,21 +214,20 @@ class Documento extends CI_Controller {
         $this->load->model('timer_model', 'timermodel');
         $timer = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
 
-        $x->select("action, timestamp", "gd_timer", "WHERE id_protocolo = '$id_protocolo' AND id_etapa = '$etapa_documento' ORDER BY id");
-
         $seconds = 0;
         $action = 'pause'; // sempre inicia pausado
 
-        while ($lx = $x->f_arr()) {
-            $action = $lx["action"];
+        foreach ($timer as $t ) {
+            
+            $action = $t->action;
             switch ($action) {
                 case 'start':
-                    $seconds -= $lx["timestamp"];
+                    $seconds -= $t->timestamp;
                     break;
                 case 'pause':
                     // para evitar erro se a primeira ação for pause
                     if ($seconds !== 0) {
-                        $seconds += $lx["timestamp"];
+                        $seconds += $t->timestamp;
                     }
                     break;
             }
