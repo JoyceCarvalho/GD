@@ -26,6 +26,12 @@ function converte_datetime($timestamp){
     return $datetime;
 }
 
+/**
+ * Função para converter uma date no formato mysql yyyy-mm-dd para o formato dd/mm/YYYY
+ *
+ * @param date $date
+ * @return string com o formato de apresentação
+ */
 function converte_data($date){
     $day = explode("-", $date);
     return $day[2]."/".$day[1]."/".$day[0];
