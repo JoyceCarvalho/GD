@@ -1,6 +1,6 @@
 <?php
 /**
- * Função para correção do datetime Mysql "aaaa-mm-dd hh:mm:ss" para o tipo datetime-local html5 "aaaa-mm-ddThh:mm"
+ * Função para correção do datetime Mysql "Y-m-d hh:mm:ss" para o tipo datetime-local html5 "Y-m-dThh:mm"
  *
  * @param datetime $timestamp
  * @return datetime html5
@@ -13,7 +13,7 @@ function corrige_datetime($timestamp){
 }
 
 /**
- * Função para converter o datetime do MySQL "aaaa-mm-dd hh:mm:ss" para melhor visualização "dd/mm/aaaa hh:mm"
+ * Função para converter o datetime do MySQL "Y-m-d hh:mm:ss" para melhor visualização "d/m/Y hh:mm"
  *
  * @param datetime $timestamp
  * @return date formatado para melhor visualização na listagem
@@ -27,7 +27,7 @@ function converte_datetime($timestamp){
 }
 
 /**
- * Função para converter uma date no formato mysql yyyy-mm-dd para o formato dd/mm/YYYY
+ * Função para converter uma date no formato mysql DATE Y-m-d para o formato d/m/Y
  *
  * @param date $date
  * @return string com o formato de apresentação

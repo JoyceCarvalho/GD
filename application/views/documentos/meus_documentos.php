@@ -47,7 +47,7 @@
                                     <tr>
                                         <th width="10%">Protocolo</th>
                                         <th width="25%">Documento<br/>/Grupo</th>
-                                        <th width="10%">Prazos Documento</th>
+                                        <th width="10%">Prazos Documento/Etapa</th>
                                         <th width="10%">Etapas</th>
                                         <th width="20%">Data de Criação</th>
                                         <th width="25%"></th>
@@ -64,7 +64,18 @@
                                                         <?=$documentos->documento;?><br/>
                                                         <strong><?=$documentos->grupo;?></strong>
                                                     </td>
-                                                    <td><?=converte_data($documentos->prazo);?></td>
+                                                    <td>
+                                                        <?=converte_data($documentos->prazo);?><br/>
+                                                        <strong>
+                                                            <?php
+                                                            $this->load->model('etapas_model', 'etapasmodel');
+                                                            $prazo = $this->etapasmodel->prazo_etapa($documentos->iddocumento, $documentos->idetapa);
+                                                            foreach ($prazo as $p ) {
+                                                                echo $p->prazo;
+                                                            }
+                                                            ?>
+                                                        </strong>
+                                                    </td>
                                                     <td><?=$documentos->etapa;?></td>
                                                     <td><?=converte_datetime($documentos->data_criacao);?></td>
                                                     <td style="text-align: center;">
@@ -113,7 +124,18 @@
                                                         <?=$documentos->documento;?><br/>
                                                         <strong><?=$documento->grupo;?></strong>
                                                     </td>
-                                                    <td><?=converte_data($documentos->prazo);?></td>
+                                                    <td>
+                                                        <?=converte_data($documentos->prazo);?>
+                                                        <strong>
+                                                            <?php
+                                                            $this->load->model('etapas_model', 'etapasmodel');
+                                                            $prazo = $this->etapasmodel->prazo_etapa($documentos->iddocumento, $documentos->idetapa);
+                                                            foreach ($prazo as $p) {
+                                                                echo $p->prazo;
+                                                            }
+                                                            ?>
+                                                        </strong>
+                                                    </td>
                                                     <td><?=$documentos->etapa;?></td>
                                                     <td><?=converte_datetime($documentos->data_criacao);?></td>
                                                     <td style="text-align: center;">

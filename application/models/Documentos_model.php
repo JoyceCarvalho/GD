@@ -131,13 +131,15 @@ class Documentos_model extends CI_Model {
         e.titulo AS etapa, ldA.data_hora AS data_criacao, u.nome AS nome_usuario, de.ordem as ordem, dc.id as idprotocolo');
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
+        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo = "cargo"');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
         $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
-        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->join('tbusuario as u', 'u.fk_idcargos = c.fk_idcargo', 'left');
         $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
         $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
-        $this->db->where("ldB.usuario = $usuario");
+        $this->db->where("ldB.usuario = 0");
+        $this->db->where("u.id = $usuario");
         $this->db->order_by('de.ordem');
         return $this->db->get()->result();
     }
@@ -191,7 +193,7 @@ class Documentos_model extends CI_Model {
         $this->db->select('etapa');
         $this->db->from('tblog_documentos');
         $this->db->where('documento = ', $documento);
-        $this->db->where('ultima_etapa = ', '"true"');
+        $this->db->where('ultima_etapa = ', 'true');
         $this->db->limit(1);
         return $this->db->get()->row('etapa');
     }
@@ -207,7 +209,7 @@ class Documentos_model extends CI_Model {
         $this->db->select('usuario');
         $this->db->from('tblog_documentos');
         $this->db->where('documento = ', $documento);
-        $this->db->where('ultima_etapa = ', '"true"');
+        $this->db->where('ultima_etapa = ', 'true');
         $this->db->limit(1);
         return $this->db->get()->row('usuario');
     }

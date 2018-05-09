@@ -131,4 +131,18 @@ class Etapas_model extends CI_Model {
         return $this->db->get()->row('id');
     }
 
+    /**
+     * Método para mostrar o prazo da etapa do documento
+     *
+     * @param int $documento
+     * @param int $etapa
+     * @return date retorna a data em fomato mysql date "Y-m-d"
+     */
+    public function prazo_etapa($documento, $etapa){
+        $this->db->from('tbprazoetapa');
+        $this->db->where('fk_iddocumento =', $documento);
+        $this->db->where('fk_idetapas =', $etapa);
+        return $this->db->get()->result();
+    }
+
 }
