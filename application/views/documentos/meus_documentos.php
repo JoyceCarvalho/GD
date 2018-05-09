@@ -55,7 +55,7 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                        if ($documentos_cargo) {
+                                        if (!empty($documentos_cargo)) {
                                             foreach ($documentos_cargo as $documentos) {
                                                 ?>
                                                 <tr>
@@ -119,18 +119,18 @@
                                             foreach ($documentos_usuario as $documentos) {
                                                 ?>
                                                 <tr>
-                                                    <td><?=$documentos->protocolo;?></td>
+                                                <td><?=$documentos->protocolo;?></td>
                                                     <td>
                                                         <?=$documentos->documento;?><br/>
-                                                        <strong><?=$documento->grupo;?></strong>
+                                                        <strong><?=$documentos->grupo;?></strong>
                                                     </td>
                                                     <td>
-                                                        <?=converte_data($documentos->prazo);?>
+                                                        <?=converte_data($documentos->prazo);?><br/>
                                                         <strong>
                                                             <?php
                                                             $this->load->model('etapas_model', 'etapasmodel');
                                                             $prazo = $this->etapasmodel->prazo_etapa($documentos->iddocumento, $documentos->idetapa);
-                                                            foreach ($prazo as $p) {
+                                                            foreach ($prazo as $p ) {
                                                                 echo $p->prazo;
                                                             }
                                                             ?>
