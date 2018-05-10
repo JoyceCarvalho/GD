@@ -122,6 +122,7 @@ class Empresa_model extends CI_Model {
 
     /**
      * Método para edição de coordenador da empresa (cadastrado somente pelo SGT Master)
+     * Utilizado no controller admin/Controle.php
      *
      * @param array $dados
      * @param int $id

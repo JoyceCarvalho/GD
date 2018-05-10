@@ -50,14 +50,14 @@
                                         <div class="form-group row">
                                             <label for="fileInput" class="col-sm-3 form-control-label">Logo Empresa</label>
                                             <div class="col-sm-9">
-                                                <input name="arquivo[]" id="fileInput" type="file" class="form-control-file">
-                                                <small class="help-block-none">Apenas imagens.</small>
+                                                <input name="logo_cliente" id="logo_cliente" type="file" class="form-control-file">
+                                                <small class="help-block-none">Apenas imagens jpg, png, bmp.</small>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-sm-3 form-control-label">Cliente Code:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="cliente_code" class="form-control" name="cliente_code">
+                                                    <input type="text" class="form-control" name="cliente_code">
                                                     <small class="help-block-none">Código do SGT do cliente (se houver).</small>
                                                 </div>
                                             </div>

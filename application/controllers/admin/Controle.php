@@ -249,7 +249,8 @@ class Controle extends CI_Controller {
         public function cadastrar_empresa(){
 
                 // cria um objeto data
-		$data = new stdClass();
+                $data = new stdClass();
+                
                 
                 $empresa = array(
                         'nome' => $this->input->post("empresa"),
@@ -285,6 +286,7 @@ class Controle extends CI_Controller {
                         'fk_idcargos' => $idcargo,
                         'fk_idhorariotrab' => $horario_trab
                 );
+
 
                 if ($this->empresamodel->cadastrar_coordenador($coordenador)) {
                         
