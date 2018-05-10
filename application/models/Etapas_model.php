@@ -139,10 +139,13 @@ class Etapas_model extends CI_Model {
      * @return date retorna a data em fomato mysql date "Y-m-d"
      */
     public function prazo_etapa($documento, $etapa){
-        $this->db->from('tbprazoetapa');
-        $this->db->where('fk_iddocumento =', $documento);
-        $this->db->where('fk_idetapas =', $etapa);
-        return $this->db->get()->result();
+        $this->db->select('pe.prazo as prazo');
+        $this->db->from('tbprazoetapa as pe');
+        $this->db->where('pe.fk_iddocumento = ', $documento);
+        $this->db->where('pe.fk_idetapas = ', $etapa);
+        $this->db->limit(1);
+
+        return $this->db->get()->row('prazo');
     }
 
 }

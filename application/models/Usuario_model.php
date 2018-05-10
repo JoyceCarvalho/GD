@@ -44,7 +44,7 @@ class Usuario_model extends CI_Model {
 
         $this->db->select("u.usuario as usuario, u.senha as senha, e.id as idempresa, e.cliente_code as cliente_code");
         $this->db->from('tbusuario as u');
-        $this->db->join('tbempresa as e', 'u.fk_idempresa = e.id');
+        $this->db->join('tbempresa as e', 'u.fk_idempresa = e.id and e.ativo = 1');
         $this->db->where("e.cliente_code = '{$cliente_code}'");
         $this->db->where("u.usuario = '{$usuario}'");
         $this->db->where("u.senha = '{$senha}'");

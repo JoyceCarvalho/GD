@@ -47,7 +47,7 @@
                                     <tr>
                                         <th width="10%">Protocolo</th>
                                         <th width="25%">Documento<br/>/Grupo</th>
-                                        <th width="10%">Prazos Documento/Etapa</th>
+                                        <th width="10%">Prazos</th>
                                         <th width="10%">Etapas</th>
                                         <th width="20%">Data de Criação</th>
                                         <th width="25%"></th>
@@ -65,14 +65,12 @@
                                                         <strong><?=$documentos->grupo;?></strong>
                                                     </td>
                                                     <td>
-                                                        <?=converte_data($documentos->prazo);?><br/>
+                                                        <?="Documento: ".converte_data($documentos->prazo);?><br/>
                                                         <strong>
                                                             <?php
                                                             $this->load->model('etapas_model', 'etapasmodel');
-                                                            $prazo = $this->etapasmodel->prazo_etapa($documentos->iddocumento, $documentos->idetapa);
-                                                            foreach ($prazo as $p ) {
-                                                                echo $p->prazo;
-                                                            }
+                                                            $prazo = $this->etapasmodel->prazo_etapa($documentos->idprotocolo, $documentos->idetapa);
+                                                            echo "Etapa: ".converte_data($prazo);
                                                             ?>
                                                         </strong>
                                                     </td>
@@ -125,14 +123,12 @@
                                                         <strong><?=$documentos->grupo;?></strong>
                                                     </td>
                                                     <td>
-                                                        <?=converte_data($documentos->prazo);?><br/>
+                                                        <?="Documento: ".converte_data($documentos->prazo);?><br/>
                                                         <strong>
                                                             <?php
                                                             $this->load->model('etapas_model', 'etapasmodel');
-                                                            $prazo = $this->etapasmodel->prazo_etapa($documentos->iddocumento, $documentos->idetapa);
-                                                            foreach ($prazo as $p ) {
-                                                                echo $p->prazo;
-                                                            }
+                                                            $prazo = $this->etapasmodel->prazo_etapa($documentos->idprotocolo, $documentos->idetapa);
+                                                            echo "Etapa: ".converte_data($prazo);
                                                             ?>
                                                         </strong>
                                                     </td>

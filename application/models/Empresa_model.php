@@ -64,6 +64,7 @@ class Empresa_model extends CI_Model {
      * @return object retorna todas as empresas cadastradas na tabela tbempresa
      */
     public function listar_empresas(){
+        $this->db->where('ativo = 1');
         return $this->db->get('tbempresa')->result();
     }
 
@@ -75,8 +76,9 @@ class Empresa_model extends CI_Model {
      * @return int retorna o numero de linhas afetadas
      */
     public function excluir_empresa($id){
-           
-        return $this->db->simple_query("delete from tbempresa where id = ".$id);
+        $dados = array('ativo' => 0);
+        $this->db->where('id',$id);
+        return $this->db->update('tbempresa', $dados);
        
     }
 
