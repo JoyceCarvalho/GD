@@ -251,10 +251,28 @@ class Controle extends CI_Controller {
                 // cria um objeto data
                 $data = new stdClass();
                 
+                $configuracao['upload_path'] = '../logosEmpresas/';
+ 		$configuracao['allowed_types'] = 'jpg|png|gif|pdf|zip|rar|doc|xls';
+                $configuraxao['encrypt_name'] = TRUE;
+               
                 
+                $this->load->library('upload');
+                $this->upload->initialize($configuracao);
+
+                if(!$this->upload->do_upload('logo_cliente')){
+                        $data->error = $this->upload->display_errors();
+                } else {
+
+                        $configuracao = $this->upload->data();
+                        $arquivoPath = "../logosEmpresas/".$configuracao['file_name'];
+                        $configuracao["urlArquivo"] = base_url($arquivoPath);
+
+                }
+
                 $empresa = array(
                         'nome' => $this->input->post("empresa"),
-                        'cliente_code' => $this->input->post("cliente_code")
+                        'cliente_code' => $this->input->post("cliente_code"),
+                        'logo_code' => $configuracao['file_name']
                 );
 
                 $idempresa = $this->empresamodel->cadastrar_empresa($empresa);
