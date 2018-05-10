@@ -253,7 +253,7 @@ class Controle extends CI_Controller {
                 
                 $configuracao['upload_path'] = '../logosEmpresas/';
  		$configuracao['allowed_types'] = 'jpg|png|gif|pdf|zip|rar|doc|xls';
-                $configuraxao['encrypt_name'] = TRUE;
+                $configuracao['encrypt_name'] = TRUE;
                
                 
                 $this->load->library('upload');
