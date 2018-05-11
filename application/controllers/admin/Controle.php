@@ -101,7 +101,7 @@ class Controle extends CI_Controller {
         public function empresa_editar(){
 
                 // cria um objeto data
-		$data = new stdClass();
+		            $data = new stdClass();
 
                 $idempresa = $this->input->post('id_empresa');
                 $empresa = array(
@@ -199,7 +199,7 @@ class Controle extends CI_Controller {
                 $id = $this->input->post("idempresa");
 
                 // cria um objeto data
-		$data = new stdClass();
+		            $data = new stdClass();
 
                 if($this->empresamodel->excluir_empresa($id)){
                         //$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Empresa deletada com sucesso!</div>');
@@ -251,23 +251,33 @@ class Controle extends CI_Controller {
                 // cria um objeto data
                 $data = new stdClass();
 
-                $configuracao['upload_path'] = '../logosEmpresas/';
- 				        $configuracao['allowed_types'] = 'jpg|png|gif|zip|rar|doc|xls';
-                $configuracao['encrypt_name'] = TRUE;
+                //$configuracao['upload_path'] = '../logosEmpresas/';
+ 				        //$configuracao['allowed_types'] = 'jpg|png|gif|zip|rar|doc|xls';
+                //$configuracao['encrypt_name'] = TRUE;
 
+                $clientecode  = $this->input->post("cliente_code");
+                //$curriculo    = $_FILES['logo_cliente'];
 
-                $this->load->library('upload');
+                $configuracao = array(
+                  'upload_path'   => './assets/img/logo_empresas/',
+                  'allowed_types' => 'jpg',
+                  'file_name'     => $clientecode.'.jpg',
+                  'overwrite'     => TRUE,
+                );
 
-                $this->upload->initialize($configuracao);
+                $this->load->library('upload', $configuracao);
 
-                if(!$this->upload->do_upload('logo_cliente')){
-                        $data->error = $this->upload->display_errors();
+                //$this->upload->initialize($configuracao);
+
+                if (!$this->upload->do_upload()){
+                  echo $this->upload->display_errors();
                 } else {
-
-                        $configuracao = $this->upload->data();
-                        $arquivoPath = "../logosEmpresas/".$configuracao['file_name'];
-                        $configuracao["urlArquivo"] = base_url($arquivoPath);
-
+                  $config['source_image'] = './assets/img/logo_empresas/'.$clientecode.'.jpg';
+                  $config['create_thumb'] = FALSE;
+                  $config['width']        = 200;
+                  $config['height']       = 200;
+                  $this->load->library('image_lib', $config);
+                  $this->image_lib->resize();
                 }
 
                 $empresa = array(

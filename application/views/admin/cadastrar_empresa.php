@@ -1,3 +1,6 @@
+        <?php
+        $imagem = array('name' => 'cliente_logo', 'id' => 'cliente_logo', 'class' => 'form-control-file', 'accept' => '.jpg');
+        ?>
         <!-- Breadcrumb-->
         <div class="breadcrumb-holder container-fluid">
             <ul class="breadcrumb">
@@ -6,7 +9,7 @@
             </ul>
           </div>
           <!-- Forms Section-->
-            <section class="forms"> 
+            <section class="forms">
                 <div class="container-fluid">
 
                     <?php if (validation_errors()) : ?>
@@ -39,8 +42,9 @@
                                     <h3 class="h4">Empresa</h3>
                                 </div>
                                 <div class="card-body">
-                                    <form method="post" action="<?=base_url('cadastrar_empresa');?>" class="form-horizontal">
-                                        
+
+                                    <form method="post" action="<?=base_url('cadastrar_empresa');?>" class="form-horizontal"  enctype="multipart/form-data">
+
                                         <div class="form-group row">
                                             <label class="col-sm-3 form-control-label">Nome Empresa</label>
                                             <div class="col-sm-9">
@@ -50,8 +54,9 @@
                                         <div class="form-group row">
                                             <label for="fileInput" class="col-sm-3 form-control-label">Logo Empresa</label>
                                             <div class="col-sm-9">
-                                                <input name="logo_cliente" id="logo_cliente" type="file" class="form-control-file">
-                                                <small class="help-block-none">Apenas imagens jpg, png, bmp.</small>
+                                              <?=form_upload($imagem);?>
+                                                <!--<input name="logo_cliente" id="logo_cliente" type="file" accept=".jpg" class="form-control-file">-->
+                                                <small class="help-block-none">Apenas imagens jpg.</small>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -62,7 +67,7 @@
                                                 </div>
                                             </div>
                                         <div class="line"></div>
-                                               
+
                                         <h1>Coordenador</h1>
                                         <div class="form-group row">
                                             <label class="col-sm-3 form-control-label">Nome Completo:</label>
@@ -95,7 +100,7 @@
                                                 <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Salvar Informações</button>
                                             </div>
                                         </div>
-                                                
+
                                     </form>
                                 </div>
                             </div>
