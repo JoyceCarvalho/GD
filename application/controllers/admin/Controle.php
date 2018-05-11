@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Controle extends CI_Controller {
 
         public function __construct(){
-                
+
                 parent::__construct();
 
                 $this->load->model('Empresa_model', 'empresamodel');
@@ -16,9 +16,9 @@ class Controle extends CI_Controller {
         * Direciona para a pagina de listagem de empresas se estiver logado, se não redireciona para a pagina de login
         */
 	public function index(){
-                
+
                 if ((isset($_SESSION['logado'])) && ($_SESSION['logado'] == true)) {
-                        
+
                         //Dados voláteis do menu da pagina
                         $dados['pagina'] = "Listagem de Empresas";
                         $dados['pg'] = "controle";
@@ -39,16 +39,16 @@ class Controle extends CI_Controller {
                 } else {
                         redirect("/");
                 }
-                
+
         }
 
         /**
         * Redireciona para a pagina de cadastro de empresas se estiver logado, se não direciona para a pagina de login
         */
         public function pagina_cadastro(){
-                
+
                 if ((isset($_SESSION['logado'])) && ($_SESSION['logado'] == true)) {
-                        
+
                         //Dados voláteis do menu da pagina
                         $dados['pagina'] = "Listagem de Empresas";
                         $dados['pg'] = "controle";
@@ -66,16 +66,16 @@ class Controle extends CI_Controller {
                 } else {
                         redirect('/');
                 }
-                
+
         }
-        
+
         /**
         * redireciona para a pagina de edição da empresa
         */
         public function editar_empresa(){
 
                 $id = $this->input->post("idempresa");
-                
+
                 //Dados voláteis do menu da pagina
                 $dados['pagina']        = "Listagem de Empresas";
                 $dados['pg']            = "controle";
@@ -95,7 +95,7 @@ class Controle extends CI_Controller {
                 $this->load->view("admin/editar_empresa");
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
-                
+
         }
 
         public function empresa_editar(){
@@ -110,9 +110,9 @@ class Controle extends CI_Controller {
                 );
 
                 if($this->empresamodel->editar_empresa($empresa, $idempresa)){
-                        
+
                         $idcoordenador = $this->input->post('id_coordenador');
-                
+
                         $coordenador = array(
                                 'nome' => $this->input->post('nome'),
                                 'email' => $this->input->post('email'),
@@ -164,7 +164,7 @@ class Controle extends CI_Controller {
                                 $this->load->view("admin/editar_empresa", $data);
                                 $this->load->view('template/footer');
                                 $this->load->view('template/html_footer');
-                        } 
+                        }
 
                 } else {
 
@@ -190,7 +190,7 @@ class Controle extends CI_Controller {
                         $this->load->view('template/html_footer');
                 }
 
-                
+
 
         }
 
@@ -203,9 +203,9 @@ class Controle extends CI_Controller {
 
                 if($this->empresamodel->excluir_empresa($id)){
                         //$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Empresa deletada com sucesso!</div>');
-                        
+
                         $data->success = "Empresa deletada com sucesso!";
-                        
+
                         $dados['pagina'] = "Listagem de Empresas";
                         $dados['pg'] = "controle";
                         $dados['submenu'] = "empresalist";
@@ -250,13 +250,14 @@ class Controle extends CI_Controller {
 
                 // cria um objeto data
                 $data = new stdClass();
-                
+
                 $configuracao['upload_path'] = '../logosEmpresas/';
- 		$configuracao['allowed_types'] = 'jpg|png|gif|pdf|zip|rar|doc|xls';
+ 				        $configuracao['allowed_types'] = 'jpg|png|gif|zip|rar|doc|xls';
                 $configuracao['encrypt_name'] = TRUE;
-               
-                
+
+
                 $this->load->library('upload');
+
                 $this->upload->initialize($configuracao);
 
                 if(!$this->upload->do_upload('logo_cliente')){
@@ -278,7 +279,7 @@ class Controle extends CI_Controller {
                 $idempresa = $this->empresamodel->cadastrar_empresa($empresa);
 
                 $cargos = array(
-                        'titulo' => 'Coordenador', 
+                        'titulo' => 'Coordenador',
                         'fk_idempresa' => $idempresa
                 );
 
@@ -307,9 +308,9 @@ class Controle extends CI_Controller {
 
 
                 if ($this->empresamodel->cadastrar_coordenador($coordenador)) {
-                        
+
                         $data->success = "Empresa cadastrada com sucesso!";
-                        
+
                         $dados['pagina'] = "Listagem de Empresas";
                         $dados['pg'] = "controle";
                         $dados['submenu'] = "cadempresa";
@@ -359,14 +360,14 @@ class Controle extends CI_Controller {
                 if($this->empresamodel->editar_empresa($empresa, $_SESSION['idempresa'])){
 
                         $data->success = "Dados alterados com sucesso!!";
-                        
+
                         $dados['pagina'] = "Dados da empresa";
                         $dados['pg'] = "empresa";
                         $dados['submenu'] = "dados";
 
                         //dados do banco(nome da empresa, nome usuario);
                         $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
-                        
+
                         $dados['empresa'] = $this->empresamodel->dados_empresa($_SESSION['idempresa']);
 
                         $this->load->view('template/html_header', $dados);
@@ -386,7 +387,7 @@ class Controle extends CI_Controller {
 
                         //dados do banco(nome da empresa, nome usuario);
                         $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
-                        
+
                         $dados['empresa'] = $this->empresamodel->dados_empresa($_SESSION["idempresa"]);
 
                         $this->load->view('template/html_header', $dados);
