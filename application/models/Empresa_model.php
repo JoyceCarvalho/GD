@@ -51,7 +51,7 @@ class Empresa_model extends CI_Model {
      * @return string
      */
     public function nome_empresa($id){
-        $this->db->select('nome');
+        $this->db->select('nome, logo_code');
         $this->db->from('tbempresa');
         $this->db->where('id ='.$id);
         return $this->db->get('')->result();
@@ -79,7 +79,7 @@ class Empresa_model extends CI_Model {
         $dados = array('ativo' => 0);
         $this->db->where('id',$id);
         return $this->db->update('tbempresa', $dados);
-       
+
     }
 
     /**

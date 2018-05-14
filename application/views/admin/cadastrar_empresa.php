@@ -1,6 +1,3 @@
-        <?php
-        $imagem = array('name' => 'cliente_logo', 'id' => 'cliente_logo', 'class' => 'form-control-file', 'accept' => '.jpg');
-        ?>
         <!-- Breadcrumb-->
         <div class="breadcrumb-holder container-fluid">
             <ul class="breadcrumb">
@@ -43,7 +40,7 @@
                                 </div>
                                 <div class="card-body">
 
-                                    <form method="post" action="<?=base_url('cadastrar_empresa');?>" class="form-horizontal"  enctype="multipart/form-data">
+                                    <?=form_open_multipart('cadastrar_empresa');?>
 
                                         <div class="form-group row">
                                             <label class="col-sm-3 form-control-label">Nome Empresa</label>
@@ -54,8 +51,7 @@
                                         <div class="form-group row">
                                             <label for="fileInput" class="col-sm-3 form-control-label">Logo Empresa</label>
                                             <div class="col-sm-9">
-                                              <?=form_upload($imagem);?>
-                                                <!--<input name="logo_cliente" id="logo_cliente" type="file" accept=".jpg" class="form-control-file">-->
+                                                <input name="logo_cliente" id="logo_cliente" type="file" accept=".jpg" class="form-control-file">
                                                 <small class="help-block-none">Apenas imagens jpg.</small>
                                             </div>
                                         </div>

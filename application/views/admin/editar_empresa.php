@@ -6,9 +6,9 @@
             </ul>
           </div>
           <!-- Forms Section-->
-            <section class="forms"> 
+            <section class="forms">
                 <div class="container-fluid">
-                
+
                 <?php if (isset($error)) : ?>
                     <div class="col-md-12">
                         <div class="alert alert-danger" role="alert">
@@ -59,31 +59,33 @@
                                             <div class="line"></div>
                                                 <?php
                                             }
-                                        ?>  
+                                        ?>
                                         <h1>Coordenador</h1>
                                         <?php
+                                        $i = 0;
                                         foreach ($dados_coordenador as $coordenador) {
+                                          $i++;
                                             ?>
-                                            <input type="hidden" name="id_coordenador" value="<?=$coordenador->id;?>">
+                                            <input type="hidden" name="id_coordenador[<?=$i;?>]" value="<?=$coordenador->id;?>">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 form-control-label">Nome Completo:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" name="nome" class="form-control" value="<?=$coordenador->nome;?>">
+                                                    <input type="text" name="nome[<?=$i;?>]" class="form-control" value="<?=$coordenador->nome;?>">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-sm-3 form-control-label">Email:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" name="email" class="form-control" value="<?=$coordenador->email;?>">
+                                                    <input type="text" name="email[<?=$i;?>]" class="form-control" value="<?=$coordenador->email;?>">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-sm-3 form-control-label">Usuário:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" name="usuario" class="form-control" value="<?=$coordenador->usuario;?>">
+                                                    <input type="text" name="usuario[<?=$i;?>]" class="form-control" value="<?=$coordenador->usuario;?>">
                                                 </div>
                                             </div>
-                                            
+
                                             <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success"><i class="fa fa-key"></i> Alterar Senha</button>
 
                                             <?php
@@ -92,11 +94,11 @@
                                         <div class="line"></div>
                                         <div class="form-group row">
                                             <div class="col-sm-6 offset-sm-3">
-                                                <a href="<?=base_url('controle/');?>" class="btn btn-sm btn-secondary"><i class="fa fa-times"></i> Cancelar</a>
+                                                <a href="<?=base_url('controle/');?>" class="btn btn-sm btn-danger"><i class="fa fa-times"></i> Cancelar</a>
                                                 <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Salvar Alterações</button>
                                             </div>
                                         </div>
-                                                
+
                                     </form>
                                     <!-- Modal -->
                                     <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
@@ -107,7 +109,7 @@
                                                     <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                                                 </div>
                                                 <form>
-                                                    <div class="modal-body">                                                
+                                                    <div class="modal-body">
                                                         <div class="form-group">
                                                             <label>Nova Senha</label>
                                                             <input type="password" name="senha" placeholder="Password" class="form-control">

@@ -1,13 +1,22 @@
-      <div class="page-content d-flex align-items-stretch"> 
+      <div class="page-content d-flex align-items-stretch">
         <!-- Side Navbar -->
         <nav class="side-navbar">
           <!-- Sidebar Header-->
           <div class="sidebar-header d-flex align-items-center">
-            <div class="avatar"><img src="<?=base_url('assets/img/logo_sgt.png');?>" alt="Nome empresa" class="img-fluid rounded-circle"></div>
-            <div class="title">
-              <?php 
-                foreach ($nome_empresa as $empresa) {
-                  ?>
+            <?php
+              foreach ($nome_empresa as $empresa) {
+                ?>
+                <?php if (!empty($empresa->logo_code)): ?>
+                  <div class="avatar">
+                    <img src="./assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="empresa" class="img-fluid rounded-circle">
+                  </div>
+                <?php else: ?>
+                  <div class="avatar">
+                    <img src="<?=base_url('assets/img/logo_sgt.png');?>" alt="Nome empresa" class="img-fluid rounded-circle">
+                  </div>
+                <?php endif; ?>
+                <div class="title">
+
                   <h1 class="h4"> <?=$empresa->nome;?> </h1>
                   <?php
                 }
@@ -19,14 +28,14 @@
           <!-- Adicionar exceção para apenas modificações de coordenadores -->
           <ul class="list-unstyled">
             <li <?=($pg == "Inicial") ? "class='active'" : "" ?> ><a href="<?=base_url('home');?>"> <i class="icon-home"></i>Página Inicial </a></li>
-            
+
             <?php
             if($_SESSION['is_admin']){
               ?>
               <li <?=($pg == "controle") ? "class='active'" : "" ?>>
                 <a href="#controle" aria-expanded="false" data-toggle="collapse">
                   <i class="fa fa-check"></i> Controle
-                </a>  
+                </a>
 
                 <ul id="controle" class="collapse list-unstyled">
                   <li <?=($submenu == "empresalist") ? "class='active'" : "" ?>> <a href="<?=base_url('controle/');?>"> <i class="fa fa-database"></i> Listar Empresas</a> </li>
@@ -38,15 +47,15 @@
             ?>
             <li <?=($pg == "empresa") ? "class='active'" : "" ?>>
               <a href="#empresa" aria-expanded="false" data-toggle="collapse">
-                <i class="fa fa-building"></i> Organização  
+                <i class="fa fa-building"></i> Organização
               </a>
 
               <ul id="empresa" class="collapse list-unstyled">
                 <li <?=($submenu == "dados") ? "class='active'" : "" ?>><a href="<?=base_url('home/empresa/'.$_SESSION["idempresa"])?>"> <i class="icon-grid"></i>Dados Empresa </a></li>
-                
+
                 <li <?=($submenu == "usuario") ? "class='active'" : "" ?>>
                   <a href="#user" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-users"></i>Usuários </a>
-                  
+
                   <ul id="user" class="collapse list-unstyled ">
                     <li><a href="<?=base_url('home/usuario/');?>">Listar</a></li>
                     <li><a href="<?=base_url('home/usuario_cad/');?>">Cadastrar</a></li>
@@ -63,8 +72,8 @@
                 </li>
 
                 <li <?=($submenu == "horarios") ? "class='active'" : "" ?>>
-                  <a href="#horario" aria-expanded="false" data-toggle="collapse"> 
-                    <i class="icon-clock"></i>Horários trabalho 
+                  <a href="#horario" aria-expanded="false" data-toggle="collapse">
+                    <i class="icon-clock"></i>Horários trabalho
                   </a>
 
                   <ul id="horario" class="collapse list-unstyled">
@@ -74,8 +83,8 @@
                 </li>
 
                 <li <?=($submenu == "feriado") ? "class='active'" : "" ?> data-toggle="collapse">
-                  <a href="#feriado" aria-expanded="false" data-toggle="collapse"> 
-                    <i class="fa fa-calendar"></i>Feriados 
+                  <a href="#feriado" aria-expanded="false" data-toggle="collapse">
+                    <i class="fa fa-calendar"></i>Feriados
                   </a>
 
                   <ul id="feriado" class="collapse list-unstyled">
@@ -85,7 +94,7 @@
                 </li>
               </ul>
             </li>
-        
+
             <li  <?=($pg == "documentos") ? "class='active'" : "" ?>>
               <a href="#documentos" aria-expanded="false" data-toggle="collapse">
                 <i class="fa fa-folder-open"></i> Documentos
@@ -98,12 +107,12 @@
                 <li <?=($submenu == "cancelados") ? "class='active'" : "" ?>> <a href="<?=base_url('home/cancelados/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-stop-circle-o"></i>Documentos Cancelados </a></li>
               </ul>
             </li>
-          
+
             <li <?=($pg == "relatorio") ? "class='active'" : "" ?>>
               <a href="#relatorio" aria-expanded="false" data-toggle="collapse">
                 <i class="fa fa-list-alt"></i> Relatórios
               </a>
-            
+
               <ul id="relatorio" class="collapse list-unstyled">
                 <li <?=($submenu == "geral") ? "class='active'" : "" ?>> <a href="<?=base_url('home/relgeral/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-tags"></i>Geral </a></li>
                 <li <?=($submenu == "tempo") ? "class='active'" : "" ?>> <a href="<?=base_url('home/reltempo/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-clock-o"></i>Tempo Médio </a></li>
@@ -117,8 +126,8 @@
                 <i class="fa fa-cogs"></i> Configurações
               </a>
               <ul id="configuracao" class="collapse list-unstyled">
-                <li <?=($submenu == "grupo") ? "class='active'" : "" ?>> 
-                  <a href="#grupos" aria-expanded="false" data-toggle="collapse"> 
+                <li <?=($submenu == "grupo") ? "class='active'" : "" ?>>
+                  <a href="#grupos" aria-expanded="false" data-toggle="collapse">
                     <i class="fa fa-cubes"></i> Grupos de Documentos
                   </a>
 
@@ -127,9 +136,9 @@
                     <li><a href="<?=base_url('grupodocumentos_cad');?>"> Cadastrar</a></li>
                   </ul>
                 </li>
-                
-                <li <?=($submenu == "etapa") ? "class='active'" : "" ?>> 
-                  <a href="#etapas" aria-expanded="false" data-toggle="collapse"> 
+
+                <li <?=($submenu == "etapa") ? "class='active'" : "" ?>>
+                  <a href="#etapas" aria-expanded="false" data-toggle="collapse">
                     <i class="fa fa-tasks"></i> Etapas
                   </a>
 
@@ -139,8 +148,8 @@
                   </ul>
                 </li>
 
-                <li <?=($submenu == "documento") ? "class='active'" : "" ?>> 
-                  <a href="#documento" aria-expanded="false" data-toggle="collapse"> 
+                <li <?=($submenu == "documento") ? "class='active'" : "" ?>>
+                  <a href="#documento" aria-expanded="false" data-toggle="collapse">
                     <i class="fa fa-folder"></i> Documentos
                   </a>
 
@@ -151,10 +160,10 @@
                 </li>
 
                 <li <?=($submenu == "comp") ? "class='active'" : "" ?>> <a href="<?=base_url('competencia');?>"> <i class="fa fa-black-tie"></i>Competência </a></li>
-                
+
                 <!-- adicionar if para somente coordenadores terem esta opção -->
-                <li <?=($submenu == "ausencia") ? "class='active'" : "" ?>> 
-                  <a href="#ausencia" aria-expanded="false" data-toggle="collapse"> 
+                <li <?=($submenu == "ausencia") ? "class='active'" : "" ?>>
+                  <a href="#ausencia" aria-expanded="false" data-toggle="collapse">
                     <i class="fa fa-user-times"></i> Ausência de Funcionário
                   </a>
 
@@ -166,7 +175,7 @@
               </ul>
             </li>
           </ul>
-          
+
         </nav>
         <div class="content-inner">
           <!-- Page Header-->
