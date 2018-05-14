@@ -53,7 +53,7 @@ $route['default_controller'] = 'login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-// Rotas referentes a empresa
+// Rotas referentes a empresa (Controle Administrador)
 $route['controle']                  = "admin/controle";
 $route['controle/cadempresa']       = "admin/controle/pagina_cadastro";
 $route['editar_empresa']            = "admin/controle/editar_empresa";
