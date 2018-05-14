@@ -122,9 +122,9 @@ class Controle extends CI_Controller {
 
             $idempresa = $this->input->post('id_empresa');
             $empresa = array(
-                    'nome' => $this->input->post("empresa"),
-                    'cliente_code' => $clientecode,
-                    'logo_code'    => $config['file_name']
+                'nome' => $this->input->post("empresa"),
+                'cliente_code' => $clientecode,
+                'logo_code'    => $config['file_name']
             );
 
             if($this->empresamodel->editar_empresa($empresa, $idempresa)){
@@ -186,26 +186,26 @@ class Controle extends CI_Controller {
 
             } else {
 
-                    $data->error = "Ocorreu um erro ao realizar a alteração";
+                $data->error = "Ocorreu um erro ao realizar a alteração";
 
-                    //Dados voláteis do menu da pagina
-                    $dados['pagina']        = "Listagem de Empresas";
-                    $dados['pg']            = "controle";
-                    $dados['submenu']       = "empresalist";
+                //Dados voláteis do menu da pagina
+                $dados['pagina']        = "Listagem de Empresas";
+                $dados['pg']            = "controle";
+                $dados['submenu']       = "empresalist";
 
-                    //dados do banco (nome empresa logada) utilizados no menu
-                    $dados['nome_empresa']          = $this->empresamodel->nome_empresa($_SESSION['logado']);
+                //dados do banco (nome empresa logada) utilizados no menu
+                $dados['nome_empresa']          = $this->empresamodel->nome_empresa($_SESSION['logado']);
 
-                    //dados da empresa cadastrada;
-                    $dados['dados_empresa']         = $this->empresamodel->dados_empresa($idempresa);
-                    $dados['dados_coordenador']     = $this->empresamodel->coordenador($idempresa);
+                //dados da empresa cadastrada;
+                $dados['dados_empresa']         = $this->empresamodel->dados_empresa($idempresa);
+                $dados['dados_coordenador']     = $this->empresamodel->coordenador($idempresa);
 
-                    $this->load->view('template/html_header', $dados);
-                    $this->load->view('template/header');
-                    $this->load->view('template/menu');
-                    $this->load->view("admin/editar_empresa", $data);
-                    $this->load->view('template/footer');
-                    $this->load->view('template/html_footer');
+                $this->load->view('template/html_header', $dados);
+                $this->load->view('template/header');
+                $this->load->view('template/menu');
+                $this->load->view("admin/editar_empresa", $data);
+                $this->load->view('template/footer');
+                $this->load->view('template/html_footer');
             }
           }
         }
