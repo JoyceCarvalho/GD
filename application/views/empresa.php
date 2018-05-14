@@ -38,8 +38,9 @@
             <h3 class="h4">Empresa</h3>
           </div>
           <div class="card-body">
-            <form method="post" action="<?=base_url('alt_empresa');?>" class="form-horizontal">
-              <?php
+            <!--<form method="post" action="<?//=base_url('alt_empresa');?>" class="form-horizontal">-->
+            <?php
+            echo form_open_multipart('alt_empresa');
               foreach ($empresa as $dados) {
                 ?>
                 <div class="form-group row">
@@ -51,8 +52,8 @@
                 <div class="form-group row">
                   <label for="fileInput" class="col-sm-3 form-control-label">Logo Empresa</label>
                   <div class="col-sm-6">
-                    <input name="arquivo[]" id="fileInput" type="file" class="form-control-file">
-                    <small class="help-block-none">Apenas imagens.</small>
+                    <input name="logo_cliente" id="logo_cliente" type="file" accept=".jpg" class="form-control-file">
+                    <small class="help-block-none">Apenas imagens jpg.</small>
                   </div>
                   <?php if (!empty($dados->logo_code)): ?>
                     <div class="col-sm-3">

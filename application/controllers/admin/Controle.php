@@ -374,13 +374,25 @@ class Controle extends CI_Controller {
 
     $clientecode = $this->empresamodel->cliente_code($_SESSION["idempresa"]);
 
+    $config['upload_path']          = './assets/img/logo_empresas/';
+    $config['allowed_types']        = 'jpg';
+    $config['file_name']						= $clientecode . '.jpg';
+    $config['overwrite']            = TRUE;
 
+    $this->load->library('upload', $config);
+
+    if (!$this->upload->do_upload('logo_cliente')){
+
+      $data->warning = "Ops! Pode ter havido um problema ao cadastrar a logo do cliente.";
+
+    } 
 
     $empresa = array(
-      'nome' => $this->input->post("empresa"),
-      'missao' => $this->input->post('missao'),
-      'visao' => $this->input->post('visao'),
-      'valores' => $this->input->post('valores')
+      'nome'      => $this->input->post("empresa"),
+      'missao'    => $this->input->post('missao'),
+      'visao'     => $this->input->post('visao'),
+      'logo_code' => $config['file_name'],
+      'valores'   => $this->input->post('valores')
     );
 
     if($this->empresamodel->editar_empresa($empresa, $_SESSION['idempresa'])){
