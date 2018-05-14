@@ -8,7 +8,7 @@
                 ?>
                 <?php if (!empty($empresa->logo_code)): ?>
                   <div class="avatar">
-                    <img src="./assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="empresa" class="img-fluid rounded-circle">
+                    <img src="<?=base_url();?>/assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="empresa" class="img-fluid rounded-circle">
                   </div>
                 <?php else: ?>
                   <div class="avatar">
@@ -25,10 +25,11 @@
             </div>
           </div>
           <!-- Sidebar Navidation Menus-->
-          <!-- Adicionar exceção para apenas modificações de coordenadores -->
           <ul class="list-unstyled">
+
             <li <?=($pg == "Inicial") ? "class='active'" : "" ?> ><a href="<?=base_url('home');?>"> <i class="icon-home"></i>Página Inicial </a></li>
 
+            <!-- Adicionar exceção para apenas modificações de Administrador Master(adminSGT do SGT) -->
             <?php
             if($_SESSION['is_admin']){
               ?>
@@ -51,7 +52,7 @@
               </a>
 
               <ul id="empresa" class="collapse list-unstyled">
-                <li <?=($submenu == "dados") ? "class='active'" : "" ?>><a href="<?=base_url('home/empresa/'.$_SESSION["idempresa"])?>"> <i class="icon-grid"></i>Dados Empresa </a></li>
+                <li <?=($submenu == "dados") ? "class='active'" : "" ?>><a href="<?=base_url('home/empresa')?>"> <i class="icon-grid"></i>Dados Empresa </a></li>
 
                 <li <?=($submenu == "usuario") ? "class='active'" : "" ?>>
                   <a href="#user" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-users"></i>Usuários </a>
@@ -92,32 +93,6 @@
                     <li><a href="<?=base_url('home/feriado_cad');?>"> Cadastrar</a></li>
                   </ul>
                 </li>
-              </ul>
-            </li>
-
-            <li  <?=($pg == "documentos") ? "class='active'" : "" ?>>
-              <a href="#documentos" aria-expanded="false" data-toggle="collapse">
-                <i class="fa fa-folder-open"></i> Documentos
-              </a>
-              <ul id="documentos" class="collapse list-unstyled">
-                <li <?=($submenu == "novodoc") ? "class='active'" : "" ?>> <a href="<?=base_url('novo_documento');?>"> <i class="fa fa-cloud-upload"></i>Novo Documentos </a></li>
-                <li <?=($submenu == "meusdocs") ? "class='active'" : "" ?>> <a href="<?=base_url('meusdocumentos');?>"> <i class="fa fa-archive"></i>Meus Documentos </a></li>
-                <li <?=($submenu == "andamento") ? "class='active'" : "" ?>> <a href="<?=base_url('home/andamento/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-battery-half"></i>Documentos em Andamento </a></li>
-                <li <?=($submenu == "erro") ? "class='active'" : "" ?>> <a href="<?=base_url('home/comerro/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-times-circle-o"></i>Documentos com Erro </a></li>
-                <li <?=($submenu == "cancelados") ? "class='active'" : "" ?>> <a href="<?=base_url('home/cancelados/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-stop-circle-o"></i>Documentos Cancelados </a></li>
-              </ul>
-            </li>
-
-            <li <?=($pg == "relatorio") ? "class='active'" : "" ?>>
-              <a href="#relatorio" aria-expanded="false" data-toggle="collapse">
-                <i class="fa fa-list-alt"></i> Relatórios
-              </a>
-
-              <ul id="relatorio" class="collapse list-unstyled">
-                <li <?=($submenu == "geral") ? "class='active'" : "" ?>> <a href="<?=base_url('home/relgeral/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-tags"></i>Geral </a></li>
-                <li <?=($submenu == "tempo") ? "class='active'" : "" ?>> <a href="<?=base_url('home/reltempo/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-clock-o"></i>Tempo Médio </a></li>
-                <li <?=($submenu == "atendimento") ? "class='active'" : "" ?>> <a href="<?=base_url('home/relatendimento/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-file-text-o"></i>Documentos em Atendimentos por dia </a></li>
-                <li <?=($submenu == "atendente") ? "class='active'" : "" ?>> <a href="<?=base_url('home/relatendente/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-address-card"></i>Documentos Atendentes por dia </a></li>
               </ul>
             </li>
 
@@ -172,6 +147,32 @@
                     <li><a href="<?=base_url('ausencia_ferias_cad');?>"> Cadastrar</a></li>
                   </ul>
                 </li>
+              </ul>
+            </li>
+
+            <li  <?=($pg == "documentos") ? "class='active'" : "" ?>>
+              <a href="#documentos" aria-expanded="false" data-toggle="collapse">
+                <i class="fa fa-folder-open"></i> Documentos
+              </a>
+              <ul id="documentos" class="collapse list-unstyled">
+                <li <?=($submenu == "novodoc") ? "class='active'" : "" ?>> <a href="<?=base_url('novo_documento');?>"> <i class="fa fa-cloud-upload"></i>Novo Documentos </a></li>
+                <li <?=($submenu == "meusdocs") ? "class='active'" : "" ?>> <a href="<?=base_url('meusdocumentos');?>"> <i class="fa fa-archive"></i>Meus Documentos </a></li>
+                <li <?=($submenu == "andamento") ? "class='active'" : "" ?>> <a href="<?=base_url('home/andamento/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-battery-half"></i>Documentos em Andamento </a></li>
+                <li <?=($submenu == "erro") ? "class='active'" : "" ?>> <a href="<?=base_url('home/comerro/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-times-circle-o"></i>Documentos com Erro </a></li>
+                <li <?=($submenu == "cancelados") ? "class='active'" : "" ?>> <a href="<?=base_url('home/cancelados/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-stop-circle-o"></i>Documentos Cancelados </a></li>
+              </ul>
+            </li>
+
+            <li <?=($pg == "relatorio") ? "class='active'" : "" ?>>
+              <a href="#relatorio" aria-expanded="false" data-toggle="collapse">
+                <i class="fa fa-list-alt"></i> Relatórios
+              </a>
+
+              <ul id="relatorio" class="collapse list-unstyled">
+                <li <?=($submenu == "geral") ? "class='active'" : "" ?>> <a href="<?=base_url('home/relgeral/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-tags"></i>Geral </a></li>
+                <li <?=($submenu == "tempo") ? "class='active'" : "" ?>> <a href="<?=base_url('home/reltempo/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-clock-o"></i>Tempo Médio </a></li>
+                <li <?=($submenu == "atendimento") ? "class='active'" : "" ?>> <a href="<?=base_url('home/relatendimento/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-file-text-o"></i>Documentos em Atendimentos por dia </a></li>
+                <li <?=($submenu == "atendente") ? "class='active'" : "" ?>> <a href="<?=base_url('home/relatendente/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-address-card"></i>Documentos Atendentes por dia </a></li>
               </ul>
             </li>
           </ul>

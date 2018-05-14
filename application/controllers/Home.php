@@ -11,13 +11,13 @@ class Home extends CI_Controller {
         $this->load->model('usuario_model', 'usermodel');
         $this->load->model('horario_model', 'horasmodel');
         $this->load->model('cargos_model', 'cargosmodel');
-        
+
     }
 
 	public function index(){
-        
+
         if ((isset($_SESSION['logado'])) && ($_SESSION['logado'] == true)) {
-            
+
             $dados['pagina']    = "Página Inicial";
             $dados['pg']        = "Inicial";
             $dados['submenu']   = "";
@@ -33,24 +33,24 @@ class Home extends CI_Controller {
             $this->load->view('template/html_footer');
 
         } else {
-            
+
             redirect('/');
 
         }
-        
+
     }
 
-    public function empresa($id){
+    public function empresa(){
 
         if ((isset($_SESSION['logado'])) && ($_SESSION['logado'] == true)) {
-            
+
             $dados['pagina']    = "Dados da empresa";
             $dados['pg']        = "empresa";
             $dados['submenu']   = "dados";
 
             //dados do banco(nome da empresa, nome usuario);
-            $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION['idempresa']);            
-            $dados['empresa']       = $this->empresamodel->dados_empresa($id);
+            $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+            $dados['empresa']       = $this->empresamodel->dados_empresa($_SESSION['idempresa']);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -60,14 +60,14 @@ class Home extends CI_Controller {
             $this->load->view('template/html_footer');
 
         } else {
-            
+
             redirect('/');
         }
-        
+
     }
 
     public function usuario(){
-        
+
         $dados['pagina']    = "Usuários";
         $dados['pg']        = "empresa";
         $dados['submenu']   = "usuario";
@@ -86,7 +86,7 @@ class Home extends CI_Controller {
     }
 
     public function usuario_cad(){
-        
+
         $dados['pagina']    = "Usuários";
         $dados['pg']        = "empresa";
         $dados['submenu']   = "usuariocad";
@@ -109,13 +109,13 @@ class Home extends CI_Controller {
         $id = $this->input->post("idusuario");
 
         if ((isset($_SESSION['logado'])) && ($_SESSION['logado'] == true)) {
-            
+
             $dados['pagina']    = "Usuários";
             $dados['pg']        = "empresa";
             $dados['submenu']   = "usuario";
 
             $dados['full_cargos']   = $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-            $dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);            
+            $dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
             $dados['usuario']       = $this->usermodel->dados_usuario($id);
             //dados do banco (nome da empresa);
             $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
@@ -133,7 +133,7 @@ class Home extends CI_Controller {
     public function cargos(){
 
         if ((isset($_SESSION['idempresa'])) && ($_SESSION["idempresa"] == true)) {
-            
+
             $dados['pagina'] = "Cargos";
             $dados['pg'] = "empresa";
             $dados['submenu'] = "cargos";
@@ -149,15 +149,15 @@ class Home extends CI_Controller {
             $this->load->view('cargos');
             $this->load->view('template/footer');
             $this->load->view('template/html_footer');
-            
+
         } else {
             redirect('/');
         }
-        
+
     }
 
     public function cargos_cad(){
-        
+
         if((isset($_SESSION['idempresa'])) && ($_SESSION["idempresa"] == true)){
 
             $dados['pagina']    = "Cargos";
@@ -175,16 +175,16 @@ class Home extends CI_Controller {
             $this->load->view('template/html_footer');
 
         } else{
-            
+
             redirect('/');
 
         }
-    }  
+    }
 
     public function horarios(){
 
         if ((isset($_SESSION["logado"])) && ($_SESSION["logado"])) {
-            
+
             $dados["pagina"]    = "Horários de Trabalho";
             $dados["pg"]        = "empresa";
             $dados["submenu"]   = "horarios";
@@ -201,14 +201,14 @@ class Home extends CI_Controller {
             $this->load->view('template/html_footer');
 
         } else {
-            
+
             redirect('/');
 
         }
     }
 
     public function horarios_cad(){
-        
+
         if((isset($_SESSION["logado"])) && ($_SESSION["logado"])){
 
             $dados["pagina"]    = "Horário de Trabalho";
@@ -236,7 +236,7 @@ class Home extends CI_Controller {
     public function feriado(){
 
         if((isset($_SESSION['logado'])) && $_SESSION["logado"]){
-            
+
             $dados["pagina"]    = "Feriados";
             $dados["pg"]        = "empresa";
             $dados["submenu"]   = "feriado";
@@ -264,7 +264,7 @@ class Home extends CI_Controller {
     public function feriado_cad(){
 
         if((isset($_SESSION['logado'])) && ($_SESSION["logado"] == true)){
-            
+
             $dados["pagina"]    = "Feriados";
             $dados["pg"]        = "empresa";
             $dados["submenu"]   = "feriado";

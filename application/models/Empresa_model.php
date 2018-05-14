@@ -135,4 +135,18 @@ class Empresa_model extends CI_Model {
 
     }
 
+    /**
+    * Método para selecionar o cliente_code da empresa
+    * Utilizado no controller admin/Controle.php
+    *
+    * @param int $empresa
+    * @return string retorna o cliente_code da empresa
+    */
+    public function cliente_code($empresa){
+      $this->db->select('cliente_code');
+      $this->db->from('tbempresa');
+      $this->db->where('id =', $empresa);
+      return $this->db->get()->row('cliente_code');
+    }
+
 }

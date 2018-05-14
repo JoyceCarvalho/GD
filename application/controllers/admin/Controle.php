@@ -3,78 +3,143 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Controle extends CI_Controller {
 
-        public function __construct(){
+  public function __construct(){
 
-                parent::__construct();
+    parent::__construct();
 
-                $this->load->model('Empresa_model', 'empresamodel');
-                $this->load->model('Horario_model', 'horasmodel');
-                $this->load->model('Cargos_model', 'cargosmodel');
-        }
+    $this->load->model('Empresa_model', 'empresamodel');
+    $this->load->model('Horario_model', 'horasmodel');
+    $this->load->model('Cargos_model', 'cargosmodel');
+  }
 
-        /**
-        * Direciona para a pagina de listagem de empresas se estiver logado, se não redireciona para a pagina de login
-        */
-	public function index(){
+  /**
+  * Direciona para a pagina de listagem de empresas se estiver logado, se não redireciona para a pagina de login
+  */
+  public function index(){
 
-                if ((isset($_SESSION['logado'])) && ($_SESSION['logado'] == true)) {
+    if ((isset($_SESSION['logado'])) && ($_SESSION['logado'] == true)) {
 
-                        //Dados voláteis do menu da pagina
-                        $dados['pagina'] = "Listagem de Empresas";
-                        $dados['pg'] = "controle";
-                        $dados['submenu'] = "empresalist";
+      //Dados voláteis do menu da pagina
+      $dados['pagina'] = "Listagem de Empresas";
+      $dados['pg'] = "controle";
+      $dados['submenu'] = "empresalist";
 
-                        //dados do banco (nome Empresa, nome usuário) utilizados no menu
-                        $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      //dados do banco (nome Empresa, nome usuário) utilizados no menu
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
-                        //todas as empresas cadastradas;
-                        $dados['list_empresa'] = $this->empresamodel->listar_empresas();
+      //todas as empresas cadastradas;
+      $dados['list_empresa'] = $this->empresamodel->listar_empresas();
 
-                        $this->load->view('template/html_header', $dados);
-                        $this->load->view('template/header');
-                        $this->load->view('template/menu');
-                        $this->load->view('admin/listar_empresas');
-                        $this->load->view('template/footer');
-                        $this->load->view('template/html_footer');
-                } else {
-                        redirect("/");
-                }
+      $this->load->view('template/html_header', $dados);
+      $this->load->view('template/header');
+      $this->load->view('template/menu');
+      $this->load->view('admin/listar_empresas');
+      $this->load->view('template/footer');
+      $this->load->view('template/html_footer');
+    } else {
+      redirect("/");
+    }
 
-        }
+  }
 
-        /**
-        * Redireciona para a pagina de cadastro de empresas se estiver logado, se não direciona para a pagina de login
-        */
-        public function pagina_cadastro(){
+  /**
+  * Redireciona para a pagina de cadastro de empresas se estiver logado, se não direciona para a pagina de login
+  */
+  public function pagina_cadastro(){
 
-                if ((isset($_SESSION['logado'])) && ($_SESSION['logado'] == true)) {
+    if ((isset($_SESSION['logado'])) && ($_SESSION['logado'] == true)) {
 
-                        //Dados voláteis do menu da pagina
-                        $dados['pagina'] = "Listagem de Empresas";
-                        $dados['pg'] = "controle";
-                        $dados['submenu'] = "cadempresa";
+      //Dados voláteis do menu da pagina
+      $dados['pagina'] = "Listagem de Empresas";
+      $dados['pg'] = "controle";
+      $dados['submenu'] = "cadempresa";
 
-                        //dados do banco (nome Empresa, nome usuário) utilizados no menu
-                        $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      //dados do banco (nome Empresa, nome usuário) utilizados no menu
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
-                        $this->load->view('template/html_header', $dados);
-                        $this->load->view('template/header');
-                        $this->load->view('template/menu');
-                        $this->load->view('admin/cadastrar_empresa');
-                        $this->load->view('template/footer');
-                        $this->load->view('template/html_footer');
-                } else {
-                        redirect('/');
-                }
+      $this->load->view('template/html_header', $dados);
+      $this->load->view('template/header');
+      $this->load->view('template/menu');
+      $this->load->view('admin/cadastrar_empresa');
+      $this->load->view('template/footer');
+      $this->load->view('template/html_footer');
+    } else {
+      redirect('/');
+    }
 
-        }
+  }
 
-        /**
-        * redireciona para a pagina de edição da empresa
-        */
-        public function editar_empresa(){
+  /**
+  * redireciona para a pagina de edição da empresa
+  */
+  public function editar_empresa(){
 
-          $id = $this->input->post("idempresa");
+    $id = $this->input->post("idempresa");
+
+    //Dados voláteis do menu da pagina
+    $dados['pagina']        = "Listagem de Empresas";
+    $dados['pg']            = "controle";
+    $dados['submenu']       = "empresalist";
+
+    //dados do banco (nome empresa logada) utilizados no menu
+    $dados['nome_empresa']          = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+
+    //dados da empresa cadastrada;
+    $dados['dados_empresa']         = $this->empresamodel->dados_empresa($id);
+
+
+    $this->load->view('template/html_header', $dados);
+    $this->load->view('template/header');
+    $this->load->view('template/menu');
+    $this->load->view("admin/editar_empresa");
+    $this->load->view('template/footer');
+    $this->load->view('template/html_footer');
+
+  }
+
+  public function empresa_editar(){
+
+    if (!(isset($_SESSION["logado"])) and ($_SESSION["logado"] == false)) {
+      redirect("/");
+    }
+
+    // cria um objeto data
+    $data = new stdClass();
+
+    $clientecode  = $this->input->post("cliente_code");
+
+    $config['upload_path']          = './assets/img/logo_empresas/';
+    $config['allowed_types']        = 'jpg';
+    $config['file_name']						= $clientecode . '.jpg';
+
+    $this->load->library('upload', $config);
+
+    if (!$this->upload->do_upload('logo_cliente')){
+
+      $data->warning = "Ops! Pode ter ocorrido um problema ao cadastrar a logo do cliente.";
+
+    } else {
+
+      $idempresa = $this->input->post('id_empresa');
+      $empresa = array(
+        'nome' => $this->input->post("empresa"),
+        'cliente_code' => $clientecode,
+        'logo_code'    => $config['file_name']
+      );
+
+      if($this->empresamodel->editar_empresa($empresa, $idempresa)){
+
+        $idcoordenador = $this->input->post('id_coordenador');
+
+        $coordenador = array(
+          'nome' => $this->input->post('nome'),
+          'email' => $this->input->post('email'),
+          'usuario' => $this->input->post('usuario')
+        );
+
+        if($this->empresamodel->editar_coordenador($coordenador, $idcoordenador)){
+
+          $data->success = "Alteração realizada com sucesso!";
 
           //Dados voláteis do menu da pagina
           $dados['pagina']        = "Listagem de Empresas";
@@ -82,339 +147,281 @@ class Controle extends CI_Controller {
           $dados['submenu']       = "empresalist";
 
           //dados do banco (nome empresa logada) utilizados no menu
-          $dados['nome_empresa']          = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+          $dados['nome_empresa']          = $this->empresamodel->nome_empresa($_SESSION['logado']);
 
           //dados da empresa cadastrada;
-          $dados['dados_empresa']         = $this->empresamodel->dados_empresa($id);
-
+          $dados['dados_empresa']         = $this->empresamodel->dados_empresa($idempresa);
+          $dados['dados_coordenador']     = $this->empresamodel->coordenador($idempresa);
 
           $this->load->view('template/html_header', $dados);
           $this->load->view('template/header');
           $this->load->view('template/menu');
-          $this->load->view("admin/editar_empresa");
+          $this->load->view("admin/editar_empresa", $data);
           $this->load->view('template/footer');
           $this->load->view('template/html_footer');
 
+        } else {
+
+          $data->error = "Ocorreu um erro ao editar os dados do coordenador!";
+
+          //Dados voláteis do menu da pagina
+          $dados['pagina']        = "Listagem de Empresas";
+          $dados['pg']            = "controle";
+          $dados['submenu']       = "empresalist";
+
+          //dados do banco (nome empresa logada) utilizados no menu
+          $dados['nome_empresa']          = $this->empresamodel->nome_empresa($_SESSION['logado']);
+
+          //dados da empresa cadastrada;
+          $dados['dados_empresa']         = $this->empresamodel->dados_empresa($idempresa);
+          $dados['dados_coordenador']     = $this->empresamodel->coordenador($idempresa);
+
+          $this->load->view('template/html_header', $dados);
+          $this->load->view('template/header');
+          $this->load->view('template/menu');
+          $this->load->view("admin/editar_empresa", $data);
+          $this->load->view('template/footer');
+          $this->load->view('template/html_footer');
         }
 
-        public function empresa_editar(){
+      } else {
 
-          if (!(isset($_SESSION["logado"])) and ($_SESSION["logado"] == false)) {
-            redirect("/");
-          }
+        $data->error = "Ocorreu um erro ao realizar a alteração";
 
-          // cria um objeto data
-          $data = new stdClass();
+        //Dados voláteis do menu da pagina
+        $dados['pagina']        = "Listagem de Empresas";
+        $dados['pg']            = "controle";
+        $dados['submenu']       = "empresalist";
 
-          $clientecode  = $this->input->post("cliente_code");
+        //dados do banco (nome empresa logada) utilizados no menu
+        $dados['nome_empresa']          = $this->empresamodel->nome_empresa($_SESSION['logado']);
 
-          $config['upload_path']          = './assets/img/logo_empresas/';
-          $config['allowed_types']        = 'jpg';
-					$config['file_name']						= $clientecode . '.jpg';
+        //dados da empresa cadastrada;
+        $dados['dados_empresa']         = $this->empresamodel->dados_empresa($idempresa);
+        $dados['dados_coordenador']     = $this->empresamodel->coordenador($idempresa);
 
-          $this->load->library('upload', $config);
+        $this->load->view('template/html_header', $dados);
+        $this->load->view('template/header');
+        $this->load->view('template/menu');
+        $this->load->view("admin/editar_empresa", $data);
+        $this->load->view('template/footer');
+        $this->load->view('template/html_footer');
+      }
+    }
+  }
 
-          if (!$this->upload->do_upload('logo_cliente')){
+  public function excluir_empresa(){
 
-            $data->warning = "Ops! Pode ter ocorrido um problema ao cadastrar a logo do cliente.";
+    $id = $this->input->post("idempresa");
 
-          } else {
+    // cria um objeto data
+    $data = new stdClass();
 
-            $idempresa = $this->input->post('id_empresa');
-            $empresa = array(
-                'nome' => $this->input->post("empresa"),
-                'cliente_code' => $clientecode,
-                'logo_code'    => $config['file_name']
-            );
+    if($this->empresamodel->excluir_empresa($id)){
 
-            if($this->empresamodel->editar_empresa($empresa, $idempresa)){
+      //$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Empresa deletada com sucesso!</div>');
 
-                $idcoordenador = $this->input->post('id_coordenador');
+      $data->success = "Empresa deletada com sucesso!";
 
-                $coordenador = array(
-                    'nome' => $this->input->post('nome'),
-                    'email' => $this->input->post('email'),
-                    'usuario' => $this->input->post('usuario')
-                );
+      $dados['pagina'] = "Listagem de Empresas";
+      $dados['pg'] = "controle";
+      $dados['submenu'] = "empresalist";
 
-                if($this->empresamodel->editar_coordenador($coordenador, $idcoordenador)){
+      //dados do banco (nome Empresa, nome usuário) utilizados no menu
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
-                    $data->success = "Alteração realizada com sucesso!";
+      //todas as empresas cadastradas;
+      $dados['list_empresa'] = $this->empresamodel->listar_empresas();
 
-                    //Dados voláteis do menu da pagina
-                    $dados['pagina']        = "Listagem de Empresas";
-                    $dados['pg']            = "controle";
-                    $dados['submenu']       = "empresalist";
+      $this->load->view('template/html_header', $dados);
+      $this->load->view('template/header');
+      $this->load->view('template/menu', $data);
+      $this->load->view('admin/listar_empresas');
+      $this->load->view('template/footer');
+      $this->load->view('template/html_footer');
 
-                    //dados do banco (nome empresa logada) utilizados no menu
-                    $dados['nome_empresa']          = $this->empresamodel->nome_empresa($_SESSION['logado']);
+    } else {
 
-                    //dados da empresa cadastrada;
-                    $dados['dados_empresa']         = $this->empresamodel->dados_empresa($idempresa);
-                    $dados['dados_coordenador']     = $this->empresamodel->coordenador($idempresa);
+      //$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Ocorreu um erro ao excluir os dados! Tente novamente mais tarde!</div>');
+      $data->error = "Ocorreu um erro ao excluir os dados! Tente novamente mais tarde!";
 
-                    $this->load->view('template/html_header', $dados);
-                    $this->load->view('template/header');
-                    $this->load->view('template/menu');
-                    $this->load->view("admin/editar_empresa", $data);
-                    $this->load->view('template/footer');
-                    $this->load->view('template/html_footer');
+      $dados['pagina'] = "Listagem de Empresas";
+      $dados['pg'] = "controle";
+      $dados['submenu'] = "empresalist";
 
-                } else {
+      //dados do banco (nome Empresa, nome usuário) utilizados no menu
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
-                    $data->error = "Ocorreu um erro ao editar os dados do coordenador!";
+      //todas as empresas cadastradas;
+      $dados['list_empresa'] = $this->empresamodel->listar_empresas();
 
-                    //Dados voláteis do menu da pagina
-                    $dados['pagina']        = "Listagem de Empresas";
-                    $dados['pg']            = "controle";
-                    $dados['submenu']       = "empresalist";
+      $this->load->view('template/html_header', $dados);
+      $this->load->view('template/header');
+      $this->load->view('template/menu', $data);
+      $this->load->view('admin/listar_empresas');
+      $this->load->view('template/footer');
+      $this->load->view('template/html_footer');
 
-                    //dados do banco (nome empresa logada) utilizados no menu
-                    $dados['nome_empresa']          = $this->empresamodel->nome_empresa($_SESSION['logado']);
+    }
+  }
 
-                    //dados da empresa cadastrada;
-                    $dados['dados_empresa']         = $this->empresamodel->dados_empresa($idempresa);
-                    $dados['dados_coordenador']     = $this->empresamodel->coordenador($idempresa);
+  public function cadastrar_empresa(){
 
-                    $this->load->view('template/html_header', $dados);
-                    $this->load->view('template/header');
-                    $this->load->view('template/menu');
-                    $this->load->view("admin/editar_empresa", $data);
-                    $this->load->view('template/footer');
-                    $this->load->view('template/html_footer');
-                }
+    if ((!isset($_SESSION["logado"])) and ($_SESSION["logado"] == false)) {
+      redirect("/");
+    }
+    // cria um objeto data
+    $data = new stdClass();
 
-            } else {
+    $clientecode  = $this->input->post("cliente_code");
+    //$curriculo    = $_FILES['logo_cliente'];
 
-                $data->error = "Ocorreu um erro ao realizar a alteração";
+    $config['upload_path']          = './assets/img/logo_empresas/';
+    $config['allowed_types']        = 'jpg';
+    $config['file_name']						= $clientecode . '.jpg';
 
-                //Dados voláteis do menu da pagina
-                $dados['pagina']        = "Listagem de Empresas";
-                $dados['pg']            = "controle";
-                $dados['submenu']       = "empresalist";
+    $this->load->library('upload', $config);
 
-                //dados do banco (nome empresa logada) utilizados no menu
-                $dados['nome_empresa']          = $this->empresamodel->nome_empresa($_SESSION['logado']);
+    if (!$this->upload->do_upload('logo_cliente')){
 
-                //dados da empresa cadastrada;
-                $dados['dados_empresa']         = $this->empresamodel->dados_empresa($idempresa);
-                $dados['dados_coordenador']     = $this->empresamodel->coordenador($idempresa);
+      $data->warning = "Ops! Pode ter havido um problema ao cadastrar a logo do cliente.";
 
-                $this->load->view('template/html_header', $dados);
-                $this->load->view('template/header');
-                $this->load->view('template/menu');
-                $this->load->view("admin/editar_empresa", $data);
-                $this->load->view('template/footer');
-                $this->load->view('template/html_footer');
-            }
-          }
-        }
+    } else {
 
-        public function excluir_empresa(){
+      $empresa = array(
+        'nome' => $this->input->post("empresa"),
+        'cliente_code' => $this->input->post("cliente_code"),
+        'logo_code' => $config['file_name']
+      );
 
-            $id = $this->input->post("idempresa");
+      $idempresa = $this->empresamodel->cadastrar_empresa($empresa);
 
-            // cria um objeto data
-            $data = new stdClass();
+      $cargos = array(
+        'titulo' => 'Coordenador',
+        'fk_idempresa' => $idempresa
+      );
 
-            if($this->empresamodel->excluir_empresa($id)){
-                    //$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Empresa deletada com sucesso!</div>');
-
-                    $data->success = "Empresa deletada com sucesso!";
+      $idcargo = $this->cargosmodel->cadastrar_cargos($cargos);
 
-                    $dados['pagina'] = "Listagem de Empresas";
-                    $dados['pg'] = "controle";
-                    $dados['submenu'] = "empresalist";
+      $horario = array(
+        'titulo' => "Regular",
+        'manha_entrada' => "07:00:00",
+        'manha_saida' => "12:00:00",
+        'tarde_entrada' => "13:00:00",
+        'tarde_saida' => "18:00:00",
+        'fk_idempresa' => $idempresa
+      );
 
-                    //dados do banco (nome Empresa, nome usuário) utilizados no menu
-                    $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      $horario_trab = $this->horasmodel->cadastrar_horario($horario);
 
-                    //todas as empresas cadastradas;
-                    $dados['list_empresa'] = $this->empresamodel->listar_empresas();
+      $coordenador = array(
+        'nome' => $this->input->post('nome'),
+        'email' => $this->input->post('email'),
+        'usuario' => $this->input->post('usuario'),
+        'senha' => sha1($this->input->post('senha')),
+        'fk_idempresa' => $idempresa,
+        'fk_idcargos' => $idcargo,
+        'fk_idhorariotrab' => $horario_trab
+      );
 
-                    $this->load->view('template/html_header', $dados);
-                    $this->load->view('template/header');
-                    $this->load->view('template/menu', $data);
-                    $this->load->view('admin/listar_empresas');
-                    $this->load->view('template/footer');
-                    $this->load->view('template/html_footer');
 
-            } else {
-                    //$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Ocorreu um erro ao excluir os dados! Tente novamente mais tarde!</div>');
-                    $data->error = "Ocorreu um erro ao excluir os dados! Tente novamente mais tarde!";
+      if ($this->empresamodel->cadastrar_coordenador($coordenador)) {
 
-                    $dados['pagina'] = "Listagem de Empresas";
-                    $dados['pg'] = "controle";
-                    $dados['submenu'] = "empresalist";
+        $data->success = "Empresa cadastrada com sucesso!";
 
-                    //dados do banco (nome Empresa, nome usuário) utilizados no menu
-                    $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+        $dados['pagina'] = "Listagem de Empresas";
+        $dados['pg'] = "controle";
+        $dados['submenu'] = "cadempresa";
 
-                    //todas as empresas cadastradas;
-                    $dados['list_empresa'] = $this->empresamodel->listar_empresas();
+        //dados do banco (nome Empresa, nome usuário) utilizados no menu
+        $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
-                    $this->load->view('template/html_header', $dados);
-                    $this->load->view('template/header');
-                    $this->load->view('template/menu', $data);
-                    $this->load->view('admin/listar_empresas');
-                    $this->load->view('template/footer');
-                    $this->load->view('template/html_footer');
-            }
-        }
+        $this->load->view('template/html_header', $dados);
+        $this->load->view('template/header');
+        $this->load->view('template/menu');
+        $this->load->view('admin/cadastrar_empresa');
+        $this->load->view('template/footer');
+        $this->load->view('template/html_footer');
 
-        public function cadastrar_empresa(){
+      } else {
 
-          if ((!isset($_SESSION["logado"])) and ($_SESSION["logado"] == false)) {
-            redirect("/");
-          }
-          // cria um objeto data
-          $data = new stdClass();
+        $data->error = "Ocorreu um erro ao cadastrar! Entre em contato com administrador e tente novamente mais tarde!";
 
-          $clientecode  = $this->input->post("cliente_code");
-          //$curriculo    = $_FILES['logo_cliente'];
+        $dados['pagina'] = "Listagem de Empresas";
+        $dados['pg'] = "controle";
+        $dados['submenu'] = "cadempresa";
 
-          $config['upload_path']          = './assets/img/logo_empresas/';
-          $config['allowed_types']        = 'jpg';
-					$config['file_name']						= $clientecode . '.jpg';
+        //dados do banco (nome Empresa, nome usuário) utilizados no menu
+        $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
-          $this->load->library('upload', $config);
+        $this->load->view('template/html_header', $dados);
+        $this->load->view('template/header');
+        $this->load->view('template/menu');
+        $this->load->view('admin/cadastrar_empresa');
+        $this->load->view('template/footer');
+        $this->load->view('template/html_footer');
+      }
+    }
+  }
 
-          if (!$this->upload->do_upload('logo_cliente')){
+  public function altera_dadosempresa(){
 
-            $data->warning = "Ops! Pode ter havido um problema ao cadastrar a logo do cliente.";
+    if ((!isset($_SESSION["logado"])) and ($_SESSION["logado"] == false)) {
+      redirect("/");
+    }
+    // cria um objeto data
+    $data = new stdClass();
 
-          } else {
+    $clientecode = $this->empresamodel->cliente_code($_SESSION["idempresa"]);
 
-            $empresa = array(
-                    'nome' => $this->input->post("empresa"),
-                    'cliente_code' => $this->input->post("cliente_code"),
-                    'logo_code' => $config['file_name']
-            );
 
-            $idempresa = $this->empresamodel->cadastrar_empresa($empresa);
 
-            $cargos = array(
-                    'titulo' => 'Coordenador',
-                    'fk_idempresa' => $idempresa
-            );
+    $empresa = array(
+      'nome' => $this->input->post("empresa"),
+      'missao' => $this->input->post('missao'),
+      'visao' => $this->input->post('visao'),
+      'valores' => $this->input->post('valores')
+    );
 
-            $idcargo = $this->cargosmodel->cadastrar_cargos($cargos);
+    if($this->empresamodel->editar_empresa($empresa, $_SESSION['idempresa'])){
 
-            $horario = array(
-                    'titulo' => "Regular",
-                    'manha_entrada' => "07:00:00",
-                    'manha_saida' => "12:00:00",
-                    'tarde_entrada' => "13:00:00",
-                    'tarde_saida' => "18:00:00",
-                    'fk_idempresa' => $idempresa
-            );
+      $data->success = "Dados alterados com sucesso!!";
 
-            $horario_trab = $this->horasmodel->cadastrar_horario($horario);
+      $dados['pagina'] = "Dados da empresa";
+      $dados['pg'] = "empresa";
+      $dados['submenu'] = "dados";
 
-            $coordenador = array(
-                    'nome' => $this->input->post('nome'),
-                    'email' => $this->input->post('email'),
-                    'usuario' => $this->input->post('usuario'),
-                    'senha' => sha1($this->input->post('senha')),
-                    'fk_idempresa' => $idempresa,
-                    'fk_idcargos' => $idcargo,
-                    'fk_idhorariotrab' => $horario_trab
-            );
+      //dados do banco(nome da empresa, nome usuario);
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
+      $dados['empresa'] = $this->empresamodel->dados_empresa($_SESSION['idempresa']);
 
-            if ($this->empresamodel->cadastrar_coordenador($coordenador)) {
+      $this->load->view('template/html_header', $dados);
+      $this->load->view('template/header');
+      $this->load->view('template/menu');
+      $this->load->view('empresa', $data);
+      $this->load->view('template/footer');
+      $this->load->view('template/html_footer');
 
-                    $data->success = "Empresa cadastrada com sucesso!";
+    } else {
 
-                    $dados['pagina'] = "Listagem de Empresas";
-                    $dados['pg'] = "controle";
-                    $dados['submenu'] = "cadempresa";
+      $data->error = "Ocorreu um erro ao realizar a alteração";
 
-                    //dados do banco (nome Empresa, nome usuário) utilizados no menu
-                    $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      $dados['pagina'] = "Dados da empresa";
+      $dados['pg'] = "empresa";
+      $dados['submenu'] = "dados";
 
-                    $this->load->view('template/html_header', $dados);
-                    $this->load->view('template/header');
-                    $this->load->view('template/menu');
-                    $this->load->view('admin/cadastrar_empresa');
-                    $this->load->view('template/footer');
-                    $this->load->view('template/html_footer');
+      //dados do banco(nome da empresa, nome usuario);
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
-            } else {
+      $dados['empresa'] = $this->empresamodel->dados_empresa($_SESSION["idempresa"]);
 
-                    $data->error = "Ocorreu um erro ao cadastrar! Entre em contato com administrador e tente novamente mais tarde!";
-
-                    $dados['pagina'] = "Listagem de Empresas";
-                    $dados['pg'] = "controle";
-                    $dados['submenu'] = "cadempresa";
-
-                    //dados do banco (nome Empresa, nome usuário) utilizados no menu
-                    $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
-
-                    $this->load->view('template/html_header', $dados);
-                    $this->load->view('template/header');
-                    $this->load->view('template/menu');
-                    $this->load->view('admin/cadastrar_empresa');
-                    $this->load->view('template/footer');
-                    $this->load->view('template/html_footer');
-            }
-          }
-        }
-
-        public function altera_dadosempresa(){
-
-          if ((!isset($_SESSION["logado"])) and ($_SESSION["logado"] == false)) {
-            redirect("/");
-          }
-          // cria um objeto data
-		      $data = new stdClass();
-
-          $empresa = array(
-                  'nome' => $this->input->post("empresa"),
-                  'missao' => $this->input->post('missao'),
-                  'visao' => $this->input->post('visao'),
-                  'valores' => $this->input->post('valores')
-          );
-
-          if($this->empresamodel->editar_empresa($empresa, $_SESSION['idempresa'])){
-
-                  $data->success = "Dados alterados com sucesso!!";
-
-                  $dados['pagina'] = "Dados da empresa";
-                  $dados['pg'] = "empresa";
-                  $dados['submenu'] = "dados";
-
-                  //dados do banco(nome da empresa, nome usuario);
-                  $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
-
-                  $dados['empresa'] = $this->empresamodel->dados_empresa($_SESSION['idempresa']);
-
-                  $this->load->view('template/html_header', $dados);
-                  $this->load->view('template/header');
-                  $this->load->view('template/menu');
-                  $this->load->view('empresa', $data);
-                  $this->load->view('template/footer');
-                  $this->load->view('template/html_footer');
-
-          } else {
-
-                  $data->error = "Ocorreu um erro ao realizar a alteração";
-
-                  $dados['pagina'] = "Dados da empresa";
-                  $dados['pg'] = "empresa";
-                  $dados['submenu'] = "dados";
-
-                  //dados do banco(nome da empresa, nome usuario);
-                  $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
-
-                  $dados['empresa'] = $this->empresamodel->dados_empresa($_SESSION["idempresa"]);
-
-                  $this->load->view('template/html_header', $dados);
-                  $this->load->view('template/header');
-                  $this->load->view('template/menu');
-                  $this->load->view('empresa', $data);
-                  $this->load->view('template/footer');
-                  $this->load->view('template/html_footer');
-          }
-        }
+      $this->load->view('template/html_header', $dados);
+      $this->load->view('template/header');
+      $this->load->view('template/menu');
+      $this->load->view('empresa', $data);
+      $this->load->view('template/footer');
+      $this->load->view('template/html_footer');
+    }
+  }
 }
