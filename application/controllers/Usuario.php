@@ -90,20 +90,20 @@ class Usuario extends CI_Controller {
 			$data->success = "Usuário atualizado com sucesso!";
 
 			$dados['pagina'] 	= "Usuários";
-      $dados['pg'] 		= "empresa";
-      $dados['submenu'] 	= "usuario";
+			$dados['pg'] 		= "empresa";
+			$dados['submenu'] 	= "usuario";
 
-      $dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-      $dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
-      $dados['usuario'] 		= $this->usermodel->dados_usuario($idusuario);
-      //dados do banco (nome da empresa);
-      $dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
+			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+			$dados['usuario'] 		= $this->usermodel->dados_usuario($idusuario);
+			//dados do banco (nome da empresa);
+			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
-      $this->load->view('template/html_header', $dados);
-      $this->load->view('template/header');
-      $this->load->view('template/menu', $data);
-      $this->load->view('usuarios_edit');
-      $this->load->view('template/footer');
+			$this->load->view('template/html_header', $dados);
+			$this->load->view('template/header');
+			$this->load->view('template/menu', $data);
+			$this->load->view('usuarios_edit');
+			$this->load->view('template/footer');
 			$this->load->view('template/html_footer');
 
 		} else {
@@ -111,20 +111,20 @@ class Usuario extends CI_Controller {
 			$data->error = "Ocorreu um erro ao atualizar dados do usuário! Favor entre em contato com o suporte e tente novamente mais tarde!";
 
 			$dados['pagina'] 	= "Usuários";
-      $dados['pg'] 		= "empresa";
-      $dados['submenu'] 	= "usuario";
+			$dados['pg'] 		= "empresa";
+			$dados['submenu'] 	= "usuario";
 
-      $dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-      $dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
-      $dados['usuario'] 		= $this->usermodel->dados_usuario($idusuario);
-      //dados do banco (nome da empresa);
-      $dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
+			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+			$dados['usuario'] 		= $this->usermodel->dados_usuario($idusuario);
+			//dados do banco (nome da empresa);
+			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
-      $this->load->view('template/html_header', $dados);
-      $this->load->view('template/header');
-      $this->load->view('template/menu', $data);
-      $this->load->view('usuarios_edit');
-      $this->load->view('template/footer');
+			$this->load->view('template/html_header', $dados);
+			$this->load->view('template/header');
+			$this->load->view('template/menu', $data);
+			$this->load->view('usuarios_edit');
+			$this->load->view('template/footer');
 			$this->load->view('template/html_footer');
 
 		}
@@ -191,31 +191,31 @@ class Usuario extends CI_Controller {
 
 			$data = new stdClass();
 
-			$id_coordenador = $this->input->post('usuario');
+			$usuario = $this->input->post('usuario');
 
 			$altera_senha = array(
 				'senha' => sha1($this->input->post('senha'))
 			);
 
-			if ($this->usermodel->alterar_senha($altera_senha)) {
+			if ($this->usermodel->alterar_senha($usuario,$altera_senha)) {
 
 					$data->success = "Senha alterada com sucesso!";
 
 					$dados['pagina'] 	= "Usuários";
-		      $dados['pg'] 		= "empresa";
-		      $dados['submenu'] 	= "usuario";
+					$dados['pg'] 		= "empresa";
+					$dados['submenu'] 	= "usuario";
 
-		      $dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-		      $dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
-		      $dados['usuario'] 		= $this->usermodel->dados_usuario($idusuario);
-		      //dados do banco (nome da empresa);
-		      $dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+					$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
+					$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+					$dados['usuario'] 		= $this->usermodel->dados_usuario($usuario);
+					//dados do banco (nome da empresa);
+					$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
-		      $this->load->view('template/html_header', $dados);
-		      $this->load->view('template/header');
-		      $this->load->view('template/menu', $data);
-		      $this->load->view('usuarios_edit');
-		      $this->load->view('template/footer');
+					$this->load->view('template/html_header', $dados);
+					$this->load->view('template/header');
+					$this->load->view('template/menu', $data);
+					$this->load->view('usuarios_edit');
+					$this->load->view('template/footer');
 					$this->load->view('template/html_footer');
 
 			} else {
@@ -223,20 +223,20 @@ class Usuario extends CI_Controller {
 					$data->error = "Ocorreu um problema ao alterar a senha. Favor entre em contato com o suporte e tente novamente mais tarde.";
 
 					$dados['pagina'] 	= "Usuários";
-		      $dados['pg'] 		= "empresa";
-		      $dados['submenu'] 	= "usuario";
+					$dados['pg'] 		= "empresa";
+					$dados['submenu'] 	= "usuario";
 
-		      $dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-		      $dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
-		      $dados['usuario'] 		= $this->usermodel->dados_usuario($idusuario);
-		      //dados do banco (nome da empresa);
-		      $dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+					$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
+					$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+					$dados['usuario'] 		= $this->usermodel->dados_usuario($idusuario);
+					//dados do banco (nome da empresa);
+					$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
-		      $this->load->view('template/html_header', $dados);
-		      $this->load->view('template/header');
-		      $this->load->view('template/menu', $data);
-		      $this->load->view('usuarios_edit');
-		      $this->load->view('template/footer');
+					$this->load->view('template/html_header', $dados);
+					$this->load->view('template/header');
+					$this->load->view('template/menu', $data);
+					$this->load->view('usuarios_edit');
+					$this->load->view('template/footer');
 					$this->load->view('template/html_footer');
 			}
 

@@ -155,4 +155,11 @@ class Usuario_model extends CI_Model {
         return json_encode($this->db->get('')->result());
     }
 
+    public function alterar_senha($id, $senha){
+
+        $this->db->where('id', $id);
+        return $this->db->update('tbusuario', $senha);
+
+    }
+
 }

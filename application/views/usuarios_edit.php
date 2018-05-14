@@ -124,20 +124,21 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 id="exampleModalLabel" class="modal-title">Alterar Senha</h4>
-                                                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                                                        <a type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></a>
                                                     </div>
-                                                    <form>
+                                                    <form action="<?=base_url("alterar_senha");?>" method="post">
+                                                        <input type="hidden" name="usuario" value="<?=$user->id;?>">
                                                         <div class="modal-body">                                                
                                                             <div class="form-group">
                                                                 <label>Nova Senha</label>
-                                                                <input type="password" name="senha" placeholder="Password" class="form-control">
+                                                                <input type="password" name="senha" placeholder="Nova senha" class="form-control">
                                                             </div>
                                                         </div>
+                                                        <div class="modal-footer">
+                                                            <a type="button" data-dismiss="modal" class="btn btn-secondary"><i class="fa fa-times"></i> Fechar</a>
+                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Salvar</button>
+                                                        </div>
                                                     </form>
-                                                    <div class="modal-footer">
-                                                        <button type="button" data-dismiss="modal" class="btn btn-secondary"><i class="fa fa-times"></i> Fechar</button>
-                                                        <button type="button" class="btn btn-primary"><i class="fa fa-save"></i> Salvar</button>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div><!-- Modal -->

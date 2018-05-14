@@ -59,9 +59,11 @@ $route['controle/cadempresa']       = "admin/controle/pagina_cadastro";
 $route['editar_empresa']            = "admin/controle/editar_empresa";
 $route['excluir_empresa']           = "admin/controle/excluir_empresa";
 $route['empresa_edit']              = "admin/controle/empresa_editar";
-$route['alterar_senha']             = "login/alterar_senha";
 $route['cadastrar_empresa']         = "admin/controle/cadastrar_empresa";
 $route['alt_empresa']               = "admin/controle/altera_dadosempresa";
+
+//Rota de alteração de senha (Controller Usuario.php)
+$route["alterar_senha"]  = "usuario/alterar_senha";
 
 // Rotas referentes ao login
 $route['login_auth'] = "login/login";
