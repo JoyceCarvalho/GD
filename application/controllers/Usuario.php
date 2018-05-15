@@ -228,7 +228,7 @@ class Usuario extends CI_Controller {
 
 					$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
 					$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
-					$dados['usuario'] 		= $this->usermodel->dados_usuario($idusuario);
+					$dados['usuario'] 		= $this->usermodel->dados_usuario($usuario);
 					//dados do banco (nome da empresa);
 					$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
