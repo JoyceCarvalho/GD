@@ -44,9 +44,10 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Nome Empresa</th>
-                                        <th></th>
-                                        <th></th>
+                                        <th width="70%">Nome Empresa / <small>Cliente Code</small></th>
+                                        <th width="10%"></th>
+                                        <th width="10%"></th>
+                                        <th width="10%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -54,7 +55,10 @@
                                         foreach ($list_empresa as $empresa) {
                                             ?>
                                             <tr>
-                                                <td><?=$empresa->nome;?></td>
+                                                <td><?=$empresa->nome."<br/><small><strong>".$empresa->cliente_code."</strong></small>";?></td>
+                                                <td>
+                                                    <a href="" class="btn btn-sm btn-success"><i class="fa fa-sign-in"></i> Acessar</a>
+                                                </td>
                                                 <td>
                                                     <form method="post" action="<?=base_url('editar_empresa');?>">
                                                         <input type="hidden" name="idempresa" value="<?=$empresa->id;?>">
