@@ -130,6 +130,7 @@ $route["competencia"]           = "conf/competencia";
 $route["competencia_cad"]       = "conf/competencia/cadastro";
 $route["tipo_comp/(:any)"]      = "conf/competencia/tipo_competencia/$1";
 $route["cad_competencia"]       = "conf/competencia/cadastrar";
+$route["erros"]                 = "conf/erros";
 
 //Rotas referentes a pasta documentos
 $route["novo_documento"]            = "documentos/Documento";

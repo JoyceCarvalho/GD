@@ -120,19 +120,6 @@ class Usuario_model extends CI_Model {
     }
 
     /**
-     * Método responsável por identificar se é o sgt master
-     *
-     * @return object retorna um objeto de dados
-     */
-    public function sgt_admin(){
-        $this->db->select("cliente_code");
-        $this->db->from('tbempresa');
-        $this->db->where("cliente_code = 'sgtgestaoetecnologia'");
-
-        return $this->db->get()->result();
-    }
-
-    /**
      * Método responsável por listar os usuários da empresa
      *
      * @param int $empresa
