@@ -63,7 +63,9 @@
                                                 </td>                                                
                                                 <td>
                                                     
-                                                    <button type="button" data-toggle="modal" data-target="#excluirEmpresa_<?=$empresa->id;?>" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Excluir</button>
+                                                    <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
+                                                        <button type="button" data-toggle="modal" data-target="#excluirEmpresa_<?=$empresa->id;?>" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Excluir</button>
+                                                    <?php endif; ?>
 
                                                     <!-- Modal-->
                                                     <div id="excluirEmpresa_<?=$empresa->id;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">

@@ -63,6 +63,7 @@ class Login extends CI_Controller {
         $user           = $this->user_model->get_user($user_id);
         $admin          = $this->user_model->is_admin($user_id);
         $coordenador    = $this->user_model->is_coordenador($user_id);
+        $sgt_admin      = $this->user_model->sgt_admin();
 
         // set session user datas
         $_SESSION['idusuario']          = (int)$user->id;
@@ -73,6 +74,7 @@ class Login extends CI_Controller {
         $_SESSION['is_confirmed']       = (bool)$user->ativo;
         $_SESSION['is_admin']           = (bool)$admin;
         $_SESSION['is_coordenador']     = (bool)$coordenador;
+        $_SESSION['sgt_admin']          = (bool)$sgt_admin;
 
         // se o login for ok
         $dados['pagina'] = "Página Inicial";
@@ -92,7 +94,7 @@ class Login extends CI_Controller {
       } else {
 
         // login com falha
-        $data->error = 'Usuário ou senha incorretos';
+        $data->error = 'Dados incorretos';
 
         // envia erro para a view
         $this->load->view('template/html_header', $data);

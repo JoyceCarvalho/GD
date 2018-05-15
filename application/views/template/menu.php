@@ -31,7 +31,7 @@
 
             <!-- Adicionar exceção para apenas modificações de Administrador Master(adminSGT do SGT) -->
             <?php
-            if($_SESSION['is_admin']){
+            if($_SESSION['sgt_admin']){
               ?>
               <li <?=($pg == "controle") ? "class='active'" : "" ?>>
                 <a href="#controle" aria-expanded="false" data-toggle="collapse">

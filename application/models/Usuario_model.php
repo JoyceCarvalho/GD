@@ -33,7 +33,7 @@ class Usuario_model extends CI_Model {
     }
 
     /**
-     * Função responsável por verificar se os dados fornecidos para login são validos
+     * Método responsável por verificar se os dados fornecidos para login são validos
      *
      * @param string $usuario
      * @param string $senha
@@ -54,7 +54,7 @@ class Usuario_model extends CI_Model {
     }
     
     /**
-     * Função responsável por retornar o id do usuario logado
+     * Método responsável por retornar o id do usuario logado
      *
      * @param int $usuario
      * @param string $cliente_code
@@ -72,7 +72,7 @@ class Usuario_model extends CI_Model {
     }
 
     /**
-     * Função responsável por retornar os dados do usuário
+     * Método responsável por retornar os dados do usuário
      *
      * @param int $user_id
      * @return object retorna o objeto de dados
@@ -86,7 +86,7 @@ class Usuario_model extends CI_Model {
     }
 
     /**
-     * Função responsável por verificar se o usuário logado é administrador
+     * Método responsável por verificar se o usuário logado é administrador
      *
      * @param int $id_user
      * @return object retorna um objeto de dados
@@ -103,7 +103,7 @@ class Usuario_model extends CI_Model {
     }
 
     /**
-     * Função responsável posr verificar se é coordenador
+     * Método responsável posr verificar se é coordenador
      *
      * @param int $id_user
      * @return object retorna um objeto de dados
@@ -120,7 +120,20 @@ class Usuario_model extends CI_Model {
     }
 
     /**
-     * Função responsável por listar os usuários da empresa
+     * Método responsável por identificar se é o sgt master
+     *
+     * @return object retorna um objeto de dados
+     */
+    public function sgt_admin(){
+        $this->db->select("cliente_code");
+        $this->db->from('tbempresa');
+        $this->db->where("cliente_code = 'sgtgestaoetecnologia'");
+
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por listar os usuários da empresa
      *
      * @param int $empresa
      * @return object retorna um objeto de dados
@@ -138,7 +151,7 @@ class Usuario_model extends CI_Model {
     }
 
     /**
-     * Função responsável por listar os usuários da empresa em formato json
+     * Método responsável por listar os usuários da empresa em formato json
      * Utilizado no controller Competencia.php
      *
      * @param int $empresa
