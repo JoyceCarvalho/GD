@@ -74,6 +74,10 @@ class Controle extends CI_Controller {
   */
   public function editar_empresa(){
 
+    if(!(isset($_SESSION["logado"])) and ($_SESSION["logado"] == false)){
+      redirect("/");
+    }
+
     $id = $this->input->post("idempresa");
 
     //Dados voláteis do menu da pagina
@@ -211,6 +215,10 @@ class Controle extends CI_Controller {
   }
 
   public function excluir_empresa(){
+
+    if (!(isset($_SESSION["logado"])) && ($_SESSION["logado"] == false)) {
+      redirect("/");
+    }
 
     $id = $this->input->post("idempresa");
 
