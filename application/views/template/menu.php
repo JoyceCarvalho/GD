@@ -52,6 +52,7 @@
               </a>
 
               <ul id="empresa" class="collapse list-unstyled">
+                
                 <li <?=($submenu == "dados") ? "class='active'" : "" ?>><a href="<?=base_url('home/empresa')?>"> <i class="icon-grid"></i>Dados Empresa </a></li>
 
                 <li <?=($submenu == "usuario") ? "class='active'" : "" ?>>
@@ -63,36 +64,38 @@
                   </ul>
                 </li>
 
-                <li <?=($submenu == "cargos") ? "class='active'" : "" ?>>
-                  <a href="#cargos" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-server"></i>Cargos </a>
+                <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
+                  <li <?=($submenu == "cargos") ? "class='active'" : "" ?>>
+                    <a href="#cargos" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-server"></i>Cargos </a>
 
-                  <ul id="cargos" class="collapse list-unstyled">
-                    <li><a href="<?=base_url('home/cargos');?>"> Listar</a></li>
-                    <li><a href="<?=base_url('home/cargos_cad');?>"> Cadastrar</a></li>
-                  </ul>
-                </li>
+                    <ul id="cargos" class="collapse list-unstyled">
+                      <li><a href="<?=base_url('home/cargos');?>"> Listar</a></li>
+                      <li><a href="<?=base_url('home/cargos_cad');?>"> Cadastrar</a></li>
+                    </ul>
+                  </li>
 
-                <li <?=($submenu == "horarios") ? "class='active'" : "" ?>>
-                  <a href="#horario" aria-expanded="false" data-toggle="collapse">
-                    <i class="icon-clock"></i>Horários trabalho
-                  </a>
+                  <li <?=($submenu == "horarios") ? "class='active'" : "" ?>>
+                    <a href="#horario" aria-expanded="false" data-toggle="collapse">
+                      <i class="icon-clock"></i>Horários trabalho
+                    </a>
 
-                  <ul id="horario" class="collapse list-unstyled">
-                    <li><a href="<?=base_url('home/horarios');?>"> Listar</a></li>
-                    <li><a href="<?=base_url('home/horarios_cad');?>"> Cadastrar</a></li>
-                  </ul>
-                </li>
+                    <ul id="horario" class="collapse list-unstyled">
+                      <li><a href="<?=base_url('home/horarios');?>"> Listar</a></li>
+                      <li><a href="<?=base_url('home/horarios_cad');?>"> Cadastrar</a></li>
+                    </ul>
+                  </li>
 
-                <li <?=($submenu == "feriado") ? "class='active'" : "" ?> data-toggle="collapse">
-                  <a href="#feriado" aria-expanded="false" data-toggle="collapse">
-                    <i class="fa fa-calendar"></i>Feriados
-                  </a>
+                  <li <?=($submenu == "feriado") ? "class='active'" : "" ?> data-toggle="collapse">
+                    <a href="#feriado" aria-expanded="false" data-toggle="collapse">
+                      <i class="fa fa-calendar"></i>Feriados
+                    </a>
 
-                  <ul id="feriado" class="collapse list-unstyled">
-                    <li><a href="<?=base_url('home/feriado');?>"> Listar</a></li>
-                    <li><a href="<?=base_url('home/feriado_cad');?>"> Cadastrar</a></li>
-                  </ul>
-                </li>
+                    <ul id="feriado" class="collapse list-unstyled">
+                      <li><a href="<?=base_url('home/feriado');?>"> Listar</a></li>
+                      <li><a href="<?=base_url('home/feriado_cad');?>"> Cadastrar</a></li>
+                    </ul>
+                  </li>
+                <?php endif; ?>
               </ul>
             </li>
 
