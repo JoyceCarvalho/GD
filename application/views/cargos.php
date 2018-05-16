@@ -88,6 +88,9 @@
                                                                             <div class="form-group">
                                                                                 <p> Tem certeza que deseja excluir esta informação? </p>
                                                                             </div>
+                                                                            <div class="form-group">
+                                                                                <strong>Aviso: Ao excluir o cargo os usuários relacionados a ele serão deletados automáticamente.</strong>
+                                                                            </div>
                                                                         </div>
                                                                     
                                                                         <div class="modal-footer">
