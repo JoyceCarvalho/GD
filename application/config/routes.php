@@ -133,6 +133,9 @@ $route["cad_competencia"]       = "conf/competencia/cadastrar";
 $route["erros"]                 = "conf/erros";
 $route["erros_cad"]             = "conf/erros/pagina_cadastro";
 $route["cad_erros"]             = "conf/erros/cadastrar";
+$route["editar_erro"]           = "conf/erros/editar_erro_pagina";
+$route["edit_erro"]             = "conf/erros/editar_erro";
+$route["excluir_erro"]          = "conf/erros/excluir_erro";
 
 //Rotas referentes a pasta documentos
 $route["novo_documento"]            = "documentos/Documento";

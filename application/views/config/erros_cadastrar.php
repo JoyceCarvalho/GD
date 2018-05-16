@@ -45,14 +45,14 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Título</label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="titulo" class="form-control">
+                                    <input type="text" name="titulo" class="form-control" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Tipo Erro</label>
                                 <div class="col-sm-9">
-                                    <select name="tipo_erro" class="form-control">
+                                    <select name="tipo_erro" class="form-control" required>
                                         <option value="leve">Leve</option>
                                         <option value="intermediario">Intermediário</option>
                                         <option value="grave">Grave</option>

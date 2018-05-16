@@ -44,7 +44,7 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Erros</th>
+                                        <th width="70%">Erros</th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -52,9 +52,16 @@
                                 <tbody>
                                     <?php
                                         foreach ($listagem_erros as $erro) {
+                                            if($erro->tipo == "leve"){
+                                                $tipo_erro = "Leve";
+                                            } elseif($erro->tipo == "intermediario"){
+                                                $tipo_erro = "Intermediário";
+                                            } elseif($erro->tipo == "grave"){
+                                                $tipo_erro = "Grave";
+                                            }
                                             ?>
                                             <tr>
-                                                <td><?=$erro->titulo;?></td>
+                                                <td><?=$erro->titulo."<br/><small><strong>".$tipo_erro."</strong></small>";?></td>
                                                 <td></td>
                                                 <td>
                                                     <form method="post" action="<?=base_url('editar_erro');?>">
