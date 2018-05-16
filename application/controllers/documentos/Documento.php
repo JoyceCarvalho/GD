@@ -258,7 +258,7 @@ class Documento extends CI_Controller {
         $ac = $this->timermodel->get_action($idprotocolo, $etapa_documento);
 
         $newAction = 'start';
-        if (($contador > 0) && ($ac === 'start')) {
+        if (($contador > 0) && ($ac == 'start')) {
             $newAction = 'pause';
         }
 
