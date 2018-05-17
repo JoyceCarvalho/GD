@@ -85,8 +85,13 @@ class Login extends CI_Controller {
         $dados['pg'] = "Inicial";
         $dados['submenu'] = "";
 
+        //carregar model documentos para poder obter a quantidade de documentos na lista
+        $this->load->model("documentos_model", 'docmodel');
+
         //dados do banco(nome da empresa, nome usuario);
         $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+        //retorna a quantidade de documentos no link meus documentos
+        $dados["meus_documentos"] = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');

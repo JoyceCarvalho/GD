@@ -54,62 +54,57 @@
                                 <tbody>
                                     <?php
                                         foreach ($listagem_usuarios as $usuario) {
-                                            ?>
-                                            <tr>
-                                                <td><?=$usuario->nome;?></td>
-                                                <td><?=$usuario->cargo;?></td>
-                                                <td><?=$usuario->usuario;?></td>
-                                                <td>
-                                                    <?php
-                                                    if (($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"]) or ($_SESSION["idusuario"] == $usuario->id)) {
-                                                        ?>
+                                            if (($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"]) or ($_SESSION["idusuario"] == $usuario->id)) {
+                                                ?>
+                                                <tr>
+                                                    <td><?=$usuario->nome;?></td>
+                                                    <td><?=$usuario->cargo;?></td>
+                                                    <td><?=$usuario->usuario;?></td>
+                                                    <td>
                                                         <form method="post" action="<?=base_url('editar_usuario');?>">
                                                             <input type="hidden" name="idusuario" value="<?=$usuario->id;?>">
                                                             <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-edit"></i> Editar</button>
                                                         </form>
-                                                        <?php 
-                                                    }
-                                                    ?>
-                                                </td>
-                                                <td>
-                                                    <?php
-                                                    if (($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"])) {
-                                                        ?>                                                    
-                                                        <button type="button" data-toggle="modal" data-target="#excluirEmpresa_<?=$usuario->id;?>" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Excluir</button>
+                                                    </td>
+                                                    <td>
                                                         <?php
-                                                    }
-                                                    ?>
-                                                        
-                                                    <!-- Modal-->
-                                                    <div id="excluirEmpresa_<?=$usuario->id;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
-                                                        <div role="document" class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h4 id="exampleModalLabel" class="modal-title"></h4>
-                                                                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
-                                                                </div>
-                                                                <form method="post" action="<?=base_url('excluir_usuario');?>">
+                                                        if (($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"])) {
+                                                            ?>                                                    
+                                                            <button type="button" data-toggle="modal" data-target="#excluirEmpresa_<?=$usuario->id;?>" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Excluir</button>
+                                                            <?php
+                                                        }
+                                                        ?>
+                                                            
+                                                        <!-- Modal-->
+                                                        <div id="excluirEmpresa_<?=$usuario->id;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                                                            <div role="document" class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h4 id="exampleModalLabel" class="modal-title"></h4>
+                                                                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                                                                    </div>
+                                                                    <form method="post" action="<?=base_url('excluir_usuario');?>">
 
-                                                                    <input type="hidden" name="idusuario" value="<?=$usuario->id?>">
-                                                                    
-                                                                    <div class="modal-body">                                                
-                                                                        <div class="form-group">
-                                                                            <p> Tem certeza que deseja excluir esta informação? </p>
+                                                                        <input type="hidden" name="idusuario" value="<?=$usuario->id?>">
+                                                                        
+                                                                        <div class="modal-body">                                                
+                                                                            <div class="form-group">
+                                                                                <p> Tem certeza que deseja excluir esta informação? </p>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" data-dismiss="modal" class="btn btn-secondary"><i class="fa fa-times"></i> Fechar</button>
-                                                                        <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Excluir</button>
-                                                                    </div>
-                                                                </form>
+                                                                    
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" data-dismiss="modal" class="btn btn-secondary"><i class="fa fa-times"></i> Fechar</button>
+                                                                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Excluir</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div><!-- Modal -->
-                                                </td>
-                                                    
-                                            </tr>
-                                            <?php
+                                                        </div><!-- Modal -->
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                            }
                                         }
                                     ?>
                                 </tbody>
