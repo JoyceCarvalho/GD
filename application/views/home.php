@@ -10,7 +10,7 @@
             <div class="title">
               <span>Meus Documentos</span>
             </div><br/>
-            <div class="number"><strong><?= count($meus_documentos); ?></strong></div>
+            <div class="number"><strong><?= $meus_documentos; ?></strong></div>
           </div>
         </a>
       </div>

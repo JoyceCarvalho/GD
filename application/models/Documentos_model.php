@@ -214,4 +214,19 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->row('usuario');
     }
 
+    /**
+     * Método responsável por retornar os dados do documento em execução
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param int $idprotocolo
+     * @return object retorna um objeto de dados
+     */
+    public function documento_tranferencia($idprotocolo){
+        $this->db->from('tblog_documentos');
+        $this->db->where('documento =', $idprotocolo);
+        $this->db->where('ultima_etapa =', 'true');
+        $this->db->limit(1);
+        return $this->db->get()->row();
+    }
+
 }

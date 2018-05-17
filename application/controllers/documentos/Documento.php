@@ -193,6 +193,34 @@ class Documento extends CI_Controller {
 
     }
 
+    public function transfere_etapa($identificador){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] == true )) {
+            redirect("/");
+        }
+
+        $id = str_split($identificador);
+
+        $tamanho = count($id);
+
+        $protocolo = "";
+
+        for ($i=32; $i < $tamanho; $i++) { 
+            $protocolo .= $id[$i];
+        }
+
+        $idprotocolo = (int)$protocolo;
+
+        $dados = new stdClass;
+
+        $dados = $this->docmodel->documento_tranferencia($idprotocolo);
+
+
+        echo "<br/> id da etapa ".$dados->etapa;
+        echo "<br/> data hora ".$dados->data_hora;
+
+    }
+
     public function busca_documentos($value){
 
         echo $this->docmodel->listar_documentos_json($value);

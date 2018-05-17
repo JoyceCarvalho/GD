@@ -93,5 +93,18 @@ class Horario_model extends CI_Model {
 
     }
 
+    /**
+     * Método para retornar o primeiro grupo de horário cadastrado
+     *
+     * @param int $empresa
+     * @return object retorna um objeto de dados
+     */
+    public function verifica_horario($empresa){
+        $this->db->from('tbhorario_trab');
+        $this->db->where('fk_idempresa =', $empresa);
+        $this->db->order_by('id asc');
+        $this->db->limit(1);
+        return $this->db->get()->row();
+    }
 
 }

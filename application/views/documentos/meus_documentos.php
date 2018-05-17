@@ -86,7 +86,7 @@
                                                                 <?php
                                                             } else {
                                                                 ?>
-                                                                <a href="#" id="blockB">Encaminhar Próxima Etapa</a>
+                                                                <a href="<?=base_url("proxima_etapa");?>" id="blockB">Encaminhar Próxima Etapa</a>
                                                                 <?php
                                                             }
                                                             
@@ -144,7 +144,7 @@
                                                                 <?php
                                                             } else {
                                                                 ?>
-                                                                <a href="#" id="blockB">Encaminhar Próxima Etapa</a>
+                                                                <a href="<?=base_url('proxima_etapa/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" id="blockB">Encaminhar Próxima Etapa</a>
                                                                 <?php
                                                             }
                                                             

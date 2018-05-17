@@ -26,7 +26,10 @@ class Home extends CI_Controller {
             //dados do banco(nome da empresa, nome usuario);
             $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
             //retorna a quantidade de documentos no link meus documentos
-            $dados["meus_documentos"] = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
+            $funcionario = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
+            $cargo = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
+            $total = count($funcionario) + count($cargo);
+            $dados["meus_documentos"] = $total;
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
