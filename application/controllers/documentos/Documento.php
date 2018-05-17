@@ -14,6 +14,7 @@ class Documento extends CI_Controller {
         $this->load->model('documentos_model', 'docmodel');
         $this->load->model('competencia_model', 'compmodel');
         $this->load->model('DocEtapas_model', 'docetapamodel');
+        $this->load->model('horario_model', 'horasmodel');
     }
 
     public function index(){
@@ -216,8 +217,47 @@ class Documento extends CI_Controller {
         $dados = $this->docmodel->documento_tranferencia($idprotocolo);
 
 
+        $dataInicio = $dados->data_hora;
         echo "<br/> id da etapa ".$dados->etapa;
         echo "<br/> data hora ".$dados->data_hora;
+
+        $horario = $this->horasmodel->verifica_horario($_SESSION["idempresa"]);
+
+        $primeiro_turno_inicio  = $horario->manha_entrada;
+        $primeiro_turno_fim     = $horario->manha_saida;
+        $segundo_turno_inicio   = $horario->tarde_entrada;
+        $segundo_turno_fim      = $horario->tarde_saida;
+
+        $primeiro_turno_inicio_ex = explode(":", $primeiro_turno_inicio);
+        $primeiro_turno_inicio_min = ($primeiro_turno_inicio_ex[0] * 60) + $primeiro_turno_inicio_ex[1];
+
+        $primeiro_turno_fim_ex = explode(":", $primeiro_turno_fim);
+        $primeiro_turno_fim_min = ($primeiro_turno_fim_ex[0] * 60) + $primeiro_turno_fim_ex[1];
+
+        $segundo_turno_inicio_ex = explode(":", $segundo_turno_inicio);
+        $segundo_turno_inicio_min = ($segundo_turno_inicio_ex[0] * 60) + $segundo_turno_inicio_ex[1];
+
+        $segundo_turno_fim_ex = explode(":", $segundo_turno_fim);
+        $segundo_turno_fim_min = ($segundo_turno_fim_ex[0] * 60) + $segundo_turno_fim_ex[1];
+
+        $dataFim = date("Y-m-d H:i:s");
+
+        $dataInicioExplode = explode(" ", $dataInicio);
+        $dataInicioQuebrada = $dataInicioExplode[0];
+        $HoraInicioQuebrada = $dataInicioExplode[1];
+        $HoraInicioQuebrada = explode(":", $HoraInicioQuebrada);
+        $HoraInicioQuebrada = $HoraInicioQuebrada[0].":".$HoraInicioQuebrada[1];
+
+
+        $dataFimExplode = explode(" ", $dataFim);
+        $dataFimQuebrada = $dataFimExplode[0];
+        $HoraFimQuebrada = $dataFimExplode[1];
+        $HoraFimQuebrada = explode(":", $HoraFimQuebrada);
+        $HoraFimQuebrada = $HoraFimQuebrada[0].":".$HoraFimQuebrada[1];
+
+        $dataInicioVerifica = $dataInicioQuebrada;
+
+        echo "<br/>".$dataFimQuebrada."<br/>".$dataInicioQuebrada;
 
     }
 
