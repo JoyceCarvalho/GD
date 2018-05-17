@@ -10,7 +10,7 @@
             <div class="title">
               <span>Meus Documentos</span>
             </div><br/>
-            <div class="number"><strong>25</strong></div>
+            <div class="number"><strong><?= count($meus_documentos); ?></strong></div>
           </div>
         </a>
       </div>
@@ -47,6 +47,23 @@
               <span>Documentos em Andamento</span>
             </div>
             <div class="number"><strong>50</strong></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Botão para inclusão de novo documento -->
+<section class="dashboard-header">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Statistics -->
+      <div class="statistics col-lg-3 col-12">
+        <a class="dashbord" href="<?=base_url('novo_documento');?>">
+          <div class="statistic d-flex align-items-center bg-white has-shadow">
+            <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
+            <div class="text">Novo Documento</div>
           </div>
         </a>
       </div>
