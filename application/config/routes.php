@@ -145,4 +145,4 @@ $route["cad_novo_doc"]              = "documentos/Documento/cadastrar_novo_docum
 $route["meusdocumentos"]            = "documentos/Documento/meus_documentos";
 $route["get_time"]                  = "documentos/Documento/get_time";
 $route["grava_acao"]                = "documentos/Documento/grava_acao";
-$route["proxima_etapa/(:any)"]      = "documentos/Documento/transfere_etapa/$1";
+$route["proxima_etapa/(:any)"]      = "documentos/Transferencia/transfere_etapa/$1";

@@ -216,7 +216,7 @@ class Documentos_model extends CI_Model {
 
     /**
      * Método responsável por retornar os dados do documento em execução
-     * Utilizado no controller documentos/Documento.php
+     * Utilizado no controller documentos/Transferencia.php
      *
      * @param int $idprotocolo
      * @return object retorna um objeto de dados

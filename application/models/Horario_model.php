@@ -95,6 +95,7 @@ class Horario_model extends CI_Model {
 
     /**
      * Método para retornar o primeiro grupo de horário cadastrado
+     * Utilizado no controller documentos/Transferencia.php
      *
      * @param int $empresa
      * @return object retorna um objeto de dados
