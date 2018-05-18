@@ -8,6 +8,7 @@ class Transferencia extends CI_Controller {
 
         $this->load->model('documentos_model', 'docmodel');
         $this->load->model('horario_model', 'horasmodel');
+        $this->load->model('docetapas_model', 'docetapa');
 
     }
 
@@ -216,8 +217,18 @@ class Transferencia extends CI_Controller {
 
         if($this->docmodel->cadastrar_documento_tempo($log_tempo)){
 
+            if($this->docmodel->editar_documentos_log($idprotocolo)){
 
-            $this->docmodel->editar_documentos_log($idprotocolo);
+                $id_documento = $this->docmodel->documento_id($idprotocolo);
+
+                $ordem_etapa_atual = $this->docetapa->etapa_atual($id_documento, $etapa);
+
+                $proxima_etapa_documento = $ordem_etapa_atual + 1;
+
+                $proxima_etapa = $this->docetapa->proxima_etapa($id_documento, $proxima_etapa_documento);
+
+            }
+            
         }
 
     }

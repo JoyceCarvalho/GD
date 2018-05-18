@@ -94,4 +94,38 @@ class DocEtapas_model extends CI_Model{
         return $this->db->get('')->row('idetapa');
     }
 
+    /**
+     * Método responsável por retornar qual ordem se encontra o documento
+     * Utilizado no controller documentos/Transferencia.php
+     *
+     * @param int $documento
+     * @param int $etapa
+     * @return int retorna qual ordem se encontra o documento
+     */
+    public function etapa_atual($documento, $etapa){
+        $this->db->select('ordem');
+        $this->db->from('tbdocumentoetapa');
+        $this->db->where('iddocumento', $documento);
+        $this->db->where('idetapa', $etapa);
+        $this->db->limit(1);
+        return $this->db->get()->row('ordem');
+    }
+
+    /**
+     * Método responsável por retornar o proxima etapa do documento
+     * Utilizado no controller documentos/Transferencia.php
+     *
+     * @param int $documento
+     * @param int $ordem
+     * @return int retorna o id da proxima etapa
+     */
+    public function proxima_etapa($documento, $ordem){
+        $this->db->select('idetapa');
+        $this->db->from('tbdocumentoetapa');
+        $this->db->where('iddocumento', $documento);
+        $this->db->where('ordem', $ordem);
+        $this->db->limit(1);
+        return $this->db->get()->row('idetapa');
+    }
+
 }

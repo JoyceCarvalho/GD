@@ -9,7 +9,7 @@ class Documentos_model extends CI_Model {
 
     /**
      * Função responsável por cadastrar os dados dos documentos da tabela tbdocumento
-     * Utilizado no controller conf Documento.php
+     * Utilizado no controller conf/Documento.php
      *
      * @param array $dados
      * @return int retorna o ultimo id inserido
@@ -212,7 +212,7 @@ class Documentos_model extends CI_Model {
         $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
         $this->db->where("ldB.usuario = 0");
         $this->db->where("u.id = $usuario");
-        $this->db->order_by('de.ordem');
+        $this->db->order_by('de.ordem asc, ldA.data_hora asc');
         return $this->db->get()->result();
     }
 
@@ -235,7 +235,7 @@ class Documentos_model extends CI_Model {
         $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
         $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
         $this->db->where("ldB.usuario = $usuario");
-        $this->db->order_by('de.ordem');
+        $this->db->order_by('de.ordem asc, ldA.data_hora asc');
         return $this->db->get()->result();
     }
 
