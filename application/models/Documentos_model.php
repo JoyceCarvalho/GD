@@ -22,19 +22,83 @@ class Documentos_model extends CI_Model {
     }
 
     /**
-     * Função responsável por listar os documentos da tabela tbdocumento
+     * Função para cadastrar um novo documento para trabalho na tabela tbdocumentos_cad
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param array $dados
+     * @return int retorna o ultimo id inserido
+     */
+    public function cadastrar_novo_documento($dados){
+        
+        $this->db->insert('tbdocumentos_cad', $dados);
+        return $this->db->insert_id();
+
+    }
+    
+    /**
+     * Função responsável por cadastrar os logs de documentos
+     * Utilizado pelo controller documentos/Documento.php
+     *
+     * @param array $dados
+     * @return int retorna o numero de linhas afetadas
+     */
+    public function cadastrar_log_documento($dados){
+        return $this->db->insert('tblog_documentos', $dados);
+    }
+    
+    /**
+     * Método responsável por cadastrar os dados da tabela tblog_documentos_tempo
+     * Utilizado no controller documentos/Transferencia.php 
+     *
+     * @param array $dados
+     * @return int
+     */     
+    public function cadastrar_documento_tempo($dados){
+        return $this->db->insert('tblog_documentos_tempo', $dados);
+    }
+    
+    /**
+     * Função para listar os dados referentes a determinada linha da tabela tbdocumento
      * Utilizada no controller conf/Documento.php
      *
-     * @param int $empresa id da empresa
-     * @return object retorna os objetos da tabela
+     * @param int $id
+     * @return object
      */
-    public function listar_documentos($empresa){
-        $this->db->select('d.id as id, d.titulo as titulo, g.titulo as grupo, ');
-        $this->db->from('tbdocumento as d');
-        $this->db->join('tbgrupo as g', "d.fk_idgrupo = g.id");
-        $this->db->where('d.fk_idempresa =', $empresa);
-        $this->db->order_by('fk_idgrupo asc');
+    public function dados_documentos($id){
+        $this->db->from('tbdocumento');
+        $this->db->where('id=', $id);
+        
         return $this->db->get('')->result();
+    }
+
+    /**
+     * Método para pegar o id do documento
+     * Utilizado no controller documento/Documento.php
+     *
+     * @param int $caddoc
+     * @return int retorna o id do documento
+     */
+    public function documento_id($caddoc){
+        $this->db->select('d.id as id');
+        $this->db->from('tbdocumento as d');
+        $this->db->join('tbdocumentos_cad as dc', "d.id = dc.fk_iddocumento");
+        $this->db->where('dc.id = ', $caddoc);
+        return $this->db->get()->row('id');
+    }
+
+    /**
+     * Método responsável por retornar os dados do documento em execução
+     * Utilizado no controller documentos/Transferencia.php
+     *
+     * @param int $idprotocolo
+     * @return object retorna um objeto de dados
+     */
+    public function documento_tranferencia($idprotocolo){
+        $this->db->from('tblog_documentos');
+        $this->db->where('documento =', $idprotocolo);
+        $this->db->where('ultima_etapa =', 'true');
+        $this->db->limit(1);
+        return $this->db->get()->row();
     }
 
     /**
@@ -51,6 +115,21 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método para editar os dados de ultima etapa do documento cadastrado
+     * Utilizado no controller documento/Transferencia.php 
+     *
+     * @param int $id_protocolo
+     * @return int
+     */
+    public function editar_documentos_log($id_protocolo){
+        $dados = array('ultima_etapa' => "false");
+        $this->db->where('documento', $id_protocolo);
+        $this->db->where('ultima_etapa =', 'true');
+        $this->db->limit(1);
+        return $this->db->update('tblog_documentos', $dados);
+    }
+
+    /**
      * Função para excluir os dados da tabela tbdocumento
      * Utilizada no controller conf/Documento.php
      *
@@ -63,16 +142,34 @@ class Documentos_model extends CI_Model {
     }
 
     /**
-     * Função para listar os dados referentes a determinada linha da tabela tbdocumento
+     * Método responsável por retornar a etapa atual do documento cadastrado
+     * Utilizado no controller Documento/documentos.php
+     *
+     * @param int $documento
+     * @return int retorna o id da etapa
+     */
+    public function etapa_documento($documento){
+        $this->db->select('etapa');
+        $this->db->from('tblog_documentos');
+        $this->db->where('documento = ', $documento);
+        $this->db->where('ultima_etapa = ', 'true');
+        $this->db->limit(1);
+        return $this->db->get()->row('etapa');
+    }
+    
+    /**
+     * Função responsável por listar os documentos da tabela tbdocumento
      * Utilizada no controller conf/Documento.php
      *
-     * @param int $id
-     * @return object
+     * @param int $empresa id da empresa
+     * @return object retorna os objetos da tabela
      */
-    public function dados_documentos($id){
-        $this->db->from('tbdocumento');
-        $this->db->where('id=', $id);
-
+    public function listar_documentos($empresa){
+        $this->db->select('d.id as id, d.titulo as titulo, g.titulo as grupo, ');
+        $this->db->from('tbdocumento as d');
+        $this->db->join('tbgrupo as g', "d.fk_idgrupo = g.id");
+        $this->db->where('d.fk_idempresa =', $empresa);
+        $this->db->order_by('fk_idgrupo asc');
         return $this->db->get('')->result();
     }
 
@@ -92,31 +189,6 @@ class Documentos_model extends CI_Model {
         $query = $this->db->get();
 
         return json_encode($query->result());
-    }
-
-    /**
-     * Função para cadastrar um novo documento para trabalho na tabela tbdocumentos_cad
-     * Utilizado no controller documentos/Documento.php
-     *
-     * @param array $dados
-     * @return int retorna o ultimo id inserido
-     */
-    public function cadastrar_novo_documento($dados){
-        
-        $this->db->insert('tbdocumentos_cad', $dados);
-        return $this->db->insert_id();
-
-    }
-
-    /**
-     * Função responsável por cadastrar os logs de documentos
-     * Utilizado pelo controller documentos/Documento.php
-     *
-     * @param array $dados
-     * @return int retorna o numero de linhas afetadas
-     */
-    public function cadastrar_log_documento($dados){
-        return $this->db->insert('tblog_documentos', $dados);
     }
  
     /**
@@ -168,37 +240,6 @@ class Documentos_model extends CI_Model {
     }
 
     /**
-     * Método para pegar o id do documento
-     * Utilizado no controller documento/Documento.php
-     *
-     * @param int $caddoc
-     * @return int retorna o id do documento
-     */
-    public function documento_id($caddoc){
-        $this->db->select('d.id as id');
-        $this->db->from('tbdocumento as d');
-        $this->db->join('tbdocumentos_cad as dc', "d.id = dc.fk_iddocumento");
-        $this->db->where('dc.id = ', $caddoc);
-        return $this->db->get()->row('id');
-    }
-
-    /**
-     * Método responsável por retornar a etapa atual do documento cadastrado
-     * Utilizado no controller Documento/documentos.php
-     *
-     * @param int $documento
-     * @return int retorna o id da etapa
-     */
-    public function etapa_documento($documento){
-        $this->db->select('etapa');
-        $this->db->from('tblog_documentos');
-        $this->db->where('documento = ', $documento);
-        $this->db->where('ultima_etapa = ', 'true');
-        $this->db->limit(1);
-        return $this->db->get()->row('etapa');
-    }
-
-    /**
      * Método responsável por retornar o usuario responsável pelo documento cadastrado
      * Utilizado no controller documentos/Documento.php
      *
@@ -214,19 +255,5 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->row('usuario');
     }
 
-    /**
-     * Método responsável por retornar os dados do documento em execução
-     * Utilizado no controller documentos/Transferencia.php
-     *
-     * @param int $idprotocolo
-     * @return object retorna um objeto de dados
-     */
-    public function documento_tranferencia($idprotocolo){
-        $this->db->from('tblog_documentos');
-        $this->db->where('documento =', $idprotocolo);
-        $this->db->where('ultima_etapa =', 'true');
-        $this->db->limit(1);
-        return $this->db->get()->row();
-    }
 
 }
