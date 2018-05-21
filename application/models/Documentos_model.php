@@ -36,8 +36,8 @@ class Documentos_model extends CI_Model {
     }
     
     /**
-     * Função responsável por cadastrar os logs de documentos
-     * Utilizado pelo controller documentos/Documento.php
+     * Método responsável por cadastrar os logs de documentos
+     * Utilizados pelo controller documentos/Documento.php e documentos/Transferencia.php
      *
      * @param array $dados
      * @return int retorna o numero de linhas afetadas

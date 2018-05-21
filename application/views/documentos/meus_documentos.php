@@ -117,7 +117,7 @@
                                             foreach ($documentos_usuario as $documentos) {
                                                 ?>
                                                 <tr>
-                                                <td><?=$documentos->protocolo;?></td>
+                                                    <td><?=$documentos->protocolo;?></td>
                                                     <td>
                                                         <?=$documentos->documento;?><br/>
                                                         <strong><?=$documentos->grupo;?></strong>

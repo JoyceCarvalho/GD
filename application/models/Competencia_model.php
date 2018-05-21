@@ -65,4 +65,28 @@ class Competencia_model extends CI_Model {
         return $this->db->get()->row('fk_idusuario');
     }
 
+    /**
+     * Método responsável por verificar os usuarios aptos para direcionar documentos
+     * Utilizado no controller documentos/Transferencia.php
+     *
+     * @param int $documento
+     * @param int $etapa
+     * @return int retorna a quantidade de linhas retornadas
+     */
+    public function verifica_usuario_apto($documento, $etapa){
+        //Subquery
+        $this->db->select('fk_idusuario');
+        $this->db->from('tbferias_func');
+        $subquery = $this->db->get_compiled_select();
+
+        //query
+        $this->db->select('count(*) as total');
+        $this->db->from('tbcompetencias');
+        $this->db->where('fk_iddocumento', $documento);
+        $this->db->where('fk_idetapa', $etapa);
+        $this->db->where("fk_idusuario not in($subquery)", NULL, FALSE);
+        
+        return $this->db->get('')->row('total');
+    }
+
 }

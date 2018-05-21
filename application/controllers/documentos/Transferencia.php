@@ -9,6 +9,7 @@ class Transferencia extends CI_Controller {
         $this->load->model('documentos_model', 'docmodel');
         $this->load->model('horario_model', 'horasmodel');
         $this->load->model('docetapas_model', 'docetapa');
+        $this->load->model('competencia_model', 'compmodel');
 
     }
 
@@ -226,6 +227,24 @@ class Transferencia extends CI_Controller {
                 $proxima_etapa_documento = $ordem_etapa_atual + 1;
 
                 $proxima_etapa = $this->docetapa->proxima_etapa($id_documento, $proxima_etapa_documento);
+
+                $verificarDataAusencia = date("Y-m-d");
+
+                $usuariosAptos = $this->compmodel->verifica_usuario_apto($id_documento, $proxima_etapa);
+
+                if($usuariosAptos == 0){
+
+                    $pendente = array(
+                        'documento'     => $idprotocolo, 
+                        'etapa'         => $proxima_etapa,
+                        'usuario'       => null,
+                        'descricao'     => 'PENDENTE',
+                        'data_hora'     => date("Y-m-d H:i:s"),
+                        'ultima_etapa'  => 'true'
+                    );
+
+                    $this->docmodel->cadastrar_log_documento($pendente);
+                }
 
             }
             
