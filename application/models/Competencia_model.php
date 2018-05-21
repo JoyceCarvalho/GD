@@ -84,7 +84,7 @@ class Competencia_model extends CI_Model {
         $this->db->from('tbcompetencias');
         $this->db->where('fk_iddocumento', $documento);
         $this->db->where('fk_idetapa', $etapa);
-        $this->db->where("fk_idusuario not in($subquery)", NULL, FALSE);
+        $this->db->where("fk_idusuario not in($subquery)");
         
         return $this->db->get('')->row('total');
     }
@@ -99,7 +99,7 @@ class Competencia_model extends CI_Model {
      * @return object retorna um objeto de dados
      */
     public function usuario_apto($documento, $etapa, $dataAtual){
-        //subquery
+        //subquery1
         $this->db->select('fk_idusuario');
         $this->db->from('tbausencia');
         $this->db->where('dia_inicio >', $dataAtual);
@@ -117,8 +117,8 @@ class Competencia_model extends CI_Model {
         $this->db->from('tbcompetencias');
         $this->db->where('fk_iddocumento', $documento);
         $this->db->where('fk_idetapa', $etapa);
-        $this->db->where("fk_idusuario not in ($subquery1)", NULL, FALSE);
-        $this->db->where("fk_idusuario not in ($subquery2)", NULL, FALSE);
+        $this->db->where("fk_idusuario not in ($subquery1)");
+        $this->db->where("fk_idusuario not in ($subquery2)");
         
         return $this->db->get('')->result();
 
