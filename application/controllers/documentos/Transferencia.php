@@ -230,9 +230,9 @@ class Transferencia extends CI_Controller {
 
                 $verificarDataAusencia = date("Y-m-d");
 
-                $usuariosAptos = $this->compmodel->verifica_usuario_apto($id_documento, $proxima_etapa);
+                $verificadosUsuariosAptos = $this->compmodel->verifica_usuario_apto($id_documento, $proxima_etapa);
 
-                if($usuariosAptos == 0){
+                if($verificadosUsuariosAptos == 0){
 
                     $pendente = array(
                         'documento'     => $idprotocolo, 
@@ -244,6 +244,13 @@ class Transferencia extends CI_Controller {
                     );
 
                     $this->docmodel->cadastrar_log_documento($pendente);
+
+                } else {
+
+                    $usuariosAptos = $this->compmodel->usuario_apto($id_documento, $proxima_etapa, $verificarDataAusencia);
+
+                    
+
                 }
 
             }

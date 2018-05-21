@@ -66,7 +66,7 @@ class Competencia_model extends CI_Model {
     }
 
     /**
-     * Método responsável por verificar os usuarios aptos para direcionar documentos
+     * Método responsável por verificar quantos são os usuarios aptos para direcionar documentos
      * Utilizado no controller documentos/Transferencia.php
      *
      * @param int $documento
@@ -87,6 +87,41 @@ class Competencia_model extends CI_Model {
         $this->db->where("fk_idusuario not in($subquery)", NULL, FALSE);
         
         return $this->db->get('')->row('total');
+    }
+
+    /**
+     * Método para retornar todos os usuários aptos a receber o documento
+     * Utilizado no controller documentos/Transferencia.php 
+     *
+     * @param int $documento
+     * @param int $etapa
+     * @param date $dataAtual
+     * @return object retorna um objeto de dados
+     */
+    public function usuario_apto($documento, $etapa, $dataAtual){
+        //subquery
+        $this->db->select('fk_idusuario');
+        $this->db->from('tbausencia');
+        $this->db->where('dia_inicio >', $dataAtual);
+        $this->db->where('dia_fim < ', $dataAtual);
+        $subquery1 = $this->db->get_compiled_select();
+
+        //subquery2
+        $this->db->select('fk_idusuario');
+        $this->db->from('tbferias_func');
+        $this->db->where('dia_inicio >', $dataAtual);
+        $this->db->where('dia_fim <', $dataAtual);
+        $subquery2 = $this->db->get_compiled_select();
+
+        //query main
+        $this->db->from('tbcompetencias');
+        $this->db->where('fk_iddocumento', $documento);
+        $this->db->where('fk_idetapa', $etapa);
+        $this->db->where("fk_idusuario not in ($subquery1)", NULL, FALSE);
+        $this->db->where("fk_idusuario not in ($subquery2)", NULL, FALSE);
+        
+        return $this->db->get('')->result();
+
     }
 
 }
