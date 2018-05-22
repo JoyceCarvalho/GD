@@ -33,4 +33,4 @@ function upperCaseF(a){
         }, 1000, 'easeInOutExpo');
         event.preventDefault();
     });
-})
+});

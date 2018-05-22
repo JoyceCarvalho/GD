@@ -264,6 +264,8 @@ class Transferencia extends CI_Controller {
 
                     $contaUsuariosAptos = count($usuarios_aptos);
 
+                    $verificaNumeroDocumentos = $this->docmodel->numero_documentos();
+
                 }
 
             }

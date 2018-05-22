@@ -255,5 +255,20 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->row('usuario');
     }
 
+    /**
+     * Método responsável por retornar o total de registro de documento cadastrado
+     * Utilizado no controller documentos/Transferencia.php 
+     *
+     * @param string $usuariosAptos
+     * @return int
+     */
+    public function numero_documentos($usuariosAptos){
+        $this->db->select('count(*) as total');
+        $this->db->from('tblog_documentos');
+        $this->db->where("usuario in ($usuariosAptos)");
+        $this->db->where("ultima_etapa = 'true'");
+
+        return $this->db->get()->row('total');
+    }
 
 }
