@@ -249,7 +249,14 @@ class Transferencia extends CI_Controller {
 
                     $usuariosAptos = $this->compmodel->usuario_apto($id_documento, $proxima_etapa, $verificarDataAusencia);
 
-                    
+                    foreach ($usuariosAptos as $usuarios ) {
+                        $usuarios_aptos[] = $usuarios->fk_idusuario;
+                        $usuariosAptosQuantidade[$usuarios->fk_idusuario] = 0;
+                    }                    
+
+                    $usuariosAptosImplode = implode(",", $usuarios_aptos);
+
+                    $contaUsuariosAptos = count($usuarios_aptos);
 
                 }
 

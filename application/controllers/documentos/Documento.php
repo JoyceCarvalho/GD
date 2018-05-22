@@ -252,6 +252,12 @@ class Documento extends CI_Controller {
 
         $usuario_documento = $this->docmodel->usuario_documento($idprotocolo);
 
+        if ($usuario_documento == 0) {
+            $usuario = $_SESSION["idusuario"];
+        } else {
+            $usuario = $usuario_documento;
+        }
+
         $this->load->model('timer_model', 'timermodel');
 
         $timer = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
@@ -268,7 +274,7 @@ class Documento extends CI_Controller {
             'fk_idetapa'  => $etapa_documento,
             'action'      => $newAction,
             'timestamp'   => time(),
-            'fk_idusuario'  => $usuario_documento
+            'fk_idusuario'  => $usuario
         );
 
         $this->timermodel->cadastrar_tempo($dados);
