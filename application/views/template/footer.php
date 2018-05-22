@@ -1,5 +1,5 @@
             <!-- Scroll to Top Button-->
-            <a class="scroll-to-top rounded" href="#page-top">
+            <a id="scrollToTop" class="scroll-button rounded" href="">
                 <i class="fa fa-angle-up"></i>
             </a>
             <!-- Page Footer-->
