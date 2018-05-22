@@ -1,3 +1,7 @@
+            <!-- Scroll to Top Button-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fa fa-angle-up"></i>
+            </a>
             <!-- Page Footer-->
             <footer class="main-footer">
                 <div class="container-fluid">

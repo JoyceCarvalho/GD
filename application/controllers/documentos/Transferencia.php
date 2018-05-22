@@ -19,26 +19,35 @@ class Transferencia extends CI_Controller {
             redirect("/");
         }
 
+        //transforma o hash com o id (string) em um array
         $id = str_split($identificador);
 
+        //pega o tamanho total do array (quantidade de caracteres)
         $tamanho = count($id);
 
+        //Inicia a variavel (sem inicializar a variavel aparece um erro no CI)
         $protocolo = "";
 
+        //percorre o array para retirar o id correto do restante da hash
         for ($i=32; $i < $tamanho; $i++) { 
             $protocolo .= $id[$i];
         }
 
+        //transforma a string em inteiro
         $idprotocolo = (int)$protocolo;
 
+        //instância a classe stdClass para a variavel dados poder receber os dados de um objeto
         $dados = new stdClass;
 
+        //recebe os objetos retornados pela função documento_transferencia(int);
         $dados = $this->docmodel->documento_tranferencia($idprotocolo);
 
-
+        //armazena o atributo data_hora do objeto dados;
         $dataInicio = $dados->data_hora;
+        //armazena o atributo etapa do objeto dados;
         $etapa = $dados->etapa;
 
+        
         $horario = $this->horasmodel->verifica_horario($_SESSION["idempresa"]);
 
         $primeiro_turno_inicio  = $horario->manha_entrada;
@@ -82,7 +91,6 @@ class Transferencia extends CI_Controller {
         
         if ($dataInicioQuebrada == $dataFimQuebrada) {
             
-            //echo "Data Inicio = Data Fim";
             $somatorioTotalMinutos = 0;
 
             if ((($HoraInicioQuebrada >= $primeiro_turno_inicio) and ($HoraInicioQuebrada <= $primeiro_turno_fim)) and (($HoraFimQuebrada >= $segundo_turno_inicio) and ($HoraFimQuebrada <= $segundo_turno_fim))) {
@@ -149,8 +157,6 @@ class Transferencia extends CI_Controller {
             }
 
         } else {
-
-            //echo "Data inicio != DataFim";
 
             $i = 0;
             $contadorDias = 0;
