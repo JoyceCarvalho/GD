@@ -240,22 +240,6 @@ class Documentos_model extends CI_Model {
     }
 
     /**
-     * Método responsável por retornar o usuario responsável pelo documento cadastrado
-     * Utilizado no controller documentos/Documento.php
-     *
-     * @param int $documento
-     * @return int retorna o id do usuario
-     */
-    public function usuario_documento($documento){
-        $this->db->select('usuario');
-        $this->db->from('tblog_documentos');
-        $this->db->where('documento = ', $documento);
-        $this->db->where('ultima_etapa = ', 'true');
-        $this->db->limit(1);
-        return $this->db->get()->row('usuario');
-    }
-
-    /**
      * Método responsável por retornar o total de registro de documento cadastrado
      * Utilizado no controller documentos/Transferencia.php 
      *
@@ -269,6 +253,41 @@ class Documentos_model extends CI_Model {
         $this->db->where("ultima_etapa = 'true'");
 
         return $this->db->get()->row('total');
+    }
+
+    /**
+     * Método responsável por retornar a quantidade de documentos por usuario
+     * Utilizado no controller documentos/Transferencia.php 
+     *
+     * @param int $usuarios
+     * @return object
+     */
+    public function quantidade_documentos_usuario($usuarios){
+
+        $this->db->select('usuario, count(*) quantidade_documento');
+        $this->db->from('tblog_documentos');
+        $this->db->where("usuario in ($usuarios)");
+        $this->db->where("ultima_etapa", "true");
+        $this->db->group_by('usuario');
+        
+        return $this->db->get()->result();
+
+    }
+
+    /**
+     * Método responsável por retornar o usuario responsável pelo documento cadastrado
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param int $documento
+     * @return int retorna o id do usuario
+     */
+    public function usuario_documento($documento){
+        $this->db->select('usuario');
+        $this->db->from('tblog_documentos');
+        $this->db->where('documento = ', $documento);
+        $this->db->where('ultima_etapa = ', 'true');
+        $this->db->limit(1);
+        return $this->db->get()->row('usuario');
     }
 
 }

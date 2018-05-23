@@ -8,8 +8,11 @@ class Transferencia extends CI_Controller {
 
         $this->load->model('documentos_model', 'docmodel');
         $this->load->model('horario_model', 'horasmodel');
-        $this->load->model('docetapas_model', 'docetapa');
+        $this->load->model('DocEtapas_model', 'docetapamodel');
         $this->load->model('competencia_model', 'compmodel');
+        $this->load->model('usuario_model', 'usermodel');
+        $this->load->model('empresa_model', 'empresamodel');
+        $this->load->model('etapas_model', 'etapasmodel');
 
     }
 
@@ -228,11 +231,11 @@ class Transferencia extends CI_Controller {
 
                 $id_documento = $this->docmodel->documento_id($idprotocolo);
 
-                $ordem_etapa_atual = $this->docetapa->etapa_atual($id_documento, $etapa);
+                $ordem_etapa_atual = $this->docetapamodel->etapa_atual($id_documento, $etapa);
 
                 $proxima_etapa_documento = $ordem_etapa_atual + 1;
 
-                $proxima_etapa = $this->docetapa->proxima_etapa($id_documento, $proxima_etapa_documento);
+                $proxima_etapa = $this->docetapamodel->proxima_etapa($id_documento, $proxima_etapa_documento);
 
                 $verificarDataAusencia = date("Y-m-d");
 
@@ -249,27 +252,175 @@ class Transferencia extends CI_Controller {
                         'ultima_etapa'  => 'true'
                     );
 
-                    $this->docmodel->cadastrar_log_documento($pendente);
+                   $this->docmodel->cadastrar_log_documento($pendente);
 
                 } else {
 
+                    //echo "Id documento: ". $id_documento. "<br/>";
+                    //echo "proxima etapa: ". $proxima_etapa. "<br/>";
+                    //echo "data ausencia: ". $verificarDataAusencia. "<br/>";
+
                     $usuariosAptos = $this->compmodel->usuario_apto($id_documento, $proxima_etapa, $verificarDataAusencia);
+                    //echo "usuariosAptos: ";
+                    //print_r($usuariosAptos);
 
                     foreach ($usuariosAptos as $usuarios ) {
-                        $usuarios_aptos[] = $usuarios->fk_idusuario;
-                        $usuariosAptosQuantidade[$usuarios->fk_idusuario] = 0;
-                    }                    
+                        
+                        if ($usuarios->tipo == "funcionario") {
+                            
+                            $usuarios_aptos[] = $usuarios->fk_idusuario;
+                            $usuariosAptosQuantidade[$usuarios->fk_idusuario] = 0;
+
+                        } else {
+                            
+                            $usuariosAptosCargo = $this->usermodel->usuario_por_cargo($usuarios->fk_idcargo);
+
+                            //echo "usuariosAptosCargo";
+                            //print_r($usuariosAptosCargo);
+
+                            foreach ($usuariosAptosCargo as $user ) {
+                                
+                                $usuarios_aptos[] = $user->id;
+                                $usuariosAptosQuantidade[$user->id] = 0;
+                                
+                            }
+
+                        }
+                        
+
+                    }     
+                    
+                    //echo "<br/><br/>".$usuarios_aptos;
 
                     $usuariosAptosImplode = implode(",", $usuarios_aptos);
 
                     $contaUsuariosAptos = count($usuarios_aptos);
 
-                    $verificaNumeroDocumentos = $this->docmodel->numero_documentos();
+                    $verificaNumeroDocumentos = $this->docmodel->numero_documentos($usuariosAptosImplode);
+
+                    if ($verificaNumeroDocumentos == 0) {
+                        
+                        $numeroRandomico = rand(0, $contaUsuariosAptos);
+
+                        $idEscolhido = $usuarios_aptos[$numeroRandomico];
+
+                        $transfereProximaEtapa = array(
+                            'descricao' => 'TRANSFERIDO',
+                            'data_hora' => date("Y-m-D"),
+                            'ultima_etapa' => 'true',
+                            'usuario' => $idEscolhido,
+                            'etapa' => $proxima_etapa,
+                            'documento' => $idprotocolo
+                        );
+
+                        $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
+
+                        $idMostraDirecionamento = $idEscolhido;
+                    } else {
+
+                        $usuarios_quantidada_documento = $this->docmodel->quantidade_documentos_usuario($usuariosAptosImplode);
+
+                        foreach ($usuarios_quantidada_documento as $usuariosDocumento ) {
+                            
+                            $usuariosAptosQuantidade[$usuariosDocumento->usuario] = $usuariosDocumento->quantidade_documento;
+
+                        }
+
+                        asort($usuariosAptosQuantidade);
+
+                        $controlaMenor = 1;
+                        foreach ($usuariosAptosQuantidade as $key => $quantidade) {
+                            if ($controlaMenor == 1) {
+                                
+                                $quantidadeVerificar = $quantidade;
+                                $usuariosAptosPrimeiraEtapa[] = $key;
+
+                            } else {
+
+                                if ($quantidadeVerificar = $quantidade) {
+                                    $usuariosAptosPrimeiraEtapa[] = $key;
+                                }
+
+                            }
+
+                            $controlaMenor ++;
+
+                        }
+
+                        $contaUsuarioAptosPrimeiraEtapa = count($usuariosAptosPrimeiraEtapa);
+                        
+                        $numeroRandomicoPrimeiraEtapa = rand(0,$contaUsuarioAptosPrimeiraEtapa - 1);
+                        
+                        $idEscolhidoPrimeiraEtapa = $usuariosAptosPrimeiraEtapa[$numeroRandomicoPrimeiraEtapa];
+
+                        $transfereProximaEtapa = array(
+                            'descricao' => 'TRANSFERIDO', 
+                            'data_hora' => date("Y-m-d H:i:s"),
+                            'ultima_etapa' => 'true',
+                            'usuario' => $idEscolhidoPrimeiraEtapa,
+                            'etapa' => $proxima_etapa,
+                            'documento' => $idprotocolo
+                        );
+
+                        $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
+
+                        $idMostraDirecionamento = $idEscolhidoPrimeiraEtapa;
+
+                    }
 
                 }
 
             }
             
+        }
+
+        if(!empty($idMostraDirecionamento)){
+
+            $mensagem = new stdClass();
+            /*$dados    = new stdClass();*/
+
+            $mensagem->success = "Documento transferido com sucesso!";
+            
+            redirect("meusdocumentos", $mensagem);
+
+            /*$dados->pagina    = "Meus Documentos";
+            $dados->pg        = "documentos";
+            $dados->submenu   = "meusdocs";
+
+            $dados->nome_empresa       = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados->documentos_cargo   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
+            $dados->documentos_usuario = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
+            
+
+            $this->load->view('template/html_header', $dados);
+            $this->load->view('template/header');
+            $this->load->view('template/menu', $mensagem);
+            $this->load->view('documentos/meus_documentos');
+            $this->load->view('template/footer');
+            $this->load->view('template/html_footer');*/
+
+        } else {
+
+            $mensagem->error = "Ocorreu um problema ao transferir o documento. Favor entre em contato com o suporte e tente novamente mais tarde.";
+
+            redirect("meusdocumentos", $mensagem);
+
+            /*$dados->pagina    = "Meus Documentos";
+            $dados->pg        = "documentos";
+            $dados->submenu   = "meusdocs";
+
+            $dados->nome_empresa       = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados->documentos_cargo   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
+            $dados->documentos_usuario = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
+            
+
+            $this->load->view('template/html_header', $dados);
+            $this->load->view('template/header');
+            $this->load->view('template/menu', $mensagem);
+            $this->load->view('documentos/meus_documentos');
+            $this->load->view('template/footer');
+            $this->load->view('template/html_footer');*/
+
         }
 
     }

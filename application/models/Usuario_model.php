@@ -7,11 +7,25 @@ class Usuario_model extends CI_Model {
         parent::__construct();
     }
 
+    /**
+     * Método responsável por cadastrar os usuários
+     * Utilizado no controller Usuario.php
+     *
+     * @param array $dados
+     * @return int retorna o numero de linhas afetadas
+     */
     public function cadastrar_usuario($dados){
         
         return $this->db->insert('tbusuario', $dados);
     }
 
+    /**
+     * Método responsável por retornar os dados de um determinado usuário
+     * Utilizado no controller Usuário.php
+     *
+     * @param int $id
+     * @return object retorna um objeto de dados
+     */
     public function dados_usuario($id){
         $this->db->from('tbusuario');
         $this->db->where('id =', $id);
@@ -19,12 +33,27 @@ class Usuario_model extends CI_Model {
         return $this->db->get('')->result();
     }
 
+    /**
+     * Método responsável por editar os dados do usuário
+     * Utilizado no controller Usuario.php
+     *
+     * @param array $dados
+     * @param int $id
+     * @return int retorna o numero de linhas afetadas
+     */
     public function editar_usuario($dados, $id){
 
         $this->db->where('id = ', $id);
         return $this->db->update('tbusuario', $dados);
     }
 
+    /**
+     * Método responsável por "excluir" o usuario (apenas troca o ativo por 0 para que os dados referentes a esse usuario não sejam apagados também)
+     * Utilizado no controller Usuario.php
+     *
+     * @param int $id
+     * @return int retorna o numero de linhas afetadas
+     */
     public function excluir_usuario($id){
 
         $this->db->set('ativo', 0, false);
@@ -34,6 +63,7 @@ class Usuario_model extends CI_Model {
 
     /**
      * Método responsável por verificar se os dados fornecidos para login são validos
+     * Utilizado no controller Login.php
      *
      * @param string $usuario
      * @param string $senha
@@ -55,6 +85,7 @@ class Usuario_model extends CI_Model {
     
     /**
      * Método responsável por retornar o id do usuario logado
+     * Utilizado no controller Login.php
      *
      * @param int $usuario
      * @param string $cliente_code
@@ -73,6 +104,7 @@ class Usuario_model extends CI_Model {
 
     /**
      * Método responsável por retornar os dados do usuário
+     * Utilizado no controller Login.php
      *
      * @param int $user_id
      * @return object retorna o objeto de dados
@@ -87,6 +119,7 @@ class Usuario_model extends CI_Model {
 
     /**
      * Método responsável por verificar se o usuário logado é administrador
+     * Utilizado no controller Login.php
      *
      * @param int $id_user
      * @return object retorna um objeto de dados
@@ -104,6 +137,7 @@ class Usuario_model extends CI_Model {
 
     /**
      * Método responsável posr verificar se é coordenador
+     * Utilizado no controller Login.php
      *
      * @param int $id_user
      * @return object retorna um objeto de dados
@@ -121,6 +155,7 @@ class Usuario_model extends CI_Model {
 
     /**
      * Método responsável por listar os usuários da empresa
+     * Utilizado no controller Usuario.php
      *
      * @param int $empresa
      * @return object retorna um objeto de dados
@@ -139,7 +174,7 @@ class Usuario_model extends CI_Model {
 
     /**
      * Método responsável por listar os usuários da empresa em formato json
-     * Utilizado no controller Competencia.php
+     * Utilizado no controller conf/Competencia.php
      *
      * @param int $empresa
      * @return json
@@ -155,10 +190,34 @@ class Usuario_model extends CI_Model {
         return json_encode($this->db->get('')->result());
     }
 
+    /**
+     * Método responsável por alterar a senha do usuário
+     * Utilizado no controller Usuario.php
+     *
+     * @param int $id
+     * @param string $senha
+     * @return int retorna o numero de linhas afetadas
+     */
     public function alterar_senha($id, $senha){
 
         $this->db->where('id', $id);
         return $this->db->update('tbusuario', $senha);
+
+    }
+
+    /**
+     * Método responsável por verificar os usuarios aptos por cargo
+     * Utilizado no controller documentos/Transferencia.php
+     *
+     * @param int $cargo
+     * @return object retorna um objeto de dados
+     */
+    public function usuario_por_cargo($cargo){
+        
+        $this->db->from('tbusuario');
+        $this->db->where('fk_idcargos', $cargo);
+
+        return $this->db->get('')->result();
 
     }
 

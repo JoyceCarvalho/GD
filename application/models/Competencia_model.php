@@ -32,7 +32,10 @@ class Competencia_model extends CI_Model {
         $this->db->select('c.id as id, c.tipo as tipo, c.fk_idetapa as fk_idetapa, c.fk_idusuario as fk_idusuario, c.fk_idcargo as fk_idcargo, e.titulo as etapa');
         $this->db->from('tbcompetencias as c');
         $this->db->join('tbetapa as e', 'e.id = c.fk_idetapa');
+        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = c.fk_iddocumento and de.idetapa = c.fk_idetapa');
         $this->db->where('fk_iddocumento = ', $documento);
+        $this->db->order_by('de.ordem asc');
+        
         return $this->db->get()->result();
     }
 
