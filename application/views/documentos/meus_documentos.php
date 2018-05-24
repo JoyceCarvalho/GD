@@ -49,8 +49,8 @@
                                         <th width="25%">Documento<br/>/Grupo</th>
                                         <th width="10%">Prazos</th>
                                         <th width="10%">Etapas</th>
-                                        <th width="20%">Data de Criação</th>
-                                        <th width="25%"></th>
+                                        <th width="15%">Data de Criação</th>
+                                        <th width="30%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -113,7 +113,9 @@
                                                 </tr>
                                                 <?php
                                             }
-                                        } elseif ($documentos_usuario) {
+                                        } 
+                                        
+                                        if ($documentos_usuario) {
                                             foreach ($documentos_usuario as $documentos) {
                                                 ?>
                                                 <tr>
