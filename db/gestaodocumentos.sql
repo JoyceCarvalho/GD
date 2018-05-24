@@ -677,6 +677,38 @@ ALTER TABLE `tbusuario`
   ADD CONSTRAINT `fk_tbusuario_tbcargos1` FOREIGN KEY (`fk_idcargos`) REFERENCES `tbcargos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_tbusuario_tbempresa` FOREIGN KEY (`fk_idempresa`) REFERENCES `tbempresa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_tbusuario_tbhorario_trab1` FOREIGN KEY (`fk_idhorariotrab`) REFERENCES `tbhorario_trab` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Banco de dados: `gestaodocumentos`
+--
+
+--
+-- Fazendo dump de dados para tabela `tbempresa`
+--
+
+INSERT INTO `tbempresa` (`id`, `nome`, `cliente_code`, `logo_code`, `missao`, `visao`, `valores`, `ativo`) VALUES
+(1, 'SGT - Gestão e Tecnologia', 'sgtgestaoetecnologia', NULL, 'Proporcionar ferramentas que garantam o acesso a melhores práticas de gestão organizacional e de qualidade', NULL, 'Respeito ao usuário.\r\nRapidez nas soluções.\r\nInovação permantente.', 1);
+
+--
+-- Fazendo dump de dados para tabela `tbcargos`
+--
+
+INSERT INTO `tbcargos` (`id`, `titulo`, `fk_idempresa`) VALUES
+(1, 'Administrador Master', 1);
+
+--
+-- Fazendo dump de dados para tabela `tbhorario_trab`
+--
+
+INSERT INTO `tbhorario_trab` (`id`, `titulo`, `manha_entrada`, `manha_saida`, `tarde_entrada`, `tarde_saida`, `fk_idempresa`, `ativo`) VALUES
+(1, 'Regular', '07:00:00', '12:00:00', '13:00:00', '18:00:00', 1, 1);
+
+--
+-- Fazendo dump de dados para tabela `tbusuario`
+--
+
+INSERT INTO `tbusuario` (`id`, `nome`, `email`, `usuario`, `senha`, `ativo`, `fk_idempresa`, `fk_idcargos`, `fk_idhorariotrab`) VALUES
+(1, 'Administrador', 'suporte@sgtgestaoetecnologia.com.br', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, 1, 1, 1);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
