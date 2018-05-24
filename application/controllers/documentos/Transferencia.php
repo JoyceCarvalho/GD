@@ -376,12 +376,9 @@ class Transferencia extends CI_Controller {
 
         if(!empty($idMostraDirecionamento)){
 
-            $mensagem = new stdClass();
-            /*$dados    = new stdClass();*/
-
-            $mensagem->success = "Documento transferido com sucesso!";
+            $mensagem = "success";
             
-            redirect("meusdocumentos", $mensagem);
+            redirect("meus_documentos/".$mensagem);
 
             /*$dados->pagina    = "Meus Documentos";
             $dados->pg        = "documentos";
@@ -401,9 +398,9 @@ class Transferencia extends CI_Controller {
 
         } else {
 
-            $mensagem->error = "Ocorreu um problema ao transferir o documento. Favor entre em contato com o suporte e tente novamente mais tarde.";
+            $mensagem = "error";
 
-            redirect("meusdocumentos", $mensagem);
+            redirect("meus_documentos/".$mensagem);
 
             /*$dados->pagina    = "Meus Documentos";
             $dados->pg        = "documentos";

@@ -194,6 +194,41 @@ class Documento extends CI_Controller {
 
     }
 
+    public function meus_documentos_msg($mensagem){
+        
+        if((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)){
+
+            $data = new stdClass();
+
+            if ($mensagem == "success") {
+                $data->success = "Documento transferido com sucesso!";
+            } else {
+                $data->error = "Ocorreu um problema ao transferir o documento. Favor entre em contato com o suporte e tente novamente mais tarde.";
+            }
+
+            $dados["pagina"]    = "Meus Documentos";
+            $dados["pg"]        = "documentos";
+            $dados["submenu"]   = "meusdocs";
+
+            $dados["nome_empresa"]       = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["documentos_cargo"]   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
+            $dados["documentos_usuario"] = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
+            
+
+            $this->load->view('template/html_header', $dados);
+            $this->load->view('template/header');
+            $this->load->view('template/menu', $data);
+            $this->load->view('documentos/meus_documentos');
+            $this->load->view('template/footer');
+            $this->load->view('template/html_footer');
+
+        } else {
+            // Redireciona para o root quando não estiver logado
+            redirect("/");
+        }
+
+    }
+
     public function busca_documentos($value){
 
         echo $this->docmodel->listar_documentos_json($value);
@@ -281,7 +316,7 @@ class Documento extends CI_Controller {
 
         header('Content-Type: application/json');
         echo json_encode(array(
-        'running' => $newAction === 'start',
+            'running' => $newAction === 'start',
         )); 
     }
 }
