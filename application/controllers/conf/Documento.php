@@ -83,8 +83,8 @@ class Documento extends CI_Controller {
             for($i=1; $i<=$etapa; $i++){
                 $doc_etapa = array(
                     'iddocumento' => $iddocumento,
-                    'idetapa'      => $this->input->post("etapa[$i]"),
-                    'ordem'        => $i
+                    'idetapa'     => $this->input->post("etapa[$i]"),
+                    'ordem'       => $i
                 );
 
                 $cadastro = $this->docetapamodel->cadastrar_documento_etapa($doc_etapa);

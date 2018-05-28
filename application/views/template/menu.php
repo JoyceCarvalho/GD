@@ -60,7 +60,9 @@
 
                   <ul id="user" class="collapse list-unstyled ">
                     <li><a href="<?=base_url('home/usuario/');?>">Listar</a></li>
-                    <li><a href="<?=base_url('home/usuario_cad/');?>">Cadastrar</a></li>
+                    <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
+                      <li><a href="<?=base_url('home/usuario_cad/');?>">Cadastrar</a></li>
+                    <?php endif; ?>
                   </ul>
                 </li>
 

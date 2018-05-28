@@ -19,21 +19,34 @@ class Etapas_model extends CI_Model {
     }
 
     /**
-     * Função para listar as etapas cadastradas
-     * Utilizado no controller conf/Etapas.php, e na view config/documento.php
+     * Função responsável por cadastrar os prazos de um novo documento
+     * Utilizado no controller documentos/Documento.php
      *
-     * @param int $empresa
-     * @return object
+     * @param array $dados
+     * @return result retorna se a consulta foi realizada ou não
      */
-    public function listar_etapas($empresa){
-
-        $this->db->from("tbetapa");
-        $this->db->where('ativo = 1');
-        $this->db->where('fk_idempresa =', $empresa);
-        return $this->db->get('')->result();
+    public function cadastrar_etapas_prazos($dados){
+        
+        return $this->db->insert('tbprazoetapa', $dados);
 
     }
+    
+    /**
+     * Função para retornar os dados de determinada linha da tabela
+     * Utilizado somente no controller conf/Etapas.php
+     *
+     * @param int $id
+     * @return object
+     */
+    public function dados_etapas($id){
 
+        $this->db->from('tbetapa');
+        $this->db->where('id = ', $id);
+
+        return $this->db->get('')->result();
+        
+    }
+    
     /**
      * Função para editar etapas
      * Utilizado no controller conf/Documento.php
@@ -65,19 +78,19 @@ class Etapas_model extends CI_Model {
     }
 
     /**
-     * Função para retornar os dados de determinada linha da tabela
-     * Utilizado somente no controller conf/Etapas.php
+     * Função para listar as etapas cadastradas
+     * Utilizado no controller conf/Etapas.php, e na view config/documento.php
      *
-     * @param int $id
+     * @param int $empresa
      * @return object
      */
-    public function dados_etapas($id){
+    public function listar_etapas($empresa){
 
-        $this->db->from('tbetapa');
-        $this->db->where('id = ', $id);
-
+        $this->db->from("tbetapa");
+        $this->db->where('ativo = 1');
+        $this->db->where('fk_idempresa =', $empresa);
         return $this->db->get('')->result();
-        
+
     }
 
     /**
@@ -97,19 +110,6 @@ class Etapas_model extends CI_Model {
         $query = $this->db->get();
 
         return json_encode($query->result());
-    }
-
-    /**
-     * Função responsável por cadastrar os prazos de um novo documento
-     * Utilizado no controller documentos/Documento.php
-     *
-     * @param array $dados
-     * @return result retorna se a consulta foi realizada ou não
-     */
-    public function cadastrar_etapas_prazos($dados){
-        
-        return $this->db->insert('tbprazoetapa', $dados);
-
     }
 
     /**

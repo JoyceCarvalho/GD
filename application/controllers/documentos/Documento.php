@@ -15,6 +15,7 @@ class Documento extends CI_Controller {
         $this->load->model('competencia_model', 'compmodel');
         $this->load->model('DocEtapas_model', 'docetapamodel');
         $this->load->model('horario_model', 'horasmodel');
+        $this->load->model('usuario_model', 'usermodel');   
     }
 
     public function index(){
@@ -93,18 +94,137 @@ class Documento extends CI_Controller {
 
                 $documento = $this->docmodel->documento_id($iddocumento);
 
-                $usuario = $this->compmodel->competencia_user($documento, $recebido);
-                
-                $log2 = array(
-                    'descricao'     => "RECEBIDO",
-                    'data_hora'     => date('Y-m-d H:i:s'),
-                    'ultima_etapa'  => 'true',
-                    'usuario'       => $usuario,
-                    'etapa'         => $recebido,
-                    'documento'     => $iddocumento
-                );
-    
-                $documento_log2 = $this->docmodel->cadastrar_log_documento($log2);
+                //$usuario = $this->compmodel->competencia_user($documento, $recebido);
+
+                $verificarDataAusencia = date("Y-m-d");
+
+                $verificadosUsuariosAptos = $this->compmodel->verifica_usuario_apto($documento, $recebido);
+
+                if($verificadosUsuariosAptos == 0){
+
+                    $pendente = array(
+                        'documento'     => $iddocumento, 
+                        'etapa'         => $recebido,
+                        'usuario'       => null,
+                        'descricao'     => 'PENDENTE',
+                        'data_hora'     => date("Y-m-d H:i:s"),
+                        'ultima_etapa'  => 'true'
+                    );
+
+                    $documento_log2 = $this->docmodel->cadastrar_log_documento($pendente);
+
+                } else {
+
+                    $usuariosAptos = $this->compmodel->usuario_apto($documento, $recebido, $verificarDataAusencia);
+
+                    foreach ($usuariosAptos as $usuarios ) {
+                        
+                        if ($usuarios->tipo == "funcionario") {
+                            
+                            $usuarios_aptos[] = $usuarios->fk_idusuario;
+                            $usuariosAptosQuantidade[$usuarios->fk_idusuario] = 0;
+
+                        } else {
+                            
+                            $usuariosAptosCargo = $this->usermodel->usuario_por_cargo($usuarios->fk_idcargo, $verificarDataAusencia);
+
+                            foreach ($usuariosAptosCargo as $user ) {
+                                
+                                $usuarios_aptos[] = $user->id;
+                                $usuariosAptosQuantidade[$user->id] = 0;
+                                
+                            }
+
+                        }
+                        
+
+                    }     
+
+                    $usuariosAptosImplode = implode(",", $usuarios_aptos);
+
+                    $contaUsuariosAptos = count($usuarios_aptos);
+
+                    $verificaNumeroDocumentos = $this->docmodel->numero_documentos($usuariosAptosImplode);
+
+                    if ($verificaNumeroDocumentos == 0) {
+                        
+                        if ($contaUsuariosAptos > 1) {
+                            
+                            $numeroRandomico = rand(0, $contaUsuariosAptos);
+
+                            $idEscolhido = $usuarios_aptos[$numeroRandomico];
+
+                        } else {
+
+                            $idEscolhido = $usuarios_aptos[0];
+
+                        }
+
+                        $transfereProximaEtapa = array(
+                            'descricao' => 'RECEBIDO',
+                            'data_hora' => date("Y-m-d H:i:s"),
+                            'ultima_etapa' => 'true',
+                            'usuario' => $idEscolhido,
+                            'etapa' => $recebido,
+                            'documento' => $iddocumento
+                        );
+
+                        $documento_log2 = $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
+
+                        $idMostraDirecionamento = $idEscolhido;
+                    } else {
+
+                        $usuarios_quantidada_documento = $this->docmodel->quantidade_documentos_usuario($usuariosAptosImplode);
+
+                        foreach ($usuarios_quantidada_documento as $usuariosDocumento ) {
+                            
+                            $usuariosAptosQuantidade[$usuariosDocumento->usuario] = $usuariosDocumento->quantidade_documento;
+
+                        }
+
+                        asort($usuariosAptosQuantidade);
+
+                        $controlaMenor = 1;
+                        foreach ($usuariosAptosQuantidade as $key => $quantidade) {
+                            if ($controlaMenor == 1) {
+                                
+                                $quantidadeVerificar = $quantidade;
+                                $usuariosAptosPrimeiraEtapa[] = $key;
+
+                            } else {
+
+                                if ($quantidadeVerificar = $quantidade) {
+                                    $usuariosAptosPrimeiraEtapa[] = $key;
+                                }
+
+                            }
+
+                            $controlaMenor ++;
+
+                        }
+
+                        $contaUsuarioAptosPrimeiraEtapa = count($usuariosAptosPrimeiraEtapa);
+                        
+                        $numeroRandomicoPrimeiraEtapa = rand(0,$contaUsuarioAptosPrimeiraEtapa - 1);
+                        
+                        $idEscolhidoPrimeiraEtapa = $usuariosAptosPrimeiraEtapa[$numeroRandomicoPrimeiraEtapa];
+
+                        $transfereProximaEtapa = array(
+                            'descricao' => 'RECEBIDO', 
+                            'data_hora' => date("Y-m-d H:i:s"),
+                            'ultima_etapa' => 'true',
+                            'usuario' => $idEscolhidoPrimeiraEtapa,
+                            'etapa' => $recebido,
+                            'documento' => $iddocumento
+                        );
+
+                        $documento_log2 = $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
+
+                        $idMostraDirecionamento = $idEscolhidoPrimeiraEtapa;
+
+                    }
+
+                }
                 
                 if($documento_log2){
 
