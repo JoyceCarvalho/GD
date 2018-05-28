@@ -241,7 +241,7 @@ class Documentos_model extends CI_Model {
 
     /**
      * Método responsável por retornar o total de registro de documento cadastrado
-     * Utilizado no controller documentos/Transferencia.php 
+     * Utilizado no controller documentos/Transferencia.php e documentos/Documento.php
      *
      * @param string $usuariosAptos
      * @return int
@@ -257,7 +257,7 @@ class Documentos_model extends CI_Model {
 
     /**
      * Método responsável por retornar a quantidade de documentos por usuario
-     * Utilizado no controller documentos/Transferencia.php 
+     * Utilizado no controller documentos/Transferencia.php e documentos/Documento.php
      *
      * @param int $usuarios
      * @return object
@@ -288,6 +288,18 @@ class Documentos_model extends CI_Model {
         $this->db->where('ultima_etapa = ', 'true');
         $this->db->limit(1);
         return $this->db->get()->row('usuario');
+    }
+
+    public function documento_por_usuario($usuarios){
+        $this->db->select("usuario, count(*) as 'quantidade_documentos'");
+        $this->db->from('tblog_documentos');
+        $this->db->where("usuario in ($usuarios)");
+        $this->db->where('ultima_etapa', "true");
+        $this->db->group_by('usuario');
+        $this->db->order_by("'quantidade_documentos' asc");
+        $this->db->limit(1);
+
+        return $this->db->get('')->row('usuario');
     }
 
 }

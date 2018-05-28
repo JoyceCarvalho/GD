@@ -149,10 +149,12 @@ class Documento extends CI_Controller {
                     if ($verificaNumeroDocumentos == 0) {
                         
                         if ($contaUsuariosAptos > 1) {
-                            
-                            $numeroRandomico = rand(0, $contaUsuariosAptos);
 
-                            $idEscolhido = $usuarios_aptos[$numeroRandomico];
+                            $usuarios_documentos = $this->docmodel->documento_por_usuario($usuariosAptosImplode);
+                            $idEscolhido = $usuarios_documentos;
+                            
+                            //$numeroRandomico = rand(0, $contaUsuariosAptos);
+                            //$idEscolhido = $usuarios_aptos[$numeroRandomico];
 
                         } else {
 
