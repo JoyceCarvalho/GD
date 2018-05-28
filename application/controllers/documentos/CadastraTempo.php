@@ -226,6 +226,9 @@ class CadastraTempo extends CI_Controller {
             'total_minutos' => $somatorioTotalMinutos
         );
 
+        if($this->docmodel->cadastrar_documento_tempo($log_tempo)){
+            
+        }
 
     }
 

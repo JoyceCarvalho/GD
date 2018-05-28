@@ -273,7 +273,7 @@ class Transferencia extends CI_Controller {
 
                         } else {
                             
-                            $usuariosAptosCargo = $this->usermodel->usuario_por_cargo($usuarios->fk_idcargo);
+                            $usuariosAptosCargo = $this->usermodel->usuario_por_cargo($usuarios->fk_idcargo, $verificarDataAusencia);
 
                             //echo "usuariosAptosCargo";
                             //print_r($usuariosAptosCargo);
@@ -300,13 +300,21 @@ class Transferencia extends CI_Controller {
 
                     if ($verificaNumeroDocumentos == 0) {
                         
-                        $numeroRandomico = rand(0, $contaUsuariosAptos);
+                        if ($contaUsuariosAptos > 1) {
+                            
+                            $numeroRandomico = rand(0, $contaUsuariosAptos);
 
-                        $idEscolhido = $usuarios_aptos[$numeroRandomico];
+                            $idEscolhido = $usuarios_aptos[$numeroRandomico];
+
+                        } else {
+
+                            $idEscolhido = $usuarios_aptos[0];
+
+                        }
 
                         $transfereProximaEtapa = array(
                             'descricao' => 'TRANSFERIDO',
-                            'data_hora' => date("Y-m-D"),
+                            'data_hora' => date("Y-m-d H:i:s"),
                             'ultima_etapa' => 'true',
                             'usuario' => $idEscolhido,
                             'etapa' => $proxima_etapa,
@@ -380,43 +388,11 @@ class Transferencia extends CI_Controller {
             
             redirect("meus_documentos/".$mensagem);
 
-            /*$dados->pagina    = "Meus Documentos";
-            $dados->pg        = "documentos";
-            $dados->submenu   = "meusdocs";
-
-            $dados->nome_empresa       = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados->documentos_cargo   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
-            $dados->documentos_usuario = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
-            
-
-            $this->load->view('template/html_header', $dados);
-            $this->load->view('template/header');
-            $this->load->view('template/menu', $mensagem);
-            $this->load->view('documentos/meus_documentos');
-            $this->load->view('template/footer');
-            $this->load->view('template/html_footer');*/
-
         } else {
 
             $mensagem = "error";
 
             redirect("meus_documentos/".$mensagem);
-
-            /*$dados->pagina    = "Meus Documentos";
-            $dados->pg        = "documentos";
-            $dados->submenu   = "meusdocs";
-
-            $dados->nome_empresa       = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados->documentos_cargo   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
-            $dados->documentos_usuario = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
-            
-
-            $this->load->view('template/html_header', $dados);
-            $this->load->view('template/header');
-            $this->load->view('template/menu', $mensagem);
-            $this->load->view('documentos/meus_documentos');
-            $this->load->view('template/footer');
-            $this->load->view('template/html_footer');*/
 
         }
 

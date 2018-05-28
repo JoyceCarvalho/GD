@@ -212,11 +212,27 @@ class Usuario_model extends CI_Model {
      * @param int $cargo
      * @return object retorna um objeto de dados
      */
-    public function usuario_por_cargo($cargo){
-        
+    public function usuario_por_cargo($cargo, $dataAtual){
+        //subquery1
+        $this->db->select('fk_idusuario');
+        $this->db->from('tbausencia');
+        $this->db->where('dia_inicio >', $dataAtual);
+        $this->db->where('dia_fim < ', $dataAtual);
+        $subquery1 = $this->db->get_compiled_select();
+
+        //subquery2
+        $this->db->select('fk_idusuario');
+        $this->db->from('tbferias_func');
+        $this->db->where('dia_inicio >', $dataAtual);
+        $this->db->where('dia_fim <', $dataAtual);
+        $subquery2 = $this->db->get_compiled_select(); 
+
+        //query
         $this->db->from('tbusuario');
         $this->db->where('fk_idcargos', $cargo);
-
+        $this->db->where("id not in ($subquery1)");
+        $this->db->where("id not in ($subquery2)");
+        
         return $this->db->get('')->result();
 
     }
