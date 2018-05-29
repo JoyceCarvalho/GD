@@ -290,6 +290,13 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->row('usuario');
     }
 
+    /**
+     * Método responsável por retornar a quantidade de documentos por usuários
+     * Utilizado no controller documentos/Documentos.php e documentos/Transferencia.php
+     *
+     * @param array $usuarios
+     * @return int
+     */
     public function documento_por_usuario($usuarios){
         $this->db->select("usuario, count(*) as 'quantidade_documentos'");
         $this->db->from('tblog_documentos');

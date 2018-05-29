@@ -256,9 +256,9 @@ class Transferencia extends CI_Controller {
 
                 } else {
 
-                    //echo "Id documento: ". $id_documento. "<br/>";
-                    //echo "proxima etapa: ". $proxima_etapa. "<br/>";
-                    //echo "data ausencia: ". $verificarDataAusencia. "<br/>";
+                    /*echo "Id documento: ". $id_documento. "<br/>";
+                    echo "proxima etapa: ". $proxima_etapa. "<br/>";
+                    echo "data ausencia: ". $verificarDataAusencia. "<br/>";*/
 
                     $usuariosAptos = $this->compmodel->usuario_apto($id_documento, $proxima_etapa, $verificarDataAusencia);
                     //echo "usuariosAptos: ";
@@ -273,12 +273,13 @@ class Transferencia extends CI_Controller {
 
                         } else {
                             
+                            //echo "cargo: " . $usuarios->fk_idcargo . "<br/>";
                             $usuariosAptosCargo = $this->usermodel->usuario_por_cargo($usuarios->fk_idcargo, $verificarDataAusencia);
 
                             //echo "usuariosAptosCargo";
                             //print_r($usuariosAptosCargo);
 
-                            foreach ($usuariosAptosCargo as $user ) {
+                            foreach ($usuariosAptosCargo as $user) {
                                 
                                 $usuarios_aptos[] = $user->id;
                                 $usuariosAptosQuantidade[$user->id] = 0;
@@ -290,7 +291,8 @@ class Transferencia extends CI_Controller {
 
                     }     
                     
-                    //echo "<br/><br/>".$usuarios_aptos;
+                    //echo "<br/><br/>";
+                    //var_dump($usuarios_aptos);
 
                     $usuariosAptosImplode = implode(",", $usuarios_aptos);
 
@@ -299,11 +301,12 @@ class Transferencia extends CI_Controller {
                     $verificaNumeroDocumentos = $this->docmodel->numero_documentos($usuariosAptosImplode);
 
                     if ($verificaNumeroDocumentos == 0) {
+
+                        //var_dump($contaUsuariosAptos);
                         
                         if ($contaUsuariosAptos > 1) {
-                            
-                            $numeroRandomico = rand(0, $contaUsuariosAptos);
 
+                            $numeroRandomico = rand(0, $contaUsuariosAptos);
                             $idEscolhido = $usuarios_aptos[$numeroRandomico];
 
                         } else {
@@ -322,8 +325,10 @@ class Transferencia extends CI_Controller {
                         );
 
                         $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
+                        //print_r($transfereProximaEtapa);
 
                         $idMostraDirecionamento = $idEscolhido;
+                        
                     } else {
 
                         $usuarios_quantidada_documento = $this->docmodel->quantidade_documentos_usuario($usuariosAptosImplode);
@@ -369,6 +374,8 @@ class Transferencia extends CI_Controller {
                             'etapa' => $proxima_etapa,
                             'documento' => $idprotocolo
                         );
+
+                        print_r($transfereProximaEtapa);
 
                         $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
 
