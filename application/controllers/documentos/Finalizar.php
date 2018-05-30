@@ -54,39 +54,40 @@ class Finalizar extends CI_Controller {
         $segundo_turno_inicio   = $horario->tarde_entrada;
         $segundo_turno_fim      = $horario->tarde_saida;
 
-        $primeiro_turno_inicio_ex  = explode(":", $primeiro_turno_inicio);
+        $primeiro_turno_inicio_ex = explode(":", $primeiro_turno_inicio);
         $primeiro_turno_inicio_min = ($primeiro_turno_inicio_ex[0] * 60) + $primeiro_turno_inicio_ex[1];
 
-        $primeiro_turno_fim_ex  = explode(":", $primeiro_turno_fim);
+        $primeiro_turno_fim_ex = explode(":", $primeiro_turno_fim);
         $primeiro_turno_fim_min = ($primeiro_turno_fim_ex[0] * 60) + $primeiro_turno_fim_ex[1];
 
-        $segundo_turno_inicio_ex  = explode(":", $segundo_turno_inicio);
+        $segundo_turno_inicio_ex = explode(":", $segundo_turno_inicio);
         $segundo_turno_inicio_min = ($segundo_turno_inicio_ex[0] * 60) + $segundo_turno_inicio_ex[1];
 
-        $segundo_turno_fim_ex  = explode(":", $segundo_turno_fim);
+        $segundo_turno_fim_ex = explode(":", $segundo_turno_fim);
         $segundo_turno_fim_min = ($segundo_turno_fim_ex[0] * 60) + $segundo_turno_fim_ex[1];
 
-
         $minutos_turno_primeiro = ($primeiro_turno_fim_min - $primeiro_turno_inicio_min);
-        $minutos_turno_segundo  = ($segundo_turno_fim_min - $segundo_turno_inicio_min);
-        $minutos_turno_total    = $minutos_turno_primeiro + $minutos_turno_segundo;
+        $minutos_turno_segundo = ($segundo_turno_fim_min - $segundo_turno_inicio_min);
+        $minutos_turno_total = $minutos_turno_primeiro + $minutos_turno_segundo;
 
         $dataFim = date("Y-m-d H:i:s");
 
-        $dataInicioExplode = explode(" ". $dataInicio);
+        $dataInicioExplode = explode(" ", $dataInicio);
         $dataInicioQuebrada = $dataInicioExplode[0];
         $HoraInicioQuebrada = $dataInicioExplode[1];
         $HoraInicioQuebrada = explode(":", $HoraInicioQuebrada);
-        $HoraInicioQuebrada = $HoraInicioQuebrada[0] . ":" . $HoraInicioQuebrada[1];
+        $HoraInicioQuebrada = $HoraInicioQuebrada[0].":".$HoraInicioQuebrada[1];
 
-        $dataFimExplode  = explode(" ",$dataFim);
+
+        $dataFimExplode = explode(" ", $dataFim);
         $dataFimQuebrada = $dataFimExplode[0];
         $HoraFimQuebrada = $dataFimExplode[1];
         $HoraFimQuebrada = explode(":", $HoraFimQuebrada);
-        $HoraFimQuebrada = $HoraFimQuebrada[0] . ":" . $HoraFimQuebrada[1];
+        $HoraFimQuebrada = $HoraFimQuebrada[0].":".$HoraFimQuebrada[1];
 
-        $dataInicioQuebrada = $dataInicioQuebrada;
+        $dataInicioVerifica = $dataInicioQuebrada;
 
+        
         if ($dataInicioQuebrada == $dataFimQuebrada) {
             
             $somatorioTotalMinutos = 0;
@@ -106,54 +107,64 @@ class Finalizar extends CI_Controller {
                 $minutos = $minutos_a + $minutos_b;
 
                 $somatorioTotalMinutos = $minutos;
-                
-            } elseif ((($HoraInicioQuebrada >= $primeiro_turno_inicio) and ($HoraInicioQuebrada <= $primeiro_turno_fim)) and (($HoraInicioQuebrada >= $primeiro_turno_inicio) and ($HoraInicioQuebrada <= $primeiro_turno_fim))) {
+
+                //echo "<br/> Somatório de minutos ". $somatorioTotalMinutos;
+
+            }elseif((($HoraInicioQuebrada >= $primeiro_turno_inicio) and ($HoraInicioQuebrada <= $primeiro_turno_fim)) and (($HoraInicioQuebrada >= $primeiro_turno_inicio) and ($HoraInicioQuebrada <= $primeiro_turno_fim))) {
                 
                 $HoraInicioQuebradaExplode = explode(":", $HoraInicioQuebrada);
                 $HoraInicioQuebradaMinutos = ($HoraInicioQuebradaExplode[0] * 60) + $HoraInicioQuebradaExplode[1];
-
+        
                 $HoraFimQuebradaExplode = explode(":", $HoraFimQuebrada);
                 $HoraFimQuebradaMinutos = ($HoraFimQuebradaExplode[0] * 60) + $HoraFimQuebradaExplode[1];
-
+        
                 $minutos = ($HoraFimQuebradaMinutos - $HoraInicioQuebradaMinutos);
+        
+                $somatorioTotalMinutos = $minutos;
 
-                $somatorioTotalMinutos = $minutos;  
-            
-            } elseif((($HoraInicioQuebrada >=  $segundo_turno_inicio) and ($HoraInicioQuebrada <= $segundo_turno_fim)) and (($HoraInicioQuebrada >= $segundo_turno_inicio) and ($HoraInicioQuebrada <= $segundo_turno_fim))){
+                //echo "<br/> Somatório de minutos ". $somatorioTotalMinutos;
+
+
+            }elseif( (($HoraInicioQuebrada >= $segundo_turno_inicio) and ($HoraInicioQuebrada <= $segundo_turno_fim)) and (($HoraInicioQuebrada >= $segundo_turno_inicio) and ($HoraInicioQuebrada <= $segundo_turno_fim))) {
                 
                 $HoraInicioQuebradaExplode = explode(":", $HoraInicioQuebrada);
                 $HoraInicioQuebradaMinutos = ($HoraInicioQuebradaExplode[0] * 60) + $HoraInicioQuebradaExplode[1];
-
+        
                 $HoraFimQuebradaExplode = explode(":", $HoraFimQuebrada);
                 $HoraFimQuebradaMinutos = ($HoraFimQuebradaExplode[0] * 60) + $HoraFimQuebradaExplode[1];
-
-                $minutos = ($HoraFimQuebradaMinutos - $HoraInicioQuebrada);
-
+        
+                $minutos = ($HoraFimQuebradaMinutos - $HoraInicioQuebradaMinutos);
+        
                 $somatorioTotalMinutos = $minutos;
 
-            } else {
+                //echo "<br/> Somatório de minutos ". $somatorioTotalMinutos;
 
+            }else{
+                
                 $HoraInicioQuebradaExplode = explode(":", $HoraInicioQuebrada);
-                $HoraInicioQuebradaMinutos = ($HoraInicioQuebradaExplode[0] * 60) + $HoraINicioQuebradaExplode[1];
-
+                $HoraInicioQuebradaMinutos = ($HoraInicioQuebradaExplode[0] * 60) + $HoraInicioQuebradaExplode[1];
+        
                 $HoraFimQuebradaExplode = explode(":", $HoraFimQuebrada);
                 $HoraFimQuebradaMinutos = ($HoraFimQuebradaExplode[0] * 60) + $HoraFimQuebradaExplode[1];
-
+        
                 $minutos = $HoraFimQuebradaMinutos - $HoraInicioQuebradaMinutos;
-
+        
                 $somatorioTotalMinutos = $minutos;
 
+                //echo "<br/> Somatório de minutos ". $somatorioTotalMinutos;
+        
             }
+
         } else {
 
             $i = 0;
             $contadorDias = 0;
             while($i != 1){
-                $dataVerifica = strtotime("+1 day", strtotime($dataInicioVerifica));
-                $dataInicioVerifica = date("Y-m-d", $dataVerifica);
-
+                $dataVerifica = strtotime ("+1 day", strtotime($dataInicioVerifica));
+                $dataInicioVerifica = date ("Y-m-d", $dataVerifica);
+                
                 $contadorDias++;
-                if ($dataFimQuebrada == $dataInicioVerifica) {
+                if($dataFimQuebrada == $dataInicioVerifica){
                     $i = 1;
                     $contadorDias--;
                 }
@@ -162,22 +173,67 @@ class Finalizar extends CI_Controller {
             $somatorioTotalMinutos = $contadorDias * $minutos_turno_total;
             $debugSomatorioTotalMinutos = $somatorioTotalMinutos;
 
-            if ($HoraInicioQuebrada <= $primeiro_turno_fim) {
+
+            if($HoraInicioQuebrada <= $primeiro_turno_fim){
                 
                 $HoraInicioQuebradaExplode = explode(":", $HoraInicioQuebrada);
-                $HoraInicioQuebradaMinutos = ($HoraInicioQuebradaExplode[0] * 60 ) + $HoraInicioQuebradaExplode[1];
+                $HoraInicioQuebradaMinutos = ($HoraInicioQuebradaExplode[0] * 60) + $HoraInicioQuebradaExplode[1];
 
                 $minutos_inicio = ($primeiro_turno_fim_min - $HoraInicioQuebradaMinutos) + $minutos_turno_segundo;
 
-            } else {
-
+            }else{
+                
                 $HoraInicioQuebradaExplode = explode(":", $HoraInicioQuebrada);
-                $HoraInicioQuebradaMinutos = ($HoraInicioQuebradaExplode[0] * 60) + $HorasInicioQuebradaExplode[1];
+                $HoraInicioQuebradaMinutos = ($HoraInicioQuebradaExplode[0] * 60) + $HoraInicioQuebradaExplode[1];
 
                 $minutos_inicio = ($segundo_turno_fim_min - $HoraInicioQuebradaMinutos);
 
             }
 
+            $somatorioTotalMinutos = $somatorioTotalMinutos + $minutos_inicio;
+
+            if($HoraFimQuebrada <= $primeiro_turno_fim){
+                
+                $HoraFimQuebradaExplode = explode(":", $HoraFimQuebrada);
+                $HoraFimQuebradaMinutos = ($HoraFimQuebradaExplode[0] * 60) + $HoraFimQuebradaExplode[1];
+                
+                $minutos_fim = ($primeiro_turno_fim_min - $HoraFimQuebradaExplode);
+
+            }else{
+                
+                $HoraFimQuebradaExplode = explode(":", $HoraFimQuebrada);
+                $HoraFimQuebradaMinutos = ($HoraFimQuebradaExplode[0] * 60) + $HoraFimQuebradaExplode[1];
+
+                $minutos_fim = ($HoraFimQuebradaMinutos - $segundo_turno_inicio_min) + $minutos_turno_primeiro;
+
+            }
+
+            $somatorioTotalMinutos = $somatorioTotalMinutos + $minutos_fim;
+
+            //echo "<br/> Somatório de minutos ". $somatorioTotalMinutos;
+        }
+
+        $log_tempo = array(
+            'id_protocolo'  => $idprotocolo, 
+            'id_etapa'      => $etapa, 
+            'data_inicio'   => $dataInicio, 
+            'data_fim'      => $dataFim,  
+            'total_minutos' => $somatorioTotalMinutos
+        );
+
+        if($this->docmodel->cadastrar_documento_tempo($log_tempo)){
+
+            if ($this->docmodel->editar_documentos_log($idprotocolo)) {
+                
+                $finalizado = array(
+                    'descricao'     => "FINALIZADO",
+                    'data_hora'     => date("Y-m-d H:i:s"),
+                    'ultima_etapa'  => 'false',
+                    'usuario'       => $_SESSION["idusuario"],
+                    'etapa'         => 0,
+                    'documento'     => $idprotocolo
+                );
+            }
         }
 
     }
