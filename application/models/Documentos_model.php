@@ -87,13 +87,32 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método responsável por retornar a quantidade de documentos por usuários
+     * Utilizado no controller documentos/Documentos.php e documentos/Transferencia.php
+     *
+     * @param array $usuarios
+     * @return int
+     */
+    public function documento_por_usuario($usuarios){
+        $this->db->select("usuario, count(*) as 'quantidade_documentos'");
+        $this->db->from('tblog_documentos');
+        $this->db->where("usuario in ($usuarios)");
+        $this->db->where('ultima_etapa', "true");
+        $this->db->group_by('usuario');
+        $this->db->order_by("'quantidade_documentos' asc");
+        $this->db->limit(1);
+
+        return $this->db->get('')->row('usuario');
+    }
+
+    /**
      * Método responsável por retornar os dados do documento em execução
      * Utilizado no controller documentos/Transferencia.php
      *
      * @param int $idprotocolo
      * @return object retorna um objeto de dados
      */
-    public function documento_tranferencia($idprotocolo){
+    public function documento_transferencia($idprotocolo){
         $this->db->from('tblog_documentos');
         $this->db->where('documento =', $idprotocolo);
         $this->db->where('ultima_etapa =', 'true');
@@ -288,25 +307,6 @@ class Documentos_model extends CI_Model {
         $this->db->where('ultima_etapa = ', 'true');
         $this->db->limit(1);
         return $this->db->get()->row('usuario');
-    }
-
-    /**
-     * Método responsável por retornar a quantidade de documentos por usuários
-     * Utilizado no controller documentos/Documentos.php e documentos/Transferencia.php
-     *
-     * @param array $usuarios
-     * @return int
-     */
-    public function documento_por_usuario($usuarios){
-        $this->db->select("usuario, count(*) as 'quantidade_documentos'");
-        $this->db->from('tblog_documentos');
-        $this->db->where("usuario in ($usuarios)");
-        $this->db->where('ultima_etapa', "true");
-        $this->db->group_by('usuario');
-        $this->db->order_by("'quantidade_documentos' asc");
-        $this->db->limit(1);
-
-        return $this->db->get('')->row('usuario');
     }
 
 }

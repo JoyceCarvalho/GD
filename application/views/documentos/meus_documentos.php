@@ -82,7 +82,7 @@
                                                             $last_step = $this->docetapamodel->ultima_etapa($documentos->iddocumento);
                                                             if ($last_step == $documentos->idetapa) {
                                                                 ?>
-                                                                <a href="#" class="blockA">Finalizar Documento</a>
+                                                                <a href="<?=base_url('finalizar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockA">Finalizar Documento</a>
                                                                 <?php
                                                             } else {
                                                                 ?>

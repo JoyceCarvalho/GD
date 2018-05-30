@@ -43,7 +43,7 @@ class Transferencia extends CI_Controller {
         $dados = new stdClass;
 
         //recebe os objetos retornados pela função documento_transferencia(int);
-        $dados = $this->docmodel->documento_tranferencia($idprotocolo);
+        $dados = $this->docmodel->documento_transferencia($idprotocolo);
 
         //armazena o atributo data_hora do objeto dados;
         $dataInicio = $dados->data_hora;
@@ -287,7 +287,6 @@ class Transferencia extends CI_Controller {
                             }
 
                         }
-                        
 
                     }     
                     

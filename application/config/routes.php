@@ -138,12 +138,13 @@ $route["edit_erro"]             = "conf/erros/editar_erro";
 $route["excluir_erro"]          = "conf/erros/excluir_erro";
 
 //Rotas referentes a pasta documentos
-$route["novo_documento"]            = "documentos/Documento";
-$route["find_doc/(:num)"]           = "documentos/Documento/busca_documentos/$1";
-$route["find_steps/(:num)"]         = "documentos/Documento/busca_etapas/$1";
-$route["cad_novo_doc"]              = "documentos/Documento/cadastrar_novo_documento";
-$route["meusdocumentos"]            = "documentos/Documento/meus_documentos";
-$route["get_time"]                  = "documentos/Documento/get_time";
-$route["grava_acao"]                = "documentos/Documento/grava_acao";
-$route["proxima_etapa/(:any)"]      = "documentos/Transferencia/transfere_etapa/$1";
-$route["meus_documentos/(:any)"]    = "documentos/Documento/meus_documentos_msg/$1";
+$route["novo_documento"]             = "documentos/Documento";
+$route["find_doc/(:num)"]            = "documentos/Documento/busca_documentos/$1";
+$route["find_steps/(:num)"]          = "documentos/Documento/busca_etapas/$1";
+$route["cad_novo_doc"]               = "documentos/Documento/cadastrar_novo_documento";
+$route["meusdocumentos"]             = "documentos/Documento/meus_documentos";
+$route["get_time"]                   = "documentos/Documento/get_time";
+$route["grava_acao"]                 = "documentos/Documento/grava_acao";
+$route["proxima_etapa/(:any)"]       = "documentos/Transferencia/transfere_etapa/$1";
+$route["meus_documentos/(:any)"]     = "documentos/Documento/meus_documentos_msg/$1";
+$route["finalizar_documento/(:any)"] = "documentos/Finalizar/$1";
