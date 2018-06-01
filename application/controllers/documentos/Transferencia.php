@@ -18,7 +18,7 @@ class Transferencia extends CI_Controller {
 
     public function transfere_etapa($identificador){
 
-        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] == true )) {
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true )) {
             redirect("/");
         }
 
@@ -399,6 +399,63 @@ class Transferencia extends CI_Controller {
             $mensagem = "error";
 
             redirect("meus_documentos/".$mensagem);
+
+        }
+
+    }
+
+    public function retorna_etapa($identificador){
+
+        if((!isset($_SESSION["logado"])) and ($_SESSION["logado"] != true)){
+            redirect("/");
+        }
+
+        //transforma o identificador em um array
+        $id = str_split($identificador);
+
+        //pega o valor total do array (quantidade de caracteres)
+        $tamanho = count($id);
+
+        $protocolo = "";
+
+        for ($i=32; $i < $tamanho ; $i++) { 
+            $protocolo .= $id[$i];
+        }
+
+        //transforma a string em inteiro
+        $idprotocolo = (int)$protocolo;
+
+        $etapa_atual = $this->docmodel->etapa_documento($idprotocolo);
+
+        $anterior = $this->docmodel->etapa_anterior($idprotocolo, $etapa_atual);
+
+        $usuario_anterior = $anterior->usuario;
+        $etapa_anterior = $anterior->etapa;
+
+        if($this->docmodel->editar_documentos_log($idprotocolo)){
+
+            $retornar = array(
+                'descricao'     => "RETORNO ETAPA", 
+                'data_hora'     => date("Y-m-d H:i:s"),
+                'ultima_etapa'  => "true",
+                'usuario'       => $usuario_anterior,
+                'etapa'         => $etapa_anterior,
+                'documento'     => $idprotocolo
+            );
+
+            if ($this->docmodel->cadastrar_log_documento($retornar)) {
+                
+                $mensagem = "success";
+
+                redirect("/");
+
+            } else {
+
+                $mensagem = "error";
+
+                redirect("/");
+                
+            }
 
         }
 

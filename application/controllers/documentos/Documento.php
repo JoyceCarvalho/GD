@@ -288,6 +288,31 @@ class Documento extends CI_Controller {
 
     }
 
+    
+    public function editar_documento($identificador){
+
+        if ((!isset($_SESSION["logado"])) and ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+        
+        //transforma o identificador em um array
+        $id = str_split($identificador);
+
+        //pega o valor total do array (quantidade de caracteres)
+        $tamanho = count($id);
+
+        $protocolo = "";
+
+        for ($i=32; $i < $tamanho ; $i++) { 
+            $protocolo .= $id[$i];
+        }
+
+        //transforma a string em inteiro
+        $idprotocolo = (int)$protocolo;
+
+    }
+
+
     public function meus_documentos(){
         
         if((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)){

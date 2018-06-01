@@ -147,4 +147,5 @@ $route["get_time"]                   = "documentos/Documento/get_time";
 $route["grava_acao"]                 = "documentos/Documento/grava_acao";
 $route["proxima_etapa/(:any)"]       = "documentos/Transferencia/transfere_etapa/$1";
 $route["meus_documentos/(:any)"]     = "documentos/Documento/meus_documentos_msg/$1";
-$route["finalizar_documento/(:any)"] = "documentos/Finalizar/$1";
+$route["finalizar_documento/(:any)"] = "documentos/Finalizar/finalizado/$1";
+$route["etapa_aterior/(:any)"]       = "documentos/Transferencia/retorna_etapa/$1";

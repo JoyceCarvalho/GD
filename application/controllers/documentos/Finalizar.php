@@ -12,10 +12,10 @@ class Finalizar extends CI_Controller {
         $this->load->model('competencia_model', 'compmodel');
         $this->load->model('usuario_model', 'usermodel');
         $this->load->model('empresa_model', 'empresamodel');
-        $this->load->model('etapa_model', 'etapasmodel');
+        $this->load->model('etapas_model', 'etapasmodel');
     }
 
-    public function index($identificador){
+    public function finalizado($identificador){
         
         if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
             
@@ -233,6 +233,8 @@ class Finalizar extends CI_Controller {
                     'etapa'         => 0,
                     'documento'     => $idprotocolo
                 );
+
+                //print_r($finalizado);
 
                 if($this->docmodel->cadastrar_log_documento($finalizado)){
                     

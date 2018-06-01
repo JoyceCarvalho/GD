@@ -92,7 +92,7 @@
                                                             
                                                             if ($documentos->ordem > 1) {
                                                                 ?>
-                                                                <a href="#" class="blockC">Retornar Etapa Aterior</a>
+                                                                <a href="<?=base_url('etapa_aterior/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockC">Retornar Etapa Aterior</a>
                                                                 <?php
                                                             }
                                                             if($documentos->ordem == 1){
@@ -142,7 +142,7 @@
                                                             $last_step = $this->docetapamodel->ultima_etapa($documentos->iddocumento);
                                                             if ($last_step == $documentos->idetapa) {
                                                                 ?>
-                                                                <a href="#" class="blockA">Finalizar Documento</a>
+                                                                <a href="<?=base_url('finalizar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockA">Finalizar Documento</a>
                                                                 <?php
                                                             } else {
                                                                 ?>
@@ -152,7 +152,7 @@
                                                             
                                                             if ($documentos->ordem > 1) {
                                                                 ?>
-                                                                <a href="#" class="blockC">Retornar Etapa Aterior</a>
+                                                                <a href="<?=base_url('etapa_aterior/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockC">Retornar Etapa Aterior</a>
                                                                 <?php
                                                             }
                                                             if($documentos->ordem == 1){

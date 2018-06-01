@@ -159,6 +159,24 @@ class Documentos_model extends CI_Model {
         $this->db->where('id = ', $id);
         return $this->db->delete('tbdocumento');
     }
+    
+    /**
+     * Método responsável por retornar a etapa e o usuario da etapa anterior
+     *
+     * @param int $documento
+     * @param int $etapa
+     * @return object
+     */
+    public function etapa_anterior($documento, $etapa){
+        $this->db->select("etapa, usuario");
+        $this->db->from('tblog_documentos');
+        $this->db->where('documento = ', $documento);
+        $this->db->where('ultima_etapa =', "false");
+        $this->db->where('etapa != ', $etapa);
+        $this->db->order_by('id desc');
+        $this->db->limit(1);
+        return $this->db->get('')->row();
+    }
 
     /**
      * Método responsável por retornar a etapa atual do documento cadastrado
