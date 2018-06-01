@@ -72,6 +72,20 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método para retornar os dados do documento a ser editado
+     *
+     * @param int $id
+     * @return object
+     */
+    public function dados_documento_cad($id){
+        $this->db->select("dc.protocolo as protocolo, dc.id as id, d.fk_idgrupo as grupo, d.titulo as documento_nome, d.id as iddocumento");
+        $this->db->from('tbdocumentos_cad as dc');
+        $this->db->join('tbdocumento as d', "d.id = dc.fk_iddocumento");
+        $this->db->where('dc.id', $id);
+        return $this->db->get()->result();
+    }
+
+    /**
      * Método para pegar o id do documento
      * Utilizado no controller documento/Documento.php
      *

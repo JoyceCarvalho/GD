@@ -97,7 +97,7 @@
                                                             }
                                                             if($documentos->ordem == 1){
                                                                 ?>
-                                                                <a href="#">Editar Documento</a>
+                                                                <a href="<?=base_url('editar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Editar Documento</a>
                                                                 <?php
                                                             }
                                                         ?>
@@ -157,7 +157,7 @@
                                                             }
                                                             if($documentos->ordem == 1){
                                                                 ?>
-                                                                <a href="#">Editar Documento</a>
+                                                                <a href="<?=base_url('editar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Editar Documento</a>
                                                                 <?php
                                                             }
                                                         ?>

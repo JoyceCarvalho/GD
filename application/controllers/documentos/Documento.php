@@ -310,6 +310,23 @@ class Documento extends CI_Controller {
         //transforma a string em inteiro
         $idprotocolo = (int)$protocolo;
 
+        $iddocumento = $this->docmodel->documento_id($idprotocolo);
+
+        $dados["pagina"] = "Novo Documento";
+        $dados["pg"] = "documentos";
+        $dados["submenu"] = "novodoc";
+
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
+        $dados["dados_documento"] = $this->docmodel->dados_documento_cad($idprotocolo);
+
+        $this->load->view("template/html_header", $dados);
+        $this->load->view('template/header');
+        $this->load->view('template/menu');
+        $this->load->view('documentos/novo_documento');
+        $this->load->view('template/footer');
+        $this->load->view('template/html_footer');
+
     }
 
 

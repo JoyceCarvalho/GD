@@ -40,52 +40,58 @@
                         <h3 class="h4">Novo Documento</h3>
                     </div>
                     <div class="card-body">
-                        <form action="<?=base_url("cad_novo_doc");?>" method="post">
-                            <div class="form-group row">
-                                <label class="col-sm-3 form-control-label">Protocolo</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="protocolo" onkeydown="upperCaseF(this)">
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-sm-3 form-control-label">Número de atos</label>
-                                <div class="col-sm-9">
-                                    <input type="number" name="atos" id="numero_atos" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 form-control-label">Grupo</label>
-                                <div class="col-sm-9">
-                                    <select name="grupo" id="idgrupo" class="form-control">
-                                        <option> --Selecione-- </option>
-                                        <?php 
-                                        foreach ($grupo_dados as $grupos) {
-                                            ?>
-                                            <option value="<?=$grupos->id;?>"><?=$grupos->titulo;?></option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 form-control-label">Documento</label>
-                                <div class="col-sm-9">
-                                    <select name="documento" id="sel_docs" class="form-control">
-                                        <option>Carregar documentos ... </option>
-                                    </select>
-                                </div>
-                            </div>
+                        <form action="<?=base_url("edit_novo_doc");?>" method="post">
                             
-                            <div class="form-group row" id="addprazo"></div>
-
-                            <div id="p_doc" class="row" style="display:none;">
-                                <label class="col-sm-3 form-control-label">Prazos</label>
-                                <div class="col-sm-9" id="botaoprazo">
-                                    <a href="javascript:void(0)" id="prazos" class="btn btn-sm btn-success"><i class="fa fa-plus-circle"></i> Adicionar Prazos</a>
+                            <?php
+                            foreach ($dados_documentos as $doc) {
+                                ?>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 form-control-label">Protocolo</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" disabled="disabled" class="form-control" name="protocolo" value="<?=$doc->protocolo;?>" onkeydown="upperCaseF(this)">
+                                    </div>
                                 </div>
-                            </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 form-control-label">Grupo</label>
+                                    <div class="col-sm-9">
+                                        <select name="grupo" id="idgrupo" class="form-control">
+                                            <option> --Selecione-- </option>
+                                            <?php 
+                                            foreach ($grupo_dados as $grupos) {
+                                                if($grupos->id == $doc->grupos){
+                                                    $sel = "selected=\"selected\"";
+                                                } else {
+                                                    $sel = "";
+                                                }
+                                                ?>
+                                                <option <?=$sel?> value="<?=$grupos->id;?>"><?=$grupos->titulo;?></option>
+                                                <?php
+                                            }
+                                            ?> 
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 form-control-label">Documento</label>
+                                    <div class="col-sm-9">
+                                        <select name="documento" id="sel_docs" class="form-control">
+                                            <option value="<?=$doc->iddocumento;?>" ><?=$doc->documento_nome;?></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row" id="addprazo"></div>
+
+                                <div id="p_doc" class="row" style="display:none;">
+                                    <label class="col-sm-3 form-control-label">Prazos</label>
+                                    <div class="col-sm-9" id="botaoprazo">
+                                        <a href="javascript:void(0)" id="prazos" class="btn btn-sm btn-success"><i class="fa fa-plus-circle"></i> Adicionar Prazos</a>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                            ?>
                             
                             <br/>
 

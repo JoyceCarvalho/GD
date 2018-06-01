@@ -149,3 +149,4 @@ $route["proxima_etapa/(:any)"]       = "documentos/Transferencia/transfere_etapa
 $route["meus_documentos/(:any)"]     = "documentos/Documento/meus_documentos_msg/$1";
 $route["finalizar_documento/(:any)"] = "documentos/Finalizar/finalizado/$1";
 $route["etapa_aterior/(:any)"]       = "documentos/Transferencia/retorna_etapa/$1";
+$route["editar_documento/(:any)"]    = "documentos/Documento/editar_documento/$1";
