@@ -233,6 +233,19 @@ class Finalizar extends CI_Controller {
                     'etapa'         => 0,
                     'documento'     => $idprotocolo
                 );
+
+                if($this->docmodel->cadastrar_log_documento($finalizado)){
+                    
+                    $mensagem = "success";
+
+                    redirect("meus_documentos/".$mensagem);
+
+                } else {
+
+                    $mensagem = "error";
+
+                    redirect("meus_documentos/".$mensagem);
+                }
             }
         }
 

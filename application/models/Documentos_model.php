@@ -37,7 +37,7 @@ class Documentos_model extends CI_Model {
     
     /**
      * Método responsável por cadastrar os logs de documentos
-     * Utilizados pelo controller documentos/Documento.php e documentos/Transferencia.php
+     * Utilizados pelo controller documentos/Documento.php e documentos/Transferencia.php e documentos/Finalizar.php
      *
      * @param array $dados
      * @return int retorna o numero de linhas afetadas
@@ -222,7 +222,7 @@ class Documentos_model extends CI_Model {
         e.titulo AS etapa, ldA.data_hora AS data_criacao, u.nome AS nome_usuario, de.ordem as ordem, dc.id as idprotocolo');
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
-        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo = "cargo"');
+        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="cargo"');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
         $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
