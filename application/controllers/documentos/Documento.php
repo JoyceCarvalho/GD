@@ -323,9 +323,88 @@ class Documento extends CI_Controller {
         $this->load->view("template/html_header", $dados);
         $this->load->view('template/header');
         $this->load->view('template/menu');
-        $this->load->view('documentos/novo_documento');
+        $this->load->view('documentos/editar_documento');
         $this->load->view('template/footer');
         $this->load->view('template/html_footer');
+
+    }
+
+    public function editar_novo_documento(){
+
+        if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
+            redirect("/");
+        }
+        
+        $data = new stdClass();
+
+        $idprotocolo = $this->input->post("idprotocolo");
+
+        $dados = array(
+            'status'         => 'Modificado', 
+            'fk_iddocumento' => $this->input->post('documento')
+        );
+
+        if ($this->docmodel->editar_novo_documento($idprotocolo, $dados)) {
+            
+            if($this->etapasmodel->exclui_prazoetapa($idprotocolo)){
+
+                $steps = $this->input->post("prazo_etapa");
+    
+                if (isset($steps)) {
+    
+                    for ($i=1; $i <= $steps; ++$i) { 
+                        //echo "<br/>".$i."<br/>";
+                        $etapas = array(
+                            'prazo'           => $this->input->post("prazo[$i]"),
+                            'fk_idetapas'     => $this->input->post("etapas[$i]"),
+                            'fk_iddocumento'  => $idprotocolo
+                        );
+    
+                        $prazos = $this->etapasmodel->cadastrar_etapas_prazos($etapas);
+    
+                    }
+    
+                }
+
+                $data->success = "Documento atualizado com sucesso!";
+        
+                $dados["pagina"]    = "Novo Documento";
+                $dados["pg"]        = "documentos";
+                $dados["submenu"]   = "novodoc";
+
+                $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
+                $dados["dados_documento"] = $this->docmodel->dados_documento_cad($idprotocolo);
+
+                $this->load->view("template/html_header", $dados);
+                $this->load->view('template/header');
+                $this->load->view('template/menu', $data);
+                $this->load->view('documentos/meus_documentos');
+                $this->load->view('template/footer');
+                $this->load->view('template/html_footer');
+    
+            } else {
+
+                $data->success = "Ocorreu um problema ao editar o documento. Favor entre em contato com o suporte e tente novamente mais tarde!";
+    
+                $dados["pagina"]  = "Novo Documento";
+                $dados["pg"]      = "documentos";
+                $dados["submenu"] = "novodoc";
+
+                $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
+                $dados["dados_documento"] = $this->docmodel->dados_documento_cad($idprotocolo);
+
+                $this->load->view("template/html_header", $dados);
+                $this->load->view('template/header');
+                $this->load->view('template/menu', $data);
+                $this->load->view('documentos/meus_documentos');
+                $this->load->view('template/footer');
+                $this->load->view('template/html_footer');
+
+            }
+            
+        }
 
     }
 

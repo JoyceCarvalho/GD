@@ -43,12 +43,13 @@
                         <form action="<?=base_url("edit_novo_doc");?>" method="post">
                             
                             <?php
-                            foreach ($dados_documentos as $doc) {
+                            foreach ($dados_documento as $doc) {
                                 ?>
                                 <div class="form-group row">
                                     <label class="col-sm-3 form-control-label">Protocolo</label>
                                     <div class="col-sm-9">
                                         <input type="text" disabled="disabled" class="form-control" name="protocolo" value="<?=$doc->protocolo;?>" onkeydown="upperCaseF(this)">
+                                        <input type="hidden" name="idprotocolo" value="<?=$doc->id;?>">
                                     </div>
                                 </div>
 
@@ -59,7 +60,7 @@
                                             <option> --Selecione-- </option>
                                             <?php 
                                             foreach ($grupo_dados as $grupos) {
-                                                if($grupos->id == $doc->grupos){
+                                                if($grupos->id == $doc->grupo){
                                                     $sel = "selected=\"selected\"";
                                                 } else {
                                                     $sel = "";

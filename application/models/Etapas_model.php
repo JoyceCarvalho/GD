@@ -148,4 +148,15 @@ class Etapas_model extends CI_Model {
         return $this->db->get()->row('prazo');
     }
 
+    /**
+     * Método para exclusão de prazos da etapa do documento
+     *
+     * @param int $id id do documento a que se refere o prazo
+     * @return int
+     */
+    public function exclui_prazoetapa($id){
+        $this->db->where('fk_iddocumento', $id);
+        return $this->db->delete("tbprazoetapa");
+    }
+
 }

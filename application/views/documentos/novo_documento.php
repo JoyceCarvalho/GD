@@ -44,20 +44,20 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Protocolo</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="protocolo" onkeydown="upperCaseF(this)">
+                                    <input type="text" class="form-control" name="protocolo" onkeydown="upperCaseF(this)" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Número de atos</label>
                                 <div class="col-sm-9">
-                                    <input type="number" name="atos" id="numero_atos" class="form-control">
+                                    <input type="number" name="atos" id="numero_atos" class="form-control" required>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Grupo</label>
                                 <div class="col-sm-9">
-                                    <select name="grupo" id="idgrupo" class="form-control">
+                                    <select name="grupo" id="idgrupo" class="form-control" required>
                                         <option> --Selecione-- </option>
                                         <?php 
                                         foreach ($grupo_dados as $grupos) {
@@ -72,7 +72,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Documento</label>
                                 <div class="col-sm-9">
-                                    <select name="documento" id="sel_docs" class="form-control">
+                                    <select name="documento" id="sel_docs" class="form-control" >
                                         <option>Carregar documentos ... </option>
                                     </select>
                                 </div>

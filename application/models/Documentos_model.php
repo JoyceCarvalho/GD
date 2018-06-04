@@ -163,6 +163,19 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método para editar um novo documento
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param int $id
+     * @param array $dados
+     * @return int
+     */
+    public function editar_novo_documento($id, $dados){
+        $this->db->where('id', $id);
+        return $this->db->update("tbdocumentos_cad", $dados);
+    }
+
+    /**
      * Função para excluir os dados da tabela tbdocumento
      * Utilizada no controller conf/Documento.php
      *
@@ -176,6 +189,7 @@ class Documentos_model extends CI_Model {
     
     /**
      * Método responsável por retornar a etapa e o usuario da etapa anterior
+     * Utilizado no controller documentos/Transferencia.php
      *
      * @param int $documento
      * @param int $etapa
