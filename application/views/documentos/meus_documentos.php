@@ -101,7 +101,7 @@
                                                                 <?php
                                                             }
                                                         ?>
-                                                        <a href="#">Ver Histórico Documento</a><br/>
+                                                        <a href="javascript:void(0)" id="historico">Ver Histórico Documento</a><br/>
                                                         <a href="#" class="blockD">Suspender Documento</a><br/>
                                                         <a href="#">Cancelar Documento</a><br/>
                                                         <a href="#">Apontar Erro</a><br/>
@@ -182,6 +182,27 @@
                 </div>
             </div>
         </div>    
+    </div>
+    <!-- Modal-->
+    <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+        <div role="document" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="exampleModalLabel" class="modal-title"></h4>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                </div>
+                    
+                <div class="modal-body" id="conteudo">                                                
+                    <div class="form-group">
+                        <p> Tem certeza que deseja excluir esta informação? </p>
+                    </div>
+                </div>
+            
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-danger"><i class="fa fa-times"></i> Fechar</button>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <script src="http://code.jquery.com/jquery.js"></script>
@@ -277,6 +298,42 @@ window.addEventListener("DOMContentLoaded", function() {
 					}
 				});
 			});
+
+            $('#historico').click(function(e){
+
+                var j = 0;
+
+                var iddocumento = $('#id_protocolo').val();
+
+                $.getJSON('<?=base_url();?>'+'historico_documento/'+iddocumento, function (dados){
+                    if (dados.length>0) {
+                        var option = '<div class="col-sm-12" id="steps">';
+                        $.each(dados, function(i, obj){
+                            j++;
+                            option += '<div class="form-group row">';
+                            option += '<input type="hidden" name="etapas['+j+']" value="'+obj.id+'">';
+                            option += '<label class="col-sm-3 form-control-label">'+obj.titulo+'</label>';
+                            option += '<div class="col-sm-9"> <input type="date" name="prazo['+j+']" class="form-control"></div></div>';
+                        })
+                        option += '<div class="line"></div>';
+                        option += '<hr>';
+                        option += '<div class="form-group row">';
+                        option += '<label class="form-control-label col-sm-3"> <strong>Prazo Final do documento</strong></label>';
+                        option += '<div class="col-sm-9">';
+                        option += '<input type="date" name="prazo_final" class="form-control">';
+                        option += '</div>';
+                        option += '</div>';
+                        option += '<input type="hidden" name="prazo_etapa" value="'+dados.length+'">';
+                        option += "</div>";
+                        $('#mensagem').html('<span class="mensagem">Total de estados encontrados.: '+dados.length+'</span>'); 
+                        console.log("Total de etapas "+dados.length+"!");
+                    } else {
+                        reset();
+                        $('#mensagem').html('<span class="mensagem">Não foram encontrados documentos cadastrados neste grupo!</span>');
+                    }
+                    $('#addprazo').html(option).show();
+                })
+            });
 
 		});
 		

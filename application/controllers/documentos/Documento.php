@@ -561,4 +561,10 @@ class Documento extends CI_Controller {
             'running' => $newAction === 'start',
         )); 
     }
+
+    public function historico_documento($id){
+
+        echo $this->docmodel->historico_documento($id);
+
+    }
 }

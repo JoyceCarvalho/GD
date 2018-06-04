@@ -151,3 +151,4 @@ $route["finalizar_documento/(:any)"] = "documentos/Finalizar/finalizado/$1";
 $route["etapa_aterior/(:any)"]       = "documentos/Transferencia/retorna_etapa/$1";
 $route["editar_documento/(:any)"]    = "documentos/Documento/editar_documento/$1";
 $route["edit_novo_doc"]              = "documentos/Documento/editar_novo_documento";
+$route["historico_documento/(:any)"] = "documentos/Documento/historico_documento/$1";
