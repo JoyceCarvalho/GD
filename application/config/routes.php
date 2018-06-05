@@ -154,3 +154,5 @@ $route["edit_novo_doc"]              = "documentos/Documento/editar_novo_documen
 $route["historico_documento/(:any)"] = "documentos/Documento/historico_documento/$1";
 $route["historico/(:any)"]           = "documentos/Documento/historico/$1";
 $route["suspender/(:any)"]           = "documentos/Transferencia/suspender_documento/$1";
+$route["cancelar_documento"]         = "documentos/Documento/cancelar_documento";
+$route["erro_documento"]             = "documentos/Documento/erro_documento";

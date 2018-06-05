@@ -56,6 +56,17 @@ class Documentos_model extends CI_Model {
     public function cadastrar_documento_tempo($dados){
         return $this->db->insert('tblog_documentos_tempo', $dados);
     }
+
+    /**
+     * Método para cadastro do cancelamento do documento
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param array $dados
+     * @return int
+     */
+    public function cadastrar_cancelamento($dados){
+        return $this->db->insert('tbcancelamento', $dados);
+    }
     
     /**
      * Função para listar os dados referentes a determinada linha da tabela tbdocumento

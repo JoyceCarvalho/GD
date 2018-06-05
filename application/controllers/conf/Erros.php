@@ -239,4 +239,10 @@ class Erros extends CI_Controller {
 
     }
 
+    public function erro_documento(){
+
+        echo $this->errosmodel->listar_erros_json($_SESSION["idempresa"]);
+
+    }
+
 }

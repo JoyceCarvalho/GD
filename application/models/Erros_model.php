@@ -68,5 +68,18 @@ class Erros_model extends CI_Model {
         $this->db->where('id = ', $id);
         return $this->db->get()->result();
     }
+
+    /**
+     * Método para listar erros
+     * Utilizado no controller conf/Erros.php
+     *
+     * @param id $empresa
+     * @return json retorna um json de dados
+     */
+    public function listar_erros_json($empresa){
+        $this->db->from('tberros');
+        $this->db->where('fk_idempresa = ', $empresa);
+        return json_encode($this->db->get()->result());
+    }
     
 }

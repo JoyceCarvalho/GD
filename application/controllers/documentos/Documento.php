@@ -471,6 +471,61 @@ class Documento extends CI_Controller {
 
     }
 
+    public function cancelar_documento(){
+
+        if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
+            redirect("/");
+        }
+
+        $idprotocolo = $this->input->post("idprotocolo");
+
+        if ($this->docmodel->editar_documentos_log($idprotocolo)) {
+            
+            $cancelamento = array(
+                'descricao'     => "CANCELADO", 
+                'data_hora'     => date("Y-m-d H:i:s"),
+                'ultima_etapa'  => "true",
+                'usuario'       => $_SESSION["idusuario"],
+                'etapa'         => 0,
+                'documento'     => $idprotocolo
+            );
+
+            if($this->docmodel->cadastrar_log_documento($cancelamento)){
+                
+                $dados = array(
+                    'motivo'         => $this->input->post("motivo"),
+                    'data_hora'      => date('Y-m-d H:i:s'),
+                    'fk_iddocumento' => $idprotocolo,
+                    'fk_idusuario'   => $_SESSION["idusuario"]
+                );  
+
+                if ($this->docmodel->cadastrar_cancelamento($dados)) {
+                    
+                    $mensagem = "cancelado";
+
+                    redirect("meus_documentos/".$mensagem);
+
+                } else {
+
+                    $mensagem = "error";
+
+                    redirect("meus_documentos/".$mensagem);
+
+                }
+            } else {
+
+                redirect("meus_documentos/error");
+
+            }
+
+        } else {
+
+            redirect("meus_documentos/error");
+
+        }
+
+    }
+
     public function busca_documentos($value){
 
         echo $this->docmodel->listar_documentos_json($value);

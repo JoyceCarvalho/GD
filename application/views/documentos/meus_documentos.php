@@ -163,7 +163,7 @@
                                                         ?>
                                                         <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
                                                         <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD">Suspender Documento</a><br/>
-                                                        <a href="#">Cancelar Documento</a><br/>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
                                                         <a href="#">Apontar Erro</a><br/>
                                                         <div class="line"></div>
                                                         <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
@@ -191,16 +191,31 @@
                     <h4 id="exampleModalLabel" class="modal-title"></h4>
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                 </div>
+                
+                <form action="<?=base_url('cancelar_documento');?>" method="post" id="cancelamento">
                     
-                <div class="modal-body" id="conteudo">                                                
-                    <div class="form-group">
-                        <p> Não há informações disponíveis no momento. Caso o problema persista entre em contato com o suporte. </p>
+                    <div class="modal-body" id="conteudo">                                                
+                        <div class="form-group">
+                            <p> Não há informações disponíveis no momento. Caso o problema persista entre em contato com o suporte. </p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="modal-body" id="historico_documento">
+                    <div class="modal-body" id="historico_documento">
+                        
+                    </div>
+
+                </form>
+
+                <form action="<?=base_url("erro_documento");?>" method="post" id="erro">
                     
-                </div>
+                    <div class="modal-body" id="doc_conteudo">                                                
+                        
+                    </div>
+
+                    <div class="modal-body" id="erro_form">
+                        
+                    </div>
+                </form>
             
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-danger"><i class="fa fa-times"></i> Fechar</button>
@@ -305,8 +320,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
             $('#historico_'+id_pro).click(function(e){
 
-                var j = 0;
-
                 //var iddocumento = $('#id_protocolo').val();
                 console.log(id_pro);
 
@@ -315,7 +328,6 @@ window.addEventListener("DOMContentLoaded", function() {
                         var titulo = 'Histórico do Documento';
                         var body = '<div class="form-group">';
                         $.each(dados, function(i, obj){
-                            j++;
                             body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
                             body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
                             body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
@@ -326,6 +338,7 @@ window.addEventListener("DOMContentLoaded", function() {
                     }
                     $('#exampleModalLabel').html(titulo).show();
                     $('#conteudo').html(body).show();
+                    $("#erro").hide();
                 });
 
                 $.getJSON('<?=base_url();?>'+'historico/'+id_pro, function (dados){
@@ -357,6 +370,91 @@ window.addEventListener("DOMContentLoaded", function() {
                     }
                     $("#historico_documento").html(data).show();
                 })
+            });
+
+            $("#cancelar_"+id_pro).click(function(e){
+                //var iddocumento = $('#id_protocolo').val();
+                console.log(id_pro);
+
+                $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
+                    if (dados.length>0) {
+                        var titulo = 'Cancelar documento';
+                        var body = '<div class="form-group">';
+                        $.each(dados, function(i, obj){
+                            body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
+                            body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
+                            body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
+                        })
+                        body += '</div>';
+                        body += '<hr/>';
+                        body += '<div class="form-group">';
+                        body += '<label>Motivo do cancelamento:</label>';
+                        body += '<textarea class="form-control" rows="6" name="motivo"></textarea>';
+                        body += '<input type="hidden" name="idprotocolo" value="'+id_pro+'">';
+                        body += '</div>';
+                        body += '<div class="form-group">';
+                        body += '<button type="submit" class="btn btn-sm btn-primary">Cadastrar Cancelamento</button>';
+                        body += '</div>';
+                    } else {
+                        reset();
+                    }
+                    $('#exampleModalLabel').html(titulo).show();
+                    $('#conteudo').html(body).show();
+                    $('#historico_documento').hide();
+                    $('#erro').hide();
+                });
+            });
+
+            $("#erro_"+id_pro).click(function(e){
+
+                $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
+                    if (dados.length>0) {
+                        var titulo = 'Apontar erros documento';
+                        var body = '<div class="form-group">';
+                        $.each(dados, function(i, obj){
+                            body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
+                            body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
+                            body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
+                        })
+                        body += '</div>';
+                        body += '<hr/>';
+                    } else {
+                        reset();
+                    }
+                    $("#exampleModalLabel").html(titulo).show();
+                    $("#doc_conteudo").html(body).show();
+
+                });
+                $.getJSON('<?=base_url();?>'+'erro_documento', function (dados){
+                    
+                    if (dados.length>0) {
+                        
+                        body += '<div class="form-group">';
+                        $.each(dados, function(i, obj){
+                            body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
+                            body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
+                            body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
+                        })
+                        body += '</div>';
+                        body += '<hr/>';
+                        body += '<div class="form-group">';
+                        body += '<label>Motivo do cancelamento:</label>';
+                        body += '<textarea class="form-control" rows="6" name="motivo"></textarea>';
+                        body += '<input type="hidden" name="idprotocolo" value="'+id_pro+'">';
+                        body += '</div>';
+                        body += '<div class="form-group">';
+                        body += '<button type="submit" class="btn btn-sm btn-primary">Cadastrar Cancelamento</button>';
+                        body += '</div>';
+
+                    } else {
+                        reset();
+                    }
+                    $('#exampleModalLabel').html(titulo).show();
+                    $('#erro').html(body).show();
+                    $('#historico_documento').hide();
+                    $('#cancelado').hide();
+                });
+
             });
 
 		});
