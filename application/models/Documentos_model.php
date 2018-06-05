@@ -230,17 +230,34 @@ class Documentos_model extends CI_Model {
      * @return json
      */
     public function historico_documento($idprotocolo){
-        $this->db->select("ld.descricao as descricao, dc.protocolo as protocolo, d.titulo as nome_documento, g.titulo as nome_grupo, e.titulo as nome_etapa");
+        $this->db->select("dc.protocolo as protocolo, d.titulo as nome_documento, g.titulo as nome_grupo");
         $this->db->from("tblog_documentos as ld");
         $this->db->join("tbdocumentos_cad as dc", "ld.documento = dc.id");
         $this->db->join("tbdocumento as d", "dc.fk_iddocumento = d.id");
         $this->db->join('tbgrupo as g', 'g.id = d.fk_idgrupo');
-        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id');
-        $this->db->join('tbetapa as e', 'e.id = de.idetapa');
         $this->db->where('dc.id =', $idprotocolo);
+        $this->db->group_by('dc.id');
         $query = $this->db->get();
 
         return json_encode($query->result());
+    }
+
+    /**
+     * Método responsável por listar o histórico do documento
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param int $idprotocolo
+     * @return json
+     */
+    public function historico_documentos_dados($idprotocolo){
+        $this->db->select("ld.descricao as descricao, u.nome as nome, DATE_FORMAT(ld.data_hora, '%d/%m/%Y') as data, DATE_FORMAT(ld.data_hora,'%H:%i') as hora, e.titulo as etapa");
+        $this->db->from("tblog_documentos as ld");
+        $this->db->join("tbusuario as u", "u.id = ld.usuario", "left");
+        $this->db->join("tbetapa as e", "e.id = ld.etapa", "left");
+        $this->db->where("ld.documento", $idprotocolo);
+        $this->db->order_by("ld.id asc");
+
+        return json_encode($this->db->get()->result());
     }
     
     /**

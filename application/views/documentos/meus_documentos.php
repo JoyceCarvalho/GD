@@ -101,7 +101,7 @@
                                                                 <?php
                                                             }
                                                         ?>
-                                                        <a href="javascript:void(0)" id="historico">Ver Histórico Documento</a><br/>
+                                                        <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
                                                         <a href="#" class="blockD">Suspender Documento</a><br/>
                                                         <a href="#">Cancelar Documento</a><br/>
                                                         <a href="#">Apontar Erro</a><br/>
@@ -161,7 +161,7 @@
                                                                 <?php
                                                             }
                                                         ?>
-                                                        <a href="#">Ver Histórico Documento</a><br/>
+                                                        <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
                                                         <a href="#" class="blockD">Suspender Documento</a><br/>
                                                         <a href="#">Cancelar Documento</a><br/>
                                                         <a href="#">Apontar Erro</a><br/>
@@ -196,6 +196,10 @@
                     <div class="form-group">
                         <p> Tem certeza que deseja excluir esta informação? </p>
                     </div>
+                </div>
+
+                <div class="modal-body" id="historico_documento">
+                    
                 </div>
             
                 <div class="modal-footer">
@@ -299,39 +303,59 @@ window.addEventListener("DOMContentLoaded", function() {
 				});
 			});
 
-            $('#historico').click(function(e){
+            $('#historico_'+id_pro).click(function(e){
 
                 var j = 0;
 
-                var iddocumento = $('#id_protocolo').val();
+                //var iddocumento = $('#id_protocolo').val();
+                console.log(id_pro);
 
-                $.getJSON('<?=base_url();?>'+'historico_documento/'+iddocumento, function (dados){
+                $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
                     if (dados.length>0) {
-                        var option = '<div class="col-sm-12" id="steps">';
+                        var titulo = 'Histórico do Documento';
+                        var body = '<div class="form-group">';
                         $.each(dados, function(i, obj){
                             j++;
-                            option += '<div class="form-group row">';
-                            option += '<input type="hidden" name="etapas['+j+']" value="'+obj.id+'">';
-                            option += '<label class="col-sm-3 form-control-label">'+obj.titulo+'</label>';
-                            option += '<div class="col-sm-9"> <input type="date" name="prazo['+j+']" class="form-control"></div></div>';
+                            body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
+                            body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
+                            body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
                         })
-                        option += '<div class="line"></div>';
-                        option += '<hr>';
-                        option += '<div class="form-group row">';
-                        option += '<label class="form-control-label col-sm-3"> <strong>Prazo Final do documento</strong></label>';
-                        option += '<div class="col-sm-9">';
-                        option += '<input type="date" name="prazo_final" class="form-control">';
-                        option += '</div>';
-                        option += '</div>';
-                        option += '<input type="hidden" name="prazo_etapa" value="'+dados.length+'">';
-                        option += "</div>";
-                        $('#mensagem').html('<span class="mensagem">Total de estados encontrados.: '+dados.length+'</span>'); 
-                        console.log("Total de etapas "+dados.length+"!");
+                        body += '</div>';
                     } else {
                         reset();
-                        $('#mensagem').html('<span class="mensagem">Não foram encontrados documentos cadastrados neste grupo!</span>');
                     }
-                    $('#addprazo').html(option).show();
+                    $('#exampleModalLabel').html(titulo).show();
+                    $('#conteudo').html(body).show();
+                });
+
+                $.getJSON('<?=base_url();?>'+'historico/'+id_pro, function (dados){
+                    if (dados.length>0) {
+                        var data = '';
+                        $.each(dados, function(i,obj){
+                            data += '<div class="form-group">';
+                            data += '<label>'+obj.descricao+'</label>';
+                            if (obj.etapa != null) {
+                                data += ' - <strong>'+obj.etapa+'</strong><br/>';    
+                            }
+                            
+                            if(obj.nome == ''){
+                                nome = "Documento Pendente - Sem Responsável";
+                            } else {
+                                nome = obj.nome;
+                            }
+                            data += '<p>'+nome+'</p>';
+                            data += '<p>'+obj.data+' - '+obj.hora+'</p>';
+                            if (obj.descricao == 'CANCELADO') {
+                                data += '<br/></br/> <label>Motivo Cancelamento</label><br/>';
+                                data += '<p>'+obj.motivo+'</p>';
+                            }
+                            data += '</div>';
+                            data += '<hr/>'
+                        });
+                    } else {
+                        reset();
+                    }
+                    $("#historico_documento").html(data).show();
                 })
             });
 
