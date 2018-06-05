@@ -390,7 +390,7 @@ class Transferencia extends CI_Controller {
 
         if(!empty($idMostraDirecionamento)){
 
-            $mensagem = "success";
+            $mensagem = "transferido";
             
             redirect("meus_documentos/".$mensagem);
 
@@ -445,16 +445,67 @@ class Transferencia extends CI_Controller {
 
             if ($this->docmodel->cadastrar_log_documento($retornar)) {
                 
-                $mensagem = "success";
+                $mensagem = "retornado";
 
-                redirect("/");
+                redirect("meus_documentos/".$mensagem);
 
             } else {
 
                 $mensagem = "error";
 
-                redirect("/");
+                redirect("meus_documentos/".$mensagem);
                 
+            }
+
+        }
+
+    }
+
+    public function suspender_documento($identificador){
+
+        if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
+            redirect("/");
+        }
+
+        $data = new stdClass();
+
+        //transforma o identificador em um array
+        $id = str_split($identificador);
+
+        //pega o valor total do array (quantidade de caracteres)
+        $tamanho = count($id);
+
+        $protocolo = "";
+
+        for ($i=32; $i < $tamanho ; $i++) { 
+            $protocolo .= $id[$i];
+        }
+
+        //transforma a string em inteiro
+        $idprotocolo = (int)$protocolo;
+
+        if ($this->docmodel->editar_documentos_log($idprotocolo)) {
+            
+            $dados = array(
+                'descricao'     => "SUSPENSO", 
+                'data_hora'     => date("Y-m-d H:i:s"),
+                'ultima_etapa'  => 'true',
+                'usuario'       => $_SESSION["idusuario"],
+                'etapa'         => 0,
+                'documento'     => $idprotocolo
+            );
+
+            if ($this->docmodel->cadastrar_log_documento($dados)) {
+                
+                $mensagem = "suspenso";
+
+                redirect("meus_documentos/".$mensagem);
+
+            } else {
+                
+                $mensagem = "error";
+                
+                redirect("meus_documentos/".$mensagem);
             }
 
         }

@@ -442,8 +442,8 @@ class Documento extends CI_Controller {
 
             $data = new stdClass();
 
-            if ($mensagem == "success") {
-                $data->success = "Documento transferido com sucesso!";
+            if ($mensagem != "error") {
+                $data->success = "Documento ".$mensagem." com sucesso!";
             } else {
                 $data->error = "Ocorreu um problema ao transferir o documento. Favor entre em contato com o suporte e tente novamente mais tarde.";
             }

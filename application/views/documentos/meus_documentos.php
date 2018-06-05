@@ -102,7 +102,7 @@
                                                             }
                                                         ?>
                                                         <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                        <a href="#" class="blockD">Suspender Documento</a><br/>
+                                                        <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD">Suspender Documento</a><br/>
                                                         <a href="#">Cancelar Documento</a><br/>
                                                         <a href="#">Apontar Erro</a><br/>
                                                         <div class="line"></div>
@@ -162,7 +162,7 @@
                                                             }
                                                         ?>
                                                         <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                        <a href="#" class="blockD">Suspender Documento</a><br/>
+                                                        <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD">Suspender Documento</a><br/>
                                                         <a href="#">Cancelar Documento</a><br/>
                                                         <a href="#">Apontar Erro</a><br/>
                                                         <div class="line"></div>
@@ -194,7 +194,7 @@
                     
                 <div class="modal-body" id="conteudo">                                                
                     <div class="form-group">
-                        <p> Tem certeza que deseja excluir esta informação? </p>
+                        <p> Não há informações disponíveis no momento. Caso o problema persista entre em contato com o suporte. </p>
                     </div>
                 </div>
 
