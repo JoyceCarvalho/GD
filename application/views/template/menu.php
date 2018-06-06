@@ -173,7 +173,7 @@
               <ul id="documentos" class="collapse list-unstyled">
                 <li <?=($submenu == "novodoc") ? "class='active'" : "" ?>> <a href="<?=base_url('novo_documento');?>"> <i class="fa fa-cloud-upload"></i>Novo Documentos </a></li>
                 <li <?=($submenu == "meusdocs") ? "class='active'" : "" ?>> <a href="<?=base_url('meusdocumentos');?>"> <i class="fa fa-archive"></i>Meus Documentos </a></li>
-                <li <?=($submenu == "andamento") ? "class='active'" : "" ?>> <a href="<?=base_url('home/andamento/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-battery-half"></i>Documentos em Andamento </a></li>
+                <li <?=($submenu == "andamento") ? "class='active'" : "" ?>> <a href="<?=base_url('andamento');?>"> <i class="fa fa-battery-half"></i>Documentos em Andamento </a></li>
                 <li <?=($submenu == "erro") ? "class='active'" : "" ?>> <a href="<?=base_url('home/comerro/'.$_SESSION["idempresa"]);?>"> <i class="icon-bill"></i> Documentos com Erro </a></li>
                 <li <?=($submenu == "cancelados") ? "class='active'" : "" ?>> <a href="<?=base_url('home/cancelados/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-stop-circle-o"></i>Documentos Cancelados </a></li>
               </ul>
