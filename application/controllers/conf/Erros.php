@@ -256,13 +256,19 @@ class Erros extends CI_Controller {
 
         if($this->errosmodel->cadastrar_erros_documento($dados)){
 
-            redirect("meus_documento/erro");
+            redirect("meus_documentos/erro");
  
         } else {
 
-            redirect("meus_documento/error");
+            redirect("meus_documentos/error");
 
         }
+
+    }
+
+    public function visualizar_erros_documento($idprotocolo){
+
+        echo $this->errosmodel->listar_erros_documentos($idprotocolo);
 
     }
 

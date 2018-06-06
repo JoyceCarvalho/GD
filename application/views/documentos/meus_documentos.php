@@ -112,7 +112,7 @@
 
                                                             if ($contador > 0) {
                                                                 ?>
-                                                                <a href="javascript:void(0)" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
+                                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
                                                                 <?php
                                                             }
                                                         ?>
@@ -183,7 +183,7 @@
 
                                                             if ($contador > 0) {
                                                                 ?>
-                                                                <a href="javascript:void(0)" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
+                                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
                                                                 <?php
                                                             }
                                                         ?>
@@ -488,7 +488,7 @@ window.addEventListener("DOMContentLoaded", function() {
                         body2 += '<hr/>';
                         body2 += '<div class="form-group">';
                         body2 += '<label>Descrição do erro:</label>';
-                        body2 += '<textarea class="form-control" rows="6" name="descricao"></textarea>';
+                        body2 += '<textarea class="form-control" name="descricao"></textarea>';
                         body2 += '<input type="hidden" name="idprotocolo" value="'+id_pro+'">';
                         body2 += '</div>';
                         body2 += '<div class="form-group">';
@@ -506,11 +506,46 @@ window.addEventListener("DOMContentLoaded", function() {
             });
 
             $("#vizualizar_erro_"+id_pro).click(function(e){
+
+                $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
+                    if (dados.length>0) {
+                        var titulo = 'Erros do documento';
+                        var body = '<div class="form-group">';
+                        $.each(dados, function(i, obj){
+                            body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
+                            body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
+                            body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
+                        })
+                        body += '</div>';
+                        body += '<hr/>';
+                    } else {
+                        reset();
+                    }
+                    $("#exampleModalLabel").html(titulo).show();
+                    $("#doc_conteudo").html(body).show();
+                    $('#historico_documento').hide();
+                    $('#cancelamento').hide();
+
+                });
                 $.getJSON('<?=base_url();?>'+'vizualizar_erros/'+id_pro, function (dados){
                     if(dados.length > 0){
-                        var body = '';
-                        
+                        var body2 = '';
+                        $.each(dados, function(i, obj){
+                            body2 += '<div class="form-group">';
+                            body2 += '<p><strong>Etapa: </strong>'+obj.titulo_etapa+'</p>';
+                            body2 += '<p><strong>Quem: </strong>'+obj.usuario_nome+'</p>';
+                            body2 += '<p><strong>Quando: </strong>'+obj.quando+'</p>';
+                            body2 += '<p><strong>Erro: </strong>'+obj.titulo_erro+'</p>';
+                            body2 += '<p><strong>Tipo de erro: </strong>'+obj.tipo_erro+'</p>';
+                            body2 += '<p><strong>Descrição: </strong>'+obj.descricao+'</p>';
+                            body2 += '</div>';
+                            body2 += '<hr/>';
+                        });
+                    } else {
+                        reset();
                     }
+                    $("#erro_form").html(body2).show();
+                    
                 })
             });
 

@@ -109,11 +109,13 @@ class Erros_model extends CI_Model {
     }
 
     public function listar_erros_documentos($idprotocolo){
-        $this->db->select('er.titulo as titulo_erro, er.tipo as tipo_erro, e.titulo as titulo_etapa, u.nome as usuario_nome, DATE_FORMAT(ed.data_hora, "%d/%m/%Y - %H:%i") as quando');
+        $this->db->select('er.titulo as titulo_erro, er.tipo as tipo_erro, e.titulo as titulo_etapa, u.nome as usuario_nome, DATE_FORMAT(ed.data_hora, "%d/%m/%Y - %H:%i") as quando, ed.descricao as descricao');
         $this->db->from('tberros_documentos as ed');
         $this->db->join('tberros as er', 'er.id = ed.fk_iderros');
         $this->db->join('tbetapa as e', 'e.id = ed.fk_idetapa');
         $this->db->join('tbusuario as u', 'u.id = ed.fk_idusuario');
         $this->db->where('ed.fk_iddocumentos', $idprotocolo);
+
+        return json_encode($this->db->get()->result());
     }
 }

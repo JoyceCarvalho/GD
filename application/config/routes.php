@@ -158,3 +158,4 @@ $route["cancelar_documento"]         = "documentos/Documento/cancelar_documento"
 $route["erro_documento"]             = "conf/Erros/erro_documento";
 $route["etapa_json/(:any)"]          = "conf/Etapas/etapas_documento_json/$1";
 $route["erro_documento_cad"]         = "conf/Erros/erro_documento_cad";
+$route["vizualizar_erros/(:any)"]    = "conf/Erros/visualizar_erros_documento/$1";
