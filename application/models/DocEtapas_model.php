@@ -128,4 +128,21 @@ class DocEtapas_model extends CI_Model{
         return $this->db->get()->row('idetapa');
     }
 
+    /**
+     * Método responsável por retornar o titulo das etapas do documento
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param int $iddocumento
+     * @return json retorna um json com os dados
+     */
+    public function listar_etapa_documento_json($iddocumento){
+        $this->db->select("e.id as id, e.titulo as titulo");
+        $this->db->from("tbdocumentoetapa as de");
+        $this->db->join("tbetapa as e", "e.id = de.idetapa");
+        $this->db->where('iddocumento', $iddocumento);
+
+        return json_encode($this->db->get()->result());
+    }
+
+
 }

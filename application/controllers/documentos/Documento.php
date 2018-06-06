@@ -16,6 +16,7 @@ class Documento extends CI_Controller {
         $this->load->model('DocEtapas_model', 'docetapamodel');
         $this->load->model('horario_model', 'horasmodel');
         $this->load->model('usuario_model', 'usermodel');   
+        $this->load->model('erros_model', 'errosmodel');
     }
 
     public function index(){

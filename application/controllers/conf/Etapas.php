@@ -242,5 +242,16 @@ class Etapas extends CI_Controller {
         }
 
     }
+
+    public function etapas_documento_json($idprotocolo){
+        
+        $this->load->model("documentos_model", "docmodel");
+        $this->load->model("DocEtapas_model", "docetapamodel");
+
+        $iddocumento = $this->docmodel->documento_id($idprotocolo);
+
+        echo $this->docetapamodel->listar_etapa_documento_json($iddocumento);
+
+    }
     
 }

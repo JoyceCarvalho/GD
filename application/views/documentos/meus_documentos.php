@@ -103,8 +103,19 @@
                                                         ?>
                                                         <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
                                                         <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD">Suspender Documento</a><br/>
-                                                        <a href="#">Cancelar Documento</a><br/>
-                                                        <a href="#">Apontar Erro</a><br/>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
+                                                        <?php 
+                                                            $this->load->model('erros_model', 'errosmodel');
+                                                            
+                                                            $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
+
+                                                            if ($contador > 0) {
+                                                                ?>
+                                                                <a href="javascript:void(0)" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
+                                                                <?php
+                                                            }
+                                                        ?>
                                                         <div class="line"></div>
                                                         <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
                                                         <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
@@ -164,7 +175,18 @@
                                                         <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
                                                         <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD">Suspender Documento</a><br/>
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
-                                                        <a href="#">Apontar Erro</a><br/>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
+                                                        <?php 
+                                                            $this->load->model('erros_model', 'errosmodel');
+                                                            
+                                                            $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
+
+                                                            if ($contador > 0) {
+                                                                ?>
+                                                                <a href="javascript:void(0)" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
+                                                                <?php
+                                                            }
+                                                        ?>
                                                         <div class="line"></div>
                                                         <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
                                                         <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
@@ -206,10 +228,14 @@
 
                 </form>
 
-                <form action="<?=base_url("erro_documento");?>" method="post" id="erro">
+                <form action="<?=base_url("erro_documento_cad");?>" method="post" id="erro">
                     
                     <div class="modal-body" id="doc_conteudo">                                                
                         
+                    </div>
+
+                    <div class="modal-body" id="etapa">
+                    
                     </div>
 
                     <div class="modal-body" id="erro_form">
@@ -339,6 +365,9 @@ window.addEventListener("DOMContentLoaded", function() {
                     $('#exampleModalLabel').html(titulo).show();
                     $('#conteudo').html(body).show();
                     $("#erro").hide();
+                    $("#doc_conteudo").hide();
+                    $('#etapa').hide();
+                    $('#erro_form').hide();
                 });
 
                 $.getJSON('<?=base_url();?>'+'historico/'+id_pro, function (dados){
@@ -399,9 +428,13 @@ window.addEventListener("DOMContentLoaded", function() {
                         reset();
                     }
                     $('#exampleModalLabel').html(titulo).show();
+                    $('#cancelamento').show();
                     $('#conteudo').html(body).show();
                     $('#historico_documento').hide();
                     $('#erro').hide();
+                    $("#doc_conteudo").hide();
+                    $('#etapa').hide();
+                    $('#erro_form').hide();
                 });
             });
 
@@ -425,36 +458,60 @@ window.addEventListener("DOMContentLoaded", function() {
                     $("#doc_conteudo").html(body).show();
 
                 });
+                $.getJSON('<?=base_url();?>'+'etapa_json/'+id_pro, function(dados){
+                    if (dados.length > 0) {
+                        var etapa = '<div class="form-group">';
+                        etapa += '<label>Etapa</label>';
+                        etapa += '<select name="etapa_erro" class="form-control">';
+                        $.each(dados, function(i, obj){
+                            etapa += '<option value="'+obj.id+'">'+obj.titulo+'</option>';
+                        });
+                        etapa += '</select>';
+                        etapa += '</div>';
+                    } else {
+                        reset();
+                    }
+                    $("#etapa").html(etapa).show();
+                });
                 $.getJSON('<?=base_url();?>'+'erro_documento', function (dados){
                     
                     if (dados.length>0) {
                         
-                        body += '<div class="form-group">';
+                        var body2 = '<div class="form-group">';
+                        body2 += '<label>Erro:</label>';
+                        body2 += '<select name="erro" class="form-control">';
                         $.each(dados, function(i, obj){
-                            body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
-                            body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
-                            body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
-                        })
-                        body += '</div>';
-                        body += '<hr/>';
-                        body += '<div class="form-group">';
-                        body += '<label>Motivo do cancelamento:</label>';
-                        body += '<textarea class="form-control" rows="6" name="motivo"></textarea>';
-                        body += '<input type="hidden" name="idprotocolo" value="'+id_pro+'">';
-                        body += '</div>';
-                        body += '<div class="form-group">';
-                        body += '<button type="submit" class="btn btn-sm btn-primary">Cadastrar Cancelamento</button>';
-                        body += '</div>';
+                            body2 += '<option value="'+obj.id+'">'+obj.titulo+'</option>';
+                        });
+                        body2 += '</select>'
+                        body2 += '</div>';
+                        body2 += '<hr/>';
+                        body2 += '<div class="form-group">';
+                        body2 += '<label>Descrição do erro:</label>';
+                        body2 += '<textarea class="form-control" rows="6" name="descricao"></textarea>';
+                        body2 += '<input type="hidden" name="idprotocolo" value="'+id_pro+'">';
+                        body2 += '</div>';
+                        body2 += '<div class="form-group">';
+                        body2 += '<button type="submit" class="btn btn-sm btn-primary">Apontar erro</button>';
+                        body2 += '</div>';
 
                     } else {
                         reset();
                     }
-                    $('#exampleModalLabel').html(titulo).show();
-                    $('#erro').html(body).show();
+                    $('#erro_form').html(body2).show();
                     $('#historico_documento').hide();
-                    $('#cancelado').hide();
+                    $('#cancelamento').hide();
                 });
 
+            });
+
+            $("#vizualizar_erro_"+id_pro).click(function(e){
+                $.getJSON('<?=base_url();?>'+'vizualizar_erros/'+id_pro, function (dados){
+                    if(dados.length > 0){
+                        var body = '';
+                        
+                    }
+                })
             });
 
 		});

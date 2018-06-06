@@ -239,6 +239,33 @@ class Erros extends CI_Controller {
 
     }
 
+    public function erro_documento_cad(){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+
+        $dados = array(
+            'fk_iderros' => $this->input->post("erro"), 
+            'fk_iddocumentos' => $this->input->post("idprotocolo"),
+            'descricao'       => $this->input->post("descricao"),
+            'data_hora'       => date("Y-m-d H:i:s"),
+            'fk_idusuario'    => $_SESSION["idusuario"],
+            'fk_idetapa'      => $this->input->post("etapa_erro"),
+        );
+
+        if($this->errosmodel->cadastrar_erros_documento($dados)){
+
+            redirect("meus_documento/erro");
+ 
+        } else {
+
+            redirect("meus_documento/error");
+
+        }
+
+    }
+
     public function erro_documento(){
 
         echo $this->errosmodel->listar_erros_json($_SESSION["idempresa"]);

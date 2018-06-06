@@ -155,4 +155,6 @@ $route["historico_documento/(:any)"] = "documentos/Documento/historico_documento
 $route["historico/(:any)"]           = "documentos/Documento/historico/$1";
 $route["suspender/(:any)"]           = "documentos/Transferencia/suspender_documento/$1";
 $route["cancelar_documento"]         = "documentos/Documento/cancelar_documento";
-$route["erro_documento"]             = "documentos/Documento/erro_documento";
+$route["erro_documento"]             = "conf/Erros/erro_documento";
+$route["etapa_json/(:any)"]          = "conf/Etapas/etapas_documento_json/$1";
+$route["erro_documento_cad"]         = "conf/Erros/erro_documento_cad";

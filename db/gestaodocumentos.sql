@@ -221,7 +221,8 @@ CREATE TABLE `tberros_documentos` (
   `fk_iddocumentos` int(11) NOT NULL,
   `descricao` text,
   `data_hora` datetime DEFAULT NULL,
-  `fk_idusuario` int(11) DEFAULT NULL
+  `fk_idusuario` int(11) DEFAULT NULL,
+  `fk_idetapa` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -397,6 +398,7 @@ ALTER TABLE `tberros_documentos`
   ADD PRIMARY KEY (`fk_iderros`,`fk_iddocumentos`),
   ADD KEY `fk_tberros_has_tbdocumentos_cad_tbdocumentos_cad1_idx` (`fk_iddocumentos`),
   ADD KEY `fk_tberros_documentos_tbusuario1_idx` (`fk_idusuario`),
+  ADD KEY `fk_tberros_documentos_tbetapa1_idx` (`fk_idetapa`),
   ADD KEY `fk_tberros_has_tbdocumentos_cad_tberros1_idx` (`fk_iderros`);
 
 --
@@ -487,7 +489,7 @@ ALTER TABLE `tbusuario`
 -- AUTO_INCREMENT de tabela `tbausencia`
 --
 ALTER TABLE `tbausencia`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tbcancelamento`
 --
@@ -497,67 +499,67 @@ ALTER TABLE `tbcancelamento`
 -- AUTO_INCREMENT de tabela `tbcargos`
 --
 ALTER TABLE `tbcargos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tbcompetencias`
 --
 ALTER TABLE `tbcompetencias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tbdocumento`
 --
 ALTER TABLE `tbdocumento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tbdocumentos_cad`
 --
 ALTER TABLE `tbdocumentos_cad`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tbempresa`
 --
 ALTER TABLE `tbempresa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tberros`
 --
 ALTER TABLE `tberros`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tbetapa`
 --
 ALTER TABLE `tbetapa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tbferiados`
 --
 ALTER TABLE `tbferiados`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tbferias_func`
 --
 ALTER TABLE `tbferias_func`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tbgrupo`
 --
 ALTER TABLE `tbgrupo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tbhorario_trab`
 --
 ALTER TABLE `tbhorario_trab`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tblog_documentos`
 --
 ALTER TABLE `tblog_documentos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tblog_documentos_tempo`
 --
 ALTER TABLE `tblog_documentos_tempo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tblog_sistema`
 --
@@ -567,17 +569,17 @@ ALTER TABLE `tblog_sistema`
 -- AUTO_INCREMENT de tabela `tbprazoetapa`
 --
 ALTER TABLE `tbprazoetapa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tbtimer`
 --
 ALTER TABLE `tbtimer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de tabela `tbusuario`
 --
 ALTER TABLE `tbusuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Restrições para dumps de tabelas
 --
@@ -621,6 +623,7 @@ ALTER TABLE `tbdocumentos_cad`
 --
 ALTER TABLE `tberros_documentos`
   ADD CONSTRAINT `fk_tberros_documentos_tbusuario1` FOREIGN KEY (`fk_idusuario`) REFERENCES `tbusuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tberros_documentos_tbetapa1` FOREIGN KEY (`fk_idetapa`) REFERENCES `tbetapa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_tberros_has_tbdocumentos_cad_tbdocumentos_cad1` FOREIGN KEY (`fk_iddocumentos`) REFERENCES `tbdocumentos_cad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_tberros_has_tbdocumentos_cad_tberros1` FOREIGN KEY (`fk_iderros`) REFERENCES `tberros` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
