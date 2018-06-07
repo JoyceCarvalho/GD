@@ -24,6 +24,7 @@
 
     <!-- Datatable -->
     <link rel="stylesheet" href="<?=base_url('assets/vendor/datatables/dataTables.bootstrap4.css');?>">
+    <!--<link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">-->
 
     <!-- jQuery -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
