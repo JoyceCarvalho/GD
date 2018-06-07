@@ -22,6 +22,9 @@
     <!-- Favicon-->
     <link rel="shortcut icon" href="<?=base_url('assets/img/favicon.ico');?>">
 
+    <!-- Datatable -->
+    <link rel="stylesheet" href="<?=base_url('assets/vendor/datatables/dataTables.bootstrap4.css');?>">
+
     <!-- jQuery -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 
