@@ -36,6 +36,14 @@ class Home extends CI_Controller {
             $andamento = $this->docmodel->listar_documentos_em_andamento($_SESSION["idempresa"]);
             $dados["em_andamento"] = count($andamento);
 
+            //retorna a quantidade de documentos com erro
+            $erro = $this->docmodel->listar_documentos_com_erros($_SESSION["idempresa"]);
+            $dados["com_erro"] = count($erro);
+
+            //retorna a quantidade de documentos cancelados
+            $cancelados = $this->docmodel->listar_documentos_cancelados($_SESSION["idempresa"]);
+            $dados["documentos_cancelados"] = count($cancelados);
+
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
             $this->load->view('template/menu');

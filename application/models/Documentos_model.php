@@ -355,6 +355,7 @@ class Documentos_model extends CI_Model {
 
     /**
      * Método responsável por listar os documentos em andamento 
+     * Utilizado no controller documentos/Relatorios.php
      *
      * @param int $empresa
      * @return object
@@ -376,6 +377,13 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->result();
     }
 
+    /**
+     * Método responsável por listar os documentos com erro
+     * Utilizado no controller documentos/Relatorios.php
+     *
+     * @param int $empresa
+     * @return object
+     */
     public function listar_documentos_com_erros($empresa){
         $this->db->select('d.id as iddocumento, e.id as idetapa, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo,
         e.titulo AS etapa, ldA.data_hora AS data_criacao, u.nome AS nome_usuario, de.ordem as ordem, dc.id as idprotocolo, er.titulo as titulo_erro, 
@@ -392,6 +400,21 @@ class Documentos_model extends CI_Model {
         $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
         $this->db->where("d.fk_idempresa = $empresa");
         $this->db->order_by('de.ordem asc, ldA.data_hora asc');
+        return $this->db->get()->result();
+    }
+
+    public function listar_documentos_cancelados($empresa){
+        $this->db->select('dc.id as idprotocolo, dc.protocolo as protocolo, d.titulo as documento, g.titulo as grupo, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") as data_criacao, 
+        DATE_FORMAT(c.data_hora, "%d/%m/%Y") as data_cancelamento, ldB.usuario as idresponsavel, u.nome as nome_usuario,ldB.etapa AS idetapa, dc.prazo AS prazo');
+        $this->db->from('tbdocumentos_cad as dc');
+        $this->db->join('tbdocumento as d', 'dc.fk_iddocumento = d.id');
+        $this->db->join('tbgrupo as g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tbcancelamento as c', 'c.fk_iddocumento = dc.id');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "CANCELADO"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->where("d.fk_idempresa = $empresa");
+        $this->db->order_by('dc.id asc');
         return $this->db->get()->result();
     }
 

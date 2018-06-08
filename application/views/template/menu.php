@@ -175,7 +175,7 @@
                 <li <?=($submenu == "meusdocs") ? "class='active'" : "" ?>> <a href="<?=base_url('meusdocumentos');?>"> <i class="fa fa-archive"></i>Meus Documentos </a></li>
                 <li <?=($submenu == "andamento") ? "class='active'" : "" ?>> <a href="<?=base_url('andamento');?>"> <i class="fa fa-battery-half"></i>Documentos em Andamento </a></li>
                 <li <?=($submenu == "erro") ? "class='active'" : "" ?>> <a href="<?=base_url('erro');?>"> <i class="icon-bill"></i> Documentos com Erro </a></li>
-                <li <?=($submenu == "cancelados") ? "class='active'" : "" ?>> <a href="<?=base_url('home/cancelados/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-stop-circle-o"></i>Documentos Cancelados </a></li>
+                <li <?=($submenu == "cancelados") ? "class='active'" : "" ?>> <a href="<?=base_url('cancelados');?>"> <i class="fa fa-stop-circle-o"></i>Documentos Cancelados </a></li>
               </ul>
             </li>
 

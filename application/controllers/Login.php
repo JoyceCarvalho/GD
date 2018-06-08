@@ -90,11 +90,24 @@ class Login extends CI_Controller {
 
         //dados do banco(nome da empresa, nome usuario);
         $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+        
         //retorna a quantidade de documentos no link meus documentos
         $funcionario = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
         $cargo = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
         $total = count($funcionario) + count($cargo);
         $dados["meus_documentos"] = $total;
+
+        //retorna a quantidade de documentos em andamento
+        $andamento = $this->docmodel->listar_documentos_em_andamento($_SESSION["idempresa"]);
+        $dados["em_andamento"] = count($andamento);
+
+        //retorna a quantidade de documentos com erro
+        $erro = $this->docmodel->listar_documentos_com_erros($_SESSION["idempresa"]);
+        $dados["com_erro"] = count($erro);
+
+        //retorna a quantidade de documentos cancelados
+        $cancelados = $this->docmodel->listar_documentos_cancelados($_SESSION["idempresa"]);
+        $dados["documentos_cancelados"] = count($cancelados);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');

@@ -3,7 +3,7 @@
 <div class="breadcrumb-holder container-fluid">
     <ul class="breadcrumb">
         <li class="breadcrumb-item"><a href="<?=base_url("home");?>">Página Inicial</a></li>
-        <li class="breadcrumb-item active"> Documentos em Andamento</li>
+        <li class="breadcrumb-item active"> Documentos com erro</li>
     </ul>
 </div>
 
@@ -38,7 +38,7 @@
                 <div class="card">
         
                     <div class="card-header d-flex align-items-center">
-                        <h3 class="h4">Documentos com erros</h3>
+                        <h3 class="h4">Documentos com erro</h3>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">                       

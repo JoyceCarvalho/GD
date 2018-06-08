@@ -55,4 +55,26 @@ class Relatorios extends CI_Controller {
         $this->load->view("template/html_footer");
     }
 
+    public function documentos_cancelados(){
+        
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true )) {
+            redirect("/");
+        }
+
+        $dados["pagina"]  = "Documentos Cancelados";
+        $dados["pg"]      = "documentos";
+        $dados["submenu"] = "cancelados";
+
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["doc_cancelados"] = $this->docmodel->listar_documentos_cancelados($_SESSION["idempresa"]);
+
+
+        $this->load->view('template/html_header', $dados);
+        $this->load->view('template/header');
+        $this->load->view('template/menu');
+        $this->load->view('documentos/documentos_cancelados');
+        $this->load->view('template/footer');
+        $this->load->view('template/html_footer');
+    }
+
 }
