@@ -28,7 +28,7 @@
       </div>
       <!-- Item -->
       <div class="col-xl-3 col-sm-6">
-        <a class="dashbord" href="<?=base_url('home/comerro/');?>">
+        <a class="dashbord" href="<?=base_url('erro');?>">
           <div class="item d-flex align-items-center" style="font-size: 14px;">
             <div class="icon bg-green"><i class="icon-bill"></i></div>
             <div class="title">
