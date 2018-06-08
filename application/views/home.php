@@ -40,13 +40,13 @@
       </div>
       <!-- Item -->
       <div class="col-xl-3 col-sm-6">
-        <a class="dashbord" href="<?=base_url('home/andamento/');?>">
+        <a class="dashbord" href="<?=base_url('andamento');?>">
           <div class="item d-flex align-items-center" style="font-size: 14px;"  >
             <div class="icon bg-orange"><i class="icon-check"></i></div>
             <div class="title">
               <span>Documentos em Andamento</span>
             </div>
-            <div class="number"><strong>50</strong></div>
+            <div class="number"><strong><?= $em_andamento; ?></strong></div>
           </div>
         </a>
       </div>

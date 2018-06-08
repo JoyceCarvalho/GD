@@ -1,12 +1,15 @@
 <?php
 defined("BASEPATH") or exit("No direct script access allowed");
 
-class Andamento extends CI_Controller {
+class Relatorios extends CI_Controller {
     
     public function __construct(){
         parent::__construct();
         
         $this->load->model("empresa_model", "empresamodel");
+        $this->load->model("documentos_model", "docmodel");
+        $this->load->model('etapas_model', 'etapasmodel');
+        $this->load->model('erros_model', 'errosmodel');
     }
 
     public function index(){
@@ -15,7 +18,8 @@ class Andamento extends CI_Controller {
         $dados["pg"]      = "documentos";
         $dados["submenu"] = "andamento";
 
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["andamento_doc"] = $this->docmodel->listar_documentos_em_andamento($_SESSION["idempresa"]);
 
         $this->load->view("template/html_header", $dados);
         $this->load->view("template/header");

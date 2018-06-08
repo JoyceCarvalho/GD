@@ -354,6 +354,29 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método responsável por listar os documentos em andamento 
+     *
+     * @param int $empresa
+     * @return object
+     */
+    public function listar_documentos_em_andamento($empresa){
+        $this->db->select('d.id as iddocumento, e.id as idetapa, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
+        e.titulo AS etapa, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.nome AS nome_usuario, de.ordem as ordem, dc.id as idprotocolo');
+        $this->db->from('tbdocumentos_cad AS dc');
+        $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
+        $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
+        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
+        $this->db->where("d.fk_idempresa = $empresa");
+        $this->db->where('ldB.descricao != "FINALIZADO"');
+        $this->db->order_by('de.ordem asc, ldA.data_hora asc');
+        return $this->db->get()->result();
+    }
+
+    /**
      * Método responsável por retornar o total de registro de documento cadastrado
      * Utilizado no controller documentos/Transferencia.php e documentos/Documento.php
      *

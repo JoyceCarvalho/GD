@@ -159,4 +159,4 @@ $route["historico_documento/(:any)"] = "documentos/Documento/historico_documento
 $route["historico/(:any)"]           = "documentos/Documento/historico/$1";
 $route["suspender/(:any)"]           = "documentos/Transferencia/suspender_documento/$1";
 $route["cancelar_documento"]         = "documentos/Documento/cancelar_documento";
-$route["andamento"]                  = "documentos/Andamento";
+$route["andamento"]                  = "documentos/Relatorios";
