@@ -100,7 +100,7 @@ class Documentos_model extends CI_Model {
         $this->db->select('dc.id as idprotocolo, dc.protocolo as protocolo, d.id as iddocumento, d.titulo as titulo_documento, g.titulo as titulo_grupo, 
         DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") as data_criacao, DATE_FORMAT(dc.prazo, "%d/%m/%Y") as prazo_documento, DATE_FORMAT(ldB.data_hora, "%d/%m/%Y") as data_finalizacao
         u.nome as nome_usuario');
-
+        
     }
 
     /**
