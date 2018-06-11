@@ -425,6 +425,22 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->result();
     }
 
+    
+    public function listar_documentos_finalizados($empresa){
+        $this->db->select('dc.id as idprotocolo, dc.protocolo AS protocolo, d.id as iddocumento, d.titulo AS documento, g.titulo AS grupo, 
+        DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.nome AS nome_usuario, DATE_FORMAT(ldB.data_hora, "%d/%m/%Y") as data_finalizacao, 
+        DATE_FORMAT(dc.prazo, "%d/%m/%Y") as prazo_documento');
+        $this->db->from('tbdocumentos_cad AS dc');
+        $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
+        $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->where('d.fk_idempresa', $empresa);
+        $this->db->order_by("ldA.data_hora asc");
+        return $this->db->get()->result();
+    }
+
     /**
      * Método responsável por listar os documentos suspensos
      * Utilizado no controller documentos/Relatorio.php
