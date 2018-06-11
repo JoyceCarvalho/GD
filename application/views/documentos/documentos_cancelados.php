@@ -47,7 +47,7 @@
                                     <tr>
                                         <th>Protocolo</th>
                                         <th>Documento<br/>/Grupo</th>
-                                        <th>Prazos</th>
+                                        <th>Prazo Documento</th>
                                         <th>Data de Criação</th>
                                         <th>Data Cancelamento</th>
                                         <th>Responsável pelo cancelamento</th>

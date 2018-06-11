@@ -176,6 +176,7 @@
                 <li <?=($submenu == "andamento") ? "class='active'" : "" ?>> <a href="<?=base_url('andamento');?>"> <i class="fa fa-battery-half"></i>Documentos em Andamento </a></li>
                 <li <?=($submenu == "erro") ? "class='active'" : "" ?>> <a href="<?=base_url('erro');?>"> <i class="icon-bill"></i> Documentos com Erro </a></li>
                 <li <?=($submenu == "cancelados") ? "class='active'" : "" ?>> <a href="<?=base_url('cancelados');?>"> <i class="fa fa-stop-circle-o"></i>Documentos Cancelados </a></li>
+                <li <?=($submenu == "suspensos") ? "class='active'" : "" ?>> <a href="<?=base_url('suspenso');?>"> <i class="fa fa-pause-circle"></i>Documentos Suspensos </a></li>
               </ul>
             </li>
 
@@ -185,7 +186,7 @@
               </a>
 
               <ul id="relatorio" class="collapse list-unstyled">
-                <li <?=($submenu == "geral") ? "class='active'" : "" ?>> <a href="<?=base_url('home/relgeral/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-tags"></i>Geral </a></li>
+                <li <?=($submenu == "finalizado") ? "class='active'" : "" ?>> <a href="<?=base_url('finalizados');?>"> <i class="fa fa-tags"></i>Finalizados </a></li>
                 <li <?=($submenu == "tempo") ? "class='active'" : "" ?>> <a href="<?=base_url('home/reltempo/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-clock-o"></i>Tempo Médio </a></li>
                 <li <?=($submenu == "atendimento") ? "class='active'" : "" ?>> <a href="<?=base_url('home/relatendimento/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-file-text-o"></i>Documentos em Atendimentos por dia </a></li>
                 <li <?=($submenu == "atendente") ? "class='active'" : "" ?>> <a href="<?=base_url('home/relatendente/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-address-card"></i>Documentos Atendentes por dia </a></li>

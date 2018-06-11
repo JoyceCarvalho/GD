@@ -77,4 +77,83 @@ class Relatorios extends CI_Controller {
         $this->load->view('template/html_footer');
     }
 
+    public function documentos_suspensos(){
+
+        if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
+            redirect("/");
+        }
+
+        $dados["pagina"]  = "Documentos Suspenso";
+        $dados["pg"]      = "documentos";
+        $dados["submenu"] = "suspensos";
+
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["doc_suspensos"] = $this->docmodel->listar_documentos_suspensos($_SESSION["idempresa"]);
+
+
+        $this->load->view('template/html_header', $dados);
+        $this->load->view('template/header');
+        $this->load->view('template/menu');
+        $this->load->view('documentos/documentos_suspensos');
+        $this->load->view('template/footer');
+        $this->load->view('template/html_footer');
+    }
+
+    public function reverte_suspensao($identificador){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+
+        //transforma o identificador em um array
+        $id = str_split($identificador);
+
+        //pega o valor total do array (quantidade de caracteres)
+        $tamanho = count($id);
+
+        $protocolo = "";
+
+        for ($i=32; $i < $tamanho ; $i++) { 
+            $protocolo .= $id[$i];
+        }
+
+        //transforma a string em inteiro
+        $idprotocolo = (int)$protocolo;
+
+        $etapa_atual = $this->docmodel->etapa_documento($idprotocolo);
+
+        $anterior = $this->docmodel->etapa_anterior($idprotocolo, $etapa_atual);
+
+        $usuario_anterior = $anterior->usuario;
+        $etapa_anterior = $anterior->etapa;
+
+        if($this->docmodel->editar_documentos_log($idprotocolo)){
+
+            $retornar = array(
+                'descricao'     => "RETORNO SUSPENSÃO", 
+                'data_hora'     => date("Y-m-d H:i:s"),
+                'ultima_etapa'  => "true",
+                'usuario'       => $usuario_anterior,
+                'etapa'         => $etapa_anterior,
+                'documento'     => $idprotocolo
+            );
+
+            if ($this->docmodel->cadastrar_log_documento($retornar)) {
+                
+                $mensagem = "retornado";
+
+                redirect("meus_documentos/".$mensagem);
+
+            } else {
+
+                $mensagem = "error";
+
+                redirect("meus_documentos/".$mensagem);
+                
+            }
+
+        }
+
+    }
+
 }

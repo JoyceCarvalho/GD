@@ -162,3 +162,5 @@ $route["cancelar_documento"]         = "documentos/Documento/cancelar_documento"
 $route["andamento"]                  = "documentos/Relatorios";
 $route["erro"]                       = "documentos/Relatorios/documentos_com_erro";
 $route["cancelados"]                 = "documentos/Relatorios/documentos_cancelados";
+$route["suspenso"]                   = "documentos/Relatorios/documentos_suspensos";
+$route["reverte_suspensao/(:any)"]   = "documentos/Relatorios/reverte_suspensao/$1";
