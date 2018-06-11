@@ -96,6 +96,13 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->result();
     }
 
+    public function dados_documento_finalizado($idprotocolo){
+        $this->db->select('dc.id as idprotocolo, dc.protocolo as protocolo, d.id as iddocumento, d.titulo as titulo_documento, g.titulo as titulo_grupo, 
+        DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") as data_criacao, DATE_FORMAT(dc.prazo, "%d/%m/%Y") as prazo_documento, DATE_FORMAT(ldB.data_hora, "%d/%m/%Y") as data_finalizacao
+        u.nome as nome_usuario');
+
+    }
+
     /**
      * Método para pegar o id do documento
      * Utilizado no controller documento/Documento.php
@@ -426,6 +433,13 @@ class Documentos_model extends CI_Model {
     }
 
     
+    /**
+     * Método responsável por listar os documentos finalizados
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int $empresa
+     * @return object
+     */
     public function listar_documentos_finalizados($empresa){
         $this->db->select('dc.id as idprotocolo, dc.protocolo AS protocolo, d.id as iddocumento, d.titulo AS documento, g.titulo AS grupo, 
         DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.nome AS nome_usuario, DATE_FORMAT(ldB.data_hora, "%d/%m/%Y") as data_finalizacao, 

@@ -166,4 +166,5 @@ $route["suspenso"]                   = "documentos/Relatorios/documentos_suspens
 $route["reverte_suspensao/(:any)"]   = "documentos/Relatorios/reverte_suspensao/$1";
 
 //Rotas referentes a pasta relatorios
-$route["finalizados"]                = "relatorios/Relatorios/finalizados";
+$route["finalizados"]                   = "relatorios/Relatorios/finalizados";
+$route["imprimir_finalizados/(:num)"]   = "relatorios/relatorios/imprimir_finalizados";

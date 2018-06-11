@@ -47,16 +47,16 @@
                                     <tr>
                                         <th width="10%">Protocolo</th>
                                         <th width="25%">Documento<br/>/Grupo</th>
-                                        <th width="15%">Data de Criação</th>
-                                        <th width="10%">Prazo Finalização</th>
-                                        <th width="10%">Finalização</th>
-                                        <th width="10%">Responsável</th>
-                                        <th width="20%"></th>
+                                        <th width="5%">Data de Criação</th>
+                                        <th width="5%">Prazo Finalização</th>
+                                        <th width="5%">Finalização</th>
+                                        <th width="15%">Responsável</th>
+                                        <th width="30%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    foreach ($documentos_cargo as $documentos) {
+                                    foreach ($doc_finalizados as $documentos) {
                                         ?>
                                         <tr>
                                             <td><?=$documentos->protocolo;?></td>
@@ -64,9 +64,9 @@
                                                 <?=$documentos->documento;?><br/>
                                                 <strong><?=$documentos->grupo;?></strong>
                                             </td>
-                                            <td><?=converte_datetime($documentos->data_criacao);?></td>
+                                            <td><?=$documentos->data_criacao;?></td>
                                             <td>
-                                                <?=converte_data($documentos->prazo);?><br/>
+                                                <?=$documentos->prazo_documento;?><br/>
                                             </td>
                                             <td><?=$documentos->data_finalizacao;?></td>
                                             <td><?=$documentos->nome_usuario;?></td>
@@ -80,14 +80,13 @@
 
                                                     if ($contador > 0) {
                                                         ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a><br/>
                                                         <?php
                                                     }
                                                 ?>
+                                                <a class="btn btn-sm btn-warning" style="color: white;" href="<?=base_url('imprimir_finalizados');?>"><i class="fa fa-print"></i> Imprimir</a>
                                                 <div class="line"></div>
                                                 <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
-                                                <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
-                                                <button id="post_<?=$documentos->idprotocolo;?>" class="btn btn-sm btn-info" href="#">Iniciar</button>
                                             </td>
                                         </tr>
                                         <?php
