@@ -242,7 +242,7 @@ class Documentos_model extends CI_Model {
      */
     public function historico_documento($idprotocolo){
         $this->db->select("dc.protocolo as protocolo, d.titulo as nome_documento, g.titulo as nome_grupo, DATE_FORMAT(ld.data_hora, '%d/%m/%Y - %H:%i') as data_criacao, 
-        u.nome as usuario_nome");
+        u.nome as usuario_nome, DATE_FORMAT(dc.prazo, '%d/%m/%Y') as prazo");
         $this->db->from("tblog_documentos as ld");
         $this->db->join("tbdocumentos_cad as dc", "ld.documento = dc.id");
         $this->db->join("tbdocumento as d", "dc.fk_iddocumento = d.id");

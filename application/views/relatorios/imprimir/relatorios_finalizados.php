@@ -39,6 +39,7 @@
             $data_criacao = $documento->data_criacao;
             //echo "<br/> Criado por: " . $documento->usuario_nome;
             $responsavel_criacao = $documento->usuario_nome;
+            $prazo = $documento->prazo;
         }
 
         foreach ($etapas_documento as $etapas) {
@@ -66,6 +67,7 @@
 
                 //echo $proxima_etapa = $this->docetapamodel->proxima_etapa($id_documento, $proxima_etapa_documento);
             }
+            $data_inicio[] = $etapas->data;
         }
         ?>
 
@@ -119,9 +121,51 @@
             <!-- Fim página de titulo -->
 
             <!-- Conteudo do Relatório -->
-            <div class="panel panel-default no-break">  
+            <div class="panel panel-default sessao no-break">  
+                <div class="panel-heading">
+                    <span>Dados do Documento</span>
+                </div>
                 <div class="panel-body">
-                    <p>Protocolo</p>
+                    <p>Protocolo: <?=$protocolo;?></p>
+                    <p>Documento: <?=$nome_documento;?></p>
+                    <p>Data de Criação: <?=$data_criacao;?></p>
+                    <p>Documento criado por <?=$responsavel_criacao;?>
+                    <p>Prazo para finalização do documento <?=$prazo;?></p>
+                    <p>Documento finalizado em <?=$data_finalizacao;?></p>
+
+                    <div class="line"></div>
+
+                    <?php 
+                    $i = 0;
+                    foreach ($etapas_documento as $etapa ) {
+                        if (($etapa->descricao != "CRIADO") && ($etapa->descricao != "FINALIZADO")) {
+                            $i++;
+                            $j = $i;
+                            ?>
+                            <div class="panel panel-default sessao">
+                                <div class="panel-heading">
+                                    <span><?=$i?> º Etapa do documento: <?=$etapa->etapa;?></span>
+                                </div>
+                                
+                                <div class="panel-body">
+                                    <p>Responsável etapa do documento: <?=$etapa->nome;?></p>
+                                    <p>Data de inicio da etapa: <?=$etapa->data;?></p>
+                                    <?php 
+                                    $this->load->model("etapas_model", "etapasmodel");
+                                    $prazo = $this->etapasmodel->prazo_etapa($etapa->idprotocolo, $etapa->idetapa);
+                                    if (!empty($prazo)) {
+                                        echo "<p>Prazo para finalização da etapa: " . converte_data($prazo) . "</p>";
+                                    }
+                                    ?>
+                                    <p>Data de finalização da etapa: <?=$data_inicio[$j+1];?></p>
+                                </div>                                
+
+                            </div> 
+                            <?php
+                        }
+                    }
+                    ?>
+                    
                 </div>
             </div>
             <!-- Fim do conteudo -->
