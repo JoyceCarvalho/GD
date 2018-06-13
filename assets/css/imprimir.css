@@ -1,0 +1,61 @@
+/* estilização para impressão dos relatorios */
+
+@media print{
+
+    @page {
+        margin: 2.25cm 1.5cm 2.5cm 2cm;
+        width: 21cm;
+        height: 29.7cm;
+        page-break-after: always;
+    }
+
+    .no-print{
+        display: none;
+    }
+
+    * {
+        background-color: transparent !important;
+        background: transparent !important;
+        color: #000 !important;
+        text-shadow: none !important;
+        filter: none !important;
+        -ms-filter: none !important;
+        font-size: 12pt !important;
+    }
+
+    a {
+        pointer-events: none;
+        cursor: default;
+    }
+
+    html, body {
+        padding: 0;
+        margin: 0;
+    }
+
+    body {
+        line-height: 1.4em;
+    }
+
+    p {
+        widows: 3;
+        orphans: 3;
+    }
+
+    nav, footer, video, audio, object, embed {
+        display: none;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    .no-break {
+        page-break-after: auto;
+    }
+
+    .main, .row, .wrapper, .content, .no-print {
+        margin: 0 !important;
+    }
+
+}

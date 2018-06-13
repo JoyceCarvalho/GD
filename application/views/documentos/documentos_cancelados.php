@@ -265,6 +265,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
                 $.getJSON('<?=base_url();?>'+'historico/'+id_pro, function (dados){
                     if (dados.length>0) {
+                        console.log(dados);
                         var data = '';
                         $.each(dados, function(i,obj){
                             data += '<div class="form-group">';

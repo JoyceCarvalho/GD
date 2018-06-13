@@ -84,7 +84,7 @@
                                                         <?php
                                                     }
                                                 ?>
-                                                <a class="btn btn-sm btn-warning" style="color: white;" href="<?=base_url('imprimir_finalizados');?>"><i class="fa fa-print"></i> Imprimir</a>
+                                                <a class="btn btn-sm btn-warning external" style="color: white;" href="<?=base_url('imprimir_finalizados/'.$documentos->idprotocolo);?>"><i class="fa fa-print"></i> Imprimir</a>
                                                 <div class="line"></div>
                                                 <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
                                             </td>

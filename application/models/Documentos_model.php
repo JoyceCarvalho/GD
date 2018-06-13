@@ -96,13 +96,6 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->result();
     }
 
-    public function dados_documento_finalizado($idprotocolo){
-        $this->db->select('dc.id as idprotocolo, dc.protocolo as protocolo, d.id as iddocumento, d.titulo as titulo_documento, g.titulo as titulo_grupo, 
-        DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") as data_criacao, DATE_FORMAT(dc.prazo, "%d/%m/%Y") as prazo_documento, DATE_FORMAT(ldB.data_hora, "%d/%m/%Y") as data_finalizacao
-        u.nome as nome_usuario');
-        
-    }
-
     /**
      * Método para pegar o id do documento
      * Utilizado no controller documento/Documento.php
@@ -248,12 +241,15 @@ class Documentos_model extends CI_Model {
      * @return json
      */
     public function historico_documento($idprotocolo){
-        $this->db->select("dc.protocolo as protocolo, d.titulo as nome_documento, g.titulo as nome_grupo");
+        $this->db->select("dc.protocolo as protocolo, d.titulo as nome_documento, g.titulo as nome_grupo, DATE_FORMAT(ld.data_hora, '%d/%m/%Y - %H:%i') as data_criacao, 
+        u.nome as usuario_nome");
         $this->db->from("tblog_documentos as ld");
         $this->db->join("tbdocumentos_cad as dc", "ld.documento = dc.id");
         $this->db->join("tbdocumento as d", "dc.fk_iddocumento = d.id");
         $this->db->join('tbgrupo as g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tbusuario as u', 'u.id = ld.usuario');
         $this->db->where('dc.id =', $idprotocolo);
+        $this->db->where('ld.descricao = "CRIADO"');
         $this->db->group_by('dc.id');
         $query = $this->db->get();
 
@@ -268,10 +264,12 @@ class Documentos_model extends CI_Model {
      * @return json
      */
     public function historico_documentos_dados($idprotocolo){
-        $this->db->select("ld.descricao as descricao, u.nome as nome, DATE_FORMAT(ld.data_hora, '%d/%m/%Y') as data, DATE_FORMAT(ld.data_hora,'%H:%i') as hora, e.titulo as etapa");
+        $this->db->select("ld.descricao as descricao, u.nome as nome, DATE_FORMAT(ld.data_hora, '%d/%m/%Y') as data, DATE_FORMAT(ld.data_hora,'%H:%i') as hora, 
+        e.titulo as etapa, ld.documento as idprotocolo, e.id as idetapa, c.motivo as motivo");
         $this->db->from("tblog_documentos as ld");
         $this->db->join("tbusuario as u", "u.id = ld.usuario", "left");
         $this->db->join("tbetapa as e", "e.id = ld.etapa", "left");
+        $this->db->join('tbcancelamento as c', 'c.fk_iddocumento = ld.documento', 'left');
         $this->db->where("ld.documento", $idprotocolo);
         $this->db->order_by("ld.id asc");
 
@@ -525,6 +523,22 @@ class Documentos_model extends CI_Model {
         $this->db->where('ultima_etapa = ', 'true');
         $this->db->limit(1);
         return $this->db->get()->row('usuario');
+    }
+
+    /**
+     * Método responsável por retornar os erros encontrados no documento
+     * Utilizado no controller relatorios/Imprimir.php 
+     *
+     * @param int $idprotocolo
+     * @return object
+     */
+    public function erros_do_documento($idprotocolo){
+        $this->db->select('dc.id as idprotocolo, ed.descricao as descricao, e.tipo as tipo');
+        $this->db->from('tbdocumentos_cad as dc');
+        $this->db->join('tberros_documentos as ed', 'ed.fk_iddocumentos = dc.id');
+        $this->db->join('tberros as e', 'e.id = ed.fk_iderros');
+        $this->db->where('dc.id', $idprotocolo);
+        return $this->db->get()->result();
     }
 
 }
