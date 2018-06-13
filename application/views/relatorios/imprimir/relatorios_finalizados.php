@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Joyce Carvalho">
         <!-- Bootstrap CSS-->
-        <link rel="stylesheet" href="<?=base_url('assets/vendor/bootstrap/css/bootstrap.min.css');?>">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <!-- Font Awesome CSS-->
         <link rel="stylesheet" href="<?=base_url('assets/vendor/font-awesome/css/font-awesome.min.css');?>">
         <!-- Fontastic Custom icon font-->
@@ -29,35 +29,103 @@
     <body>
         <?php
         foreach ($informacoes_documento as $documento) {
-            echo "Protocolo: " . $documento->protocolo;
-            echo "<br/> Nome Documento: " . $documento->nome_documento;
-            echo "<br/> Grupo Documento: " . $documento->nome_grupo;
-            echo "<br/> Data de Criação: " . $documento->data_criacao;
-            echo "<br/> Criado por: " . $documento->usuario_nome;
+            //echo "Protocolo: " . $documento->protocolo;
+            $protocolo = $documento->protocolo;
+            //echo "<br/> Nome Documento: " . $documento->nome_documento;
+            $nome_documento = $documento->nome_documento;
+            //echo "<br/> Grupo Documento: " . $documento->nome_grupo;
+            $grupo_documento = $documento->nome_grupo;
+            //echo "<br/> Data de Criação: " . $documento->data_criacao;
+            $data_criacao = $documento->data_criacao;
+            //echo "<br/> Criado por: " . $documento->usuario_nome;
+            $responsavel_criacao = $documento->usuario_nome;
         }
 
         foreach ($etapas_documento as $etapas) {
             if ($etapas->descricao != "CRIADO") {
-                echo "<br/> Descrição: " . $etapas->descricao . "<br/>";
-                echo "Responsável pela etapa: " . $etapas->nome . "<br/>";
-                echo "Data e hora do recebimento do documento: " . $etapas->data . " - " . $etapas->hora . "<br/>";
-                echo "Etapa: " . $etapas->etapa . "<br/>";
+                //echo "<br/> Descrição: " . $etapas->descricao . "<br/>";
+                //echo "Responsável pela etapa: " . $etapas->nome . "<br/>";
+                //echo "Data e hora do recebimento do documento: " . $etapas->data . " - " . $etapas->hora . "<br/>";
+                //echo "Etapa: " . $etapas->etapa . "<br/>";
 
                 $this->load->model("etapas_model", "etapasmodel");
                 $prazo = $this->etapasmodel->prazo_etapa($etapas->idprotocolo, $etapas->idetapa);
                 if (!empty($prazo)) {
-                    echo "Prazo para finalização: " . converte_data($prazo) . "<br/>";
+                    //echo "Prazo para finalização: " . converte_data($prazo) . "<br/>";
                 }
 
+                if ($etapas->descricao == "FINALIZADO") {
+                    $data_finalizacao = $etapas->data;
+                    $hora_finalizacao = $etapas->hora;
+                }
                 $this->load->model("DocEtapas_model", "docetapamodel");
 
                 $ordem_etapa_atual = $this->docetapamodel->etapa_atual($id_documento, $etapas->idetapa);
 
                 $proxima_etapa_documento = $ordem_etapa_atual + 1;
 
-                echo $proxima_etapa = $this->docetapamodel->proxima_etapa($id_documento, $proxima_etapa_documento);
+                //echo $proxima_etapa = $this->docetapamodel->proxima_etapa($id_documento, $proxima_etapa_documento);
             }
         }
         ?>
+
+        <div class="container-fluid panel panel-default wrapper">
+            <div class="panel-body no-print text-center">
+                <a href="javascript:window.print()" class="btn btn-warning"><i class="fa fa-print"></i> Imprimir</a>
+            </div>
+
+            <div class="panel-body content">
+                <!-- Cabeçalho -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="header-container">
+                            <div class="col-xs-3 col-md-3">
+                                <?php
+                                foreach ($nome_empresa as $empresa) {
+                                    if (!empty($empresa->logo_code)) {
+                                        ?>
+                                        <img class="pull-right img-responsive" src="<?=base_url();?>assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>">
+                                        <?php
+                                    } else {
+                                        ?>
+                                        <img class="pull-right img-responsive" src="<?=base_url("assets/img/logo_sgt.png");?>" alt="<?=$empresa->nome;?>">
+                                        <?php
+                                    }
+                                }   
+                                ?>
+                            </div>
+                            <div class="col-xs-6 text-center">
+                                <h1 class="title no-print"> <?=$protocolo . " - " . $nome_documento;?> </h1>                                  
+                            </div>
+                            <div class="col-xs-3 col-md-3">
+                                <img class="pull-right img-responsive" src="<?=base_url("assets/img/logo_sgt.png");?>" alt="SGT - Gestão e Tecnologia">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fim cabeçalho -->
+                <div class="col-xs-12">
+                    <hr class="no-print">
+                </div>
+            </div>
+            
+
+            <!-- Página de titulo (apenas impressão) -->
+            <div class="first-page print-only">
+                <h1 class="title"><?=$protocolo;?></h1>
+                <h5 class="document"><?= $nome_documento?></h5>
+                <h6 class="data"><?=$data_criacao;?></h6>
+            </div>
+            <!-- Fim página de titulo -->
+
+            <!-- Conteudo do Relatório -->
+            <div class="panel panel-default no-break">  
+                <div class="panel-body">
+                    <p>Protocolo</p>
+                </div>
+            </div>
+            <!-- Fim do conteudo -->
+        </div>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </body>
 </html>

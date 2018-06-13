@@ -8,11 +8,11 @@
                 ?>
                 <?php if (!empty($empresa->logo_code)): ?>
                   <div class="avatar">
-                    <img src="<?=base_url();?>/assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="empresa" class="img-fluid rounded-circle">
+                    <img src="<?=base_url();?>assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>" class="img-fluid rounded-circle">
                   </div>
                 <?php else: ?>
                   <div class="avatar">
-                    <img src="<?=base_url('assets/img/logo_sgt.png');?>" alt="Nome empresa" class="img-fluid rounded-circle">
+                    <img src="<?=base_url('assets/img/logo_sgt.png');?>" alt="<?=$empresa->nome;?>" class="img-fluid rounded-circle">
                   </div>
                 <?php endif; ?>
                 <div class="title">

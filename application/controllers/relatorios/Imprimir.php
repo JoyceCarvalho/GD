@@ -9,6 +9,7 @@ class Imprimir extends CI_Controller {
         $this->load->model("documentos_model", "docmodel");
         $this->load->model("etapas_model", "etapasmodel");
         $this->load->model("DocEtapas_model", "docetapamodel");
+        $this->load->model("empresa_model", "empresamodel");
     }
 
     public function imprimir_finalizados($id){
@@ -17,11 +18,10 @@ class Imprimir extends CI_Controller {
             redirect("/");
         }
 
-        $dados_documento = $this->docmodel->historico_documento($id);
-
-        $dados["informacoes_documento"] = json_decode($dados_documento);
+        $dados["informacoes_documento"] = json_decode($this->docmodel->historico_documento($id));
         $dados["etapas_documento"]      = json_decode($this->docmodel->historico_documentos_dados($id));
         $dados["id_documento"]          = $this->docmodel->documento_id($id);
+        $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
         $this->load->view('relatorios/imprimir/relatorios_finalizados', $dados);
 

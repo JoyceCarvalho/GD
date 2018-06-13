@@ -1,16 +1,16 @@
 /* estilização para impressão dos relatorios */
 
+.print-only {
+    display: none;
+}
+
 @media print{
 
     @page {
         margin: 2.25cm 1.5cm 2.5cm 2cm;
         width: 21cm;
         height: 29.7cm;
-        page-break-after: always;
-    }
-
-    .no-print{
-        display: none;
+        /*page-break-after: always;*/
     }
 
     * {
@@ -50,12 +50,69 @@
         max-width: 100%;
     }
 
+    .panel, .panel-body{
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .panel-heading {
+        padding: 0 !important;
+        margin-bottom: 0cm;
+    }
+
+    .panel-group .collapse, .panel-group a{
+        display: block !important;
+        height: auto !important;
+    }
+
+    .panel.panel-default {
+        border:none;
+    }
+
+    .print-only {
+        display: initial;
+    }
+
+    .no-print{
+        display: none;
+    }
+
     .no-break {
         page-break-after: auto;
     }
 
     .main, .row, .wrapper, .content, .no-print {
         margin: 0 !important;
+    }
+
+    .title {
+        margin-bottom: 20px;
+    }
+
+    .first-page {
+        /*page-break-after: always;*/
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: center;
+        align-items: center;
+        min-height: 90vh;
+    }
+
+    .title {
+        font-size: 24pt !important;
+    }
+
+    .first-page .title {
+        font-size: 28pt !important;
+    }
+
+    .document {
+        font-size: 20pt !important;
+    }
+
+    .data {
+        font-size: 15px !important;
     }
 
 }
