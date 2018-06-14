@@ -13,6 +13,11 @@
     font-weight: bold;
 }
 
+.subtitulo {
+    font-size: 10pt;
+    font-weight: bold;
+}
+
 .geral .table-responsive {
     padding-left: 4px;
 }
@@ -153,7 +158,7 @@
 
     .sessao{
         margin-top: 15px;
-        page-break-after: always;
+        /*page-break-after: always;*/
         /*page-break-inside: avoid;*/
         border: none;
     }
@@ -164,6 +169,10 @@
 
     .titulo-sessao {
         font-size: 18pt !important;
+    }
+
+    .subtitulo {
+        font-size: 12pt !important;
     }
 
     .panel.panel-default {

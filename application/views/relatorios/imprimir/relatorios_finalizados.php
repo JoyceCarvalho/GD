@@ -124,7 +124,7 @@ foreach ($etapas_documento as $etapas) {
                             ?>
                             <div class="panel panel-default sessao">
                                 <div class="panel-heading">
-                                    <span><?=$i?> º Etapa do documento: <?=$etapa->etapa;?></span>
+                                    <span class="subtitulo"><?=$i?> º Etapa do documento: <?=$etapa->etapa;?></span>
                                 </div>
                                 
                                 <div class="panel-body">
@@ -158,16 +158,16 @@ foreach ($etapas_documento as $etapas) {
                         
                         foreach ($erros_documento as $erros) {
                             if ($erros->tipo == "leve") {
-                                $tipo_erro = "Leve";
+                                $tipo_erro = "<b>leve</b>";
                             } elseif ($erros->tipo == "intermediario") {
-                                $tipo_erro = "Intermediário";
+                                $tipo_erro = "<b>intermediária</b>";
                             } elseif ($erros->tipo == "grave") {
-                                $tipo_erro = "Grave";
+                                $tipo_erro = "<b>grave</b>";
                             }
                             ?>
                             <div class="panel panel-default sessao no-break">
                                 <div class="panel-heading">
-                                    <span class="titulo-sessao"><?=$erros->titulo;?></span>
+                                    <span class="subtitulo"><?=$erros->titulo;?></span>
                                 </div>
                                 <div class="panel-body">
                                     <p>Erro de natureza <?=$tipo_erro;?> relatado por <?=$erros->relator;?> no dia <?=$erros->quando;?></p>

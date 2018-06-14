@@ -185,19 +185,26 @@ class Documentos_model extends CI_Model {
         $this->db->where('id', $id);
         return $this->db->update("tbdocumentos_cad", $dados);
     }
-
-    /**
-     * Função para excluir os dados da tabela tbdocumento
-     * Utilizada no controller conf/Documento.php
-     *
-     * @param int $id
-     * @return int
-     */
-    public function excluir_documentos($id){
-        $this->db->where('id = ', $id);
-        return $this->db->delete('tbdocumento');
-    }
     
+    /**
+     * Método responsável por retornar os erros encontrados no documento
+     * Utilizado no controller relatorios/Imprimir.php 
+     *
+     * @param int $idprotocolo
+     * @return object
+     */
+    public function erros_do_documento($idprotocolo){
+        $this->db->select('dc.id as idprotocolo, er.titulo as titulo, ed.descricao as descricao, er.tipo as tipo, e.titulo as titulo_etapa, 
+        DATE_FORMAT(ed.data_hora, "%d/%m/%Y") as quando, u.nome as relator');
+        $this->db->from('tbdocumentos_cad as dc');
+        $this->db->join('tberros_documentos as ed', 'ed.fk_iddocumentos = dc.id');
+        $this->db->join('tberros as er', 'er.id = ed.fk_iderros');
+        $this->db->join('tbetapa as e', 'e.id = ed.fk_idetapa');
+        $this->db->join('tbusuario as u', 'u.id = ed.fk_idusuario');
+        $this->db->where('dc.id', $idprotocolo);
+        return $this->db->get()->result();
+    }
+
     /**
      * Método responsável por retornar a etapa e o usuario da etapa anterior
      * Utilizado no controller documentos/Transferencia.php
@@ -231,6 +238,18 @@ class Documentos_model extends CI_Model {
         $this->db->where('ultima_etapa = ', 'true');
         $this->db->limit(1);
         return $this->db->get()->row('etapa');
+    }
+
+    /**
+     * Função para excluir os dados da tabela tbdocumento
+     * Utilizada no controller conf/Documento.php
+     *
+     * @param int $id
+     * @return int
+     */
+    public function excluir_documentos($id){
+        $this->db->where('id = ', $id);
+        return $this->db->delete('tbdocumento');
     }
 
     /**
@@ -525,23 +544,5 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->row('usuario');
     }
 
-    /**
-     * Método responsável por retornar os erros encontrados no documento
-     * Utilizado no controller relatorios/Imprimir.php 
-     *
-     * @param int $idprotocolo
-     * @return object
-     */
-    public function erros_do_documento($idprotocolo){
-        $this->db->select('dc.id as idprotocolo, er.titulo as titulo, ed.descricao as descricao, er.tipo as tipo, e.titulo as titulo_etapa, 
-        DATE_FORMAT(ed.data_hora, "%d/%m/%Y") as quando, u.nome as relator');
-        $this->db->from('tbdocumentos_cad as dc');
-        $this->db->join('tberros_documentos as ed', 'ed.fk_iddocumentos = dc.id');
-        $this->db->join('tberros as er', 'er.id = ed.fk_iderros');
-        $this->db->join('tbetapa as e', 'e.id = ed.fk_idetapa');
-        $this->db->join('tbusuario as u', 'u.id = ed.fk_idusuario');
-        $this->db->where('dc.id', $idprotocolo);
-        return $this->db->get()->result();
-    }
 
 }
