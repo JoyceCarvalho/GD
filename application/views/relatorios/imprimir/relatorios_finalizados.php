@@ -1,15 +1,11 @@
 <?php
 //print_r($informacoes_documento);
 foreach ($informacoes_documento as $documento) {
-    //echo "Protocolo: " . $documento->protocolo;
+    
     $protocolo = $documento->protocolo;
-    //echo "<br/> Nome Documento: " . $documento->nome_documento;
     $nome_documento = $documento->nome_documento;
-    //echo "<br/> Grupo Documento: " . $documento->nome_grupo;
     $grupo_documento = $documento->nome_grupo;
-    //echo "<br/> Data de Criação: " . $documento->data_criacao;
     $data_criacao = $documento->data_criacao;
-    //echo "<br/> Criado por: " . $documento->usuario_nome;
     $responsavel_criacao = $documento->usuario_nome;
     
     $prazo_documento = $documento->prazo;
@@ -17,16 +13,12 @@ foreach ($informacoes_documento as $documento) {
 
 
 foreach ($etapas_documento as $etapas) {
-    if ($etapas->descricao != "CRIADO") {
-        //echo "<br/> Descrição: " . $etapas->descricao . "<br/>";
-        //echo "Responsável pela etapa: " . $etapas->nome . "<br/>";
-        //echo "Data e hora do recebimento do documento: " . $etapas->data . " - " . $etapas->hora . "<br/>";
-        //echo "Etapa: " . $etapas->etapa . "<br/>";
-        if ($etapas->descricao == "FINALIZADO") {
-            $data_finalizacao = $etapas->data;
-            $hora_finalizacao = $etapas->hora;
-        }
+    
+    if ($etapas->descricao == "FINALIZADO") {
+        $data_finalizacao = $etapas->data;
+        $hora_finalizacao = $etapas->hora;
     }
+    
     $data_inicio[] = $etapas->data;
 }
 ?>
