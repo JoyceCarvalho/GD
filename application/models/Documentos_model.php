@@ -533,10 +533,13 @@ class Documentos_model extends CI_Model {
      * @return object
      */
     public function erros_do_documento($idprotocolo){
-        $this->db->select('dc.id as idprotocolo, ed.descricao as descricao, e.tipo as tipo');
+        $this->db->select('dc.id as idprotocolo, er.titulo as titulo, ed.descricao as descricao, er.tipo as tipo, e.titulo as titulo_etapa, 
+        DATE_FORMAT(ed.data_hora, "%d/%m/%Y") as quando, u.nome as relator');
         $this->db->from('tbdocumentos_cad as dc');
         $this->db->join('tberros_documentos as ed', 'ed.fk_iddocumentos = dc.id');
-        $this->db->join('tberros as e', 'e.id = ed.fk_iderros');
+        $this->db->join('tberros as er', 'er.id = ed.fk_iderros');
+        $this->db->join('tbetapa as e', 'e.id = ed.fk_idetapa');
+        $this->db->join('tbusuario as u', 'u.id = ed.fk_idusuario');
         $this->db->where('dc.id', $idprotocolo);
         return $this->db->get()->result();
     }

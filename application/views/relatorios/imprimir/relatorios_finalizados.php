@@ -1,3 +1,35 @@
+<?php
+//print_r($informacoes_documento);
+foreach ($informacoes_documento as $documento) {
+    //echo "Protocolo: " . $documento->protocolo;
+    $protocolo = $documento->protocolo;
+    //echo "<br/> Nome Documento: " . $documento->nome_documento;
+    $nome_documento = $documento->nome_documento;
+    //echo "<br/> Grupo Documento: " . $documento->nome_grupo;
+    $grupo_documento = $documento->nome_grupo;
+    //echo "<br/> Data de Criação: " . $documento->data_criacao;
+    $data_criacao = $documento->data_criacao;
+    //echo "<br/> Criado por: " . $documento->usuario_nome;
+    $responsavel_criacao = $documento->usuario_nome;
+    
+    $prazo_documento = $documento->prazo;
+}
+
+
+foreach ($etapas_documento as $etapas) {
+    if ($etapas->descricao != "CRIADO") {
+        //echo "<br/> Descrição: " . $etapas->descricao . "<br/>";
+        //echo "Responsável pela etapa: " . $etapas->nome . "<br/>";
+        //echo "Data e hora do recebimento do documento: " . $etapas->data . " - " . $etapas->hora . "<br/>";
+        //echo "Etapa: " . $etapas->etapa . "<br/>";
+        if ($etapas->descricao == "FINALIZADO") {
+            $data_finalizacao = $etapas->data;
+            $hora_finalizacao = $etapas->hora;
+        }
+    }
+    $data_inicio[] = $etapas->data;
+}
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,54 +59,6 @@
         <link rel="stylesheet" href="<?=base_url("assets/css/imprimir.css");?>">
     </head>
     <body>
-        <?php
-        print_r($informacoes_documento);
-
-        foreach ($informacoes_documento as $documento) {
-            //echo "Protocolo: " . $documento->protocolo;
-            $protocolo = $documento->protocolo;
-            //echo "<br/> Nome Documento: " . $documento->nome_documento;
-            $nome_documento = $documento->nome_documento;
-            //echo "<br/> Grupo Documento: " . $documento->nome_grupo;
-            $grupo_documento = $documento->nome_grupo;
-            //echo "<br/> Data de Criação: " . $documento->data_criacao;
-            $data_criacao = $documento->data_criacao;
-            //echo "<br/> Criado por: " . $documento->usuario_nome;
-            $responsavel_criacao = $documento->usuario_nome;
-            
-            $prazo_documento = $documento->prazo;
-        }
-
-
-        foreach ($etapas_documento as $etapas) {
-            if ($etapas->descricao != "CRIADO") {
-                //echo "<br/> Descrição: " . $etapas->descricao . "<br/>";
-                //echo "Responsável pela etapa: " . $etapas->nome . "<br/>";
-                //echo "Data e hora do recebimento do documento: " . $etapas->data . " - " . $etapas->hora . "<br/>";
-                //echo "Etapa: " . $etapas->etapa . "<br/>";
-
-                $this->load->model("etapas_model", "etapasmodel");
-                $prazo = $this->etapasmodel->prazo_etapa($etapas->idprotocolo, $etapas->idetapa);
-                if (!empty($prazo)) {
-                    //echo "Prazo para finalização: " . converte_data($prazo) . "<br/>";
-                }
-
-                if ($etapas->descricao == "FINALIZADO") {
-                    $data_finalizacao = $etapas->data;
-                    $hora_finalizacao = $etapas->hora;
-                }
-                $this->load->model("DocEtapas_model", "docetapamodel");
-
-                $ordem_etapa_atual = $this->docetapamodel->etapa_atual($id_documento, $etapas->idetapa);
-
-                $proxima_etapa_documento = $ordem_etapa_atual + 1;
-
-                //echo $proxima_etapa = $this->docetapamodel->proxima_etapa($id_documento, $proxima_etapa_documento);
-            }
-            $data_inicio[] = $etapas->data;
-        }
-        ?>
-
         <div class="container-fluid panel panel-default wrapper">
             <div class="panel-body no-print text-center">
                 <a href="javascript:window.print()" class="btn btn-warning"><i class="fa fa-print"></i> Imprimir</a>
@@ -174,7 +158,39 @@
             </div>
             <div class="panel panel-default sessao no-break geral">
                 <div class="panel-heading">
-                    <span class="titulo-sessao"></span>
+                    <span class="titulo-sessao">Erros do documento</span>
+                </div>
+                <div class="panel-body">
+                    <?php 
+                    if ($erros_documento) {
+                        
+                        foreach ($erros_documento as $erros) {
+                            if ($erros->tipo == "leve") {
+                                $tipo_erro = "Leve";
+                            } elseif ($erros->tipo == "intermediario") {
+                                $tipo_erro = "Intermediário";
+                            } elseif ($erros->tipo == "grave") {
+                                $tipo_erro = "Grave";
+                            }
+                            ?>
+                            <div class="panel panel-default sessao no-break">
+                                <div class="panel-heading">
+                                    <span class="titulo-sessao"><?=$erros->titulo;?></span>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Erro de natureza <?=$tipo_erro;?> relatado por <?=$erros->relator;?> no dia <?=$erros->quando;?></p>
+                                    <p>Descrição: <?=$erros->descricao;?></p>
+                                </div>
+                            </div>
+                            <?php
+                        }
+
+                    } else {
+                        ?>
+                        <p>Não ocorreram erros no documento</p>
+                        <?php
+                    }
+                    ?>
                 </div>
             </div>
             <!-- Fim do conteudo -->
