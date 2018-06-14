@@ -8,6 +8,38 @@
     padding-top: 5px;
 }
 
+.titulo-sessao {
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.geral .table-responsive {
+    padding-left: 4px;
+}
+
+.sessao .panel-body {
+    padding-top: 5px;
+}
+
+.panel-body .title {
+    text-align: center;
+}
+
+.panel-group .list-group {
+    margin-bottom: 0;
+}
+
+.panel-group .list-group .list-group-item {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    text-align: justify;
+}
+
+.panel-group .list-group .list-group-item:last-child {
+    border-bottom: none;
+}
+
 @media print{
 
     @page {
@@ -128,6 +160,32 @@
 
     .sessao:last-child{
         page-break-after: auto;
+    }
+
+    .titulo-sessao {
+        font-size: 18pt !important;
+    }
+
+    .panel.panel-default {
+        border:none;
+    }
+
+    .geral {
+        page-break-inside: avoid;
+        page-break-after: always;
+    }
+
+    .panel-heading {
+        padding: 0 !important;
+        margin-bottom: 0cm;
+    }
+
+    .panel-group .panel {
+        margin-top: .5cm;
+    }
+
+    .panel-group .panel:first-child {
+        margin-top: 0;
     }
 
 }

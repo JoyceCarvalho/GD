@@ -18,12 +18,25 @@ class Imprimir extends CI_Controller {
             redirect("/");
         }
 
-        $dados["informacoes_documento"] = json_decode($this->docmodel->historico_documento($id));
-        $dados["etapas_documento"]      = json_decode($this->docmodel->historico_documentos_dados($id));
-        $dados["id_documento"]          = $this->docmodel->documento_id($id);
-        $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $informacoes_documento = json_decode($this->docmodel->historico_documento($id));
+        foreach ($informacoes_documento as $doc ) {
+            if ($doc->idempresa == $_SESSION["idempresa"]) {
+                
+                $dados["informacoes_documento"] = $informacoes_documento;
+        
+                $dados["etapas_documento"]      = json_decode($this->docmodel->historico_documentos_dados($id));
+                $dados["id_documento"]          = $this->docmodel->documento_id($id);
+                $dados["erros_documento"]       = $this->docmodel->erros_do_documento($id);
+                $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        
+                $this->load->view('relatorios/imprimir/relatorios_finalizados', $dados);
 
-        $this->load->view('relatorios/imprimir/relatorios_finalizados', $dados);
+            } else {
+
+                $this->load->view('errors/acesso_restrito');
+
+            }
+        }
 
     }
 }

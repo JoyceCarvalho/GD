@@ -28,6 +28,8 @@
     </head>
     <body>
         <?php
+        print_r($informacoes_documento);
+
         foreach ($informacoes_documento as $documento) {
             //echo "Protocolo: " . $documento->protocolo;
             $protocolo = $documento->protocolo;
@@ -39,8 +41,10 @@
             $data_criacao = $documento->data_criacao;
             //echo "<br/> Criado por: " . $documento->usuario_nome;
             $responsavel_criacao = $documento->usuario_nome;
-            $prazo = $documento->prazo;
+            
+            $prazo_documento = $documento->prazo;
         }
+
 
         foreach ($etapas_documento as $etapas) {
             if ($etapas->descricao != "CRIADO") {
@@ -121,16 +125,16 @@
             <!-- Fim página de titulo -->
 
             <!-- Conteudo do Relatório -->
-            <div class="panel panel-default sessao no-break">  
+            <div class="panel panel-default sessao no-break geral">  
                 <div class="panel-heading">
-                    <span>Dados do Documento</span>
+                    <span class="titulo-sessao">Dados do Documento</span>
                 </div>
                 <div class="panel-body">
                     <p>Protocolo: <?=$protocolo;?></p>
                     <p>Documento: <?=$nome_documento;?></p>
-                    <p>Data de Criação: <?=$data_criacao;?></p>
+                    <p>Documento criado <?=$data_criacao;?></p>
                     <p>Documento criado por <?=$responsavel_criacao;?>
-                    <p>Prazo para finalização do documento <?=$prazo;?></p>
+                    <p>Prazo para finalização do documento <?=$prazo_documento;?></p>
                     <p>Documento finalizado em <?=$data_finalizacao;?></p>
 
                     <div class="line"></div>
@@ -166,6 +170,11 @@
                     }
                     ?>
                     
+                </div>
+            </div>
+            <div class="panel panel-default sessao no-break geral">
+                <div class="panel-heading">
+                    <span class="titulo-sessao"></span>
                 </div>
             </div>
             <!-- Fim do conteudo -->
