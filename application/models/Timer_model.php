@@ -66,4 +66,17 @@ class Timer_model extends CI_Model {
     public function cadastrar_tempo($dados){
         return $this->db->insert('tbtimer', $dados);
     }
+
+    /**
+     * Método responsável por retornar os timers correspondentes a esse protocolo
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int $protocolo
+     * @return object
+     */
+    public function listar_timer($protocolo){
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad = ', $protocolo);
+        return $this->db->get()->result();
+    }
 }

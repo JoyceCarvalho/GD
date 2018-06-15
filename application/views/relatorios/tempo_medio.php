@@ -40,8 +40,11 @@
                     <div class="card-header d-flex align-items-center">
                         <h3 class="h4">Documentos Finalizados</h3>
                     </div>
+
                     <div class="card-body">
+
                         <div class="table-responsive">                       
+
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>
                                     <tr>
@@ -63,8 +66,10 @@
                                             </td>
                                             <td><?=$documentos->nome_usuario;?></td>
                                             <td style="text-align: center;">
-                                                <a class="btn btn-sm btn-warning external" style="color: white;" href="<?=base_url('imprimir_finalizados/'.$documentos->idprotocolo);?>"><i class="fa fa-print"></i> Imprimir</a>
+                                                <a class="btn btn-sm btn-info external" href="<?=base_url('tempo_etapa/'.$documentos->idprotocolo);?>"><i class="fa fa-list-alt"></i> Tempo Médio por Etapa</a><br/><br/>
                                                 <div class="line"></div>
+                                                <a class="btn btn-sm btn-success external" href="<?=base_url('tempo_responsavel/'.$documentos->idprotocolo);?>"><i class="fa fa-address-card"></i> Tempo Médio por Responsável</a>
+                                                <a class="btn btn-sm btn-warning"><i class="fa fa-print"></i> Imprimir Relatório</a>
                                             </td>
                                         </tr>
                                         <?php
