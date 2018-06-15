@@ -75,8 +75,10 @@ class Timer_model extends CI_Model {
      * @return object
      */
     public function listar_timer($protocolo){
+        $this->db->select('action, timestamp');
         $this->db->from('tbtimer');
         $this->db->where('fk_iddoccad = ', $protocolo);
+        $this->db->order_by('id asc');
         return $this->db->get()->result();
     }
 }

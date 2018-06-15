@@ -41,4 +41,23 @@ class Imprimir extends CI_Controller {
         }
 
     }
+
+    public function imprimir_tempo_medio($id){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+
+        $informacoes_documento = json_decode($this->docmodel->historico_documento($id));
+
+        foreach ($informacoes_documento as $doc) {
+            
+            if ($doc->idempresa == $_SESSION["idempresa"]) {
+                
+                $dados["informacoes_documento"] = $informacoes_documento;
+
+            }
+
+        }
+    }
 }

@@ -169,3 +169,4 @@ $route["reverte_suspensao/(:any)"]   = "documentos/Relatorios/reverte_suspensao/
 $route["finalizados"]                   = "relatorios/Relatorios/finalizados";
 $route["imprimir_finalizados/(:num)"]   = "relatorios/imprimir/imprimir_finalizados/$1";
 $route["tempo_medio"]                   = "relatorios/relatorios/tempo_medio";
+$route["relatorio_tempo/(:num)"]        = "ralatorios/imprimir/imprimir_tempomedio/$1";

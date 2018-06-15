@@ -3,7 +3,7 @@
 <div class="breadcrumb-holder container-fluid">
     <ul class="breadcrumb">
         <li class="breadcrumb-item"><a href="<?=base_url("home");?>">Página Inicial</a></li>
-        <li class="breadcrumb-item active"> Documentos Finalizados</li>
+        <li class="breadcrumb-item active"> Relatório de Tempo Médio</li>
     </ul>
 </div>
 
@@ -38,7 +38,7 @@
                 <div class="card">
         
                     <div class="card-header d-flex align-items-center">
-                        <h3 class="h4">Documentos Finalizados</h3>
+                        <h3 class="h4">Relatório de Tempo Médio</h3>
                     </div>
 
                     <div class="card-body">
@@ -48,14 +48,15 @@
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>
                                     <tr>
-                                        <th width="10%">Protocolo</th>
-                                        <th width="25%">Documento<br/>/Grupo</th>
-                                        <th width="15%">Responsável Finalização</th>
-                                        <th width="30%"></th>
+                                        <th width="20%">Protocolo</th>
+                                        <th width="30%">Documento<br/>/Grupo</th>
+                                        <th width="10%">Tempo médio</th>
+                                        <th width="40%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
+                                    $conta_documentos = count($doc_finalizados);
                                     foreach ($doc_finalizados as $documentos) {
                                         ?>
                                         <tr>
@@ -64,18 +65,61 @@
                                                 <?=$documentos->documento;?><br/>
                                                 <strong><?=$documentos->grupo;?></strong>
                                             </td>
-                                            <td><?=$documentos->nome_usuario;?></td>
+                                            <td>
+                                                <?php
+                                                $this->load->model('timer_model', 'timermodel');
+
+                                                $timer = $this->timermodel->listar_timer($documentos->idprotocolo);
+
+                                                // Trecho adaptado do 1º gestão de documentos
+                                                $seconds = 0;
+                                                $sum_media = 0;
+                                                foreach ($timer as $t) {
+                                                    $action = $t->action;
+                                                    switch ($action) {
+                                                        case 'start':
+                                                            $seconds -= $t->timestamp;
+                                                            break;
+                                                        
+                                                        case 'pause':
+                                                            if($seconds !== 0){
+                                                                $seconds += $t->timestamp;
+                                                            }
+                                                            break;
+                                                    }
+                                                }
+                                                $sum_media += $seconds;
+                                                $mostraNumero = converteHoras($seconds);
+
+                                                echo "<strong>" . $mostraNumero . "</strong>";
+                                                ?>
+                                            </td>
                                             <td style="text-align: center;">
-                                                <a class="btn btn-sm btn-info external" href="<?=base_url('tempo_etapa/'.$documentos->idprotocolo);?>"><i class="fa fa-list-alt"></i> Tempo Médio por Etapa</a><br/><br/>
-                                                <div class="line"></div>
-                                                <a class="btn btn-sm btn-success external" href="<?=base_url('tempo_responsavel/'.$documentos->idprotocolo);?>"><i class="fa fa-address-card"></i> Tempo Médio por Responsável</a>
-                                                <a class="btn btn-sm btn-warning"><i class="fa fa-print"></i> Imprimir Relatório</a>
+                                                <p><a class="btn btn-sm btn-warning external" style="color: white;" href="<?=base_url("relatorio_tempo/".$documentos->idprotocolo);?>"><i class="fa fa-print"></i> Imprimir Relatório</a><p/>
+                                                <p><a class="btn btn-sm btn-info external" href="<?=base_url('tempo_etapa/'.$documentos->idprotocolo);?>"><i class="fa fa-list-alt"></i> Tempo Médio por Etapa</a><p/>
+                                                <p><a class="btn btn-sm btn-success external" href="<?=base_url('tempo_responsavel/'.$documentos->idprotocolo);?>"><i class="fa fa-address-card"></i> Tempo Médio por Responsável</a></p>
                                             </td>
                                         </tr>
                                         <?php
-                                    }                                        
+                                    }
                                     ?>
                                 </tbody>
+                                <?php
+                                if ($doc_finalizados) {
+                                    ?>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="center">
+                                                <strong><?= "Média: ".converteHoras(round($sum_media/$conta_documentos)); ?></strong>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                    <?php
+                                }
+                                ?>
                             </table>
                         </div>
                     </div>
@@ -83,6 +127,25 @@
             </div>
         </div>    
     </div>
-    
 </section>
-<script src="http://code.jquery.com/jquery.js"></script>
+<?php
+
+function cutNum($num, $precision = 2){
+    return floor($num).substr($num-floor($num),1,$precision+1);
+}
+
+
+function converteHoras($segundos){
+    //header('Content-Type: application/json');
+    //$segundos = json_encode($segundos);
+    $horas = 0;
+    $horas = floor($segundos / 3600); 
+    $segundos -= $horas * 3600; 
+    $minutos = floor($segundos / 60); 
+    $segundos -= $minutos * 60; 
+    if ($horas < 10) $horas = "0".$horas; 
+    if ($minutos < 10) $minutos = "0".$minutos; 
+    if ($segundos < 10) $segundos = "0".$segundos;
+    return $horas.":".$minutos.":".$segundos;
+}
+?>
