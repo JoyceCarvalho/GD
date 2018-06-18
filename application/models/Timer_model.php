@@ -69,7 +69,7 @@ class Timer_model extends CI_Model {
 
     /**
      * Método responsável por retornar os timers correspondentes a esse protocolo
-     * Utilizado no controller relatorios/Relatorios.php 
+     * Utilizado no controller relatorios/Relatorios.php e relatorios/Imprimir.php
      *
      * @param int $protocolo
      * @return object
@@ -78,6 +78,63 @@ class Timer_model extends CI_Model {
         $this->db->select('action, timestamp');
         $this->db->from('tbtimer');
         $this->db->where('fk_iddoccad = ', $protocolo);
+        $this->db->order_by('id asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por listar o tempo desenvolvido por cada etapa
+     * Utilizado no controller relatorios/Imprimir.php 
+     *
+     * @param int $protocolo
+     * @return object
+     */
+    public function timer_etapa($protocolo){
+        
+        $this->db->select('t.fk_idetapa as idetapa, e.titulo as etapa_titulo');
+        $this->db->from('tbtimer as t');
+        $this->db->join('tbetapa as e', 'e.id = t.fk_idetapa');
+        $this->db->where('t.fk_iddoccad', $protocolo);
+        $this->db->group_by('t.fk_idetapa');
+        
+        return $this->db->get()->result();
+
+    }
+
+    /**
+     * Método responsável por listar o tempo desenvolvido por usuario nas etapas
+     * Utilizado no controller relatorios/Imprimir.php 
+     *
+     * @param int $protocolo
+     * @param int $etapa
+     * @return object
+     */
+    public function timer_responsavel($protocolo, $etapa){
+        
+        $this->db->select('t.fk_idetapa as idetapa, t.fk_idusuario as idusuario, u.nome as nome_usuario');
+        $this->db->from('tbtimer as t');
+        $this->db->join('tbetapa as e', 'e.id = t.fk_idetapa');
+        $this->db->join('tbusuario as u', 'u.id = t.fk_idusuario');
+        $this->db->where('t.fk_iddoccad', $protocolo);
+        $this->db->where('t.fk_idetapa', $etapa);
+        $this->db->group_by('t.fk_idetapa, t.fk_idusuario');
+
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por listar o tempo do documento em determinada etapa
+     * Utilizado no controller relatorios/Imprimir.php 
+     *
+     * @param int $protocolo
+     * @param int $etapa
+     * @return object
+     */
+    public function tempo_por_etapa($protocolo, $etapa){
+        $this->db->select('action, timestamp');
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad = ', $protocolo);
+        $this->db->where('fk_idetapa', $etapa);
         $this->db->order_by('id asc');
         return $this->db->get()->result();
     }

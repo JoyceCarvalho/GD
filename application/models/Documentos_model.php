@@ -253,15 +253,31 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método responsável por retornar a data de finalização do documento
+     * Utilizado no controller relatorios/Imprimir.php 
+     *
+     * @param int $idprotocolo
+     * @return object
+     */
+    public function finalizacao_data_documento($idprotocolo){
+        $this->db->select("DATE_FORMAT(ld.data_hora, '%d/%m/%Y - %H:%i') as data_finalizacao");
+        $this->db->from('tblog_documentos as ld');
+        $this->db->where("ld.descricao = 'FINALIZADO'");
+        $this->db->where('ld.documento', $idprotocolo);
+        return $this->db->get()->row('data_finalizacao');
+    }
+
+    /**
      * Método responsável por gerar o histórico do documento
-     * Utilizado no controller documentos/Documento.php
+     * Utilizado no controller documentos/Documento.php e relatorios/Imprimir.php
      *
      * @param int $idprotocolo
      * @return json
      */
     public function historico_documento($idprotocolo){
-        $this->db->select("dc.protocolo as protocolo, d.titulo as nome_documento, g.titulo as nome_grupo, DATE_FORMAT(ld.data_hora, '%d/%m/%Y - %H:%i') as data_criacao, 
-        u.nome as usuario_nome, DATE_FORMAT(dc.prazo, '%d/%m/%Y') as prazo, d.fk_idempresa as idempresa");
+        $this->db->select("dc.id as idprotocolo, dc.protocolo as protocolo, d.titulo as nome_documento, g.titulo as nome_grupo, 
+        DATE_FORMAT(ld.data_hora, '%d/%m/%Y - %H:%i') as data_criacao, u.nome as usuario_nome, DATE_FORMAT(dc.prazo, '%d/%m/%Y') as prazo, 
+        d.fk_idempresa as idempresa");
         $this->db->from("tblog_documentos as ld");
         $this->db->join("tbdocumentos_cad as dc", "ld.documento = dc.id");
         $this->db->join("tbdocumento as d", "dc.fk_iddocumento = d.id");
@@ -277,7 +293,7 @@ class Documentos_model extends CI_Model {
 
     /**
      * Método responsável por listar o histórico do documento
-     * Utilizado no controller documentos/Documento.php
+     * Utilizado no controller documentos/Documento.php e relatorios/Imprimir.php
      *
      * @param int $idprotocolo
      * @return json
@@ -452,7 +468,7 @@ class Documentos_model extends CI_Model {
     
     /**
      * Método responsável por listar os documentos finalizados
-     * Utilizado no controller relatorios/Relatorios.php 
+     * Utilizado no controller relatorios/Relatorios.php e relatorios/Imprimir.php
      *
      * @param int $empresa
      * @return object

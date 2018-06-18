@@ -10,6 +10,7 @@ class Imprimir extends CI_Controller {
         $this->load->model("etapas_model", "etapasmodel");
         $this->load->model("DocEtapas_model", "docetapamodel");
         $this->load->model("empresa_model", "empresamodel");
+        $this->load->model("timer_model", "timermodel");
     }
 
     public function imprimir_finalizados($id){
@@ -55,6 +56,16 @@ class Imprimir extends CI_Controller {
             if ($doc->idempresa == $_SESSION["idempresa"]) {
                 
                 $dados["informacoes_documento"] = $informacoes_documento;
+                $dados["tempo_medio"]           = $this->timermodel->listar_timer($id);
+                $dados["tempo_por_etapa"]       = $this->timermodel->timer_etapa($id);
+                $dados["data_finalizacao"]      = $this->docmodel->finalizacao_data_documento($id);
+                $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                
+                $this->load->view('relatorios/imprimir/relatorios_tempo', $dados);
+
+            } else {
+
+                $this->load->view('errors/acesso_restrito');
 
             }
 
