@@ -1,10 +1,10 @@
         <!-- Breadcrumb-->
-        <div class="breadcrumb-holder container-fluid">
+        <!--<div class="breadcrumb-holder container-fluid">
             <ul class="breadcrumb">
               <li class="breadcrumb-item"><a href="<?=base_url('ausencia');?>">Listar Ausência</a></li>
               <li class="breadcrumb-item active">Cadastrar Ausência </li>
             </ul>
-        </div>
+        </div>-->
         <!-- Forms Section-->
         <section class="forms"> 
             <div class="container-fluid">

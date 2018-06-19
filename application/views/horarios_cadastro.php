@@ -1,10 +1,10 @@
         <!-- Breadcrumb-->
-        <div class="breadcrumb-holder container-fluid">
+          <!--<div class="breadcrumb-holder container-fluid">
             <ul class="breadcrumb">
               <li class="breadcrumb-item"><a href="<?=base_url('home/horarios');?>">Listar Horarios</a></li>
               <li class="breadcrumb-item active">Cadastrar Horário de trabalho </li>
             </ul>
-          </div>
+          </div>-->
           <!-- Forms Section-->
             <section class="forms"> 
                 <div class="container-fluid">

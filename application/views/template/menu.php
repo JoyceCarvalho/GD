@@ -188,8 +188,20 @@
               <ul id="relatorio" class="collapse list-unstyled">
                 <li <?=($submenu == "finalizado") ? "class='active'" : "" ?>> <a href="<?=base_url('finalizados');?>"> <i class="fa fa-tags"></i>Finalizados </a></li>
                 <li <?=($submenu == "tempo") ? "class='active'" : "" ?>> <a href="<?=base_url('tempo_medio');?>"> <i class="fa fa-clock-o"></i>Tempo Médio </a></li>
-                <li <?=($submenu == "atendimento") ? "class='active'" : "" ?>> <a href="<?=base_url('home/relatendimento/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-file-text-o"></i>Documentos em Atendimentos por dia </a></li>
-                <li <?=($submenu == "atendente") ? "class='active'" : "" ?>> <a href="<?=base_url('home/relatendente/'.$_SESSION["idempresa"]);?>"> <i class="fa fa-address-card"></i>Documentos Atendentes por dia </a></li>
+
+                <li <?=($submenu == "produtividade") ? "class=active'" : "" ?>>
+                  <a href="#produtividade" aria-expanded="false" data-toggle="collapse">
+                    <i class="fa fa-line-chart"></i> Produtividade
+                  </a>
+
+                  <ul id="produtividade" class="collapse list-unstyled">
+                    <?php if((($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true))): ?>
+                      <li><a href="<?=base_url("produtividade_grupo");?>"> Grupo</a></li>
+                    <?php else: ?>
+                      <li><a href="<?=base_url("produtividade_indivudual");?>"> Individual</a></li>
+                    <?php endif; ?>
+                  </ul>
+                </li>
               </ul>
             </li>
           </ul>
@@ -199,6 +211,16 @@
           <!-- Page Header-->
           <header class="page-header">
             <div class="container-fluid">
-              <h2 class="no-margin-bottom"><?=$pagina;?></h2>
+              <!--<h2 class="no-margin-bottom"><?//=$pagina;?></h2>-->              
+                <div class="app-title">
+                  <h1><?=$pagina?></h1>
+                </div>
+                <?php if($submenu != ""): ?>
+                  <ul class="app-breadcrumb breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?=base_url('home');?>"><i class="fa fa-home fa-lg"></i></a></li>
+                    <li class="breadcrumb-item"><?=$pagina?></li>
+                  </ul>
+                <?php endif; ?>
             </div>
           </header>
+        

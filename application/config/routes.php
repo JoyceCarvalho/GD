@@ -170,3 +170,4 @@ $route["finalizados"]                   = "relatorios/Relatorios/finalizados";
 $route["imprimir_finalizados/(:num)"]   = "relatorios/imprimir/imprimir_finalizados/$1";
 $route["tempo_medio"]                   = "relatorios/relatorios/tempo_medio";
 $route["relatorio_tempo/(:num)"]        = "relatorios/imprimir/imprimir_tempo_medio/$1";
+$route["produtividade_indivudual"]      = "relatorios/relatorios/produtividade_individual";

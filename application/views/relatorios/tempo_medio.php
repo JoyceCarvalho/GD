@@ -96,8 +96,6 @@
                                             </td>
                                             <td style="text-align: center;">
                                                 <p><a class="btn btn-sm btn-warning external" style="color: white;" href="<?=base_url("relatorio_tempo/".$documentos->idprotocolo);?>"><i class="fa fa-print"></i> Imprimir Relatório</a><p/>
-                                                <p><a class="btn btn-sm btn-info external" href="<?=base_url('tempo_etapa/'.$documentos->idprotocolo);?>"><i class="fa fa-list-alt"></i> Tempo Médio por Etapa</a><p/>
-                                                <p><a class="btn btn-sm btn-success external" href="<?=base_url('tempo_responsavel/'.$documentos->idprotocolo);?>"><i class="fa fa-address-card"></i> Tempo Médio por Responsável</a></p>
                                             </td>
                                         </tr>
                                         <?php
@@ -128,19 +126,3 @@
         </div>    
     </div>
 </section>
-<?php
-/*
-function converteHoras($segundos){
-    //header('Content-Type: application/json');
-    //$segundos = json_encode($segundos);
-    $horas = 0;
-    $horas = floor($segundos / 3600); 
-    $segundos -= $horas * 3600; 
-    $minutos = floor($segundos / 60); 
-    $segundos -= $minutos * 60; 
-    if ($horas < 10) $horas = "0".$horas; 
-    if ($minutos < 10) $minutos = "0".$minutos; 
-    if ($segundos < 10) $segundos = "0".$segundos;
-    return $horas.":".$minutos.":".$segundos;
-}*/
-?>

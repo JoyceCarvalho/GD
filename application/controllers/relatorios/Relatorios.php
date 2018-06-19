@@ -10,6 +10,7 @@ class Relatorios extends CI_Controller {
         $this->load->model('erros_model', 'errosmodel');
         $this->load->model('empresa_model', 'empresamodel');
         $this->load->model('timer_model', 'timermodel');
+        $this->load->model('usuario_model', 'usermodel');
     }
 
     public function finalizados(){
@@ -51,6 +52,28 @@ class Relatorios extends CI_Controller {
         $this->load->view('template/header');
         $this->load->view('template/menu');
         $this->load->view('relatorios/tempo_medio');
+        $this->load->view('template/footer');
+        $this->load->view('template/html_footer');
+
+    }
+
+    public function produtividade_individual(){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+
+        $dados["pagina"]  = "Produtividade Individual";
+        $dados["pg"]      = "relatorio";
+        $dados["submenu"] = "produtividade";
+
+        $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados['usuario']       = $this->usermodel->dados_usuario($_SESSION["idusuario"]);
+        
+        $this->load->view('template/html_header', $dados);
+        $this->load->view('template/header');
+        $this->load->view('template/menu');
+        $this->load->view('relatorios/produtividade_user');
         $this->load->view('template/footer');
         $this->load->view('template/html_footer');
 

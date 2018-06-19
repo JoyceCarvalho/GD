@@ -1,10 +1,10 @@
 <!-- Breadcrumb-->
-<div class="breadcrumb-holder container-fluid">
+<!--<div class="breadcrumb-holder container-fluid">
     <ul class="breadcrumb">
         <li class="breadcrumb-item"><a href="<?=base_url("home");?>">Página Inicial</a></li>
         <li class="breadcrumb-item active"> Listar Feriados</li>
     </ul>
-</div>
+</div>-->
 
 <section class="tables">   
 
