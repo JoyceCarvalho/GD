@@ -58,6 +58,7 @@ class Imprimir extends CI_Controller {
                 $dados["informacoes_documento"] = $informacoes_documento;
                 $dados["tempo_medio"]           = $this->timermodel->listar_timer($id);
                 $dados["tempo_por_etapa"]       = $this->timermodel->timer_etapa($id);
+                $dados["tempo_por_responsavel"] = $this->timermodel->timer_responsavel($id);
                 $dados["data_finalizacao"]      = $this->docmodel->finalizacao_data_documento($id);
                 $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 

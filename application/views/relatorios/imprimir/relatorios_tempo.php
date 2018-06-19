@@ -149,7 +149,7 @@ foreach ($informacoes_documento as $documento) {
             </div>
             <div class="panel panel-default sessao no-break geral">
                 <div class="panel-heading">
-                    <span class="titulo-sessao">Tempo médio por etapa</span>
+                    <span class="titulo-sessao">Tempo por etapa</span>
                 </div>
                 <div class="panel-body">
                 
@@ -158,7 +158,8 @@ foreach ($informacoes_documento as $documento) {
                             <thead>
                                 <tr>
                                     <th>Etapa</th>
-                                    <th>Tempo Médio</th>
+                                    <th>Responsável</th>
+                                    <th>Tempo</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -168,6 +169,7 @@ foreach ($informacoes_documento as $documento) {
                                     ?>                                
                                     <tr>    
                                         <td><?=$etapa->etapa_titulo?></td>
+                                        <td><?=$etapa->nome_usuario;?></td>
                                         <td>
                                             <?php
                                             $tempo = $this->timermodel->tempo_por_etapa($idprotocolo, $etapa->idetapa);
@@ -208,14 +210,14 @@ foreach ($informacoes_documento as $documento) {
                         </table>
                     </div>
                     <div class="col-sm-3"></div>
-                    <div class="col-sm-6">
-                        <div id="chart_etapa" style="min-width: 200px; height: 300px; margin: 0 auto"></div>
+                    <div class="charts-container col-sm-6">
+                        <div id="chart_etapa" class="myChart"></div>
                     </div>
                 </div>
             </div>
             <div class="panel panel-default sessao no-break geral">
                 <div class="panel-heading">
-                    <span class="titulo-sessao">Tempo médio por responsável</span>
+                    <span class="titulo-sessao">Tempo por responsável</span>
                 </div>
                 <div class="panel-body">
                     
@@ -225,64 +227,64 @@ foreach ($informacoes_documento as $documento) {
                             <thead>
                                 <tr>
                                     <th>Responsável</th>
-                                    <th>Tempo Médio</th>
+                                    <th>Tempo</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                foreach ($tempo_por_etapa as $etapa) {
-                                    
-                                    $tempo_responsavel = $this->timermodel->timer_responsavel($idprotocolo, $etapa->idetapa);
+                                foreach ($tempo_por_responsavel as $responsavel) {
 
                                     $seconds = 0;
                                     $sum_media = 0;
 
-                                    foreach ($tempo_responsavel as $responsavel) {
-                                        ?>
-                                        <tr>
-                                            <td><?=$responsavel->nome_usuario?></td>
-                                            <td>
-                                                <?php
-                                                $tempo = $this->timermodel->tempo_por_etapa($idprotocolo, $responsavel->idetapa);
+                                    ?>
+                                    <tr>
+                                        <td><?=$responsavel->nome_usuario?></td>
+                                        <td>
+                                            <?php
+                                            $tempo = $this->timermodel->tempo_por_responsavel($idprotocolo, $responsavel->idusuario);
 
-                                                // Trecho adaptado do 1º gestão de documentos
-                                                $seconds = 0;
-                                                $sum_media = 0;
-                                                foreach ($tempo as $t) {
+                                            // Trecho adaptado do 1º gestão de documentos
+                                            $seconds = 0;
+                                            $sum_media = 0;
+                                            foreach ($tempo as $t) {
+                                                
+                                                $action = $t->action;
+                                                switch ($action) {
+                                                    case 'start':
+                                                        $seconds -= $t->timestamp;
+                                                        break;
                                                     
-                                                    $action = $t->action;
-                                                    switch ($action) {
-                                                        case 'start':
-                                                            $seconds -= $t->timestamp;
-                                                            break;
-                                                        
-                                                        case 'pause':
-                                                            if ($seconds !== 0) {
-                                                                $seconds += $t->timestamp;
-                                                            }
-                                                            break;
-                                                    }
-    
+                                                    case 'pause':
+                                                        if ($seconds !== 0) {
+                                                            $seconds += $t->timestamp;
+                                                        }
+                                                        break;
                                                 }
-    
-                                                $sum_media += $seconds;
-                                                $mostraNumero = converteHoras($seconds);
-    
-                                                echo $mostraNumero;
-    
-                                                $charts_responsavel[$etapa->nome_usuario] = cutNum(str_replace(":",".",$mostraNumero));
-                                                ?>
-                                            </td>
-                                        </tr>
-                                        <?php
-                                    }
+
+                                            }
+
+                                            $sum_media += $seconds;
+                                            $mostraNumero = converteHoras($seconds);
+
+                                            echo $mostraNumero;
+
+                                            $charts_responsavel[$responsavel->nome_usuario] = cutNum(str_replace(":",".",$mostraNumero));
+                                            ?>
+                                        </td>
+                                    </tr>
+                                    <?php
 
                                 }
                                 ?>
                             </tbody>
                         </table>
                     </div>
- 
+                                
+                    <div class="col-sm-3"></div>
+                    <div class="charts-container col-sm-6">
+                        <div id="chart_resp" class="myChart"></div>
+                    </div>
                 </div>
             </div>
             <!-- Fim do conteudo -->
@@ -297,7 +299,7 @@ foreach ($informacoes_documento as $documento) {
                     type: 'column'
                 },
                 title: {
-                    text: 'Tempo médio por etapa'
+                    text: 'Tempo por etapa'
                 },
                 xAxis: {
                     type: 'category',
@@ -312,14 +314,17 @@ foreach ($informacoes_documento as $documento) {
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Minutos'
+                        text: 'Tempo médio'
                     }
                 },
                 legend: {
                     enabled: false
                 },
+                credits: {
+                    enabled:false
+                },
                 tooltip: {
-                    pointFormat: '<b>{point.y:.1f}</b>'
+                    pointFormat: '<b>{point.y:.2f}</b>'
                 },
                 series: [{
                     /*name: 'Population',*/
@@ -337,7 +342,65 @@ foreach ($informacoes_documento as $documento) {
                         rotation: -90,
                         color: '#FFFFFF',
                         align: 'right',
-                        format: '{point.y:.1f}', // one decimal
+                        format: '{point.y:.2f}', // one decimal
+                        y: 10, // 10 pixels down from the top
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                }]
+            });
+
+            Highcharts.chart('chart_resp', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Tempo por responsável'
+                },
+                xAxis: {
+                    type: 'category',
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Tempo médio'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: '<b>{point.y:.2f}</b>'
+                },
+                series: [{
+                    /*name: 'Population',*/
+                    data: [
+                        <?php
+                        foreach ($charts_responsavel as $key => $value) {
+                            ?>
+                            ['<?=$key;?>', <?=$value;?>],
+                            <?php
+                        }
+                        ?>
+                    ],
+                    dataLabels: {
+                        enabled: true,
+                        rotation: -90,
+                        color: '#FFFFFF',
+                        align: 'right',
+                        format: '{point.y:.2f}', // one decimal
                         y: 10, // 10 pixels down from the top
                         style: {
                             fontSize: '13px',

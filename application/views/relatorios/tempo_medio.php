@@ -129,12 +129,7 @@
     </div>
 </section>
 <?php
-
-function cutNum($num, $precision = 2){
-    return floor($num).substr($num-floor($num),1,$precision+1);
-}
-
-
+/*
 function converteHoras($segundos){
     //header('Content-Type: application/json');
     //$segundos = json_encode($segundos);
@@ -147,5 +142,5 @@ function converteHoras($segundos){
     if ($minutos < 10) $minutos = "0".$minutos; 
     if ($segundos < 10) $segundos = "0".$segundos;
     return $horas.":".$minutos.":".$segundos;
-}
+}*/
 ?>

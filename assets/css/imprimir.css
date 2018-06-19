@@ -1,4 +1,13 @@
 /* estilização para impressão dos relatorios */
+.charts-container{
+    position: relative;
+    padding: 0;
+}
+
+.myChart {
+    position: relative;
+    margin: 0 auto;
+}
 
 .print-only {
     display: none;
@@ -44,6 +53,16 @@
 .panel-group .list-group .list-group-item:last-child {
     border-bottom: none;
 }
+
+.table tb {
+    padding: 0.3em !important;
+}
+
+.table tb:last-child, .table th:last-child{
+    font-weight: bold;
+    border-left: #E0DDFF;
+}
+
 
 @media print{
 
@@ -195,6 +214,14 @@
 
     .panel-group .panel:first-child {
         margin-top: 0;
+    }
+
+    .highcharts-label text > * {
+        font-size: 10px !important;
+    }
+
+    .highcharts-axis-labels text > * {
+        font-size: 11px !important;
     }
 
 }
