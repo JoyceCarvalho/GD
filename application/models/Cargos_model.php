@@ -94,5 +94,21 @@ class Cargos_model extends CI_Model {
         return json_encode($this->db->get('')->result());
     }
 
+    /**
+     * Método para retornar o nome de determinado cargo
+     * Utilizado no controller relatorios/Relatorios.php
+     *
+     * @param int $id
+     * @return string
+     */
+    public function listar_nome_cargo($id){
+        
+        $this->db->select("titulo as nome");
+        $this->db->from('tbcargos');
+        $this->db->where('id', $id);
+        
+        return $this->db->get()->row('nome');
+    }
+
 
 }

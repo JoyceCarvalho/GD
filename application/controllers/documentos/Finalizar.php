@@ -238,7 +238,7 @@ class Finalizar extends CI_Controller {
 
                 if($this->docmodel->cadastrar_log_documento($finalizado)){
                     
-                    $mensagem = "success";
+                    $mensagem = "finalizado";
 
                     redirect("meus_documentos/".$mensagem);
 

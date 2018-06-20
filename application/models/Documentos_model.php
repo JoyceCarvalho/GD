@@ -545,6 +545,36 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método responsável por retornar a quantidade de documentos finalizado por determinado funcionario
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int $usuario
+     * @return int
+     */
+    public function quantidade_documentos_finalizados_usuario($usuario){
+        $this->db->select('count(*) as total');
+        $this->db->from('tblog_documentos');
+        $this->db->where("usuario in ($usuario)");
+        $this->db->where("descricao = 'FINALIZADO'");
+        
+        return $this->db->get()->row('total');
+    }
+
+    public function retorna_etapa($etapa, $protocolo){
+
+        $this->db->select('etapa, usuario');
+        $this->db->from('tblog_documentos');
+        $this->db->where('documento', $protocolo);
+        $this->db->where('etapa', $etapa);
+        $this->db->where('ultima_etapa', "'false'");
+        $this->db->order_by('id desc');
+        $this->db->limit(1);
+
+        return $this->db->get()->row();
+
+    }
+
+    /**
      * Método responsável por retornar o usuario responsável pelo documento cadastrado
      * Utilizado no controller documentos/Documento.php
      *

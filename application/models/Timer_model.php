@@ -155,4 +155,18 @@ class Timer_model extends CI_Model {
         $this->db->order_by('id asc');
         return $this->db->get()->result();
     }
+
+    /**
+     * Método responsável por listar o tempo médio do usuário
+     *
+     * @param int $responsavel
+     * @return object
+     */
+    public function tempo_documento_usuario($responsavel){
+        $this->db->select('action, timestamp, fk_iddoccad as idprotocolo');
+        $this->db->from('tbtimer');
+        $this->db->where('fk_idusuario', $responsavel);
+        $this->db->order_by('id asc');
+        return $this->db->get()->result();
+    }
 }

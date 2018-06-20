@@ -11,6 +11,7 @@ class Relatorios extends CI_Controller {
         $this->load->model('empresa_model', 'empresamodel');
         $this->load->model('timer_model', 'timermodel');
         $this->load->model('usuario_model', 'usermodel');
+        $this->load->model('cargos_model', 'cargosmodel');
     }
 
     public function finalizados(){
@@ -67,8 +68,11 @@ class Relatorios extends CI_Controller {
         $dados["pg"]      = "relatorio";
         $dados["submenu"] = "produtividade";
 
-        $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados['usuario']       = $this->usermodel->dados_usuario($_SESSION["idusuario"]);
+        $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados['usuario']               = $this->usermodel->dados_usuario($_SESSION["idusuario"]);
+        $dados["documentos_fnalizados"] = $this->docmodel->quantidade_documentos_finalizados_usuario($_SESSION["idusuario"]);
+        $dados["documentos_andamento"]  = $this->docmodel->numero_documentos($_SESSION["idusuario"]);
+        $dados["tempomedio"]            = $this->timermodel->tempo_documento_usuario($_SESSION["idusuario"]);
         
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
