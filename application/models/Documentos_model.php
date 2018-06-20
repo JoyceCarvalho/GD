@@ -560,6 +560,14 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->row('total');
     }
 
+    /**
+     * Método responsável por retornar o usuario da etapa do documento
+     * Utilizado no controller conf/Erros.php
+     *
+     * @param int $etapa
+     * @param int $protocolo
+     * @return object
+     */
     public function retorna_etapa($etapa, $protocolo){
 
         $this->db->select('etapa, usuario');

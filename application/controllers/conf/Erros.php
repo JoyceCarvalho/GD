@@ -8,6 +8,7 @@ class Erros extends CI_Controller {
         
         $this->load->model('empresa_model', 'empresamodel');
         $this->load->model('erros_model', 'errosmodel');
+        $this->load->model('documentos_model', 'docmodel');
     }
 
     public function index(){
@@ -245,6 +246,8 @@ class Erros extends CI_Controller {
             redirect("/");
         }
 
+        $idprotocolo = $this->input->post("idprotocolo");
+
         $dados = array(
             'fk_iderros' => $this->input->post("erro"), 
             'fk_iddocumentos' => $this->input->post("idprotocolo"),
@@ -254,15 +257,36 @@ class Erros extends CI_Controller {
             'fk_idetapa'      => $this->input->post("etapa_erro"),
         );
 
-        if($this->errosmodel->cadastrar_erros_documento($dados)){
+        $this->errosmodel->cadastrar_erros_documento($dados);
 
-            redirect("meus_documentos/erro");
- 
-        } else {
+        if($this->docmodel->editar_documentos_log($idprotocolo)){
 
-            redirect("meus_documentos/error");
+            $anterior = $this->docmodel->retorna_etapa($this->input->post('etapa_erro'), $this->input->post('protocolo'));
+
+            $usuario_anterior = $anterior->usuario;
+            $etapa_anterior = $anterior->etapa;
+
+            $retornar = array(
+                'descricao'     => "RETORNO COM ERRO", 
+                'data_hora'     => date("Y-m-d H:i:s"),
+                'ultima_etapa'  => "true",
+                'usuario'       => $usuario_anterior,
+                'etapa'         => $etapa_anterior,
+                'documento'     => $idprotocolo
+            );
+
+            if($this->docmodel->cadastrar_log_documento($retornar)){
+
+                redirect("meus_documentos/erro");
+     
+            } else {
+    
+                redirect("meus_documentos/error");
+    
+            }
 
         }
+
 
     }
 
