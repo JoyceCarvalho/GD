@@ -11,6 +11,7 @@ class Imprimir extends CI_Controller {
         $this->load->model("DocEtapas_model", "docetapamodel");
         $this->load->model("empresa_model", "empresamodel");
         $this->load->model("timer_model", "timermodel");
+        $this->load->model('usuario_model', 'usermodel');
     }
 
     public function imprimir_finalizados($id){
@@ -71,5 +72,25 @@ class Imprimir extends CI_Controller {
             }
 
         }
+    }
+
+    public function produtividade_relatorio($idusuario){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+
+        $usuario = $this->usermodel->get_user($idusuario);
+
+        if ($_SESSION["idempresa"] == $usuario->fk_idempresa) {
+            
+            $this->load->view('relatorios/imprimir/relatorio_produtividade');
+
+        } else {
+
+            $this->load->view('errors/acesso_restrito');
+
+        }
+
     }
 }

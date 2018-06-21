@@ -74,8 +74,12 @@ $this->load->model('cargos_model', 'cargosmodel');
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><?=$documentos_andamento;?></td>
-                                            <td><?=$documentos_fnalizados;?></td>
+                                            <td>
+                                                <?=$documentos_andamento;?>
+                                            </td>
+                                            <td>
+                                                <?=$documentos_fnalizados;?>
+                                            </td>
                                             <td>
                                                 <?php
                                                 $id         = 0;
@@ -124,14 +128,16 @@ $this->load->model('cargos_model', 'cargosmodel');
                                                 echo $mostraNumero;
                                                 ?>
                                             </td>
-                                            <td></td>
+                                            <td>
+                                                <?=$erros_user;?>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="row d-print-none mt-2">
-                            <div class="col-12 text-right"><a class="btn btn-primary" href="javascript:window.print();" target="_blank"><i class="fa fa-print"></i> Print</a></div>
+                            <div class="col-12 text-right"><a class="btn btn-primary" href="javascript:window.print();" target="_blank"><i class="fa fa-print"></i> Imprimir</a></div>
                         </div>                        
                     </section>
                 </div>

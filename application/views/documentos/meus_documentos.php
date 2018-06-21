@@ -224,6 +224,14 @@
                     <h4 id="exampleModalLabel" class="modal-title"></h4>
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                 </div>
+
+                <div class="modal-body" id="his_conteudo">                                                
+                    
+                </div>
+
+                <div class="modal-body" id="historico_documento">
+                    
+                </div>
                 
                 <form action="<?=base_url('cancelar_documento');?>" method="post" id="cancelamento">
                     
@@ -231,10 +239,6 @@
                         <div class="form-group">
                             <p> Não há informações disponíveis no momento. Caso o problema persista entre em contato com o suporte. </p>
                         </div>
-                    </div>
-
-                    <div class="modal-body" id="historico_documento">
-                        
                     </div>
 
                 </form>
@@ -374,7 +378,8 @@ window.addEventListener("DOMContentLoaded", function() {
                         reset();
                     }
                     $('#exampleModalLabel').html(titulo).show();
-                    $('#conteudo').html(body).show();
+                    $('#his_conteudo').html(body).show();
+                    $('#conteudo').hide();
                     $("#erro").hide();
                     $("#doc_conteudo").hide();
                     $('#etapa').hide();

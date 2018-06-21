@@ -139,7 +139,6 @@ $route["excluir_erro"]               = "conf/erros/excluir_erro";
 $route["erro_documento"]             = "conf/Erros/erro_documento";
 $route["etapa_json/(:any)"]          = "conf/Etapas/etapas_documento_json/$1";
 $route["erro_documento_cad"]         = "conf/Erros/erro_documento_cad";
-//$route["erro_documento_cad"]         = "conf/Erros/teste_informacoes";
 $route["vizualizar_erros/(:any)"]    = "conf/Erros/visualizar_erros_documento/$1";
 
 //Rotas referentes a pasta documentos
@@ -167,8 +166,10 @@ $route["suspenso"]                   = "documentos/Relatorios/documentos_suspens
 $route["reverte_suspensao/(:any)"]   = "documentos/Relatorios/reverte_suspensao/$1";
 
 //Rotas referentes a pasta relatorios
-$route["finalizados"]                   = "relatorios/Relatorios/finalizados";
-$route["imprimir_finalizados/(:num)"]   = "relatorios/imprimir/imprimir_finalizados/$1";
-$route["tempo_medio"]                   = "relatorios/relatorios/tempo_medio";
-$route["relatorio_tempo/(:num)"]        = "relatorios/imprimir/imprimir_tempo_medio/$1";
-$route["produtividade_indivudual"]      = "relatorios/relatorios/produtividade_individual";
+$route["finalizados"]                       = "relatorios/Relatorios/finalizados";
+$route["imprimir_finalizados/(:num)"]       = "relatorios/imprimir/imprimir_finalizados/$1";
+$route["tempo_medio"]                       = "relatorios/relatorios/tempo_medio";
+$route["relatorio_tempo/(:num)"]            = "relatorios/imprimir/imprimir_tempo_medio/$1";
+$route["produtividade_indivudual"]          = "relatorios/relatorios/produtividade_individual";
+$route["produtividade_grupo"]               = "relatorios/relatorios/produtividade_grupo";
+$route["relatorio_produtividade/(:num)"]    = "relatorios/imprimir/produtividade_relatorio/$1";

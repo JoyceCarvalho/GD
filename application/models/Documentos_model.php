@@ -206,6 +206,23 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método responsável por retornar quantos erros por documento determinado usuário tem
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int $usuario
+     * @return int
+     */
+    public function erros_usuario_documento($usuario){
+        
+        $this->db->select('count(*) as total_doc');
+        $this->db->from('tblog_documentos');
+        $this->db->where('usuario =', $usuario);
+        $this->db->where('descricao = ', "RETORNO COM ERRO");
+        
+        return $this->db->get()->row('total_doc');
+    }
+
+    /**
      * Método responsável por retornar a etapa e o usuario da etapa anterior
      * Utilizado no controller documentos/Transferencia.php
      *

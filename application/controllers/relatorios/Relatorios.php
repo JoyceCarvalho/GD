@@ -73,6 +73,7 @@ class Relatorios extends CI_Controller {
         $dados["documentos_fnalizados"] = $this->docmodel->quantidade_documentos_finalizados_usuario($_SESSION["idusuario"]);
         $dados["documentos_andamento"]  = $this->docmodel->numero_documentos($_SESSION["idusuario"]);
         $dados["tempomedio"]            = $this->timermodel->tempo_documento_usuario($_SESSION["idusuario"]);
+        $dados["erros_user"]            = $this->docmodel->erros_usuario_documento($_SESSION["idusuario"]);
         
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
@@ -82,4 +83,27 @@ class Relatorios extends CI_Controller {
         $this->load->view('template/html_footer');
 
     }
+
+    public function produtividade_grupo(){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+
+        $dados["pagina"]  = "Produtividade Grupo";
+        $dados["pg"]      = "relatorio";
+        $dados["submenu"] = "produtividade";
+
+        $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["usuario"]       = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+
+        $this->load->view('template/html_header', $dados);
+        $this->load->view('template/header');
+        $this->load->view('template/menu');
+        $this->load->view('relatorios/produtividade');
+        $this->load->view('template/footer');
+        $this->load->view('template/html_footer');
+
+    }
+
 }
