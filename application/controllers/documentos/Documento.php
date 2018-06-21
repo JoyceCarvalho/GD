@@ -24,7 +24,7 @@ class Documento extends CI_Controller {
         if ((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)) {
             
             $dados["pagina"] = "Novo Documento";
-            $dados["pg"] = "documentos";
+            $dados["pg"] = "";
             $dados["submenu"] = "novodoc";
 
             $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);

@@ -139,6 +139,7 @@ $route["excluir_erro"]               = "conf/erros/excluir_erro";
 $route["erro_documento"]             = "conf/Erros/erro_documento";
 $route["etapa_json/(:any)"]          = "conf/Etapas/etapas_documento_json/$1";
 $route["erro_documento_cad"]         = "conf/Erros/erro_documento_cad";
+//$route["erro_documento_cad"]         = "conf/Erros/teste_informacoes";
 $route["vizualizar_erros/(:any)"]    = "conf/Erros/visualizar_erros_documento/$1";
 
 //Rotas referentes a pasta documentos

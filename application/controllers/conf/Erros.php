@@ -261,7 +261,7 @@ class Erros extends CI_Controller {
 
         if($this->docmodel->editar_documentos_log($idprotocolo)){
 
-            $anterior = $this->docmodel->retorna_etapa($this->input->post('etapa_erro'), $this->input->post('protocolo'));
+            $anterior = $this->docmodel->retorna_etapa($this->input->post('etapa_erro'), $idprotocolo);
 
             $usuario_anterior = $anterior->usuario;
             $etapa_anterior = $anterior->etapa;

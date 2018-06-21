@@ -570,15 +570,14 @@ class Documentos_model extends CI_Model {
      */
     public function retorna_etapa($etapa, $protocolo){
 
-        $this->db->select('etapa, usuario');
+        $this->db->select("etapa, usuario");
         $this->db->from('tblog_documentos');
-        $this->db->where('documento', $protocolo);
-        $this->db->where('etapa', $etapa);
-        $this->db->where('ultima_etapa', "'false'");
+        $this->db->where('documento = ', $protocolo);
+        $this->db->where('ultima_etapa =', "false");
+        $this->db->where('etapa = ', $etapa);
         $this->db->order_by('id desc');
         $this->db->limit(1);
-
-        return $this->db->get()->row();
+        return $this->db->get('')->row();
 
     }
 

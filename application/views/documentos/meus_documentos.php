@@ -104,17 +104,23 @@
                                                         <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
                                                         <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD">Suspender Documento</a><br/>
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
                                                         <?php 
-                                                            $this->load->model('erros_model', 'errosmodel');
-                                                            
-                                                            $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
+                                                        
+                                                        if ($documentos->ordem > 1) {
+                                                            ?>
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
+                                                            <?php
+                                                        }
 
-                                                            if ($contador > 0) {
-                                                                ?>
-                                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
-                                                                <?php
-                                                            }
+                                                        $this->load->model('erros_model', 'errosmodel');
+                                                        
+                                                        $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
+
+                                                        if ($contador > 0) {
+                                                            ?>
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
+                                                            <?php
+                                                        }
                                                         ?>
                                                         <div class="line"></div>
                                                         <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
@@ -153,39 +159,44 @@
                                                             $last_step = $this->docetapamodel->ultima_etapa($documentos->iddocumento);
                                                             if ($last_step == $documentos->idetapa) {
                                                                 ?>
-                                                                <a href="<?=base_url('finalizar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockA">Finalizar Documento</a>
+                                                                <a href="<?=base_url('finalizar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockA">Finalizar Documento</a><br/>
                                                                 <?php
                                                             } else {
                                                                 ?>
-                                                                <a href="<?=base_url('proxima_etapa/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockB">Encaminhar Próxima Etapa</a>
+                                                                <a href="<?=base_url('proxima_etapa/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockB">Encaminhar Próxima Etapa</a><br/>
                                                                 <?php
                                                             }
                                                             
                                                             if ($documentos->ordem > 1) {
                                                                 ?>
-                                                                <a href="<?=base_url('etapa_aterior/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockC">Retornar Etapa Aterior</a>
+                                                                <a href="<?=base_url('etapa_aterior/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockC">Retornar Etapa Aterior</a><br/>
                                                                 <?php
                                                             }
                                                             if($documentos->ordem == 1){
                                                                 ?>
-                                                                <a href="<?=base_url('editar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Editar Documento</a>
+                                                                <a href="<?=base_url('editar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Editar Documento</a><br/>
                                                                 <?php
                                                             }
                                                         ?>
                                                         <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
                                                         <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD">Suspender Documento</a><br/>
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
                                                         <?php 
-                                                            $this->load->model('erros_model', 'errosmodel');
-                                                            
-                                                            $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
 
-                                                            if ($contador > 0) {
-                                                                ?>
-                                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
-                                                                <?php
-                                                            }
+                                                        if ($documentos->ordem > 1) {
+                                                            ?>
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
+                                                            <?php
+                                                        }
+                                                        $this->load->model('erros_model', 'errosmodel');
+                                                        
+                                                        $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
+
+                                                        if ($contador > 0) {
+                                                            ?>
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
+                                                            <?php
+                                                        }
                                                         ?>
                                                         <div class="line"></div>
                                                         <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">

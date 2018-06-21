@@ -50,7 +50,7 @@
                                         <th>Etapas</th>
                                         <th>Descrição do erro</th>
                                         <th>Data do erro</th>
-                                        <th>Quem atuou</th>
+                                        <th>Quem identificou</th>
                                         <th></th>
                                     </tr>
                                 </thead>
