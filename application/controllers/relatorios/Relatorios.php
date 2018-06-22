@@ -106,4 +106,12 @@ class Relatorios extends CI_Controller {
 
     }
 
+    public function listar_prazos(){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect('/');
+        }
+
+    }
+
 }
