@@ -104,7 +104,7 @@ class Usuario_model extends CI_Model {
 
     /**
      * Método responsável por retornar os dados do usuário
-     * Utilizado no controller Login.php
+     * Utilizado no controller Login.php e relatorios/Imprimir.php
      *
      * @param int $user_id
      * @return object retorna o objeto de dados

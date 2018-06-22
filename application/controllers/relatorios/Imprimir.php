@@ -12,6 +12,7 @@ class Imprimir extends CI_Controller {
         $this->load->model("empresa_model", "empresamodel");
         $this->load->model("timer_model", "timermodel");
         $this->load->model('usuario_model', 'usermodel');
+        $this->load->model("cargos_model", "cargosmodel");
     }
 
     public function imprimir_finalizados($id){
@@ -83,8 +84,15 @@ class Imprimir extends CI_Controller {
         $usuario = $this->usermodel->get_user($idusuario);
 
         if ($_SESSION["idempresa"] == $usuario->fk_idempresa) {
+
+            $dados["usuario"]       = $usuario;
+            $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["documentos_fnalizados"] = $this->docmodel->quantidade_documentos_finalizados_usuario($idusuario);
+            $dados["documentos_andamento"]  = $this->docmodel->numero_documentos($idusuario);
+            $dados["tempomedio"]            = $this->timermodel->tempo_documento_usuario($idusuario);
+            $dados["erros_user"]            = $this->docmodel->erros_usuario_documento($idusuario);
             
-            $this->load->view('relatorios/imprimir/relatorio_produtividade');
+            $this->load->view('relatorios/imprimir/relatorio_produtividade',$dados);
 
         } else {
 
