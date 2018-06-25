@@ -506,6 +506,30 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método responsável por listar os documentos fora do prazo
+     * Utilizado no controller relatorios/Relatorios.php
+     *
+     * @param int $empresa
+     * @return object
+     */
+    public function listar_documentos_fora_prazo($empresa){
+        $this->db->select('dc.id as idprotocolo, dc.protocolo as protocolo, d.id as iddocumento, d.titulo as titulo_documento, e.titulo as etapa_atual, g.titulo as titulo_grupo,
+        u.nome as nome_usuario, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") as data_criacao, DATE_FORMAT(NOW(), "%d/%m/%Y") as data_atual, 
+        DATE_FORMAT(pe.prazo, "%d/%m/%Y") as prazo');
+        $this->db->from('tbdocumentos_cad as dc');
+        $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
+        $this->db->join('tbgrupo as g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
+        $this->db->join('tbprazoetapa as pe', 'pe.fk_iddocumento = ldA.documento and pe.fk_idetapas = ldB.etapa');
+        $this->db->join('tbetapa as e', 'e.id = ldB.etapa');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario');
+        $this->db->where('pe.prazo < NOW()');
+        $this->db->where('d.fk_idempresa', $empresa);
+        return $this->db->get()->result();
+    }
+
+    /**
      * Método responsável por listar os documentos suspensos
      * Utilizado no controller documentos/Relatorio.php
      *

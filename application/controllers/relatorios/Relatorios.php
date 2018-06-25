@@ -112,6 +112,20 @@ class Relatorios extends CI_Controller {
             redirect('/');
         }
 
+        $dados["pagina"]  = "Documentos fora do prazo";
+        $dados["pg"]      = "";
+        $dados["submenu"] = "prazos";
+
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["doc_prazo"]    = $this->docmodel->listar_documentos_fora_prazo($_SESSION["idempresa"]);
+
+        $this->load->view('template/html_header', $dados);
+        $this->load->view('template/header');
+        $this->load->view('template/menu');
+        $this->load->view('relatorios/fora_prazo');
+        $this->load->view('template/footer');
+        $this->load->view('template/html_footer');
+
     }
 
 }

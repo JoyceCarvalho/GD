@@ -204,7 +204,7 @@
                   </ul>
                 </li>
 
-                <li <?=($submenu == "prazos") ? "class='active'" : "";?>><a href="<?=base_url('prazos_documentos');?>"><i class="fa fa-list-alt"></i> Prazos de Documentos</a></li>
+                <li <?=($submenu == "prazos") ? "class='active'" : "";?>><a href="<?=base_url('prazos_documentos');?>"><i class="fa fa-list-alt"></i> Documentos em atraso</a></li>
               </ul>
             </li>
           </ul>
