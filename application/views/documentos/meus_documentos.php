@@ -122,6 +122,12 @@
                                                             <?php
                                                         }
                                                         ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a>
+                                                        <?php
+                                                        $this->load->model('documentos_model', 'docmodel');
+
+                                                        
+                                                        ?>
                                                         <div class="line"></div>
                                                         <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
                                                         <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
@@ -309,6 +315,8 @@ window.addEventListener("DOMContentLoaded", function() {
 			var timer = function(){ 
 				$('.timer_'+id_pro).html(format(++tempo));
 			};
+            console.log(id_pro);
+            console.log(format(++tempo));
 
 			//alert(id_pro);
 
@@ -384,6 +392,7 @@ window.addEventListener("DOMContentLoaded", function() {
                     $("#doc_conteudo").hide();
                     $('#etapa').hide();
                     $('#erro_form').hide();
+                    $('#observacao').hide();
                 });
 
                 $.getJSON('<?=base_url();?>'+'historico/'+id_pro, function (dados){
@@ -431,26 +440,28 @@ window.addEventListener("DOMContentLoaded", function() {
                             body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
                         })
                         body += '</div>';
-                        body += '<hr/>';
-                        body += '<div class="form-group">';
-                        body += '<label>Motivo do cancelamento:</label>';
-                        body += '<textarea class="form-control" rows="6" name="motivo"></textarea>';
-                        body += '<input type="hidden" name="idprotocolo" value="'+id_pro+'">';
-                        body += '</div>';
-                        body += '<div class="form-group">';
-                        body += '<button type="submit" class="btn btn-sm btn-primary">Cadastrar Cancelamento</button>';
-                        body += '</div>';
+                        body2 = '<hr/>';
+                        body2 += '<div class="form-group">';
+                        body2 += '<label>Motivo do cancelamento:</label>';
+                        body2 += '<textarea class="form-control" rows="6" name="motivo"></textarea>';
+                        body2 += '<input type="hidden" name="idprotocolo" value="'+id_pro+'">';
+                        body2 += '</div>';
+                        body2 += '<div class="form-group">';
+                        body2 += '<button type="submit" class="btn btn-sm btn-primary">Cadastrar Cancelamento</button>';
+                        body2 += '</div>';
                     } else {
                         reset();
                     }
                     $('#exampleModalLabel').html(titulo).show();
+                    $('#his_conteudo').html(body).show();
                     $('#cancelamento').show();
-                    $('#conteudo').html(body).show();
+                    $('#conteudo').html(body2).show();
                     $('#historico_documento').hide();
                     $('#erro').hide();
                     $("#doc_conteudo").hide();
                     $('#etapa').hide();
                     $('#erro_form').hide();
+                    $("#observacao").hide();
                 });
             });
 
@@ -471,7 +482,7 @@ window.addEventListener("DOMContentLoaded", function() {
                         reset();
                     }
                     $("#exampleModalLabel").html(titulo).show();
-                    $("#doc_conteudo").html(body).show();
+                    $("#his_conteudo").html(body).show();
 
                 });
                 $.getJSON('<?=base_url();?>'+'etapa_json/'+id_pro, function(dados){
@@ -517,6 +528,7 @@ window.addEventListener("DOMContentLoaded", function() {
                     $('#erro_form').html(body2).show();
                     $('#historico_documento').hide();
                     $('#cancelamento').hide();
+                    $("#observacao").hide();
                 });
 
             });
@@ -538,9 +550,10 @@ window.addEventListener("DOMContentLoaded", function() {
                         reset();
                     }
                     $("#exampleModalLabel").html(titulo).show();
-                    $("#doc_conteudo").html(body).show();
+                    $("#his_conteudo").html(body).show();
                     $('#historico_documento').hide();
                     $('#cancelamento').hide();
+                    $('#observacao').hide();
 
                 });
                 $.getJSON('<?=base_url();?>'+'vizualizar_erros/'+id_pro, function (dados){
@@ -582,15 +595,21 @@ window.addEventListener("DOMContentLoaded", function() {
                         reset();
                     }
                     $("#exampleModalLabel").html(titulo).show();
-                    $("#doc_conteudo").html(body).show();
+                    $("#his_conteudo").html(body).show();
                 });
 
 
-                body2 = '<div class="form-group">';
-                body2 += '<label>Observação</labe>';
-                body2 += '<textarea class="form-control"></textarea>';
+                body2 = '<hr/>';
+                body2 += '<div class="form-group">';
+                body2 += '<label>Observação:</label>';
+                body2 += '<textarea class="form-control" rows="6" name="observacao"></textarea>';
+                body2 += '<input type="hidden" name="idprotocolo" value="'+id_pro+'">';
                 body2 += '</div>';
-
+                body2 += '<div class="form-group">';
+                body2 += '<button type="submit" class="btn btn-sm btn-primary">Cadastrar Observação</button>';
+                body2 += '</div>';
+                
+                $("#observacao").show();
                 $("#obs").html(body2).show();
                 $('#historico_documento').hide();
                 $('#erro').hide();

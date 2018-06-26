@@ -441,12 +441,10 @@ class Documento extends CI_Controller {
         
         if((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)){
 
-            $data = new stdClass();
-
             if ($mensagem != "error") {
-                $data->success = "Documento ".$mensagem." com sucesso!";
+                $dados["success"] = "Documento ".$mensagem." com sucesso!";
             } else {
-                $data->error = "Ocorreu um problema ao transferir o documento. Favor entre em contato com o suporte e tente novamente mais tarde.";
+                $dados["error"] = "Ocorreu um problema ao transferir o documento. Favor entre em contato com o suporte e tente novamente mais tarde.";
             }
 
             $dados["pagina"]    = "Meus Documentos";
@@ -460,7 +458,7 @@ class Documento extends CI_Controller {
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
-            $this->load->view('template/menu', $data);
+            $this->load->view('template/menu');
             $this->load->view('documentos/meus_documentos');
             $this->load->view('template/footer');
             $this->load->view('template/html_footer');
@@ -520,9 +518,34 @@ class Documento extends CI_Controller {
             }
 
         } else {
-
+            
             redirect("meus_documentos/error");
+            
+        }
+        
+    }
+    
+    public function cadastrar_observacao(){
 
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+
+        $idprotocolo = $this->input->post('idprotocolo');
+
+        $obs = array(
+            'descricao'     => $this->input->post('observacao'), 
+            'fk_idprotocolo' => $idprotocolo,
+            'fk_idusuario'   => $_SESSION["idusuario"],
+            'fk_idetapa'     => $this->docmodel->etapa_documento($idprotocolo)
+        );
+
+        if ($this->docmodel->cadastrar_observacao($obs)) {
+            
+            redirect("meus_documentos/anotado");
+
+        } else {
+            redirect('meus_documentos/error');
         }
 
     }
@@ -617,6 +640,7 @@ class Documento extends CI_Controller {
             'running' => $newAction === 'start',
         )); 
     }
+
 
     public function historico_documento($id){
 

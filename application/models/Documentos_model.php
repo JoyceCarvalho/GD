@@ -67,6 +67,17 @@ class Documentos_model extends CI_Model {
     public function cadastrar_cancelamento($dados){
         return $this->db->insert('tbcancelamento', $dados);
     }
+
+    /**
+     * Método para cadastro de observação de usuarios
+     * Utilizado no controller documentos/Documento.php 
+     *
+     * @param array $dados
+     * @return int
+     */
+    public function cadastrar_observacao($dados){
+        return $this->db->insert('tbobservacoes', $dados);
+    }
     
     /**
      * Função para listar os dados referentes a determinada linha da tabela tbdocumento
@@ -547,6 +558,14 @@ class Documentos_model extends CI_Model {
         $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
         $this->db->where("d.fk_idempresa = $empresa");
         $this->db->order_by('dc.id asc');
+        return $this->db->get()->result();
+    }
+
+
+    public function listar_observacoes($idprotocolo){
+        $this->load->select('o.descricao as observacao, e.titulo as etapa, u.nome as nome_usuario');
+        $this->load->from("tbobservacoes as o");
+        $this->load->where("fk_idprotocolo = ", $idprotocolo);
         return $this->db->get()->result();
     }
 

@@ -164,6 +164,7 @@ $route["erro"]                       = "documentos/Relatorios/documentos_com_err
 $route["cancelados"]                 = "documentos/Relatorios/documentos_cancelados";
 $route["suspenso"]                   = "documentos/Relatorios/documentos_suspensos";
 $route["reverte_suspensao/(:any)"]   = "documentos/Relatorios/reverte_suspensao/$1";
+$route["observacao_cad"]             = "documentos/Documento/cadastrar_observacao";
 
 //Rotas referentes a pasta relatorios
 $route["finalizados"]                       = "relatorios/Relatorios/finalizados";
