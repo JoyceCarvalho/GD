@@ -455,7 +455,7 @@ class Documentos_model extends CI_Model {
     public function listar_documentos_com_erros($empresa){
         $this->db->select('d.id as iddocumento, e.id as idetapa, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo,
         e.titulo AS etapa, ldA.data_hora AS data_criacao, u.nome AS nome_usuario, de.ordem as ordem, dc.id as idprotocolo, er.titulo as titulo_erro, 
-        ed.descricao as descricao_erro, DATE_FORMAT(ed.data_hora, "%d/%m/%Y") as data_erro');
+        ed.descricao as descricao_erro, DATE_FORMAT(ed.data_hora, "%d/%m/%Y") as data_erro, u.id as idresponsavel');
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');

@@ -8,6 +8,7 @@ class Cargos extends CI_Controller {
 
         $this->load->model('cargos_model', 'cargosmodel');
         $this->load->model('empresa_model', 'empresamodel');
+        $this->load->model('LogsSistema_model', 'logsistema');
 	}
 	
     public function cadastrar_cargo(){
@@ -33,6 +34,16 @@ class Cargos extends CI_Controller {
             $this->load->view('cargo_cadastro');
             $this->load->view('template/footer');
             $this->load->view('template/html_footer');
+
+            //log do sistema
+            $mensagem = "Cadastrou o cargo ".$this->input->post('titulo');
+            $log = array(
+                'usuario' => $_SESSION["idusuario"], 
+                'mensagem' => $mensagem,
+                'data_hora' => date("Y-m-d H:i:s")
+            );
+            $this->logsistema->cadastrar_log_sistema($log);
+            //fim log sistema
 
         } else {
 
@@ -109,6 +120,14 @@ class Cargos extends CI_Controller {
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
 
+                $mensagem = "Edição do cargo " . $this->input->post('titulo');
+                $log = array(
+                    'usuario'   => $_SESSION["idusuario"], 
+                    'mensagem'  => $mensagem, 
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+
             } else {
 
                 $data->error = "Ocorreu um erro ao atualizar o cargo! Favor entre em contato com o suporte e tente mais tarde novamente!";
@@ -140,6 +159,8 @@ class Cargos extends CI_Controller {
 
             $data = new stdClass();
 
+            $nome = $this->logsistema->seleciona_por_titulo('tbcargos', $id);
+
             if($this->cargosmodel->excluir_cargo($id)){
 
                 $data->success = "Cargo excluido com sucesso!";
@@ -157,6 +178,16 @@ class Cargos extends CI_Controller {
                 $this->load->view('cargos');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                //log do sistema
+                $mensagem = "Excluiu o cargo $nome";
+                $log = array(
+                    'usuario' => $_SESSION["idusuario"],
+                    'mensagem' => $mensagem,
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log da sistema
 
             } else {
 

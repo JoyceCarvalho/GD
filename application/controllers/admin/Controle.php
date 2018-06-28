@@ -130,6 +130,7 @@ class Controle extends CI_Controller {
     }
 
     $idempresa = $this->input->post('id_empresa');
+    
     $empresa = array(
       'nome' => $this->input->post("empresa"),
       'cliente_code' => $clientecode,

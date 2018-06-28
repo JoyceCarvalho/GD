@@ -12,6 +12,7 @@ class Feriados extends CI_Controller {
         $this->load->model('horario_model', 'horasmodel');
         $this->load->model('cargos_model', 'cargosmodel');
         $this->load->model('feriados_model', 'feriadosmodel');
+        $this->load->model('LogsSistema_model', 'logsistema');
         
     }
 
@@ -44,6 +45,16 @@ class Feriados extends CI_Controller {
                 $this->load->view('feriados_cadastro');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                //log sistema
+                $mensagem = "Cadastrou o feriado ".$this->input->post("titulo");
+                $log = array(
+                    'usuario'   => $_SESSION["idusuario"], 
+                    'mensagem'  => $mensagem, 
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log sistema
 
             } else {
 
@@ -128,6 +139,14 @@ class Feriados extends CI_Controller {
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');   
 
+                $mensagem = "Edição do feriado " . $this->input->post("titulo");
+                $log = array(
+                    'usuario' => $_SESSION["idusuario"], 
+                    'mensagem' => $mensagem, 
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+
             } else {
 
                 $data->error = "Ocorreu um erro ao atualizar as informações! Favor entre em contato com o suporte e tente novamente mais tarde!";
@@ -163,6 +182,8 @@ class Feriados extends CI_Controller {
 
             $data = new stdClass();
 
+            $titulo = $this->logsistema->seleciona_por_titulo('tbferiados', $id);
+
             if ($this->feriadosmodel->excluir_feriado($id)) {
                 
                 $data->success = "Feriado excluido com sucesso!";
@@ -181,6 +202,16 @@ class Feriados extends CI_Controller {
                 $this->load->view('feriados');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                //log do sistema
+                $mensagem = "Excluiu o feriado ".$titulo;
+                $log = array(
+                    'usuario' => $_SESSION["idusuario"], 
+                    'mensagem' => $mensagem, 
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log do sistema
 
             } else {
 

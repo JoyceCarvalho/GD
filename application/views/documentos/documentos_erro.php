@@ -73,6 +73,20 @@
                                                 <td><?=$documentos->nome_usuario;?></td>
                                                 <td style="text-align: center;">
                                                     <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
+                                                    <?php
+                                                    $this->load->model('documentos_model', 'docmodel');
+                                                    if ($documentos->idresponsavel == $_SESSION["idusuario"]) {
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
+                                                        <?php
+                                                    }
+
+                                                    if ($this->docmodel->verifica_observacoes($documentos->idprotocolo)) {
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a>
+                                                        <?php
+                                                    }
+                                                    ?>
                                                     
                                                     <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
                                                 </td>

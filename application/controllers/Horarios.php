@@ -11,6 +11,7 @@ class Horarios extends CI_Controller {
         $this->load->model('usuario_model', 'usermodel');
         $this->load->model('horario_model', 'horasmodel');
         $this->load->model('cargos_model', 'cargosmodel');
+        $this->load->model('LogsSistema_model', 'logsistema');
         
     }
 
@@ -46,6 +47,16 @@ class Horarios extends CI_Controller {
                 $this->load->view('horarios_cadastro');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                //log do sistema
+                $mensagem = "Cadastrou o horário " . $this->input->post('titulo');
+                $log = array(
+                    'usuario' => $_SESSION["idusuario"],
+                    'mensagem' => $mensagem,
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log do sistema
 
             } else {
 
@@ -135,6 +146,14 @@ class Horarios extends CI_Controller {
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
 
+                $mensagem = "Edição do horário " . $this->input->post('titulo');
+                $log = array(
+                    'usuario' => $_SESSION["idusuario"], 
+                    'mensagem' => $mensagem, 
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+
             } else {
                 
                 $data->error = "Ocorreu um problema ao alterar os horários! Favor entre em contato com o suporte e tente novamente mais tarde.";
@@ -172,6 +191,8 @@ class Horarios extends CI_Controller {
             
             $data = new stdClass();
 
+            $titulo = $this->logsistema->seleciona_por_titulo('tbhorario_trab',$id);
+
             if ($this->horasmodel->excluir_horario($id)) {
                 
                 $data->success = "Horário excluido com sucesso!";
@@ -190,6 +211,16 @@ class Horarios extends CI_Controller {
                 $this->load->view('horarios');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                //log do sistema
+                $mensagem = "Excluiu o horário " . $titulo;
+                $log = array(
+                    'usuario' => $_SESSION["idusuario"], 
+                    'mensagem' => $mensagem, 
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log do sistema
 
             } else {
 
