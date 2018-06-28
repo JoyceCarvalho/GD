@@ -430,7 +430,7 @@ class Documentos_model extends CI_Model {
      */
     public function listar_documentos_em_andamento($empresa){
         $this->db->select('d.id as iddocumento, e.id as idetapa, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
-        e.titulo AS etapa, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.nome AS nome_usuario, de.ordem as ordem, dc.id as idprotocolo');
+        e.titulo AS etapa, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.id AS idresponsavel, u.nome AS nome_usuario, de.ordem as ordem, dc.id as idprotocolo');
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
@@ -561,12 +561,20 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->result();
     }
 
-
-    public function listar_observacoes($idprotocolo){
-        $this->load->select('o.descricao as observacao, e.titulo as etapa, u.nome as nome_usuario');
-        $this->load->from("tbobservacoes as o");
-        $this->load->where("fk_idprotocolo = ", $idprotocolo);
-        return $this->db->get()->result();
+    /**
+     * Método responsável por listar os dados da observações
+     * Utilizado no controller documentos/Documento.php 
+     *
+     * @param int $idprotocolo
+     * @return object
+     */
+    public function listar_observacoes_json($idprotocolo){
+        $this->db->select('o.descricao as observacao, e.titulo as etapa, u.nome as nome_usuario');
+        $this->db->from("tbobservacoes as o");
+        $this->db->join("tbetapa as e", 'e.id = o.fk_idetapa');
+        $this->db->join('tbusuario as u', 'u.id = o.fk_idusuario');
+        $this->db->where("o.fk_idprotocolo = ", $idprotocolo);
+        return json_encode($this->db->get()->result());
     }
 
     /**
@@ -655,6 +663,19 @@ class Documentos_model extends CI_Model {
         $this->db->where('ultima_etapa = ', 'true');
         $this->db->limit(1);
         return $this->db->get()->row('usuario');
+    }
+
+    /**
+     * Método responsável por retornar as obervações de determinado documento (se houver)
+     * Utilizado no controller documentos/Documento.php 
+     *
+     * @param int $idprotocolo
+     * @return int
+     */
+    public function verifica_observacoes($idprotocolo){
+        $this->db->from('tbobservacoes');
+        $this->db->where('fk_idprotocolo', $idprotocolo);
+        return $this->db->count_all_results();
     }
 
 

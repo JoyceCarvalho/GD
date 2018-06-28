@@ -550,6 +550,7 @@ class Documento extends CI_Controller {
 
     }
 
+
     public function busca_documentos($value){
 
         echo $this->docmodel->listar_documentos_json($value);
@@ -652,5 +653,9 @@ class Documento extends CI_Controller {
 
         echo $this->docmodel->historico_documentos_dados($id);
 
+    }
+
+    public function ver_observacao($id){
+        echo $this->docmodel->listar_observacoes_json($id);
     }
 }

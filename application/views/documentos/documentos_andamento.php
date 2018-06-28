@@ -77,17 +77,34 @@
                                                 <td><?=$documentos->nome_usuario;?></td>
                                                 <td style="text-align: center;">
                                                     <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
                                                     <?php 
-                                                        $this->load->model('erros_model', 'errosmodel');
-                                                        
-                                                        $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
+                                                    if ($documentos->idresponsavel == $_SESSION["idusuario"]) {
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
+                                                        <?php
+                                                    }
+                                                    $this->load->model('erros_model', 'errosmodel');
+                                                    
+                                                    $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
 
-                                                        if ($contador > 0) {
-                                                            ?>
-                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
-                                                            <?php
-                                                        }
+                                                    if ($contador > 0) {
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a><br/>
+                                                        <?php
+                                                    }
+                                                    
+                                                    $this->load->model('documentos_model', 'docmodel');
+                                                    if ($documentos->idresponsavel == $_SESSION["idusuario"]) {
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
+                                                        <?php
+                                                    }
+
+                                                    if ($this->docmodel->verifica_observacoes($documentos->idprotocolo)) {
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a>
+                                                        <?php
+                                                    }
                                                     ?>
                                                     <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
                                                 </td>
@@ -113,29 +130,32 @@
                 </div>
                 
                     
-                <div class="modal-body" id="conteudo">                                                
-                    <div class="form-group">
-                        <p> Não há informações disponíveis no momento. Caso o problema persista entre em contato com o suporte. </p>
-                    </div>
-                </div>
+                <div class="modal-body" id="his_conteudo"></div>
 
-                <div class="modal-body" id="historico_documento">
+                <div class="modal-body" id="historico_documento"></div>
+                
+                <form action="<?=base_url('cancelar_documento');?>" method="post" id="cancelamento">
                     
-                </div>
+                    <div class="modal-body" id="conteudo">                                                
+                        <div class="form-group">
+                            <p> Não há informações disponíveis no momento. Caso o problema persista entre em contato com o suporte. </p>
+                        </div>
+                    </div>
+
+                </form>
+
+                <form action="<?=base_url('observacao_cad');?>" method="post" id="observacao">
+                    <div class="modal-body" id="obs"></div>
+                </form>
+
 
                 <form action="<?=base_url("erro_documento_cad");?>" method="post" id="erro">
                     
-                    <div class="modal-body" id="doc_conteudo">                                                
-                        
-                    </div>
+                    <div class="modal-body" id="doc_conteudo"></div>
 
-                    <div class="modal-body" id="etapa">
-                    
-                    </div>
+                    <div class="modal-body" id="etapa"></div>
 
-                    <div class="modal-body" id="erro_form">
-                        
-                    </div>
+                    <div class="modal-body" id="erro_form"></div>
                 </form>
             
                 <div class="modal-footer">
@@ -147,102 +167,18 @@
 </section>
 <script src="http://code.jquery.com/jquery.js"></script>
 <script>
-window.addEventListener("DOMContentLoaded", function() {
-	
-	/*var format = function(seconds) {
-		var tempos = {
-			segundos: 60
-		,   minutos: 60
-		,   horas: 24
-		,   dias: ''
-		};
-		var parts = [], string = '', resto, dias;
-		for (var unid in tempos) {
-			if (typeof tempos[unid] === 'number') {
-				resto = seconds % tempos[unid];
-				seconds = (seconds - resto) / tempos[unid];
-			} else {
-				resto = seconds;
-			}
-			parts.unshift(resto);
-		}
-		dias = parts.shift();
-		if (dias) {
-			string = dias + (dias > 1 ? ' dias ' : ' dia ');
-		}
-		for (var i = 0; i < 3; i++) {
-			parts[i] = ('0' + parts[i]).substr(-2);
-		}
-		string += parts.join(':');
-		return string;
-	};*/
-	
+window.addEventListener("DOMContentLoaded", function() {	
 
 	$(function(){
 			
 		$.each($('input[id=id_protocolo]'),function (){
 
 			var id_pro = $(this).val();
-	
-			//var tempo = 0;
-			//var interval = 0;
-			//var timer = function(){ 
-				//$('.timer_'+id_pro).html(format(++tempo));
-			//};
-
-			//alert(id_pro);
-
-			//$(window).load(function(){ alert("here");
-
-			//var protocol = ($(this).val()); { pro: protocol }
-		
-			/*$.post('get_time', { pro: id_pro }, function(resp){
-				$('#post_'+id_pro).text(resp.running ? 'Pausar' : 'Iniciar');
-				tempo = resp.seconds;
-				timer();
-				if (resp.running) {
-					interval = setInterval(timer, 1000);
-				}
-				botao = $('#post_'+id_pro).text();
-				if(botao === "Pausar"){
-					$('.blockA').css("pointer-events", "none");
-					$('.blockB').css("pointer-events", "none");
-					$('.blockC').css("pointer-events", "none");
-					$('.blockD').css("pointer-events", "none");
-				}
-			});
-			
-			$('#post_'+id_pro).on('click', function(){ 
-				var btn = this;
-				btn.disabled = true;
-				$.post('grava_acao', { pro: id_pro }, function(resp){
-					btn.disabled = false;
-					$(btn).text(resp.running ? 'Pausar' : 'Iniciar');
-					if (resp.running) {
-						timer();
-						interval = setInterval(timer, 1000);
-					} else {
-						clearInterval(interval);
-					}
-					botao = $('#post_'+id_pro).text();
-					if(botao === "Pausar"){
-						$('.blockA').css("pointer-events", "none");
-						$('.blockB').css("pointer-events", "none");
-						$('.blockC').css("pointer-events", "none");
-						$('.blockD').css("pointer-events", "none");
-					}else{
-						$('.blockA').css("pointer-events", "");
-						$('.blockB').css("pointer-events", "");
-						$('.blockC').css("pointer-events", "");
-						$('.blockD').css("pointer-events", "");
-					}
-				});
-			});*/
 
             $('#historico_'+id_pro).click(function(e){
 
                 //var iddocumento = $('#id_protocolo').val();
-                console.log(id_pro);
+                //console.log(id_pro);
 
                 $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
                     if (dados.length>0) {
@@ -258,11 +194,13 @@ window.addEventListener("DOMContentLoaded", function() {
                         reset();
                     }
                     $('#exampleModalLabel').html(titulo).show();
-                    $('#conteudo').html(body).show();
+                    $('#his_conteudo').html(body).show();
+                    $('#conteudo').hide();
                     $("#erro").hide();
                     $("#doc_conteudo").hide();
                     $('#etapa').hide();
                     $('#erro_form').hide();
+                    $('#observacao').hide();
                 });
 
                 $.getJSON('<?=base_url();?>'+'historico/'+id_pro, function (dados){
@@ -296,8 +234,6 @@ window.addEventListener("DOMContentLoaded", function() {
                 })
             });
 
-            
-
             $("#erro_"+id_pro).click(function(e){
 
                 $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
@@ -315,7 +251,7 @@ window.addEventListener("DOMContentLoaded", function() {
                         reset();
                     }
                     $("#exampleModalLabel").html(titulo).show();
-                    $("#doc_conteudo").html(body).show();
+                    $("#his_conteudo").html(body).show();
 
                 });
                 $.getJSON('<?=base_url();?>'+'etapa_json/'+id_pro, function(dados){
@@ -360,7 +296,8 @@ window.addEventListener("DOMContentLoaded", function() {
                     }
                     $('#erro_form').html(body2).show();
                     $('#historico_documento').hide();
-                    //$('#cancelamento').hide();
+                    $('#cancelamento').hide();
+                    $("#observacao").hide();
                 });
 
             });
@@ -382,10 +319,10 @@ window.addEventListener("DOMContentLoaded", function() {
                         reset();
                     }
                     $("#exampleModalLabel").html(titulo).show();
-                    $("#doc_conteudo").html(body).show();
+                    $("#his_conteudo").html(body).show();
                     $('#historico_documento').hide();
-                    $('#conteudo').hide();
-                    //$('#cancelamento').hide();
+                    $('#cancelamento').hide();
+                    $('#observacao').hide();
 
                 });
                 $.getJSON('<?=base_url();?>'+'vizualizar_erros/'+id_pro, function (dados){
@@ -408,6 +345,92 @@ window.addEventListener("DOMContentLoaded", function() {
                     $("#erro_form").html(body2).show();
                     
                 })
+            });
+
+            $("#observacao_"+id_pro).click(function(e){
+
+                $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function(dados){
+                    if(dados.length > 0){
+                        var titulo = 'Observações do documento';
+                        var body = '<div class="form-group">';
+                        $.each(dados, function(i, obj){
+                            body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
+                            body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
+                            body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
+                        })
+                        body += '</div>';
+                        body += '<hr/>';
+                    } else {
+                        reset();
+                    }
+                    $("#exampleModalLabel").html(titulo).show();
+                    $("#his_conteudo").html(body).show();
+                });
+
+                body2 = '<div class="form-group">';
+                body2 += '<label>Observação:</label>';
+                body2 += '<textarea class="form-control" rows="6" name="observacao"></textarea>';
+                body2 += '<input type="hidden" name="idprotocolo" value="'+id_pro+'">';
+                body2 += '</div>';
+                body2 += '<div class="form-group">';
+                body2 += '<button type="submit" class="btn btn-sm btn-primary">Cadastrar Observação</button>';
+                body2 += '</div>';
+
+                $("#observacao").show();
+                $("#obs").html(body2).show();
+                $('#historico_documento').hide();
+                $('#erro').hide();
+                $('#cancelamento').hide();
+                $("#doc_conteudo").hide();
+                $('#etapa').hide();
+                $('#erro_form').hide();
+            });
+
+            $("#ver_obs_"+id_pro).click(function(e){
+
+                $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function(dados){
+                    if (dados.length>0) {
+                        var titulo = 'Observações documento';
+                        var body = '<div class="form-group">';
+                        $.each(dados, function(i, obj){
+                            body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
+                            body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
+                            body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
+                        });
+                        body += '</div>';
+                        body += '<hr/>';
+                    } else {
+                        reset();
+                    }
+                    $("#exampleModalLabel").html(titulo).show();
+                    $("#his_conteudo").html(body).show();
+                });
+
+                $.getJSON('<?=base_url();?>'+'ver_observacao/'+id_pro, function (dados){
+                    //console.log(id_pro);
+                    if (dados.length>0) {
+                        //console.log(dados);
+                        var body = '<div class="form-group">';
+                        $.each(dados, function(i, obj){
+                            body += '<label>'+obj.etapa+' - <strong>'+obj.nome_usuario+'</strong></label><br/>';
+                            body += '<label><b>Observação:</b></label>';
+                            body += '<p>'+obj.observacao+'</p>'
+                            body += '<hr/>';
+                        })
+                    } else {
+                        reset();
+                    }
+
+                    $("#observacao").show();
+                    $("#obs").html(body).show();
+                    $('#historico_documento').hide();
+                    $('#erro').hide();
+                    $('#cancelamento').hide();
+                    $("#doc_conteudo").hide();
+                    $('#etapa').hide();
+                    $('#erro_form').hide();
+                });
+
             });
 
 		});

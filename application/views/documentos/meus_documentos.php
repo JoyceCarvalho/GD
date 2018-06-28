@@ -122,11 +122,15 @@
                                                             <?php
                                                         }
                                                         ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
                                                         <?php
                                                         $this->load->model('documentos_model', 'docmodel');
 
-                                                        
+                                                        if ($this->docmodel->verifica_observacoes($documentos->idprotocolo)) {
+                                                            ?>
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a><br/>
+                                                            <?php
+                                                        }
                                                         ?>
                                                         <div class="line"></div>
                                                         <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
@@ -204,7 +208,16 @@
                                                             <?php
                                                         }
                                                         ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
+                                                        <?php
+                                                        $this->load->model('documentos_model', 'docmodel');
+
+                                                        if ($this->docmodel->verifica_observacoes($documentos->idprotocolo) > 0) {
+                                                            ?>
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a><br/>
+                                                            <?php
+                                                        }
+                                                        ?>
                                                         <div class="line"></div>
                                                         <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
                                                         <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
@@ -232,13 +245,9 @@
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                 </div>
 
-                <div class="modal-body" id="his_conteudo">                                                
-                    
-                </div>
+                <div class="modal-body" id="his_conteudo"></div>
 
-                <div class="modal-body" id="historico_documento">
-                    
-                </div>
+                <div class="modal-body" id="historico_documento"></div>
                 
                 <form action="<?=base_url('cancelar_documento');?>" method="post" id="cancelamento">
                     
@@ -315,8 +324,8 @@ window.addEventListener("DOMContentLoaded", function() {
 			var timer = function(){ 
 				$('.timer_'+id_pro).html(format(++tempo));
 			};
-            console.log(id_pro);
-            console.log(format(++tempo));
+            //console.log(id_pro);
+            //console.log(format(++tempo));
 
 			//alert(id_pro);
 
@@ -370,7 +379,7 @@ window.addEventListener("DOMContentLoaded", function() {
             $('#historico_'+id_pro).click(function(e){
 
                 //var iddocumento = $('#id_protocolo').val();
-                console.log(id_pro);
+                //console.log(id_pro);
 
                 $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
                     if (dados.length>0) {
@@ -428,7 +437,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
             $("#cancelar_"+id_pro).click(function(e){
                 //var iddocumento = $('#id_protocolo').val();
-                console.log(id_pro);
+                //console.log(id_pro);
 
                 $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
                     if (dados.length>0) {
@@ -598,9 +607,7 @@ window.addEventListener("DOMContentLoaded", function() {
                     $("#his_conteudo").html(body).show();
                 });
 
-
-                body2 = '<hr/>';
-                body2 += '<div class="form-group">';
+                body2 = '<div class="form-group">';
                 body2 += '<label>Observação:</label>';
                 body2 += '<textarea class="form-control" rows="6" name="observacao"></textarea>';
                 body2 += '<input type="hidden" name="idprotocolo" value="'+id_pro+'">';
@@ -617,6 +624,53 @@ window.addEventListener("DOMContentLoaded", function() {
                 $("#doc_conteudo").hide();
                 $('#etapa').hide();
                 $('#erro_form').hide();
+            });
+
+            $("#ver_obs_"+id_pro).click(function(e){
+
+                $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function(dados){
+                    if (dados.length>0) {
+                        var titulo = 'Observações documento';
+                        var body = '<div class="form-group">';
+                        $.each(dados, function(i, obj){
+                            body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
+                            body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
+                            body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
+                        });
+                        body += '</div>';
+                        body += '<hr/>';
+                    } else {
+                        reset();
+                    }
+                    $("#exampleModalLabel").html(titulo).show();
+                    $("#his_conteudo").html(body).show();
+                });
+
+                $.getJSON('<?=base_url();?>'+'ver_observacao/'+id_pro, function (dados){
+                    //console.log(id_pro);
+                    if (dados.length>0) {
+                        //console.log(dados);
+                        var body = '<div class="form-group">';
+                        $.each(dados, function(i, obj){
+                            body += '<label>'+obj.etapa+' - <strong>'+obj.nome_usuario+'</strong></label><br/>';
+                            body += '<label><b>Observação:</b></label>';
+                            body += '<p>'+obj.observacao+'</p>'
+                            body += '<hr/>';
+                        })
+                    } else {
+                        reset();
+                    }
+
+                    $("#observacao").show();
+                    $("#obs").html(body).show();
+                    $('#historico_documento').hide();
+                    $('#erro').hide();
+                    $('#cancelamento').hide();
+                    $("#doc_conteudo").hide();
+                    $('#etapa').hide();
+                    $('#erro_form').hide();
+                });
+
             });
 
 		});
