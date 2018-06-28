@@ -74,15 +74,28 @@
                                                     <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
                                                     <?php 
-                                                        $this->load->model('erros_model', 'errosmodel');
-                                                        
-                                                        $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
+                                                    $this->load->model('erros_model', 'errosmodel');
+                                                    
+                                                    $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
 
-                                                        if ($contador > 0) {
-                                                            ?>
-                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
-                                                            <?php
-                                                        }
+                                                    if ($contador > 0) {
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a>
+                                                        <?php
+                                                    }
+
+                                                    if($documentos->idresponsavel == $_SESSION["idusuario"]){
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
+                                                        <?php
+                                                    }
+                                                    $this->load->model('documentos_model', 'docmodel');
+
+                                                    if ($this->docmodel->verifica_observacoes($documentos->idprotocolo) > 0) {
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a><br/>
+                                                        <?php
+                                                    }
                                                     ?>
                                                     <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
                                                 </td>

@@ -63,7 +63,7 @@
       <div class="statistics col-lg-3 col-12">
         <a class="dashbord" href="<?=base_url('novo_documento');?>">
           <div class="statistic d-flex align-items-center bg-white has-shadow">
-            <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
+            <div class="icon bg-blue"><i class="fa fa-cloud-upload"></i></div>
             <div class="text">Novo Documento</div>
           </div>
         </a>
