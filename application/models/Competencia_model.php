@@ -22,6 +22,18 @@ class Competencia_model extends CI_Model {
     }
 
     /**
+     * Exclui as competencias cadastradas para cadastrar novas
+     * Utilizado no controller conf/Competencia.php 
+     *
+     * @param int $iddocumento
+     * @return int
+     */
+    public function excluir_compentecias($iddocumento){
+        $this->db->where('fk_iddocumento', $iddocumento);
+        return $this->db->delete('tbcompetencias');
+    }
+
+    /**
      * Método para listar as competencias
      * Utilizado no controller conf/Competencia.php
      *
@@ -125,6 +137,19 @@ class Competencia_model extends CI_Model {
         
         return $this->db->get('')->result();
 
+    }
+
+    /**
+     * Método para retornar a quantidade de registros cadastrados
+     * Utilizado no controller conf/Competencias.php 
+     *
+     * @param int $documento
+     * @return int
+     */
+    public function retorna_cadastrados($documento){
+        $this->db->from('tbcompetencias');
+        $this->db->where('fk_iddocumento', $documento);
+        return $this->db->count_all_results();
     }
 
 }

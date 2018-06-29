@@ -9,6 +9,7 @@ class Erros extends CI_Controller {
         $this->load->model('empresa_model', 'empresamodel');
         $this->load->model('erros_model', 'errosmodel');
         $this->load->model('documentos_model', 'docmodel');
+        $this->load->model('LogsSistema_model', 'logsistema');
     }
 
     public function index(){
@@ -86,6 +87,16 @@ class Erros extends CI_Controller {
             $this->load->view('config/erros_cadastrar');
             $this->load->view('template/footer');
             $this->load->view('template/html_footer');
+
+            //Log do sistema
+            $mensagem = "Cadastrou o erro ".$this->input->post('titulo');
+            $log = array(
+                "usuario"   => $_SESSION['idusuario'],
+                "mensagem"  => $mensagem,
+                "data_hora" => date("Y-m-d H:i:s")
+            );
+            $this->logsistema->cadastrar_log_sistema($log);
+            //fim log sistema
 
         } else {
             

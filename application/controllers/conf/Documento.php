@@ -11,6 +11,7 @@ class Documento extends CI_Controller {
         $this->load->model('grupo_model', 'grupomodel');
         $this->load->model('etapas_model', 'etapasmodel');
         $this->load->model('DocEtapas_model', 'docetapamodel');
+        $this->load->model('LogsSistema_model', 'logsistema');
     }
 
 	public function index()	{
@@ -107,6 +108,16 @@ class Documento extends CI_Controller {
                 $this->load->view('config/documento_cadastrar');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                //log sistema
+                $mensagem = "Cadastrou o documento " . $this->input->post('titulo');
+                $log = array(
+                    'usuario'   => $_SESSION["idusuario"],
+                    'mensagem'  => $mensagem,
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log sistema
 
             } else {
 
@@ -221,6 +232,16 @@ class Documento extends CI_Controller {
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
 
+                //log do sistema
+                $mensagem = "Edição do documento " . $this->input->post('titulo');
+                $log = array(
+                    'usuario' => $_SESSION["idusuario"],
+                    'mensagem' => $mensagem,
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log sistema
+
             } else {
 
                 $data->error = "Ocorreu um problema ao editar o documento! Favor entre em contato com o suporte e tente novamente mais tarde.";
@@ -255,6 +276,8 @@ class Documento extends CI_Controller {
 
             $id = $this->input->post('iddocumento');
 
+            $titulo = $this->logsistema->seleciona_por_titulo('tbdocumento', $id);
+
             if($this->docmodel->excluir_documentos($id)){
 
                 $data->success = "Documento excluido com sucesso!";
@@ -272,6 +295,16 @@ class Documento extends CI_Controller {
                 $this->load->view('config/documento');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                //log do sistema
+                $mensagem = "Excluiu o documento " . $titulo;
+                $log = array(
+                    'usuario' => $_SESSION["idusuario"],
+                    'mensagem' => $mensagem,
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log sistema
 
             } else {
 

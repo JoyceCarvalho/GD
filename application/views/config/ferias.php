@@ -68,10 +68,16 @@
                                                 <td><?=converte_data($ferias->dia_inicio);?></td>
                                                 <td><?=converte_data($ferias->dia_fim);?></td>
                                                 <td>
-                                                    <form method="post" action="<?=base_url('editar_ferias');?>">
-                                                        <input type="hidden" name="idferias" value="<?=$ferias->id?>">
-                                                        <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-edit"></i> Editar</button>
-                                                    </form>
+                                                    <?php
+                                                    if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"]) == true){
+                                                        ?>
+                                                        <form method="post" action="<?=base_url('editar_ferias');?>">
+                                                            <input type="hidden" name="idferias" value="<?=$ferias->id?>">
+                                                            <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-edit"></i> Editar</button>
+                                                        </form>
+                                                        <?php
+                                                    }
+                                                    ?>
                                                 </td>                                                
                                                 <td>
                                                     <?php

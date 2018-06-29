@@ -178,8 +178,15 @@ class Grupos extends CI_Controller {
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
 
+                //log do sistema
                 $mensagem = "Edição do grupo ".$this->input->post("titulo");
-                $log = array('usuario' => $_SESSION["idusuario"], 'mensagem' => $mensagem, 'data_hora' => date("Y-m-d H:i:s"));
+                $log = array(
+                    'usuario'   => $_SESSION["idusuario"], 
+                    'mensagem'  => $mensagem, 
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log do sistema
 
             } else {
 
@@ -217,6 +224,8 @@ class Grupos extends CI_Controller {
             
             $data = new stdClass();
 
+            $titulo = $this->logsistema->seleciona_por_titulo('tbgrupo', $id);
+
             if($this->grupomodel->excluir_grupo($id)){
 
                 $data->success = "Grupo excluido com sucesso!";
@@ -234,6 +243,16 @@ class Grupos extends CI_Controller {
                 $this->load->view('config/grupos');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                //log do sistema
+                $mensagem = "Excluiu o grupo " . $titulo;
+                $log = array(
+                    'usuario'   => $_SESSION["idusuario"],
+                    'mensagem'  => $mensagem,
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log sistema
 
             } else{
 

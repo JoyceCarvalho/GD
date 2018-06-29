@@ -8,6 +8,7 @@ class Etapas extends CI_Controller {
 
         $this->load->model('empresa_model', 'empresamodel');
         $this->load->model('etapas_model', 'etapasmodel');
+        $this->load->model('LogsSistema_model', 'logsistema');
     }
 
     public function index(){
@@ -83,6 +84,16 @@ class Etapas extends CI_Controller {
                 $this->load->view('config/etapas_cadastrar');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                //log do sistema
+                $mensagem = "Cadastrou a etapa ".$this->input->post('titulo');
+                $log = array(
+                    'usuario' => $_SESSION["idusuario"],
+                    'mensagem' => $mensagem,
+                    'data_hora' => date('Y-m-d H:i:s')
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log sistema
 
             } else {
 
@@ -166,6 +177,16 @@ class Etapas extends CI_Controller {
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
 
+                //log sistema
+                $mensagem = "Edição da etapa ".$this->input->post('titulo');
+                $log = array(
+                    'usuario'   => $_SESSION["idusuario"],
+                    'mensagem'  => $mensagem,
+                    'data_hora' => date('Y-m-d H:i:s')
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log sistema
+
             } else {
 
                 $data->error = "Ocorreu um problema ao alterar as informações! Favor entre em contato com o suporte e tente novamente mais tarde.";
@@ -198,6 +219,8 @@ class Etapas extends CI_Controller {
 
             $data = new stdClass();
 
+            $titulo = $this->logsistema->seleciona_por_titulo('tbetapa', $id);
+
             if ($this->etapasmodel->excluir_etapas($id)) {
                 
                 $data->success = "Etapa excluida com sucesso!";
@@ -215,6 +238,16 @@ class Etapas extends CI_Controller {
                 $this->load->view('config/etapas');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                //Log sistema
+                $mensagem = "Excluiu a etapa ".$titulo;
+                $log = array(
+                    'usuario' => $_SESSION["idusuario"],
+                    'mensagem' => $mensagem,
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log sistema
 
             } else {
 

@@ -9,6 +9,7 @@ class Ferias extends CI_Controller{
         $this->load->model('empresa_model', 'empresamodel');
         $this->load->model('ferias_model', 'feriasmodel');
         $this->load->model('usuario_model', 'usermodel');
+        $this->load->model('LogsSistema_model', 'logsistema');
     }
 
     public function index(){
@@ -76,6 +77,8 @@ class Ferias extends CI_Controller{
                 'fk_idempresa' => $_SESSION["idempresa"]
             );
 
+            $nome = $this->logsistema->retorna_usuario($this->input->post('funcionario'));
+
             if($this->feriasmodel->cadastrar_ferias($dados)){
 
                 $data->success = "Férias do dia ". converte_data($this->input->post('dia_inicio')) ." cadastrada com sucesso!";
@@ -93,6 +96,16 @@ class Ferias extends CI_Controller{
                 $this->load->view('config/ferias_cadastrar');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                //Log de sistema
+                $mensagem = "Cadastrou as férias do funcionário ".$nome;
+                $log = array(
+                    'usuario' => $_SESSION["idusuario"],
+                    'mensagem' => $mensagem,
+                    'data_hora' => date('Y-m-d H:i:s')
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log sistema
 
 
             } else{
@@ -163,6 +176,8 @@ class Ferias extends CI_Controller{
                 'fk_idusuario'  => $this->input->post('funcionario')
             );
 
+            $nome = $this->logsistema->retorna_usuario($this->input->post('funcionario'));
+
             if ($this->feriasmodel->editar_ferias($dados, $idferias)) {
                 
                 $data->success = "Alteração realizada com sucesso!";
@@ -181,6 +196,16 @@ class Ferias extends CI_Controller{
                 $this->load->view('config/ferias_editar');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                //Log do sistema
+                $mensagem = "Edição das férias do funcionário ".$nome;
+                $log = array(
+                    'usuario'   => $_SESSION["idusuario"],
+                    'mensagem'  => $mensagem,
+                    'data_hora' => date("Y-m-d H:i:s")
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
+                //fim log sistema
 
             } else {
 
@@ -217,6 +242,8 @@ class Ferias extends CI_Controller{
             
             $idferias = $this->input->post('idferias');
 
+            $nome = $this->logsistema->nome_usuario('tbferias_func', $idferias);
+
             if ($this->feriasmodel->excluir_ferias($idferias)) {
                 
                 $data->success = "Dados excluidos com sucesso!";
@@ -234,6 +261,15 @@ class Ferias extends CI_Controller{
                 $this->load->view('config/ferias');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                //Log do sistema
+                $mensagem = "Excluiu as férias do funcionário ".$nome;
+                $log = array(
+                    'usuario' => $_SESSION["idusuario"],
+                    'mensagem' => $mensagem,
+                    'data_hora' => date('Y-m-d H:i:s')
+                );
+                $this->logsistema->cadastrar_log_sistema($log);
 
             } else {
 

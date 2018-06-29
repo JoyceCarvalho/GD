@@ -12,6 +12,7 @@ class Competencia extends CI_Controller {
         $this->load->model('competencia_model', 'compmodel');
         $this->load->model('usuario_model', 'usermodel');
         $this->load->model('cargos_model', 'cargomodel');
+        $this->load->model('LogsSistema_model', 'logsistema');
     }
 
 	public function index()	{
@@ -78,6 +79,9 @@ class Competencia extends CI_Controller {
             $total_etapa = $this->input->post('quant_etapas');
             $tipo        = $this->input->post('tipo');
 
+            $titulo = $this->logsistema->retorna_titulo_documento($iddocumento);
+            $aux_edicao = false;
+
             for ($i=1; $i <= $total_etapa; $i++) { 
 
                 if ($tipo == "funcionario") {
@@ -104,6 +108,24 @@ class Competencia extends CI_Controller {
 
                 }
 
+                if (($this->compmodel->retorna_cadastrados($iddocumento) > 0) and ($i == 1)) {
+                    
+                    //echo "aqui exclui";
+                    $this->compmodel->excluir_compentecias($iddocumento);
+
+                    $aux_edicao = true;
+                    //log do sistema
+                    $mensagem = "Edição da competencia do documento " . $titulo;
+                    $log = array(
+                        'usuario' => $_SESSION["idusuario"],
+                        'mensagem' => $mensagem,
+                        'data_hora' => date('Y-m-d H:i:s')
+                    );
+                    $this->logsistema->cadastrar_log_sistema($log);
+                    //fim log sistema
+
+                }
+                //echo "aqui cadastra";
                 $cadastrar = $this->compmodel->cadastar_competencias($dados);
                 
             }
@@ -130,6 +152,18 @@ class Competencia extends CI_Controller {
                 $this->load->view('config/competencia_cadastrar');
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
+
+                if ($aux_edicao == false) {
+                    //log do sistema
+                    $mensagem = "Cadastrou a competência do documento ".$titulo;
+                    $log = array(
+                        'usuario'   => $_SESSION["idusuario"],
+                        'mensagem'  => $mensagem,
+                        'data_hora' => date("Y-m-d H:i:s")
+                    );
+                    $this->logsistema->cadastrar_log_sistema($log);
+                    //fim log sistema
+                }
 
             } else {
                 
