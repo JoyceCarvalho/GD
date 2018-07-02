@@ -17,6 +17,7 @@ class Documento extends CI_Controller {
         $this->load->model('horario_model', 'horasmodel');
         $this->load->model('usuario_model', 'usermodel');   
         $this->load->model('erros_model', 'errosmodel');
+        $this->load->model('LogsSistema', 'logsistema');
     }
 
     public function index(){
@@ -245,6 +246,17 @@ class Documento extends CI_Controller {
                     $this->load->view('documentos/novo_documento');
                     $this->load->view('template/footer');
                     $this->load->view('template/html_footer');
+
+                    //log do sistema
+                    $mensagem = "Iniciou o documento de protocolo ".$this->input->post('protocolo');
+                    $log2 = array(
+                        'usuario'   => $_SESSION["idusuario"],
+                        'mensagem'  => $mensagem,
+                        'data_hora' => date("Y-m-d H:-i:s")
+                    );
+                    $this->logsistema->cadastar_log_documento($log2);
+                    // fim log sistema
+
                 } else {
     
                     $data->error = "Ocorreu um problema ao cadastra os dados! Favor entre em contato com o suporte e tente novamente mais tarde.";
