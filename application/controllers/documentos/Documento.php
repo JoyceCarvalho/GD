@@ -17,7 +17,7 @@ class Documento extends CI_Controller {
         $this->load->model('horario_model', 'horasmodel');
         $this->load->model('usuario_model', 'usermodel');   
         $this->load->model('erros_model', 'errosmodel');
-        $this->load->model('LogsSistema', 'logsistema');
+        $this->load->model('LogsSistema_model', 'logsistema');
     }
 
     public function index(){
@@ -254,8 +254,8 @@ class Documento extends CI_Controller {
                         'mensagem'  => $mensagem,
                         'data_hora' => date("Y-m-d H:-i:s")
                     );
-                    $this->logsistema->cadastar_log_documento($log2);
-                    // fim log sistema
+                    $this->logsistema->cadastrar_log_sistema($log2);
+                    //fim log sistema
 
                 } else {
     

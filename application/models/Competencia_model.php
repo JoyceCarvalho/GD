@@ -92,6 +92,8 @@ class Competencia_model extends CI_Model {
         //Subquery
         $this->db->select('fk_idusuario');
         $this->db->from('tbferias_func');
+        $this->db->where('NOW() < dia_inicio');
+        $this->db->where('NOW() > dia_fim');
         $subquery = $this->db->get_compiled_select();
 
         //query
