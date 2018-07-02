@@ -178,6 +178,13 @@ class Erros extends CI_Controller {
             $this->load->view('template/footer');
             $this->load->view('template/html_footer');
 
+            $mensagem = "Edição do erro ".$this->input->post("titulo");
+            $log = array(
+                'usuario'   => $_SESSION["idusuario"],
+                'mensagem'  => $mensagem,
+                'data_hora' => date('Y-m-d H:i:s')
+            );
+
         } else {
 
             $data->error = "Ocorreu um problema ao alterar o erro ".$this->input->post('titulo'). ". Favor entre em contato com o suporte e tente novamente mais tarde.";
