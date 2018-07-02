@@ -178,12 +178,15 @@ class Erros extends CI_Controller {
             $this->load->view('template/footer');
             $this->load->view('template/html_footer');
 
+            //log do sistema
             $mensagem = "Edição do erro ".$this->input->post("titulo");
             $log = array(
                 'usuario'   => $_SESSION["idusuario"],
                 'mensagem'  => $mensagem,
                 'data_hora' => date('Y-m-d H:i:s')
             );
+            $this->logsistema->cadastrar_log_sistema($log);
+            //fim log sistema
 
         } else {
 
@@ -216,6 +219,8 @@ class Erros extends CI_Controller {
 
         $id = $this->input->post('iderro');
 
+        $titulo = $this->logsistema->seleciona_por_titulo('tberros', $id);
+
         if ($this->errosmodel->deleta_erro($id)) {
 
             $data = "Erro excluido com sucesso!";
@@ -233,6 +238,16 @@ class Erros extends CI_Controller {
             $this->load->view('config/erros');
             $this->load->view('template/footer');
             $this->load->view('template/html_footer');
+
+            //log do sistema
+            $mensagem = "Excluiu o erro " . $titulo;
+            $log = array(
+                'usuario'   => $_SESSION["idusuario"],
+                'mensagem'  => $mensagem,
+                'data_hora' => date("Y-m-d H:i:s")
+            );
+            $this->logsistema->cadastrar_log_sistema($log);
+            //fim log sistema
 
         } else {
             

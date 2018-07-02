@@ -106,7 +106,7 @@ class Documento extends CI_Controller {
                     $pendente = array(
                         'documento'     => $iddocumento, 
                         'etapa'         => $recebido,
-                        'usuario'       => null,
+                        'usuario'       => 0,
                         'descricao'     => 'PENDENTE',
                         'data_hora'     => date("Y-m-d H:i:s"),
                         'ultima_etapa'  => 'true'

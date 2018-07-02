@@ -287,7 +287,6 @@ class Controle extends CI_Controller {
     $data = new stdClass();
 
     $clientecode  = $this->input->post("cliente_code");
-    //$curriculo    = $_FILES['logo_cliente'];
 
     $config['upload_path']          = './assets/img/logo_empresas/';
     $config['allowed_types']        = 'jpg';
@@ -297,83 +296,87 @@ class Controle extends CI_Controller {
 
     if (!$this->upload->do_upload('logo_cliente')){
 
-      $data->warning = "Ops! Pode ter havido um problema ao cadastrar a logo do cliente.";
+      $data->warning = "Ops! Pode ter ocorrido um problema ao cadastrar a logo do cliente.";
+      $logo_code = null;
 
     } else {
 
-      $empresa = array(
-        'nome' => $this->input->post("empresa"),
-        'cliente_code' => $this->input->post("cliente_code"),
-        'logo_code' => $config['file_name']
-      );
+     $logo_code = $config["file_name"];
+      
+    }
 
-      $idempresa = $this->empresamodel->cadastrar_empresa($empresa);
+    $empresa = array(
+      'nome' => $this->input->post("empresa"),
+      'cliente_code' => $this->input->post("cliente_code"),
+      'logo_code' => $logo_code
+    );
 
-      $cargos = array(
-        'titulo' => 'Coordenador',
-        'fk_idempresa' => $idempresa
-      );
+    $idempresa = $this->empresamodel->cadastrar_empresa($empresa);
 
-      $idcargo = $this->cargosmodel->cadastrar_cargos($cargos);
+    $cargos = array(
+      'titulo' => 'Coordenador',
+      'fk_idempresa' => $idempresa
+    );
 
-      $horario = array(
-        'titulo' => "Regular",
-        'manha_entrada' => "07:00:00",
-        'manha_saida' => "12:00:00",
-        'tarde_entrada' => "13:00:00",
-        'tarde_saida' => "18:00:00",
-        'fk_idempresa' => $idempresa
-      );
+    $idcargo = $this->cargosmodel->cadastrar_cargos($cargos);
 
-      $horario_trab = $this->horasmodel->cadastrar_horario($horario);
+    $horario = array(
+      'titulo' => "Regular",
+      'manha_entrada' => "07:00:00",
+      'manha_saida' => "12:00:00",
+      'tarde_entrada' => "13:00:00",
+      'tarde_saida' => "18:00:00",
+      'fk_idempresa' => $idempresa
+    );
 
-      $coordenador = array(
-        'nome' => $this->input->post('nome'),
-        'email' => $this->input->post('email'),
-        'usuario' => $this->input->post('usuario'),
-        'senha' => sha1($this->input->post('senha')),
-        'fk_idempresa' => $idempresa,
-        'fk_idcargos' => $idcargo,
-        'fk_idhorariotrab' => $horario_trab
-      );
+    $horario_trab = $this->horasmodel->cadastrar_horario($horario);
+
+    $coordenador = array(
+      'nome' => $this->input->post('nome'),
+      'email' => $this->input->post('email'),
+      'usuario' => $this->input->post('usuario'),
+      'senha' => sha1($this->input->post('senha')),
+      'fk_idempresa' => $idempresa,
+      'fk_idcargos' => $idcargo,
+      'fk_idhorariotrab' => $horario_trab
+    );
 
 
-      if ($this->empresamodel->cadastrar_coordenador($coordenador)) {
+    if ($this->empresamodel->cadastrar_coordenador($coordenador)) {
 
-        $data->success = "Empresa cadastrada com sucesso!";
+      $data->success = "Empresa cadastrada com sucesso!";
 
-        $dados['pagina'] = "Listagem de Empresas";
-        $dados['pg'] = "controle";
-        $dados['submenu'] = "cadempresa";
+      $dados['pagina'] = "Listagem de Empresas";
+      $dados['pg'] = "controle";
+      $dados['submenu'] = "cadempresa";
 
-        //dados do banco (nome Empresa, nome usuário) utilizados no menu
-        $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      //dados do banco (nome Empresa, nome usuário) utilizados no menu
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
-        $this->load->view('template/html_header', $dados);
-        $this->load->view('template/header');
-        $this->load->view('template/menu');
-        $this->load->view('admin/cadastrar_empresa');
-        $this->load->view('template/footer');
-        $this->load->view('template/html_footer');
+      $this->load->view('template/html_header', $dados);
+      $this->load->view('template/header');
+      $this->load->view('template/menu');
+      $this->load->view('admin/cadastrar_empresa');
+      $this->load->view('template/footer');
+      $this->load->view('template/html_footer');
 
-      } else {
+    } else {
 
-        $data->error = "Ocorreu um erro ao cadastrar! Entre em contato com administrador e tente novamente mais tarde!";
+      $data->error = "Ocorreu um erro ao cadastrar! Entre em contato com administrador e tente novamente mais tarde!";
 
-        $dados['pagina'] = "Listagem de Empresas";
-        $dados['pg'] = "controle";
-        $dados['submenu'] = "cadempresa";
+      $dados['pagina'] = "Listagem de Empresas";
+      $dados['pg'] = "controle";
+      $dados['submenu'] = "cadempresa";
 
-        //dados do banco (nome Empresa, nome usuário) utilizados no menu
-        $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      //dados do banco (nome Empresa, nome usuário) utilizados no menu
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
-        $this->load->view('template/html_header', $dados);
-        $this->load->view('template/header');
-        $this->load->view('template/menu');
-        $this->load->view('admin/cadastrar_empresa');
-        $this->load->view('template/footer');
-        $this->load->view('template/html_footer');
-      }
+      $this->load->view('template/html_header', $dados);
+      $this->load->view('template/header');
+      $this->load->view('template/menu');
+      $this->load->view('admin/cadastrar_empresa');
+      $this->load->view('template/footer');
+      $this->load->view('template/html_footer');
     }
   }
 
