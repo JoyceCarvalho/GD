@@ -108,6 +108,31 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método para retornar os dados dos documentos em atraso
+     * Utilizado em relatorios/Imprimir.php 
+     *
+     * @param int $idprotocolo
+     * @return object
+     */
+    public function documento_em_atraso($idprotocolo){
+        $this->db->select('dc.id as idprotocolo, dc.protocolo as protocolo, d.id as iddocumento, d.titulo as titulo_documento, e.titulo as etapa_atual, 
+        g.titulo as titulo_grupo, u.nome as nome_usuario, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") as data_criacao, DATE_FORMAT(NOW(), "%d/%m/%Y") as data_atual, 
+        DATE_FORMAT(pe.prazo, "%d/%m/%Y") as prazo, DATEDIFF(CURDATE(), pe.prazo) as dias_atraso, DATE_FORMAT(ldB.data_hora, "%d/%m/%Y") as data_recebimento');
+        $this->db->from('tbdocumentos_cad as dc');
+        $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
+        $this->db->join('tbgrupo as g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
+        $this->db->join('tbprazoetapa as pe', 'pe.fk_iddocumento = ldA.documento and pe.fk_idetapas = ldB.etapa');
+        $this->db->join('tbetapa as e', 'e.id = ldB.etapa');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario');
+        $this->db->where('pe.prazo < NOW()');
+        $this->db->where('ldA.documento', $idprotocolo);
+
+        return $this->db->get()->result();
+    }
+
+    /**
      * Método para pegar o id do documento
      * Utilizado no controller documento/Documento.php
      *

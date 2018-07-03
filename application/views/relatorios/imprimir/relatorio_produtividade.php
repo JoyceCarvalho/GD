@@ -78,7 +78,7 @@ $this->load->model("cargos_model", "cargosmodel");
                                 </address>
                             </div>
                             <div class="col-4">
-                                <h5 class="text-right"> <b>Date: <?=date('d/m/Y');?></b> </h5>
+                                <h5 class="text-right"> <b>Data: <?=date('d/m/Y');?></b> </h5>
                             </div>
                         </div>
                         <div class="row">

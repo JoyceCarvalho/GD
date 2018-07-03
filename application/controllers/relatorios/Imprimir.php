@@ -117,7 +117,7 @@ class Imprimir extends CI_Controller {
 
                 $dados["informacoes_documento"] = $informacoes_documento;
                 $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["documentos_prazo"]      = $this->docmodel->listar_documentos_fora_prazo($_SESSION["idempresa"]);
+                $dados["documentos_prazo"]      = $this->docmodel->documento_em_atraso($idprotocolo);
 
                 $this->load->view('relatorios/imprimir/relatorio_prazo', $dados);
 

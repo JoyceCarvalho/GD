@@ -76,7 +76,7 @@
                                                     ?>
                                                 <div class="line"></div>
                                                 <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
-                                                <a href="<?=base_url("em_atraso/".$documentos->idprotocolo);?>" class="btn btn-sm btn-warning" style="color:white;"><i class="fa fa-print"></i> Imprimir Relatório</a><br/>
+                                                <a href="<?=base_url("em_atraso/".$documentos->idprotocolo);?>" class="btn btn-sm btn-warning external" style="color:white;"><i class="fa fa-print"></i> Imprimir Relatório</a><br/>
                                             </td>
                                         </tr>
                                         <?php
