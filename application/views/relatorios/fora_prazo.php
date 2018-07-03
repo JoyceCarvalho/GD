@@ -67,15 +67,16 @@
                                                     $this->load->model('erros_model', 'errosmodel');
                                                     
                                                     $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
-
+                                                    
                                                     if ($contador > 0) {
                                                         ?>
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a><br/>
                                                         <?php
                                                     }
-                                                ?>
+                                                    ?>
                                                 <div class="line"></div>
                                                 <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
+                                                <a href="<?=base_url("em_atraso/".$documentos->idprotocolo);?>" class="btn btn-sm btn-warning" style="color:white;"><i class="fa fa-print"></i> Imprimir Relatório</a><br/>
                                             </td>
                                         </tr>
                                         <?php

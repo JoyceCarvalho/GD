@@ -85,8 +85,8 @@ class Imprimir extends CI_Controller {
 
         if ($_SESSION["idempresa"] == $usuario->fk_idempresa) {
 
-            $dados["usuario"]       = $usuario;
-            $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["usuario"]               = $usuario;
+            $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["documentos_fnalizados"] = $this->docmodel->quantidade_documentos_finalizados_usuario($idusuario);
             $dados["documentos_andamento"]  = $this->docmodel->numero_documentos($idusuario);
             $dados["tempomedio"]            = $this->timermodel->tempo_documento_usuario($idusuario);
@@ -97,6 +97,35 @@ class Imprimir extends CI_Controller {
         } else {
 
             $this->load->view('errors/acesso_restrito');
+
+        }
+
+    }
+
+    public function imprimir_fora_prazo($idprotocolo){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect('/');
+        }
+
+
+        $informacoes_documento = json_decode($this->docmodel->historico_documento($idprotocolo));
+
+        foreach ($informacoes_documento as $doc) {
+            
+            if ($doc->idempresa == $_SESSION["idempresa"]) {
+
+                $dados["informacoes_documento"] = $informacoes_documento;
+                $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["documentos_prazo"]      = $this->docmodel->listar_documentos_fora_prazo($_SESSION["idempresa"]);
+
+                $this->load->view('relatorios/imprimir/relatorio_prazo', $dados);
+
+            } else {
+
+                $this->load->view('errors/acesso_restrito');
+
+            }
 
         }
 
