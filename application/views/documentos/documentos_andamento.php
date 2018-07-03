@@ -55,7 +55,8 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                        foreach ($andamento_doc as $documentos) {
+                                    if($andamento_doc_c){
+                                        foreach ($andamento_doc_c as $documentos) {
                                             ?>
                                             <tr>
                                                 <td><?=$documentos->protocolo;?></td>
@@ -111,6 +112,66 @@
                                             </tr>
                                             <?php
                                         }
+                                    }
+
+                                    if(isset($andamento_doc_f)){
+                                        foreach ($andamento_doc_f as $documentos) {
+                                            ?>
+                                            <tr>
+                                                <td><?=$documentos->protocolo;?></td>
+                                                <td>
+                                                    <?=$documentos->documento;?><br/>
+                                                    <strong><?=$documentos->grupo;?></strong>
+                                                </td>
+                                                <td>
+                                                    <?="Documento: ".converte_data($documentos->prazo);?><br/>
+                                                    <strong>
+                                                        <?php
+                                                        $this->load->model('etapas_model', 'etapasmodel');
+                                                        $prazo = $this->etapasmodel->prazo_etapa($documentos->idprotocolo, $documentos->idetapa);
+                                                        echo "Etapa: ".converte_data($prazo);
+                                                        ?>
+                                                    </strong>
+                                                </td>
+                                                <td><?=$documentos->etapa;?></td>
+                                                <td><?=$documentos->nome_usuario;?></td>
+                                                <td style="text-align: center;">
+                                                    <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
+                                                    <?php 
+                                                    if ($documentos->idresponsavel == $_SESSION["idusuario"]) {
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
+                                                        <?php
+                                                    }
+                                                    $this->load->model('erros_model', 'errosmodel');
+                                                    
+                                                    $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
+
+                                                    if ($contador > 0) {
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a><br/>
+                                                        <?php
+                                                    }
+                                                    
+                                                    $this->load->model('documentos_model', 'docmodel');
+                                                    if ($documentos->idresponsavel == $_SESSION["idusuario"]) {
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
+                                                        <?php
+                                                    }
+
+                                                    if ($this->docmodel->verifica_observacoes($documentos->idprotocolo)) {
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                    <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    }
                                     ?>
                                 </tbody>
                             </table>

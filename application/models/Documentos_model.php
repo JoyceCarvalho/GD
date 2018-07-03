@@ -471,6 +471,58 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método responsável por listar os documentos em andamento por cargo
+     * Utilizado no controller documentos/Relatorios.php
+     *
+     * @param int $idusuario
+     * @return object
+     */
+    public function listar_documentos_andamento_cargos($idusuario){
+        $this->db->select('d.id as iddocumento, e.id as idetapa, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
+        e.titulo AS etapa, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.id AS idresponsavel, u.nome AS nome_usuario, de.ordem as ordem, dc.id as idprotocolo');
+        $this->db->from('tbdocumentos_cad AS dc');
+        $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
+        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="cargo"');
+        $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
+        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
+        $this->db->where("u.id = $idusuario");
+        $this->db->where('ldB.descricao != "FINALIZADO"');
+        $this->db->group_by('d.id');
+        $this->db->order_by('de.ordem asc, ldA.data_hora asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por listar os documentos em andamento 
+     * Utilizado no controller documentos/Relatorios.php
+     *
+     * @param int $idusuario
+     * @return object
+     */
+    public function listar_documentos_andamento_funcionarios($idusuario){
+        $this->db->select('d.id as iddocumento, e.id as idetapa, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
+        e.titulo AS etapa, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.id AS idresponsavel, u.nome AS nome_usuario, de.ordem as ordem, dc.id as idprotocolo');
+        $this->db->from('tbdocumentos_cad AS dc');
+        $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
+        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="funcionario"');
+        $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
+        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
+        $this->db->where('c.fk_idusuario', $idusuario);
+        $this->db->where('ldB.descricao != "FINALIZADO"');
+        $this->db->group_by('d.id');
+        $this->db->order_by('de.ordem asc, ldA.data_hora asc');
+        return $this->db->get()->result();
+    }
+
+    /**
      * Método responsável por listar os documentos com erro
      * Utilizado no controller documentos/Relatorios.php
      *
