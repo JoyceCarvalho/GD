@@ -225,6 +225,8 @@ class Transferencia extends CI_Controller {
             'total_minutos' => $somatorioTotalMinutos
         );
 
+        $pendencia = false;
+
         if($this->docmodel->cadastrar_documento_tempo($log_tempo)){
 
             if($this->docmodel->editar_documentos_log($idprotocolo)){
@@ -246,11 +248,12 @@ class Transferencia extends CI_Controller {
                     $pendente = array(
                         'documento'     => $idprotocolo, 
                         'etapa'         => $proxima_etapa,
-                        'usuario'       => null,
+                        'usuario'       => 0,
                         'descricao'     => 'PENDENTE',
                         'data_hora'     => date("Y-m-d H:i:s"),
                         'ultima_etapa'  => 'true'
                     );
+                    $pendencia = true;
 
                    $this->docmodel->cadastrar_log_documento($pendente);
 
@@ -394,7 +397,13 @@ class Transferencia extends CI_Controller {
             
             redirect("meus_documentos/".$mensagem);
 
-        } else {
+        } elseif($pendencia == true){
+            
+            $mensagem = "pendente";
+
+            redirect("meus_documentos/".$mensagem);
+
+        }else {
 
             $mensagem = "error";
 

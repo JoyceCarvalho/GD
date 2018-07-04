@@ -96,12 +96,20 @@ class Competencia_model extends CI_Model {
         $this->db->where('NOW() > dia_fim');
         $subquery = $this->db->get_compiled_select();
 
+        //Subquery2
+        $this->db->select('fk_idusuario');
+        $this->db->from('tbausencia');
+        $this->db->where('NOW() >= dia_inicio');
+        $this->db->where('NOW() <= dia_fim');
+        $subquery2 = $this->db->get_compiled_select();
+
         //query
         $this->db->select('count(*) as total');
         $this->db->from('tbcompetencias');
         $this->db->where('fk_iddocumento', $documento);
         $this->db->where('fk_idetapa', $etapa);
         $this->db->where("fk_idusuario not in($subquery)");
+        $this->db->where("fk_idusuario not in($subquery2)");
         
         return $this->db->get('')->row('total');
     }
@@ -119,8 +127,8 @@ class Competencia_model extends CI_Model {
         //subquery1
         $this->db->select('fk_idusuario');
         $this->db->from('tbausencia');
-        $this->db->where('dia_inicio >', $dataAtual);
-        $this->db->where('dia_fim < ', $dataAtual);
+        $this->db->where('dia_inicio <=', $dataAtual);
+        $this->db->where('dia_fim >= ', $dataAtual);
         $subquery1 = $this->db->get_compiled_select();
 
         //subquery2

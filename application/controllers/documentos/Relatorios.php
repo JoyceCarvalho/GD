@@ -109,6 +109,20 @@ class Relatorios extends CI_Controller {
         $this->load->view('template/html_footer');
     }
 
+    public function documentos_pendentes(){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+
+        $dados["pagina"]    = "Meus Documentos";
+        $dados["pg"]        = "documentos";
+        $dados["submenu"]   = "pendente";
+
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["doc_pendendes"] = $this->docmodel->listar_documentos_pendentes($_SESSION["idempresa"]);
+    }
+
     public function reverte_suspensao($identificador){
 
         if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {

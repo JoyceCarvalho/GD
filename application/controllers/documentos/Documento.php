@@ -453,10 +453,18 @@ class Documento extends CI_Controller {
         
         if((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)){
 
-            if ($mensagem != "error") {
+            if($mensagem == "pendente"){
+
+                $dados["warning"] = "Documento tranferido com suscesso! Etapa atual pendente!";
+
+            } elseif ($mensagem != "error") {
+
                 $dados["success"] = "Documento ".$mensagem." com sucesso!";
-            } else {
+
+            }else {
+
                 $dados["error"] = "Ocorreu um problema ao transferir o documento. Favor entre em contato com o suporte e tente novamente mais tarde.";
+                
             }
 
             $dados["pagina"]    = "Meus Documentos";
@@ -479,9 +487,9 @@ class Documento extends CI_Controller {
             // Redireciona para o root quando não estiver logado
             redirect("/");
         }
-
+        
     }
-
+    
     public function cancelar_documento(){
 
         if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
