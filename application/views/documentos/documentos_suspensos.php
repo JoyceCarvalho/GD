@@ -368,7 +368,7 @@ window.addEventListener("DOMContentLoaded", function() {
                         $.each(dados, function(i, obj){
                             body2 += '<option value="'+obj.id+'">'+obj.titulo+'</option>';
                         });
-                        body2 += '</select>'
+                        body2 += '</select>';
                         body2 += '</div>';
                         body2 += '<hr/>';
                         body2 += '<div class="form-group">';
