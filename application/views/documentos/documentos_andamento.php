@@ -264,7 +264,7 @@ window.addEventListener("DOMContentLoaded", function() {
                                 data += ' - <strong>'+obj.etapa+'</strong><br/>';    
                             }
                             
-                            if(obj.nome == ''){
+                            if(obj.nome == null){
                                 nome = "Documento Pendente - Sem Responsável";
                             } else {
                                 nome = obj.nome;

@@ -18,7 +18,7 @@
       <div class="col-xl-3 col-sm-6">
         <a class="dashbord" href="<?=base_url('cancelados');?>">
           <div class="item d-flex align-items-center" style="font-size: 14px;">
-            <div class="icon bg-red"><i class="fa fa-stop"></i></div>
+            <div class="icon bg-red"><i class="fa fa-ban"></i></div>
             <div class="title">
               <span>Documentos Cancelados</span>
             </div>

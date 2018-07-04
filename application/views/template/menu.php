@@ -176,8 +176,9 @@
                 <li <?=($submenu == "meusdocs") ? "class='active'" : "" ?>> <a href="<?=base_url('meusdocumentos');?>"> <i class="fa fa-archive"></i>Meus Documentos </a></li>
                 <li <?=($submenu == "andamento") ? "class='active'" : "" ?>> <a href="<?=base_url('andamento');?>"> <i class="fa fa-battery-half"></i>Documentos em Andamento </a></li>
                 <li <?=($submenu == "erro") ? "class='active'" : "" ?>> <a href="<?=base_url('erro');?>"> <i class="icon-bill"></i> Documentos com Erro </a></li>
-                <li <?=($submenu == "cancelados") ? "class='active'" : "" ?>> <a href="<?=base_url('cancelados');?>"> <i class="fa fa-stop-circle-o"></i>Documentos Cancelados </a></li>
+                <li <?=($submenu == "cancelados") ? "class='active'" : "" ?>> <a href="<?=base_url('cancelados');?>"> <i class="fa fa-ban"></i>Documentos Cancelados </a></li>
                 <li <?=($submenu == "suspensos") ? "class='active'" : "" ?>> <a href="<?=base_url('suspenso');?>"> <i class="fa fa-pause-circle"></i>Documentos Suspensos </a></li>
+                <li <?=($submenu == "pendentes") ? "class='active'" : "" ?>><a href="<?=base_url('pendentes');?>"><i class="fa fa-exclamation-triangle"></i> Documentos Pendentes</a></li>
               </ul>
             </li>
 

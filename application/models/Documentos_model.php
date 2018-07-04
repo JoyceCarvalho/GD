@@ -594,6 +594,27 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método responsável por listar os documentos pendentes
+     *
+     * @param int $empresa
+     * @return object
+     */
+    public function listar_documentos_pendente($empresa){
+        $this->db->select('dc.id as idprotocolo, dc.protocolo as protocolo, d.titulo as documento, g.titulo as grupo, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") as data_criacao, 
+        DATE_FORMAT(ldB.data_hora, "%d/%m/%Y") as data_pendente, ldB.usuario as idresponsavel, u.nome as nome_usuario,ldB.etapa AS idetapa, dc.prazo AS prazo, e.titulo as etapa_nome');
+        $this->db->from('tbdocumentos_cad as dc');
+        $this->db->join('tbdocumento as d', 'dc.fk_iddocumento = d.id');
+        $this->db->join('tbgrupo as g','g.id = d.fk_idgrupo');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "PENDENTE"');
+        $this->db->join('tbetapa as e', 'e.id = ldB.etapa');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->where('d.fk_idempresa', $empresa);
+        $this->db->order_by('dc.id asc');
+        return $this->db->get()->result();
+    }
+
+    /**
      * Método responsável por listar os documentos fora do prazo
      * Utilizado no controller relatorios/Relatorios.php
      *

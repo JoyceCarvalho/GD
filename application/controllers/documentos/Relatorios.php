@@ -120,7 +120,14 @@ class Relatorios extends CI_Controller {
         $dados["submenu"]   = "pendente";
 
         $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["doc_pendendes"] = $this->docmodel->listar_documentos_pendentes($_SESSION["idempresa"]);
+        $dados["doc_pendendes"] = $this->docmodel->listar_documentos_pendente($_SESSION["idempresa"]);
+
+        $this->load->view('template/html_header', $dados);
+        $this->load->view('template/header');
+        $this->load->view('template/menu');
+        $this->load->view('documentos/documentos_pendentes');
+        $this->load->view('template/footer');
+        $this->load->view('template/html_footer');
     }
 
     public function reverte_suspensao($identificador){
