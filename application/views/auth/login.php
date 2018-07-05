@@ -39,7 +39,7 @@
                   </div>
                   <form id="login-form" method="post" action="<?=base_url('login_auth');?>">
                     <div class="form-group">
-                      <input id="login-username" type="text" name="cliente_code" required="" class="input-material">
+                      <input id="login-username1" type="text" name="cliente_code" required="" class="input-material">
                       <label for="Código Empresa" class="label-material">Código da Empresa</label>
                     </div>
                     <div class="form-group">
