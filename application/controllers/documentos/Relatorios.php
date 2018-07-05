@@ -202,12 +202,15 @@ class Relatorios extends CI_Controller {
         $etapa = $this->docmodel->etapa_documento($idprotocolo);
 
         $documento = array(
-            'descricao' => "TRANSFERIDO MANUALMENTE",
-            'data_hora' => date('Y-m-d H:i:s'),
-            'ultima_etapa' => $usuario,
-            'etapa'        => $etapa,
-            'documento'    => $idprotocolo
+            'descricao'     => "TRANSFERIDO MANUALMENTE",
+            'data_hora'     => date('Y-m-d H:i:s'),
+            'ultima_etapa'  => "true",
+            'usuario'       => $usuario,
+            'etapa'         => $etapa,
+            'documento'     => $idprotocolo
         );
+
+        $this->docmodel->editar_documentos_log($idprotocolo);
 
         if($this->docmodel->cadastrar_log_documento($documento)){
 

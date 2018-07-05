@@ -609,6 +609,7 @@ class Documentos_model extends CI_Model {
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "PENDENTE"');
         $this->db->join('tbetapa as e', 'e.id = ldB.etapa');
         $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->where('ldB.ultima_etapa = "true"');
         $this->db->where('d.fk_idempresa', $empresa);
         $this->db->order_by('dc.id asc');
         return $this->db->get()->result();
