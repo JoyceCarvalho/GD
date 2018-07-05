@@ -56,7 +56,7 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                        foreach ($doc_pendendes as $documentos) {
+                                        foreach ($doc_pendentes as $documentos) {
                                             ?>
                                             <tr>
                                                 <td><?=$documentos->protocolo;?></td>
@@ -225,45 +225,6 @@ window.addEventListener("DOMContentLoaded", function() {
                 })
             });
 
-            $("#cancelar_"+id_pro).click(function(e){
-                //var iddocumento = $('#id_protocolo').val();
-                //console.log(id_pro);
-
-                $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
-                    if (dados.length>0) {
-                        var titulo = 'Cancelar documento';
-                        var body = '<div class="form-group">';
-                        $.each(dados, function(i, obj){
-                            body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
-                            body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
-                            body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
-                        })
-                        body += '</div>';
-                        body2 = '<hr/>';
-                        body2 += '<div class="form-group">';
-                        body2 += '<label>Motivo do cancelamento:</label>';
-                        body2 += '<textarea class="form-control" rows="6" name="motivo"></textarea>';
-                        body2 += '<input type="hidden" name="idprotocolo" value="'+id_pro+'">';
-                        body2 += '</div>';
-                        body2 += '<div class="form-group">';
-                        body2 += '<button type="submit" class="btn btn-sm btn-primary">Cadastrar Cancelamento</button>';
-                        body2 += '</div>';
-                    } else {
-                        reset();
-                    }
-                    $('#exampleModalLabel').html(titulo).show();
-                    $('#his_conteudo').html(body).show();
-                    $('#cancelamento').show();
-                    $('#conteudo').html(body2).show();
-                    $('#historico_documento').hide();
-                    $('#erro').hide();
-                    $("#doc_conteudo").hide();
-                    $('#etapa').hide();
-                    $('#erro_form').hide();
-                    $("#observacao").hide();
-                });
-            });
-
             $("#erro_"+id_pro).click(function(e){
 
                 $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
@@ -422,6 +383,52 @@ window.addEventListener("DOMContentLoaded", function() {
                     $('#erro_form').hide();
                 });
 
+            });
+
+            $("#transfere_"+id_pro).click(function(e){
+
+                $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
+                    if (dados.length>0) {
+                        var titulo = 'Transferência Manual';
+                        var body = '<div class="form-group">';
+                        $.each(dados, function(i, obj){
+                            body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
+                            body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
+                            body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
+                        })
+                        body += '</div>';
+                        body += '<hr/>';
+                    } else {
+                        reset();
+                    }
+                    $('#exampleModalLabel').html(titulo).show();
+                    $('#his_conteudo').html(body).show();
+                    $('#conteudo').hide();
+                    $("#erro").hide();
+                    $("#doc_conteudo").hide();
+                    $('#etapa').hide();
+                    $('#erro_form').hide();
+                    $('#observacao').hide();
+                });
+
+                $.getJSON('<?=base_url();?>'+'transferencia', function(dados){
+                    if (dados.length>0 ) {
+                        //console.log(dados);
+                        var body2 = '<form method="post" action="<?=base_url("transfere_para");?>">';
+                        body2 += '<input name="idprotocolo" value="'+id_pro+'" type="hidden" >'
+                        body2 += '<div class="form-group">';
+                        body2 += '<label> Transferir para: </label>';
+                        body2 += '<select class="form-control" name="usuario">';
+                        $.each(dados, function(i, obj){
+                            body2 += '<option value="'+obj.id+'">'+obj.nome+'</option>';
+                        });
+                        body2 += '</select>';
+                        body2 += '</div>';
+                        body2 += '<button type="submit" class="btn btn-sm btn-primary"> Transferir documento</button>';
+                        body2 += '</form>';
+                    }
+                    $("#historico_documento").html(body2).show();
+                })
             });
 
 		});

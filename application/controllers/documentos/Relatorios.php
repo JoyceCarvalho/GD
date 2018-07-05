@@ -10,6 +10,7 @@ class Relatorios extends CI_Controller {
         $this->load->model("documentos_model", "docmodel");
         $this->load->model('etapas_model', 'etapasmodel');
         $this->load->model('erros_model', 'errosmodel');
+        $this->load->model('usuario_model', 'usermodel');
     }
 
     public function index(){
@@ -115,12 +116,12 @@ class Relatorios extends CI_Controller {
             redirect("/");
         }
 
-        $dados["pagina"]    = "Meus Documentos";
+        $dados["pagina"]    = "Documentos Pendentes";
         $dados["pg"]        = "documentos";
         $dados["submenu"]   = "pendente";
 
         $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["doc_pendendes"] = $this->docmodel->listar_documentos_pendente($_SESSION["idempresa"]);
+        $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["idempresa"]);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
@@ -184,6 +185,73 @@ class Relatorios extends CI_Controller {
             }
 
         }
+
+    }
+
+    public function transfere_para(){
+        
+        if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
+            redirect("/");
+        }
+
+        $data = new stdClass();
+
+        $idprotocolo = $this->input->post("idprotocolo");
+        $usuario = $this->input->post('usuario');
+
+        $etapa = $this->docmodel->etapa_documento($idprotocolo);
+
+        $documento = array(
+            'descricao' => "TRANSFERIDO MANUALMENTE",
+            'data_hora' => date('Y-m-d H:i:s'),
+            'ultima_etapa' => $usuario,
+            'etapa'        => $etapa,
+            'documento'    => $idprotocolo
+        );
+
+        if($this->docmodel->cadastrar_log_documento($documento)){
+
+            $data->success = "Documento tranferido com sucesso";
+
+            $dados["pagina"]    = "Documentos Pendentes";
+            $dados["pg"]        = "documentos";
+            $dados["submenu"]   = "pendente";
+
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["idempresa"]);
+
+            $this->load->view("template/html_header", $dados);
+            $this->load->view("template/header");
+            $this->load->view("template/menu", $data);
+            $this->load->view("documentos/documentos_pendentes");
+            $this->load->view("template/footer");
+            $this->load->view("template/html_footer");
+
+        } else {
+
+            $data->error = "Ocorreu um problema ao transferir o documento. Favor entre em contato com o suporte e tente novamente mais tarde";
+
+            $dados["pagina"]  = "Documentos Pendentes";
+            $dados["pg"]      = "documentos";
+            $dados["submenu"] = "pendente";
+
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["idempresa"]);
+
+            $this->load->view("template/html_header", $dados);
+            $this->load->view("template/header");
+            $this->load->view("template/menu", $data);
+            $this->load->view("documentos/documentos_pendentes");
+            $this->load->view("template/footer");
+            $this->load->view("template/html_footer");
+
+        }
+
+    }
+
+    public function tranferencia_documento(){
+    
+        echo $this->usermodel->listar_usuarios_json($_SESSION["idempresa"]);
 
     }
 

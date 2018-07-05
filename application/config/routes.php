@@ -167,6 +167,8 @@ $route["reverte_suspensao/(:any)"]   = "documentos/Relatorios/reverte_suspensao/
 $route["observacao_cad"]             = "documentos/Documento/cadastrar_observacao";
 $route["ver_observacao/(:any)"]      = "documentos/Documento/ver_observacao/$1";
 $route["pendentes"]                  = "documentos/Relatorios/documentos_pendentes";
+$route["transferencia"]              = "documentos/Relatorios/tranferencia_documento";
+$route["transfere_para"]             = "documentos/Relatorios/transfere_para";
 
 //Rotas referentes a pasta relatorios
 $route["finalizados"]                       = "relatorios/Relatorios/finalizados";
