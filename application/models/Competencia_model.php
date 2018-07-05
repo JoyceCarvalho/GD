@@ -127,8 +127,8 @@ class Competencia_model extends CI_Model {
         //subquery1
         $this->db->select('fk_idusuario');
         $this->db->from('tbausencia');
-        $this->db->where('dia_inicio <=', $dataAtual);
-        $this->db->where('dia_fim >= ', $dataAtual);
+        $this->db->where('dia_inicio <= NOW()');
+        $this->db->where('dia_fim >= NOW()');
         $subquery1 = $this->db->get_compiled_select();
 
         //subquery2

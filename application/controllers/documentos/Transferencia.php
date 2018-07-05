@@ -13,7 +13,6 @@ class Transferencia extends CI_Controller {
         $this->load->model('usuario_model', 'usermodel');
         $this->load->model('empresa_model', 'empresamodel');
         $this->load->model('etapas_model', 'etapasmodel');
-
     }
 
     public function transfere_etapa($identificador){
@@ -235,7 +234,9 @@ class Transferencia extends CI_Controller {
 
                 $ordem_etapa_atual = $this->docetapamodel->etapa_atual($id_documento, $etapa);
 
-                $proxima_etapa_documento = $ordem_etapa_atual + 1;
+                $proxima_etapa_documento = (int)$ordem_etapa_atual + 1;
+
+                //echo "Etapa " . $proxima_etapa_documento . "<br/>";
 
                 $proxima_etapa = $this->docetapamodel->proxima_etapa($id_documento, $proxima_etapa_documento);
 
@@ -259,13 +260,13 @@ class Transferencia extends CI_Controller {
 
                 } else {
 
-                    /*echo "Id documento: ". $id_documento. "<br/>";
-                    echo "proxima etapa: ". $proxima_etapa. "<br/>";
-                    echo "data ausencia: ". $verificarDataAusencia. "<br/>";*/
+                    //echo "Id documento: ". $id_documento. "<br/>";
+                    //echo "proxima etapa: ". $proxima_etapa. "<br/>";
+                    //echo "data ausencia: ". $verificarDataAusencia. "<br/>";
 
                     $usuariosAptos = $this->compmodel->usuario_apto($id_documento, $proxima_etapa, $verificarDataAusencia);
                     //echo "usuariosAptos: ";
-                    //print_r($usuariosAptos);
+                    //var_dump($usuariosAptos);
 
                     foreach ($usuariosAptos as $usuarios ) {
                         
@@ -284,7 +285,7 @@ class Transferencia extends CI_Controller {
 
                             foreach ($usuariosAptosCargo as $user) {
                                 
-                                $usuarios_aptos[] = $user->id;
+                                echo $usuarios_aptos[] = $user->id;
                                 $usuariosAptosQuantidade[$user->id] = 0;
                                 
                             }

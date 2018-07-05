@@ -237,8 +237,4 @@ class Usuario_model extends CI_Model {
 
     }
 
-    public function usuarios_disponiveis($empresa){
-        
-    }
-
 }
