@@ -17,6 +17,18 @@ class Erros_model extends CI_Model {
     public function cadastrar_erros($dados){
         return $this->db->insert('tberros', $dados);
     }
+
+    /**
+     * Método de cadastro de tipos de erro
+     * Utilizado no controller conf/Erros.php
+     *
+     * @param array $dados
+     * @return int
+     */
+    public function cadastrar_tipo_erro($dados){
+        $this->db->insert('tberros_tipo', $dados);
+        return $this->db->insert_id();
+    }
     
     /**
      * Método para listar erros
@@ -26,8 +38,24 @@ class Erros_model extends CI_Model {
      * @return object retorna um objeto de dados
      */
     public function listar_erros($empresa){
-        $this->db->from('tberros');
-        $this->db->where('fk_idempresa = ', $empresa);
+        $this->db->select('e.id as id, e.titulo as titulo, et.titulo as tipo_erro');
+        $this->db->from('tberros as e');
+        $this->db->join('tberros_tipo as et', 'et.id = e.fk_idtipo');
+        $this->db->where('e.fk_idempresa = ', $empresa);
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método para listar tipos de erros de determinada empresa
+     * Utilizado no controller Erros.php 
+     *
+     * @param int $empresa
+     * @return object
+     */
+    public function listar_tipo_erros($empresa){
+        $this->db->from('tberros_tipo');
+        $this->db->where('fk_idempresa', $empresa);
+        $this->db->order_by('titulo desc');
         return $this->db->get()->result();
     }
 
@@ -108,6 +136,13 @@ class Erros_model extends CI_Model {
         return $this->db->get()->row("contador");
     }
 
+    /**
+     * Método responsável por retornar os erros de determinado documento (Quando houver)
+     * Utilizado em todos os controller da pasta documentos
+     *
+     * @param int $idprotocolo
+     * @return json
+     */
     public function listar_erros_documentos($idprotocolo){
         $this->db->select('er.titulo as titulo_erro, er.tipo as tipo_erro, e.titulo as titulo_etapa, u.nome as usuario_nome, DATE_FORMAT(ed.data_hora, "%d/%m/%Y - %H:%i") as quando, ed.descricao as descricao');
         $this->db->from('tberros_documentos as ed');

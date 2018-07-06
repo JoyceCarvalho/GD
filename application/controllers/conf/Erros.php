@@ -45,7 +45,7 @@ class Erros extends CI_Controller {
         $dados["submenu"]   = "erro";
 
         $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["listagem_erros"] = $this->errosmodel->listar_erros($_SESSION["idempresa"]);
+        $dados["tipo_erros"]   = $this->errosmodel->listar_tipo_erros($_SESSION["idempresa"]);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
@@ -64,9 +64,26 @@ class Erros extends CI_Controller {
 
         $data = new stdClass();
 
+        $tipo = $this->input->post("tipo_erro");
+
+        if($tipo == 0){
+
+            $erro = array(
+                'titulo'       => $this->input->post('novo_tipo'),
+                'fk_idempresa' => $_SESSION["idempresa"]
+            );
+
+            $tipo_erro = $this->errosmodel->cadastrar_tipo_erro($erro);
+
+        } else {
+
+            $tipo_erro = $this->input->post('tipo_erro');
+
+        }
+
         $dados = array(
             "titulo"        => $this->input->post('titulo'),
-            "tipo"          => $this->input->post("tipo_erro"),
+            "fk_idtipo"          => $tipo_erro,
             "fk_idempresa"  => $_SESSION["idempresa"]
         );
 
@@ -134,6 +151,7 @@ class Erros extends CI_Controller {
 
         $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
         $dados["dados_erro"]    = $this->errosmodel->dados_erro($id);
+        $dados["tipo_erros"]    = $this->errosmodel->listar_tipo_erros($_SESSION["idempresa"]);
         
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
@@ -153,10 +171,27 @@ class Erros extends CI_Controller {
         $data = new stdClass();
 
         $id = $this->input->post("iderro");
+
+        $tipo = $this->input->post('tipo_erro');
+
+        if ($tipo == 0) {
+
+            $erro = array(
+                'titulo'        => $this->input->post('novo_tipo'),
+                'fk_idempresa'  => $_SESSION["idempresa"]
+            );
+            
+            $tipo_erro = $this->errosmodel->cadastrar_tipo_erro($erro);
+            
+        } else {
+
+            $tipo_erro = $this->input->post('tipo_erro');
+
+        }
         
         $dados = array(
-            'titulo' => $this->input->post('titulo'), 
-            'tipo' => $this->input->post('tipo_erro')
+            'titulo'    => $this->input->post('titulo'), 
+            'fk_idtipo' => $tipo_erro
         );
 
         if($this->errosmodel->editar_erro($id, $dados)){
@@ -229,7 +264,7 @@ class Erros extends CI_Controller {
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "erro";
 
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["nome_empresa"]   = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["listagem_erros"] = $this->errosmodel->listar_erros($_SESSION["idempresa"]);
 
             $this->load->view('template/html_header', $dados);

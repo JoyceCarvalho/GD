@@ -1,11 +1,3 @@
-<!-- Breadcrumb-->
-<!--<div class="breadcrumb-holder container-fluid">
-    <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="<?=base_url('erros');?>">Listar Erros</a></li>
-        <li class="breadcrumb-item active">Cadastrar Erros </li>
-    </ul>
-</div>-->
-<!-- Forms Section-->
 <section class="forms"> 
     <div class="container-fluid">
 
@@ -52,11 +44,16 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Tipo Erro</label>
                                 <div class="col-sm-9">
-                                    <select name="tipo_erro" class="form-control" required>
-                                        <option value="leve">Leve</option>
-                                        <option value="intermediario">Intermediário</option>
-                                        <option value="grave">Grave</option>
+                                    <select name="tipo_erro" class="form-control" id="tipo_erro" onchange="javascript:cadastro_tipo_erro()" required>
+                                        <?php foreach ($tipo_erros as $tipo ) {
+                                            ?>
+                                            <option value="<?=$tipo->id;?>"><?=$tipo->titulo?></option>
+                                            <?php    
+                                        } 
+                                        ?>
+                                        <option value="0"> -- Outro -- </option>
                                     </select>
+                                    <div id="novo_erro"></div>
                                 </div>
                             </div>
 
@@ -75,3 +72,21 @@
         </div>
     </div>
 </section>
+<script>
+
+    function cadastro_tipo_erro(){
+        var tipo = $("#tipo_erro").val();
+
+        if (tipo == 0) {
+            var body = '<hr/>';
+            body += '<div class="form-group">';
+            body += '<label class="form-control-label">Novo tipo de erro:</label>';
+            body += '<input type="text" class="form-control" name="novo_tipo">';
+            body += '</div>';
+
+            $("#novo_erro").html(body).show();
+        } else {
+            $("#novo_erro").hide();
+        }
+    }
+</script>

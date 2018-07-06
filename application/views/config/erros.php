@@ -1,11 +1,3 @@
-<!-- Breadcrumb-->
-<!--<div class="breadcrumb-holder container-fluid">
-    <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="<?=base_url("home");?>">Página Inicial</a></li>
-        <li class="breadcrumb-item active"> Listar Erros</li>
-    </ul>
-</div>-->
-
 <section class="tables">   
 
     <div class="container-fluid">
@@ -52,17 +44,10 @@
                                 <tbody>
                                     <?php
                                         foreach ($listagem_erros as $erro) {
-                                            if($erro->tipo == "leve"){
-                                                $tipo_erro = "Leve";
-                                            } elseif($erro->tipo == "intermediario"){
-                                                $tipo_erro = "Intermediário";
-                                            } elseif($erro->tipo == "grave"){
-                                                $tipo_erro = "Grave";
-                                            }
+                                            
                                             ?>
                                             <tr>
-                                                <td><?=$erro->titulo."<br/><small><strong>".$tipo_erro."</strong></small>";?></td>
-                                                <td></td>
+                                                <td><?=$erro->titulo."<br/><small><strong>".$erro->tipo_erro."</strong></small>";?></td>
                                                 <td>
                                                     <form method="post" action="<?=base_url('editar_erro');?>">
                                                         <input type="hidden" name="iderro" value="<?=$erro->id;?>">
