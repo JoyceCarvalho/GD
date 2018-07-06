@@ -254,7 +254,7 @@ class Relatorios extends CI_Controller {
 
     public function tranferencia_documento(){
     
-        echo $this->usermodel->listar_usuarios_json($_SESSION["idempresa"]);
+        echo $this->usermodel->usuarios_disponiveis($_SESSION["idempresa"]);
 
     }
 

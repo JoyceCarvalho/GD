@@ -152,17 +152,19 @@
 
                 <li <?=($submenu == "comp") ? "class='active'" : "" ?>> <a href="<?=base_url('competencia');?>"> <i class="fa fa-black-tie"></i>Competência </a></li>
 
-                <!-- adicionar if para somente coordenadores terem esta opção -->
-                <li <?=($submenu == "ausencia") ? "class='active'" : "" ?>>
-                  <a href="#ausencia" aria-expanded="false" data-toggle="collapse">
-                    <i class="fa fa-user-times"></i> Ausência de Funcionário
-                  </a>
+                <!-- Somente acesso de administrador ou coordenador -->
+                <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
+                  <li <?=($submenu == "ausencia") ? "class='active'" : "" ?>>
+                    <a href="#ausencia" aria-expanded="false" data-toggle="collapse">
+                      <i class="fa fa-user-times"></i> Ausência de Funcionário
+                    </a>
 
-                  <ul id="ausencia" class="collapse list-unstyled">
-                    <li><a href="<?=base_url('ausencia_ferias');?>"> Listar</a></li>
-                    <li><a href="<?=base_url('ausencia_ferias_cad');?>"> Cadastrar</a></li>
-                  </ul>
-                </li>
+                    <ul id="ausencia" class="collapse list-unstyled">
+                      <li><a href="<?=base_url('ausencia_ferias');?>"> Listar</a></li>
+                      <li><a href="<?=base_url('ausencia_ferias_cad');?>"> Cadastrar</a></li>
+                    </ul>
+                  </li>
+                <?php endif;?>
               </ul>
             </li>
 
@@ -178,7 +180,9 @@
                 <li <?=($submenu == "erro") ? "class='active'" : "" ?>> <a href="<?=base_url('erro');?>"> <i class="icon-bill"></i> Documentos com Erro </a></li>
                 <li <?=($submenu == "cancelados") ? "class='active'" : "" ?>> <a href="<?=base_url('cancelados');?>"> <i class="fa fa-ban"></i>Documentos Cancelados </a></li>
                 <li <?=($submenu == "suspensos") ? "class='active'" : "" ?>> <a href="<?=base_url('suspenso');?>"> <i class="fa fa-pause-circle"></i>Documentos Suspensos </a></li>
-                <li <?=($submenu == "pendentes") ? "class='active'" : "" ?>><a href="<?=base_url('pendentes');?>"><i class="fa fa-exclamation-triangle"></i> Documentos Pendentes</a></li>
+                <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
+                  <li <?=($submenu == "pendentes") ? "class='active'" : "" ?>><a href="<?=base_url('pendentes');?>"><i class="fa fa-exclamation-triangle"></i> Documentos Pendentes</a></li>
+                <?php endif; ?>
               </ul>
             </li>
 
@@ -188,9 +192,10 @@
               </a>
 
               <ul id="relatorio" class="collapse list-unstyled">
-                <li <?=($submenu == "finalizado") ? "class='active'" : "" ?>> <a href="<?=base_url('finalizados');?>"> <i class="fa fa-tags"></i>Finalizados </a></li>
-                <li <?=($submenu == "tempo") ? "class='active'" : "" ?>> <a href="<?=base_url('tempo_medio');?>"> <i class="fa fa-clock-o"></i>Tempo Médio </a></li>
-
+                <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
+                  <li <?=($submenu == "finalizado") ? "class='active'" : "" ?>> <a href="<?=base_url('finalizados');?>"> <i class="fa fa-tags"></i>Finalizados </a></li>
+                  <li <?=($submenu == "tempo") ? "class='active'" : "" ?>> <a href="<?=base_url('tempo_medio');?>"> <i class="fa fa-clock-o"></i>Tempo Médio </a></li>
+                <?php endif; ?>
                 <li <?=($submenu == "produtividade") ? "class=active'" : "" ?>>
                   <a href="#produtividade" aria-expanded="false" data-toggle="collapse">
                     <i class="fa fa-line-chart"></i> Produtividade
@@ -204,8 +209,9 @@
                     <?php endif; ?>
                   </ul>
                 </li>
-
-                <li <?=($submenu == "prazos") ? "class='active'" : "";?>><a href="<?=base_url('prazos_documentos');?>"><i class="fa fa-list-alt"></i> Documentos em atraso</a></li>
+                <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
+                  <li <?=($submenu == "prazos") ? "class='active'" : "";?>><a href="<?=base_url('prazos_documentos');?>"><i class="fa fa-list-alt"></i> Documentos em atraso</a></li>
+                <?php endif; ?>
               </ul>
             </li>
           </ul>

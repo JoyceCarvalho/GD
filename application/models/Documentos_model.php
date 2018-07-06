@@ -595,6 +595,7 @@ class Documentos_model extends CI_Model {
 
     /**
      * Método responsável por listar os documentos pendentes
+     * Utilizado no controller documentos/Relatorios.php
      *
      * @param int $empresa
      * @return object

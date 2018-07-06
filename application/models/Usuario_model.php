@@ -230,11 +230,43 @@ class Usuario_model extends CI_Model {
         //query
         $this->db->from('tbusuario');
         $this->db->where('fk_idcargos', $cargo);
+        $this->db->where('ativo = 1');
         $this->db->where("id not in ($subquery1)");
         $this->db->where("id not in ($subquery2)");
         
         return $this->db->get('')->result();
 
+    }
+
+    /**
+     * Método responsável por listar os usuários disponíveis para receber o documento
+     * Utilizado no controller documentos/Relatorios.php 
+     *
+     * @param int $empresa
+     * @return json
+     */
+    public function usuarios_disponiveis($empresa){
+        //Subquery1
+        $this->db->select('fk_idusuario');
+        $this->db->from('tbferias_func');
+        $this->db->where('NOW() < dia_inicio');
+        $this->db->where('NOW() > dia_fim');
+        $subquery = $this->db->get_compiled_select();
+
+        //Subquery2
+        $this->db->select('fk_idusuario');
+        $this->db->from('tbausencia');
+        $this->db->where('NOW() >= dia_inicio');
+        $this->db->where('NOW() <= dia_fim');
+        $subquery2 = $this->db->get_compiled_select();
+
+        //query main
+        $this->db->from("tbusuario");
+        $this->db->where("id not in($subquery)");
+        $this->db->where("id not in($subquery2)");
+        $this->db->where("fk_idempresa", $empresa);
+        $this->db->where('ativo = 1');
+        return json_encode($this->db->get()->result());
     }
 
 }

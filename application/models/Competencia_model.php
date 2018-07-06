@@ -67,6 +67,7 @@ class Competencia_model extends CI_Model {
 
     /**
      * Método responsavel por retornar o usuario especifico da etapa do documento
+     * Utilizado no controller documentos/Transferencia.php, documentos/Documento.php
      *
      * @param int $documento
      * @param int $etapa

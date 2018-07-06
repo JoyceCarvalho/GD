@@ -29,7 +29,7 @@
                 <div class="card">
         
                     <div class="card-header d-flex align-items-center">
-                        <h3 class="h4">Documentos Cancelados</h3>
+                        <h3 class="h4">Documentos Pendentes</h3>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">                       
