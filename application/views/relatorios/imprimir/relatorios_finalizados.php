@@ -157,20 +157,13 @@ foreach ($etapas_documento as $etapas) {
                     if ($erros_documento) {
                         
                         foreach ($erros_documento as $erros) {
-                            if ($erros->tipo == "leve") {
-                                $tipo_erro = "<b>leve</b>";
-                            } elseif ($erros->tipo == "intermediario") {
-                                $tipo_erro = "<b>intermediária</b>";
-                            } elseif ($erros->tipo == "grave") {
-                                $tipo_erro = "<b>grave</b>";
-                            }
                             ?>
                             <div class="panel panel-default sessao no-break">
                                 <div class="panel-heading">
                                     <span class="subtitulo"><?=$erros->titulo;?></span>
                                 </div>
                                 <div class="panel-body">
-                                    <p>Erro de natureza <?=$tipo_erro;?> relatado por <?=$erros->relator;?> no dia <?=$erros->quando;?></p>
+                                    <p>Erro de natureza <strong><?=$erros->tipo;?></strong> relatado por <?=$erros->relator;?> no dia <?=$erros->quando;?></p>
                                     <p>Descrição: <?=$erros->descricao;?></p>
                                 </div>
                             </div>
