@@ -90,7 +90,7 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Informações Etapa em atraso</th>
+                                            <th>Informações etapa em atraso</th>
                                         </tr>
                                     </thead>
                                     <tbody>
