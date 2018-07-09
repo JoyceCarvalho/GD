@@ -24,6 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = 'http://localhost/GestaoDocumentos_CI/';
+//$config['base_url'] = 'http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/';
 
 /*
 |--------------------------------------------------------------------------
