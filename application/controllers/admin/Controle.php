@@ -10,6 +10,7 @@ class Controle extends CI_Controller {
     $this->load->model('Empresa_model', 'empresamodel');
     $this->load->model('Horario_model', 'horasmodel');
     $this->load->model('Cargos_model', 'cargosmodel');
+    $this->load->model('Erros_model', 'errosmodel');
   }
 
   /**
@@ -312,6 +313,21 @@ class Controle extends CI_Controller {
     );
 
     $idempresa = $this->empresamodel->cadastrar_empresa($empresa);
+
+    for ($i=0; $i < 3; $i++) { 
+      if ($i==0) {
+        $tipo_erro["titulo"] = "Leve";
+      } elseif($i==1) {
+        $tipo_erro["titulo"] = "Intermediário";
+      } else{
+        $tipo_erro["titulo"] = "Grave";
+      }
+
+      $tipo_erro["fk_idempresa"] = $idempresa;
+
+      $this->errosmodel->cadastrar_tipo_erro($tipo_erro);
+
+    }
 
     $cargos = array(
       'titulo' => 'Coordenador',
