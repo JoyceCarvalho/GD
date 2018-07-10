@@ -44,7 +44,7 @@
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>
                                     <tr>
-                                        <th>Etapas</th>
+                                        <th width="70%">Etapas</th>
                                         <th></th>
                                         <th></th>
                                     </tr>

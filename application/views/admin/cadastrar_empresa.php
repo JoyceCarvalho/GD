@@ -1,11 +1,4 @@
-        <!-- Breadcrumb-->
-            <!--<div class="breadcrumb-holder container-fluid">
-                <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?=base_url();?>">Página Inicial</a></li>
-                <li class="breadcrumb-item active">Cadastrar Empresa </li>
-                </ul>
-            </div>-->
-          <!-- Forms Section-->
+
             <section class="forms">
                 <div class="container-fluid">
 
@@ -45,7 +38,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-3 form-control-label">Nome Empresa</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="empresa">
+                                                <input type="text" class="form-control" name="empresa" required>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -58,7 +51,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-3 form-control-label">Cliente Code:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" name="cliente_code">
+                                                    <input type="text" class="form-control" name="cliente_code" required>
                                                     <small class="help-block-none">Código do SGT do cliente (se houver).</small>
                                                 </div>
                                             </div>
@@ -68,25 +61,25 @@
                                         <div class="form-group row">
                                             <label class="col-sm-3 form-control-label">Nome Completo:</label>
                                             <div class="col-sm-9">
-                                                <input type="text" name="nome" class="form-control">
+                                                <input type="text" name="nome" class="form-control" required>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-sm-3 form-control-label">Email:</label>
                                             <div class="col-sm-9">
-                                                <input type="text" name="email" class="form-control">
+                                                <input type="email" name="email" class="form-control" required>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-sm-3 form-control-label">Usuário:</label>
                                             <div class="col-sm-9">
-                                                <input type="text" name="usuario" class="form-control">
+                                                <input type="text" name="usuario" class="form-control" required>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-sm-3 form-control-label">Senha:</label>
                                             <div class="col-sm-9">
-                                                <input type="password" name="senha" class="form-control">
+                                                <input type="password" name="senha" class="form-control" required>
                                             </div>
                                         </div>
                                         <div class="line"></div>

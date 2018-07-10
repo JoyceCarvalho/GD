@@ -73,6 +73,9 @@ class Documento extends CI_Controller {
                         'fk_iddocumento'  => $iddocumento
                     );
 
+                    //echo "Prazos";
+                    //print_r($etapas);
+                    //echo "<br/>";
                     $prazos = $this->etapasmodel->cadastrar_etapas_prazos($etapas);
 
                 }
@@ -89,6 +92,9 @@ class Documento extends CI_Controller {
                 'etapa'         => 0,
                 'documento'     => $iddocumento
             );
+            //echo "Log do documento";
+            //print_r($log);
+            //echo "<br/>";
 
             $documento_log = $this->docmodel->cadastrar_log_documento($log);
 
@@ -113,6 +119,9 @@ class Documento extends CI_Controller {
                         'ultima_etapa'  => 'true'
                     );
 
+                    //echo "documento pendente";
+                    //print_r($pendente);
+                    //echo "<br/>";
                     $documento_log2 = $this->docmodel->cadastrar_log_documento($pendente);
 
                 } else {
@@ -149,13 +158,22 @@ class Documento extends CI_Controller {
                     $verificaNumeroDocumentos = $this->docmodel->numero_documentos($usuariosAptosImplode);
 
                     if ($verificaNumeroDocumentos == 0) {
+
+                        //echo "<br/> contaUsuariosAptos: $contaUsuariosAptos <br/>";
                         
                         if ($contaUsuariosAptos > 1) {
 
                             $usuarios_documentos = $this->docmodel->documento_por_usuario($usuariosAptosImplode);
-                            $idEscolhido = $usuarios_documentos;                            
-                            //$numeroRandomico = rand(0, $contaUsuariosAptos);
-                            //$idEscolhido = $usuarios_aptos[$numeroRandomico];
+
+                            if($usuarios_documentos > 0){
+                                
+                                $idEscolhido = $usuarios_documentos;
+
+                            } else {
+                                $numeroRandomico = rand(0, $contaUsuariosAptos);
+
+                                $idEscolhido = $usuarios_aptos[$numeroRandomico];
+                            }
 
                         } else {
 
@@ -172,6 +190,9 @@ class Documento extends CI_Controller {
                             'documento' => $iddocumento
                         );
 
+                        //echo "documento recebido 1";
+                        //print_r($transfereProximaEtapa);
+                        //echo "<br/>";
                         $documento_log2 = $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
 
                         $idMostraDirecionamento = $idEscolhido;
@@ -221,6 +242,9 @@ class Documento extends CI_Controller {
                             'documento' => $iddocumento
                         );
 
+                        //echo "documento recebido 2";
+                        //print_r($transfereProximaEtapa);
+                        //echo "<br/>";
                         $documento_log2 = $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
 
                         $idMostraDirecionamento = $idEscolhidoPrimeiraEtapa;
