@@ -34,11 +34,11 @@
             if($_SESSION['sgt_admin']){
               ?>
               <li <?=($pg == "controle") ? "class='active'" : "" ?>>
-                <a href="#controle" aria-expanded="false" data-toggle="collapse">
+                <a href="#controle" aria-expanded="<?=($pg == "controle") ? "true" : "false" ?>" data-toggle="collapse">
                   <i class="fa fa-check"></i> Controle
                 </a>
 
-                <ul id="controle" class="collapse list-unstyled">
+                <ul id="controle" class="collapse list-unstyled <?=($pg == "controle") ? "show" : "" ?>">
                   <li <?=($submenu == "empresalist") ? "class='active'" : "" ?>> <a href="<?=base_url('controle/');?>"> <i class="fa fa-database"></i> Listar Empresas</a> </li>
                   <li <?=($submenu == "empresacad") ? "class='active'" : "" ?>> <a href="<?=base_url('controle/cadempresa');?>"> <i class="fa fa-user-plus"></i> Cadastrar Empresas</a></li>
                 </ul>
@@ -47,21 +47,23 @@
             }
             ?>
             <li <?=($pg == "empresa") ? "class='active'" : "" ?>>
-              <a href="#empresa" aria-expanded="false" data-toggle="collapse">
+              <a href="#empresa" aria-expanded="<?=($pg == "empresa") ? "true" : "false" ?>" data-toggle="collapse">
                 <i class="fa fa-building"></i> Organização
               </a>
 
-              <ul id="empresa" class="collapse list-unstyled">
+              <ul id="empresa" class="collapse list-unstyled <?=($pg == "empresa") ? "show" : "" ?>">
                 
                 <li <?=($submenu == "dados") ? "class='active'" : "" ?>><a href="<?=base_url('home/empresa')?>"> <i class="icon-grid"></i>Dados Empresa </a></li>
 
                 <li <?=($submenu == "usuario") ? "class='active'" : "" ?>>
-                  <a href="#user" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-users"></i>Usuários </a>
+                  <a href="#user" aria-expanded="<?=($submenu == "usuario") ? "true" : "false" ?>" data-toggle="collapse"> 
+                    <i class="fa fa-users"></i>Usuários 
+                  </a>
 
-                  <ul id="user" class="collapse list-unstyled ">
-                    <li><a href="<?=base_url('home/usuario/');?>">Listar</a></li>
+                  <ul id="user" class="collapse list-unstyled <?=($submenu == "usuario") ? "show" : "" ?>">
+                    <li <?=((isset($sub)) && ($sub == "usuariolist")) ? "class='active'" : "" ?> ><a href="<?=base_url('home/usuario/');?>">Listar</a></li>
                     <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
-                      <li><a href="<?=base_url('home/usuario_cad/');?>">Cadastrar</a></li>
+                      <li <?=((isset($sub)) && ($sub == "usuariocad")) ? "class='active'" : "" ?> ><a href="<?=base_url('home/usuario_cad/');?>">Cadastrar</a></li>
                     <?php endif; ?>
                   </ul>
                 </li>

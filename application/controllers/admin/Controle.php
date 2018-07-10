@@ -53,7 +53,7 @@ class Controle extends CI_Controller {
       //Dados voláteis do menu da pagina
       $dados['pagina'] = "Listagem de Empresas";
       $dados['pg'] = "controle";
-      $dados['submenu'] = "cadempresa";
+      $dados['submenu'] = "empresacad";
 
       //dados do banco (nome Empresa, nome usuário) utilizados no menu
       $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
@@ -364,7 +364,7 @@ class Controle extends CI_Controller {
 
       $dados['pagina'] = "Listagem de Empresas";
       $dados['pg'] = "controle";
-      $dados['submenu'] = "cadempresa";
+      $dados['submenu'] = "empresacad";
 
       //dados do banco (nome Empresa, nome usuário) utilizados no menu
       $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
