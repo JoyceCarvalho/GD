@@ -202,7 +202,17 @@
               <ul id="relatorio" class="collapse list-unstyled <?=($pg == "relatorio") ? "show" : "" ?>">
                 <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
                   <li <?=($submenu == "finalizado") ? "class='active'" : "" ?>> <a href="<?=base_url('finalizados');?>"> <i class="fa fa-tags"></i>Finalizados </a></li>
-                  <li <?=($submenu == "tempo") ? "class='active'" : "" ?>> <a href="<?=base_url('tempo_medio');?>"> <i class="fa fa-clock-o"></i>Tempo Médio </a></li>
+                  <li <?=($submenu == "tempo") ? "class='active'" : "" ?>> 
+                    <a href="tempo_medio" aria-expanded="<?=($submenu == "tempo") ? "true" : "false" ?>" data-toggle="collapse"> 
+                      <i class="fa fa-clock-o"></i>Tempo Médio 
+                    </a>
+
+                    <ul id="tempo" class="collapse list-unstyled <?=($submenu == "tempo") ? "show" : "" ?>">
+                      <li <?=((isset($sub)) && ($sub == "tempgeral")) ? "class='active'" : "" ?>><a href="<?=base_url("tempo_medio");?>"> Geral</a></li>
+                      <li <?=((isset($sub)) && ($sub == "tempresp")) ? "class='active'" : ""?>><a href="<?=base_url("tempo_responsavel");?>"> Responsável</a></li>
+                      <li <?=((isset($sub)) && ($sub == "tempgrupo")) ? "class='active'" : ""?>><a href="<?=base_url("tempo_grupo");?>"> Grupo</a></li>
+                    </ul>
+                  </li>
                 <?php endif; ?>
                 <li <?=($submenu == "produtividade") ? "class='active'" : "" ?>>
                   <a href="#produtividade" aria-expanded="<?=($submenu == "produtividade") ? "true" : "false" ?>" data-toggle="collapse">

@@ -45,6 +45,7 @@ class Relatorios extends CI_Controller {
         $dados["pagina"]  = "Relatório de Tempo Médio";
         $dados["pg"]      = "relatorio";
         $dados["submenu"] = "tempo";
+        $dados["sub"]     = "tempgeral";
 
         $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
         $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados($_SESSION["idempresa"]);
