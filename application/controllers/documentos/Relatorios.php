@@ -53,7 +53,7 @@ class Relatorios extends CI_Controller {
 
         $dados["pagina"]  = "Documentos com Erro";
         $dados["pg"]      = "documentos";
-        $dados["submenu"] = "comerro";
+        $dados["submenu"] = "com_erro";
 
         $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
         $dados["documentos_erro"] = $this->docmodel->listar_documentos_com_erros($_SESSION["idempresa"]);

@@ -46,7 +46,7 @@
               <?php
             }
             ?>
-            <li <?=($pg == "empresa") ? "class='active'" : "" ?>>
+            <li>
               <a href="#empresa" aria-expanded="<?=($pg == "empresa") ? "true" : "false" ?>" data-toggle="collapse">
                 <i class="fa fa-building"></i> Organização
               </a>
@@ -70,100 +70,106 @@
 
                 <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
                   <li <?=($submenu == "cargos") ? "class='active'" : "" ?>>
-                    <a href="#cargos" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-server"></i>Cargos </a>
+                    <a href="#cargos" aria-expanded="<?=($submenu == "cargos") ? "true" : "false" ?>" data-toggle="collapse"> 
+                      <i class="fa fa-server"></i> Cargos
+                    </a>
 
-                    <ul id="cargos" class="collapse list-unstyled">
-                      <li><a href="<?=base_url('home/cargos');?>"> Listar</a></li>
-                      <li><a href="<?=base_url('home/cargos_cad');?>"> Cadastrar</a></li>
+                    <ul id="cargos" class="collapse list-unstyled <?=($submenu == "cargos") ? "show" : "" ?>">
+                      <li <?=((isset($sub)) && ($sub == "cargoslist")) ? "class='active'" : "" ?>><a href="<?=base_url('home/cargos');?>"> Listar</a></li>
+                      <li <?=((isset($sub)) && ($sub == "cargoscad")) ? "class='active'" : "" ?>><a href="<?=base_url('home/cargos_cad');?>"> Cadastrar</a></li>
                     </ul>
                   </li>
 
                   <li <?=($submenu == "horarios") ? "class='active'" : "" ?>>
-                    <a href="#horario" aria-expanded="false" data-toggle="collapse">
+                    <a href="#horario" aria-expanded="<?=($submenu == "horarios") ? "true" : "false" ?>" data-toggle="collapse">
                       <i class="icon-clock"></i>Horários trabalho
                     </a>
 
-                    <ul id="horario" class="collapse list-unstyled">
-                      <li><a href="<?=base_url('home/horarios');?>"> Listar</a></li>
-                      <li><a href="<?=base_url('home/horarios_cad');?>"> Cadastrar</a></li>
+                    <ul id="horario" class="collapse list-unstyled <?= ($submenu == "horarios") ? "show" : "" ?>">
+                      <li <?=((isset($sub)) && ($sub == "horalist")) ? "class='active'" : "" ?>><a href="<?=base_url('home/horarios');?>"> Listar</a></li>
+                      <li <?=((isset($sub)) && ($sub == "horacad")) ? "class='active'" : "" ?>><a href="<?=base_url('home/horarios_cad');?>"> Cadastrar</a></li>
                     </ul>
                   </li>
 
                   <li <?=($submenu == "feriado") ? "class='active'" : "" ?> data-toggle="collapse">
-                    <a href="#feriado" aria-expanded="false" data-toggle="collapse">
+                    <a href="#feriado" aria-expanded="<?=($submenu == "feriado") ? "true" : "false" ?>" data-toggle="collapse">
                       <i class="fa fa-calendar"></i>Feriados
                     </a>
 
-                    <ul id="feriado" class="collapse list-unstyled">
-                      <li><a href="<?=base_url('home/feriado');?>"> Listar</a></li>
-                      <li><a href="<?=base_url('home/feriado_cad');?>"> Cadastrar</a></li>
+                    <ul id="feriado" class="collapse list-unstyled <?=($submenu == "feriado") ? "show" : "" ?>">
+                      <li <?=((isset($sub)) && ($sub == "feriadolist")) ? "class='active'" : "" ?>><a href="<?=base_url('home/feriado');?>"> Listar</a></li>
+                      <li <?=((isset($sub)) && ($sub == "feriadocad")) ? "class='active'" : "" ?>><a href="<?=base_url('home/feriado_cad');?>"> Cadastrar</a></li>
                     </ul>
                   </li>
                 <?php endif; ?>
               </ul>
             </li>
 
-            <li <?=($pg == "configuracao") ? "class='active'" : "" ?>>
-              <a href="#configuracao" aria-expanded="false" data-toggle="collapse">
+            <li>
+              <a href="#configuracao" aria-expanded="<?=($pg == "configuracao") ? "true" : "false" ?>" data-toggle="collapse">
                 <i class="fa fa-cogs"></i> Configurações
               </a>
-              <ul id="configuracao" class="collapse list-unstyled">
+              <ul id="configuracao" class="collapse list-unstyled <?=($pg == "configuracao") ? "show" : "" ?>">
                 <li <?=($submenu == "grupo") ? "class='active'" : "" ?>>
-                  <a href="#grupos" aria-expanded="false" data-toggle="collapse">
+                  <a href="#grupos" aria-expanded="<?=($submenu == "grupo") ? "true" : "false" ?>" data-toggle="collapse">
                     <i class="fa fa-cubes"></i> Grupos de Documentos
                   </a>
 
-                  <ul id="grupos" class="collapse list-unstyled">
-                    <li><a href="<?=base_url('grupodocumentos');?>"> Listar</a></li>
-                    <li><a href="<?=base_url('grupodocumentos_cad');?>"> Cadastrar</a></li>
+                  <ul id="grupos" class="collapse list-unstyled <?=($submenu == "grupo") ? "show" : "" ?>">
+                    <li <?=((isset($sub)) && ($sub == "grupolist")) ? "class='active'" : "" ?>><a href="<?=base_url('grupodocumentos');?>"> Listar</a></li>
+                    <li <?=((isset($sub)) && ($sub == "grupocad")) ? "class='active'" : "" ?>><a href="<?=base_url('grupodocumentos_cad');?>"> Cadastrar</a></li>
                   </ul>
                 </li>
 
                 <li <?=($submenu == "etapa") ? "class='active'" : "" ?>>
-                  <a href="#etapas" aria-expanded="false" data-toggle="collapse">
+                  <a href="#etapas" aria-expanded="<?=($submenu == "etapa") ? "true" : "false" ?>" data-toggle="collapse">
                     <i class="fa fa-tasks"></i> Etapas
                   </a>
 
-                  <ul id="etapas" class="collapse list-unstyled">
-                    <li><a href="<?=base_url('etapas');?>"> Listar</a></li>
-                    <li><a href="<?=base_url('etapas_cad');?>"> Cadastrar</a></li>
+                  <ul id="etapas" class="collapse list-unstyled <?=($submenu == "etapa") ? "show" : "" ?>">
+                    <li <?=((isset($sub)) && ($sub == "etapalist")) ? "class='active'" : "" ?>><a href="<?=base_url('etapas');?>"> Listar</a></li>
+                    <li <?=((isset($sub)) && ($sub == "etapacad")) ? "class='active'" : "" ?>><a href="<?=base_url('etapas_cad');?>"> Cadastrar</a></li>
                   </ul>
                 </li>
 
                 <li <?=($submenu == "documento") ? "class='active'" : "" ?>>
-                  <a href="#documento" aria-expanded="false" data-toggle="collapse">
+                  <a href="#documento" aria-expanded="<?=($submenu == "documento") ? "true" : "false"?>" data-toggle="collapse">
                     <i class="fa fa-folder"></i> Documentos
                   </a>
 
-                  <ul id="documento" class="collapse list-unstyled">
-                    <li><a href="<?=base_url('documentos');?>"> Listar</a></li>
-                    <li><a href="<?=base_url('documentos_cad');?>"> Cadastrar</a></li>
+                  <ul id="documento" class="collapse list-unstyled <?=($submenu == "documento") ? "show" : ""?>">
+                    <li <?=((isset($sub)) && ($sub == "doclist")) ? "class='active'" : "" ?> ><a href="<?=base_url('documentos');?>"> Listar</a></li>
+                    <li <?=((isset($sub)) && ($sub == "doccad")) ? "class='active'" : "" ?> ><a href="<?=base_url('documentos_cad');?>"> Cadastrar</a></li>
                   </ul>
                 </li>
 
                 <li <?=($submenu == "erro") ? "class='active'" : ""; ?>>
-                  <a href="#erro" aria-expanded="false" data-toggle="collapse">
+                  <a href="#erro" aria-expanded="<?=($submenu == "erro") ? "true" : "false" ?>" data-toggle="collapse">
                     <i class="fa fa-times-circle"></i> Erros
                   </a>
 
-                  <ul id="erro" class="collapse list-unstyled">
-                    <li><a href="<?=base_url('erros');?>"> Listar</a></li>
-                    <li><a href="<?=base_url('erros_cad');?>"> Cadastrar</a></li>
+                  <ul id="erro" class="collapse list-unstyled <?=($submenu == "erro") ? "show" : "" ?>">
+                    <li <?=((isset($sub)) && ($sub == "errolist")) ? "class='active'" : "" ?>><a href="<?=base_url('erros');?>"> Listar</a></li>
+                    <li <?=((isset($sub)) && ($sub == "errocad")) ? "class='active'" : "" ?>><a href="<?=base_url('erros_cad');?>"> Cadastrar</a></li>
                   </ul>
                 </li>
 
-                <li <?=($submenu == "comp") ? "class='active'" : "" ?>> <a href="<?=base_url('competencia');?>"> <i class="fa fa-black-tie"></i>Competência </a></li>
+                <li <?=($submenu == "comp") ? "class='active'" : "" ?>> 
+                  <a href="<?=base_url('competencia');?>"> 
+                    <i class="fa fa-black-tie"></i>Competência 
+                  </a>
+                </li>
 
                 <!-- Somente acesso de administrador ou coordenador -->
                 <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
                   <li <?=($submenu == "ausencia") ? "class='active'" : "" ?>>
-                    <a href="#ausencia" aria-expanded="false" data-toggle="collapse">
+                    <a href="#ausencia" aria-expanded="<?=($submenu == "ausencia") ? "true" : "false" ?>" data-toggle="collapse">
                       <i class="fa fa-user-times"></i> Ausência de Funcionário
                     </a>
 
-                    <ul id="ausencia" class="collapse list-unstyled">
-                      <li><a href="<?=base_url('ausencia_ferias');?>"> Listar</a></li>
-                      <li><a href="<?=base_url('ausencia_ferias_cad');?>"> Cadastrar</a></li>
+                    <ul id="ausencia" class="collapse list-unstyled <?=($submenu == "ausencia") ? "show" : "" ?>">
+                      <li <?=((isset($sub)) && ($sub == "ausencialist")) ? "class='active'" : "" ?>><a href="<?=base_url('ausencia_ferias');?>"> Listar</a></li>
+                      <li <?=((isset($sub)) && ($sub == "ausenciacad")) ? "class='active'" : "" ?>><a href="<?=base_url('ausencia_ferias_cad');?>"> Cadastrar</a></li>
                     </ul>
                   </li>
                 <?php endif;?>
@@ -172,42 +178,42 @@
 
             <li <?=($submenu == "novodoc") ? "class='active'" : "" ?>> <a href="<?=base_url('novo_documento');?>"> <i class="fa fa-cloud-upload"></i>Novo Documentos </a></li>
 
-            <li  <?=($pg == "documentos") ? "class='active'" : "" ?>>
-              <a href="#documentos" aria-expanded="false" data-toggle="collapse">
+            <li>
+              <a href="#documentos" aria-expanded="<?=($pg == "documentos") ? "true" : "false" ?>" data-toggle="collapse">
                 <i class="fa fa-folder-open"></i> Documentos
               </a>
-              <ul id="documentos" class="collapse list-unstyled">
+              <ul id="documentos" class="collapse list-unstyled <?=($pg == "documentos") ? "show" : "" ?>">
                 <li <?=($submenu == "meusdocs") ? "class='active'" : "" ?>> <a href="<?=base_url('meusdocumentos');?>"> <i class="fa fa-archive"></i>Meus Documentos </a></li>
                 <li <?=($submenu == "andamento") ? "class='active'" : "" ?>> <a href="<?=base_url('andamento');?>"> <i class="fa fa-battery-half"></i>Documentos em Andamento </a></li>
-                <li <?=($submenu == "erro") ? "class='active'" : "" ?>> <a href="<?=base_url('erro');?>"> <i class="icon-bill"></i> Documentos com Erro </a></li>
+                <li <?=($submenu == "com_erro") ? "class='active'" : "" ?>> <a href="<?=base_url('erro');?>"> <i class="icon-bill"></i> Documentos com Erro </a></li>
                 <li <?=($submenu == "cancelados") ? "class='active'" : "" ?>> <a href="<?=base_url('cancelados');?>"> <i class="fa fa-ban"></i>Documentos Cancelados </a></li>
                 <li <?=($submenu == "suspensos") ? "class='active'" : "" ?>> <a href="<?=base_url('suspenso');?>"> <i class="fa fa-pause-circle"></i>Documentos Suspensos </a></li>
                 <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
-                  <li <?=($submenu == "pendentes") ? "class='active'" : "" ?>><a href="<?=base_url('pendentes');?>"><i class="fa fa-exclamation-triangle"></i> Documentos Pendentes</a></li>
+                  <li <?=($submenu == "pendente") ? "class='active'" : "" ?>><a href="<?=base_url('pendentes');?>"><i class="fa fa-exclamation-triangle"></i> Documentos Pendentes</a></li>
                 <?php endif; ?>
               </ul>
             </li>
 
-            <li <?=($pg == "relatorio") ? "class='active'" : "" ?>>
-              <a href="#relatorio" aria-expanded="false" data-toggle="collapse">
+            <li>
+              <a href="#relatorio" aria-expanded="<?=($pg == "relatorio") ? "true" : "false" ?>" data-toggle="collapse">
                 <i class="fa fa-list-alt"></i> Relatórios
               </a>
 
-              <ul id="relatorio" class="collapse list-unstyled">
+              <ul id="relatorio" class="collapse list-unstyled <?=($pg == "relatorio") ? "show" : "" ?>">
                 <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
                   <li <?=($submenu == "finalizado") ? "class='active'" : "" ?>> <a href="<?=base_url('finalizados');?>"> <i class="fa fa-tags"></i>Finalizados </a></li>
                   <li <?=($submenu == "tempo") ? "class='active'" : "" ?>> <a href="<?=base_url('tempo_medio');?>"> <i class="fa fa-clock-o"></i>Tempo Médio </a></li>
                 <?php endif; ?>
-                <li <?=($submenu == "produtividade") ? "class=active'" : "" ?>>
-                  <a href="#produtividade" aria-expanded="false" data-toggle="collapse">
+                <li <?=($submenu == "produtividade") ? "class='active'" : "" ?>>
+                  <a href="#produtividade" aria-expanded="<?=($submenu == "produtividade") ? "true" : "false" ?>" data-toggle="collapse">
                     <i class="fa fa-line-chart"></i> Produtividade
                   </a>
 
-                  <ul id="produtividade" class="collapse list-unstyled">
+                  <ul id="produtividade" class="collapse list-unstyled <?=($submenu == "produtividade") ? "show" : "" ?>">
                     <?php if((($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true))): ?>
-                      <li><a href="<?=base_url("produtividade_grupo");?>"> Grupo</a></li>
+                      <li <?=((isset($sub)) && ($sub == "prod_grupo")) ? "class='active'" : "" ?>><a href="<?=base_url("produtividade_grupo");?>"> Grupo</a></li>
                     <?php else: ?>
-                      <li><a href="<?=base_url("produtividade_indivudual");?>"> Individual</a></li>
+                      <li <?=((isset($sub)) && ($sub == "individual")) ? "class='active'" : "" ?>><a href="<?=base_url("produtividade_indivudual");?>"> Individual</a></li>
                     <?php endif; ?>
                   </ul>
                 </li>

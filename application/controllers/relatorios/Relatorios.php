@@ -67,6 +67,7 @@ class Relatorios extends CI_Controller {
         $dados["pagina"]  = "Produtividade Individual";
         $dados["pg"]      = "relatorio";
         $dados["submenu"] = "produtividade";
+        $dados["sub"]     = "individual";
 
         $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
         $dados['usuario']               = $this->usermodel->dados_usuario($_SESSION["idusuario"]);
@@ -93,6 +94,7 @@ class Relatorios extends CI_Controller {
         $dados["pagina"]  = "Produtividade Grupo";
         $dados["pg"]      = "relatorio";
         $dados["submenu"] = "produtividade";
+        $dados["sub"]     = "prod_grupo";
 
         $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
         $dados["usuario"]       = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
@@ -113,7 +115,7 @@ class Relatorios extends CI_Controller {
         }
 
         $dados["pagina"]  = "Documentos fora do prazo";
-        $dados["pg"]      = "";
+        $dados["pg"]      = "relatorio";
         $dados["submenu"] = "prazos";
 
         $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);

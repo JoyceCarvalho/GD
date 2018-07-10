@@ -21,6 +21,7 @@ class Erros extends CI_Controller {
         $dados["pagina"]    = "Erros";
         $dados["pg"]        = "configuracao";
         $dados["submenu"]   = "erro";
+        $dados["sub"]       = "errolist";
 
         $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
         $dados["listagem_erros"] = $this->errosmodel->listar_erros($_SESSION["idempresa"]);
@@ -43,6 +44,7 @@ class Erros extends CI_Controller {
         $dados["pagina"]    = "Erros";
         $dados["pg"]        = "configuracao";
         $dados["submenu"]   = "erro";
+        $dados["sub"]       = "errocad";
 
         $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
         $dados["tipo_erros"]   = $this->errosmodel->listar_tipo_erros($_SESSION["idempresa"]);
@@ -94,6 +96,7 @@ class Erros extends CI_Controller {
             $dados["pagina"]    = "Erros";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "erro";
+            $dados["sub"]       = "errocad";
 
             $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["listagem_erros"] = $this->errosmodel->listar_erros($_SESSION["idempresa"]);
@@ -122,6 +125,7 @@ class Erros extends CI_Controller {
             $dados["pagina"]    = "Erros";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "erro";
+            $dados["sub"]       = "errocad";
 
             $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["listagem_erros"] = $this->errosmodel->listar_erros($_SESSION["idempresa"]);
@@ -263,6 +267,7 @@ class Erros extends CI_Controller {
             $dados["pagina"]    = "Erros";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "erro";
+            $dados["sub"]       = "errolist";
 
             $dados["nome_empresa"]   = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["listagem_erros"] = $this->errosmodel->listar_erros($_SESSION["idempresa"]);
@@ -292,6 +297,7 @@ class Erros extends CI_Controller {
             $dados["pagina"]    = "Erros";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "erro";
+            $dados["sub"]       = "errolist";
 
             $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["listagem_erros"] = $this->errosmodel->listar_erros($_SESSION["idempresa"]);

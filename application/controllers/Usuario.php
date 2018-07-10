@@ -34,7 +34,8 @@ class Usuario extends CI_Controller {
 
 			$dados['pagina'] 	= "Usuários";
 			$dados['pg'] 		= "empresa";
-			$dados['submenu'] 	= "usuariocad";
+			$dados['submenu'] 	= "usuario";
+			$dados["sub"]		= "usuariocad";
 
 			$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
 			$dados['full_cargos'] 		= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
@@ -65,7 +66,8 @@ class Usuario extends CI_Controller {
 
 			$dados['pagina'] 	= "Usuários";
 			$dados['pg'] 		= "empresa";
-			$dados['submenu'] 	= "usuariocad";
+			$dados['submenu'] 	= "usuario";
+			$dados["sub"]		= "usuariocad";
 
 			$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
 			$dados['full_cargos']	 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
@@ -167,6 +169,7 @@ class Usuario extends CI_Controller {
 				$dados['pagina'] 	= "Usuários";
 				$dados['pg'] 		= "empresa";
 				$dados['submenu'] 	= "usuario";
+				$dados['sub']		= "usuariolist";
 
 				$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
 				//dados do banco (nome da empresa, nome usuário);
@@ -196,6 +199,7 @@ class Usuario extends CI_Controller {
 				$dados['pagina'] 	= "Usuários";
 				$dados['pg'] 		= "empresa";
 				$dados['submenu'] 	= "usuario";
+				$dados['sub']		= "usuariolist";
 
 				$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($id);
 				//dados do banco (nome da empresa);

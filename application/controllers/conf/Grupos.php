@@ -19,6 +19,7 @@ class Grupos extends CI_Controller {
             $dados["pagina"]    = "Grupos de Documentos";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "grupo";
+            $dados["sub"]       = "grupolist";
 
             $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["listagem_grupos"]   = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
@@ -43,6 +44,7 @@ class Grupos extends CI_Controller {
             $dados["pagina"]    = "Grupos de Documentos";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "grupo";
+            $dados["sub"]       = "grupocad";
 
             $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["listagem_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
@@ -77,6 +79,7 @@ class Grupos extends CI_Controller {
                 $dados["pagina"]    = "Grupos de Documentos";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "grupo";
+                $dados["sub"]       = "grupocad";
 
                 $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
@@ -104,6 +107,7 @@ class Grupos extends CI_Controller {
                 $dados["pagina"]    = "Grupos de Documentos";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "grupo";
+                $dados["sub"]       = "grupocad";
 
                 $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
@@ -233,6 +237,7 @@ class Grupos extends CI_Controller {
                 $dados["pagina"]    = "Grupos de Documentos";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "grupo";
+                $dados["sub"]       = "grupolist";
 
                 $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["listagem_grupos"]   = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
@@ -261,6 +266,7 @@ class Grupos extends CI_Controller {
                 $dados["pagina"]    = "Grupos de Documentos";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "grupo";
+                $dados["sub"]       = "grupolist";
 
                 $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["listagem_grupos"]   = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);

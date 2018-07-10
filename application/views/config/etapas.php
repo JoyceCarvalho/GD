@@ -55,7 +55,6 @@
                                             ?>
                                             <tr>
                                                 <td><?=$etapa->titulo;?></td>
-                                                <td></td>
                                                 <td>
                                                     <form method="post" action="<?=base_url('editar_etapa');?>">
                                                         <input type="hidden" name="idetapa" value="<?=$etapa->id;?>">

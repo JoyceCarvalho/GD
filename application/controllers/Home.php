@@ -166,9 +166,10 @@ class Home extends CI_Controller {
 
         if ((isset($_SESSION['idempresa'])) && ($_SESSION["idempresa"] == true)) {
 
-            $dados['pagina'] = "Cargos";
-            $dados['pg'] = "empresa";
+            $dados['pagina']  = "Cargos";
+            $dados['pg']      = "empresa";
             $dados['submenu'] = "cargos";
+            $dados['sub']     = "cargoslist";
 
             $dados['listagem_cargos'] = $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
 
@@ -195,6 +196,7 @@ class Home extends CI_Controller {
             $dados['pagina']    = "Cargos";
             $dados['pg']        = "empresa";
             $dados["submenu"]   = "cargos";
+            $dados['sub']       = "cargoscad";
 
             //dados do banco (nome da empresa) menu
             $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
@@ -220,6 +222,7 @@ class Home extends CI_Controller {
             $dados["pagina"]    = "Horários de Trabalho";
             $dados["pg"]        = "empresa";
             $dados["submenu"]   = "horarios";
+            $dados["sub"]       = "horalist";
 
             // dados do banco (nome empresa) menu
             $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
@@ -246,6 +249,7 @@ class Home extends CI_Controller {
             $dados["pagina"]    = "Horário de Trabalho";
             $dados["pg"]        = "empresa";
             $dados["submenu"]   = "horarios";
+            $dados["sub"]       = "horacad";
 
             // dados do banco (nome empresa) menu
             $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
@@ -272,6 +276,7 @@ class Home extends CI_Controller {
             $dados["pagina"]    = "Feriados";
             $dados["pg"]        = "empresa";
             $dados["submenu"]   = "feriado";
+            $dados["sub"]       = "feriadolist";
 
             $this->load->model('feriados_model', 'feriadosmodel');
 
@@ -300,6 +305,7 @@ class Home extends CI_Controller {
             $dados["pagina"]    = "Feriados";
             $dados["pg"]        = "empresa";
             $dados["submenu"]   = "feriado";
+            $dados["sub"]       = "feriadocad";
 
             $this->load->model('feriados_model', 'feriadosmodel');
 
@@ -327,6 +333,7 @@ class Home extends CI_Controller {
             $dados["pagina"]    = "Ausência / Férias";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "ausencia";
+            $dados["sub"]       = "ausencialist";
 
             $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
@@ -351,6 +358,7 @@ class Home extends CI_Controller {
             $dados["pagina"]    = "Ausência / Férias";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "ausencia";
+            $dados["sub"]       = "ausenciacad";
 
             $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 

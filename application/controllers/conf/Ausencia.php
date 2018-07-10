@@ -19,6 +19,7 @@ class Ausencia extends CI_Controller{
             $dados["pagina"]    = "Ausência Funcionário";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "ausencia";
+            $dados["sub"]       = "ausencialist";
 
             $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["listagem_ausencia"] = $this->ausenciamodel->listar_ausencia($_SESSION["idempresa"]);
@@ -45,6 +46,7 @@ class Ausencia extends CI_Controller{
             $dados["pagina"]    = "Ausência Funcionário";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "ausencia";
+            $dados["sub"]       = "ausenciacad";
 
             $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
@@ -87,6 +89,7 @@ class Ausencia extends CI_Controller{
                 $dados["pagina"]    = "Ausência Funcionário";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "ausencia";
+                $dados["sub"]       = "ausenciacad";
 
                 $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
@@ -115,6 +118,7 @@ class Ausencia extends CI_Controller{
                 $dados["pagina"]    = "Ausência Funcionário";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "ausencia";
+                $dados["sub"]       = "ausenciacad";
 
                 $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
@@ -250,6 +254,7 @@ class Ausencia extends CI_Controller{
                 $dados["pagina"]    = "Ausência Funcionário";
                 $dados["pg"]        = "configuracoes";
                 $dados["submenu"]   = "ausencia";
+                $dados["sub"]       = "ausencialist";
 
                 $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["listagem_ausencia"] = $this->ausenciamodel->listar_ausencia($_SESSION["idempresa"]);
@@ -278,6 +283,7 @@ class Ausencia extends CI_Controller{
                 $dados["pagina"]    = "Ausência Funcionário";
                 $dados["pg"]        = "configuracoes";
                 $dados["submenu"]   = "ausencia";
+                $dados["sub"]       = "ausencialist";
 
                 $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["listagem_ausencia"] = $this->ausenciamodel->listar_ausencia($_SESSION["idempresa"]);

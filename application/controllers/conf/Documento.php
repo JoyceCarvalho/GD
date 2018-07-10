@@ -21,6 +21,7 @@ class Documento extends CI_Controller {
             $dados["pagina"]    = "Documentos";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "documento";
+            $dados["sub"]       = "doclist";
 
             $dados["listagem_documento"]    = $this->docmodel->listar_documentos($_SESSION["idempresa"]);
             $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
@@ -46,6 +47,7 @@ class Documento extends CI_Controller {
             $dados["pagina"]    = "Documentos";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "documento";
+            $dados["sub"]       = "doccad";
 
             $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["listar_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
@@ -98,6 +100,7 @@ class Documento extends CI_Controller {
                 $dados["pagina"]    = "Documentos";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "documento";
+                $dados["sub"]       = "doccad";
 
                 $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["listar_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
@@ -126,6 +129,7 @@ class Documento extends CI_Controller {
                 $dados["pagina"]    = "Documentos";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "documento";
+                $dados["doccad"]    = "doccad";
 
                 $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["listar_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
@@ -285,6 +289,7 @@ class Documento extends CI_Controller {
                 $dados["pagina"]    = "Documentos";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "documento";
+                $dados["sub"]       = "doclist";
 
                 $dados["listagem_documento"]    = $this->docmodel->listar_documentos($_SESSION["idempresa"]);
                 $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
@@ -313,6 +318,7 @@ class Documento extends CI_Controller {
                 $dados["pagina"]    = "Documentos";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "documento";
+                $dados["sub"]       = "doclist";
 
                 $dados["listagem_documento"]    = $this->docmodel->listar_documentos($_SESSION["idempresa"]);
                 $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);

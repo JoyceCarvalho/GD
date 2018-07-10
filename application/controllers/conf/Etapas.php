@@ -18,6 +18,7 @@ class Etapas extends CI_Controller {
             $dados["pagina"]    = "Etapas";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "etapa";
+            $dados["sub"]       = "etapalist";
 
             $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["listagem_etapa"]    = $this->etapasmodel->listar_etapas($_SESSION["idempresa"]);
@@ -36,9 +37,10 @@ class Etapas extends CI_Controller {
 
         if((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)){
 
-            $dados["pagina"] = "Etapas";
-            $dados["pg"] = "configuracao";
+            $dados["pagina"]  = "Etapas";
+            $dados["pg"]      = "configuracao";
             $dados["submenu"] = "etapa";
+            $dados["sub"]     = "etapacad";
 
             $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
@@ -75,6 +77,7 @@ class Etapas extends CI_Controller {
                 $dados["pagina"]    = "Etapas";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "etapa";
+                $dados["sub"]       = "etapacad";
 
                 $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
@@ -102,6 +105,7 @@ class Etapas extends CI_Controller {
                 $dados["pagina"]    = "Etapas";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "etapa";
+                $dados["sub"]       = "etapacad";
 
                 $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
@@ -228,6 +232,7 @@ class Etapas extends CI_Controller {
                 $dados["pagina"]    = "Etapas";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "etapa";
+                $dados["sub"]       = "etapalist";
 
                 $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["listagem_etapa"]    = $this->etapasmodel->listar_etapas($_SESSION["idempresa"]);
@@ -256,6 +261,7 @@ class Etapas extends CI_Controller {
                 $dados["pagina"]    = "Etapas";
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "etapa";
+                $dados["sub"]       = "etapalist";
 
                 $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["listagem_etapa"]    = $this->etapasmodel->listar_etapas($_SESSION["idempresa"]);

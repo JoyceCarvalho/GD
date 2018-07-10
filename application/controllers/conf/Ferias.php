@@ -19,6 +19,7 @@ class Ferias extends CI_Controller{
             $dados["pagina"]    = "Férias Funcionário";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "ausencia";
+            $dados["sub"]       = "ausencialist";
 
             $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["listagem_ferias"] = $this->feriasmodel->listar_ferias($_SESSION["idempresa"]);
@@ -45,6 +46,7 @@ class Ferias extends CI_Controller{
             $dados["pagina"]    = "Férias Funcionário";
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "ausencia";
+            $dados["sub"]       = "ausenciacad";
 
             $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
@@ -86,6 +88,7 @@ class Ferias extends CI_Controller{
                 $dados["pagina"]  = "Férias Funcionário";
                 $dados["pg"]      = "configuracoes";
                 $dados["submenu"] = "ausencia";
+                $dados["sub"]     = "ausenciacad";
 
                 $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
@@ -115,6 +118,7 @@ class Ferias extends CI_Controller{
                 $dados["pagina"]  = "Férias Funcionário";
                 $dados["pg"]      = "configuracoes";
                 $dados["submenu"] = "ausencia";
+                $dados["sub"]     = "ausenciacad";
 
                 $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
@@ -248,9 +252,10 @@ class Ferias extends CI_Controller{
                 
                 $data->success = "Dados excluidos com sucesso!";
 
-                $dados["pagina"] = "Férias Funcionário";
-                $dados["pg"] = "configuracoes";
-                $dados["submenu"] = "ausencia";
+                $dados["pagina"]    = "Férias Funcionário";
+                $dados["pg"]        = "configuracoes";
+                $dados["submenu"]   = "ausencia";
+                $dados["sub"]       = "ausencialist";
 
                 $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["listagem_ferias"] = $this->feriasmodel->listar_ferias($_SESSION["idempresa"]);
@@ -275,9 +280,10 @@ class Ferias extends CI_Controller{
 
                 $data->error = "Ocorreu um erro ao excluir os dados! Favor entre em contato com o suporte e tente mais tarde novamente";
 
-                $dados["pagina"] = "Férias Funcionário";
-                $dados["pg"] = "configuracoes";
-                $dados["submenu"] = "ausencia";
+                $dados["pagina"]   = "Férias Funcionário";
+                $dados["pg"]       = "configuracoes";
+                $dados["submenu"]  = "ausencia";
+                $dados["sub"]      = "ausencialist";
 
                 $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 $dados["listagem_ferias"] = $this->feriasmodel->listar_ferias($_SESSION["idempresa"]);
