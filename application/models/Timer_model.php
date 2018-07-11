@@ -158,6 +158,7 @@ class Timer_model extends CI_Model {
 
     /**
      * Método responsável por listar o tempo médio do usuário
+     * Utilizado nos controller relatorios/Imprimir.php e relatorios/Relatorios.php
      *
      * @param int $responsavel
      * @return object
@@ -167,6 +168,24 @@ class Timer_model extends CI_Model {
         $this->db->from('tbtimer');
         $this->db->where('fk_idusuario', $responsavel);
         $this->db->order_by('id asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por listar o tempo médio por grupo de documento
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int $grupo
+     * @return object
+     */
+    public function tempo_documento_grupo($grupo){
+        
+        $this->db->select("action, timestamp, fk_iddoccad as idprotocolo");
+        $this->db->from('tbtimer as t');
+        $this->db->join('tbdocumentos_cad as dc', 'dc.id = t.fk_iddoccad');
+        $this->db->join('tbdocumento as d', 'dc.fk_iddocumento = d.id');
+        $this->db->where('d.fk_idgrupo', $grupo);
+
         return $this->db->get()->result();
     }
 }

@@ -100,6 +100,25 @@ class Imprimir extends CI_Controller {
 
     }
 
+    public function imprimir_tempo_grupo($idgrupo){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+
+        $grupo = $this->grupomodel->dados_grupo($idgrupo);
+
+        foreach ($grupo as $g) {
+            
+            if($g->fk_idempresa == $_SESSION["idempresa"]){
+
+                $dados["grupo_dados"]  = $grupo;
+                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            }
+        }
+
+    }
+
     public function produtividade_relatorio($idusuario){
 
         if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {

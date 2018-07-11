@@ -12,6 +12,7 @@ class Relatorios extends CI_Controller {
         $this->load->model('timer_model', 'timermodel');
         $this->load->model('usuario_model', 'usermodel');
         $this->load->model('cargos_model', 'cargosmodel');
+        $this->load->model('grupo_model', 'grupomodel');
     }
 
     public function finalizados(){
@@ -77,6 +78,29 @@ class Relatorios extends CI_Controller {
         $this->load->view('template/header');
         $this->load->view('template/menu');
         $this->load->view('relatorios/tempo_responsavel');
+        $this->load->view('template/footer');
+        $this->load->view('template/html_footer');
+
+    }
+
+    public function tempo_grupo(){
+        
+        if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
+            redirect("/");
+        }
+
+        $dados["pagina"]   = "Relatório de tempo médio por grupo de documento";
+        $dados["pg"]       = "relatorio";
+        $dados["submenu"]  = "tempo";
+        $dados["sub"]      = "tempgrupo";
+
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["grupo_doc"]    = $this->grupomodel->grupo_por_documento($_SESSION["idempresa"]);
+
+        $this->load->view('template/html_header', $dados);
+        $this->load->view('template/header');
+        $this->load->view('template/menu');
+        $this->load->view('relatorios/tempo_grupo');
         $this->load->view('template/footer');
         $this->load->view('template/html_footer');
 

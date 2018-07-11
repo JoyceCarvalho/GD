@@ -70,8 +70,8 @@ class Grupo_model extends CI_Model {
      * Método para mostrar dados de determinado grupo de documentos
      * Utilizado no controller conf/Grupos.php
      *
-     * @param [type] $id
-     * @return void
+     * @param int $id
+     * @return object
      */
     public function dados_grupo($id){
 
@@ -79,5 +79,27 @@ class Grupo_model extends CI_Model {
         $this->db->where('id = ', $id);
 
         return $this->db->get('')->result();
+    }
+
+    /**
+     * Método responsável por retornar os grupos referentes aos documentos finalizados
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int $empresa
+     * @return object
+     */
+    public function grupo_por_documento($empresa){
+        
+        $this->db->select("g.id as idgrupo, d.titulo as titulo_grupo, dc.id as idprotocolo");
+        $this->db->from("tbgrupo as g");
+        $this->db->join("tbdocumento as d", "d.fk_idgrupo = g.id");
+        $this->db->join("tbdocumentos_cad as dc", "dc.fk_iddocumento = d.id");
+        $this->db->join("tblog_documentos as ld", "ld.documento = dc.id AND ld.descricao = 'FINALIZADO'");
+        $this->db->where("g.fk_idempresa", $empresa);
+        $this->db->group_by("g.id");
+        $this->db->order_by("g.titulo");
+
+        return $this->db->get()->result();
+
     }
 }
