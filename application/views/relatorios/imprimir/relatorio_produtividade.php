@@ -141,10 +141,20 @@ $this->load->model("cargos_model", "cargosmodel");
                                                     }
                                                     $aux = $tempo->idprotocolo;
                                                 }
-                                                
+
                                                 $sum_media += $seconds;
-                                                $divide = $sum_media / $count;
-                                                $mostraNumero = converteHoras($divide);
+
+                                                if($sum_media > 0){
+
+                                                    $divide = $sum_media / $count;
+                                                    $mostraNumero = converteHoras($divide);
+
+                                                } else {
+
+                                                    $mostraNumero = "00:00:00"; 
+
+                                                }
+
                                                 echo $mostraNumero;
                                                 ?>
                                             </td>
