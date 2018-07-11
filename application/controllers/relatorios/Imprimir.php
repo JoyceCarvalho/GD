@@ -75,6 +75,31 @@ class Imprimir extends CI_Controller {
         }
     }
 
+    public function imprimir_tempo_responsavel($idusuario){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+
+        $usuario = $this->usermodel->get_user($idusuario);
+
+        if ($_SESSION["idempresa"] == $usuario->fk_idempresa) {
+            
+            $dados["usuario_dados"]  = $usuario;
+            $dados["nome_empresa"]   = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["tempo_medio"]    = $this->timermodel->tempo_documento_usuario($idusuario);
+            $dados["qnt_documentos"] = $this->docmodel->documento_trabalhado_usuario($idusuario);
+
+            $this->load->view('relatorios/imprimir/relatorio_tempo_resp', $dados);
+
+        } else {
+
+            $this->load->view('errors/acesso_restrito');
+
+        }
+
+    }
+
     public function produtividade_relatorio($idusuario){
 
         if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {

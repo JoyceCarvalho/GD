@@ -48,6 +48,7 @@
                                 </thead>
                                 <tbody>
                                     <?php
+                                    $media = 0;
                                     $conta_documentos = count($doc_finalizados);
                                     foreach ($doc_finalizados as $documentos) {
                                         ?>
@@ -81,6 +82,7 @@
                                                     }
                                                 }
                                                 $sum_media += $seconds;
+                                                $media += $sum_media;
                                                 $mostraNumero = converteHoras($seconds);
 
                                                 echo "<strong>" . $mostraNumero . "</strong>";
@@ -102,7 +104,7 @@
                                             <td></td>
                                             <td></td>
                                             <td class="center">
-                                                <strong><?= "Média: ".converteHoras(round($sum_media/$conta_documentos)); ?></strong>
+                                                <strong><?= "Média: ".converteHoras(round($media/$conta_documentos)); ?></strong>
                                             </td>
                                             <td></td>
                                         </tr>

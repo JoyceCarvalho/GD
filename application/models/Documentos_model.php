@@ -182,6 +182,23 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método responsável por retornar a quantidade de documentos trabalhado por determinado usuário
+     * Utilizado no controller relatorios/Imprimir.php 
+     *
+     * @param int $idusuario
+     * @return int
+     */
+    public function documento_trabalhado_usuario($idusuario){
+        $this->db->select("count(*) as quantidade");
+        $this->db->from('tblog_documentos as ld');
+        $this->db->join('tbusuario as u', 'u.id = ld.usuario');
+        $this->db->where('ld.descricao != "CRIADO"');
+        $this->db->where('u.id', $idusuario);
+        
+        return $this->db->get()->row('quantidade');
+    }
+
+    /**
      * Função para editar os dados da tabela tbdocumento
      * Utilizada no controller conf/Documento.php
      *

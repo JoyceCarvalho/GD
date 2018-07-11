@@ -176,6 +176,7 @@ $route["imprimir_finalizados/(:num)"]       = "relatorios/imprimir/imprimir_fina
 $route["tempo_medio"]                       = "relatorios/relatorios/tempo_medio";
 $route["tempo_responsavel"]                 = "relatorios/relatorios/tempo_responsavel";
 $route["relatorio_tempo/(:num)"]            = "relatorios/imprimir/imprimir_tempo_medio/$1";
+$route["relatorio_tresp/(:num)"]            = "relatorios/imprimir/imprimir_tempo_responsavel/$1";
 $route["produtividade_indivudual"]          = "relatorios/relatorios/produtividade_individual";
 $route["produtividade_grupo"]               = "relatorios/relatorios/produtividade_grupo";
 $route["relatorio_produtividade/(:num)"]    = "relatorios/imprimir/produtividade_relatorio/$1";
