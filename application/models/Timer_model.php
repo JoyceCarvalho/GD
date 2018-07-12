@@ -172,19 +172,19 @@ class Timer_model extends CI_Model {
     }
 
     /**
-     * Método responsável por listar o tempo médio por grupo de documento
+     * Método responsável por listar o tempo médio mensal
      * Utilizado no controller relatorios/Relatorios.php 
      *
      * @param int $grupo
      * @return object
      */
-    public function tempo_documento_grupo($grupo){
+    public function tempo_documento_mensal($dia_mes){
         
         $this->db->select("action, timestamp, fk_iddoccad as idprotocolo");
         $this->db->from('tbtimer as t');
-        $this->db->join('tbdocumentos_cad as dc', 'dc.id = t.fk_iddoccad');
-        $this->db->join('tbdocumento as d', 'dc.fk_iddocumento = d.id');
-        $this->db->where('d.fk_idgrupo', $grupo);
+        $this->db->join("tblog_documentos as ld", "ld.documento = t.fk_iddoccad and ld.descricao = 'FINALIZADO'");
+        $this->db->where("ld.data_hora like '$dia_mes%'");
+        $this->db->group_by('t.id');
 
         return $this->db->get()->result();
     }

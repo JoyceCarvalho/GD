@@ -30,7 +30,7 @@
                 <div class="card">
         
                     <div class="card-header d-flex align-items-center">
-                        <h3 class="h4">Relatório de tempo médio por grupo de documento</h3>
+                        <h3 class="h4">Relatório de tempo médio mensal</h3>
                     </div>
 
                     <div class="card-body">
@@ -40,7 +40,7 @@
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>
                                     <tr>
-                                        <th width="60%">Grupo</th>
+                                        <th width="80%">Mês/ano</th>
                                         <th width="20%">Tempo médio</th>
                                         <th width="20%"></th>
                                     </tr>
@@ -48,17 +48,17 @@
                                 <tbody>
                                     <?php
                                     $media = 0;
-                                    $conta_grupos = count($grupo_doc);
-                                    foreach ($grupo_doc as $grupo) {
+                                    $conta_documentos = count($doc_finalizados);
+                                    foreach ($doc_finalizados as $documento) {
                                         ?>
                                         <tr>
-                                            <td><?=$grupo->titulo_grupo;?></td>
+                                            <td><?=$documento->mes_ano;?></td>
                                             <td>
                                                 <?php
                                                 $this->load->model('timer_model', 'timermodel');
 
-                                                $timer = $this->timermodel->tempo_documento_grupo($grupo->idgrupo);
-
+                                                $timer = $this->timermodel->tempo_documento_mensal(transforma_mes_ano($documento->mes_ano));
+                                                
                                                 // Trecho adaptado do 1º gestão de documento
                                                 $seconds = 0;
                                                 $sum_media = 0;
@@ -84,7 +84,7 @@
                                                 ?>
                                             </td>
                                             <td style="text-align: center;">
-                                                <p><a class="btn btn-sm btn-warning external" style="color: white;" href="<?=base_url("relatorio_tgrupo/".$grupo->idprotocolo);?>"><i class="fa fa-print"></i> Imprimir Relatório</a><p/>
+                                                <p><a class="btn btn-sm btn-warning external" style="color: white;" href="<?=base_url("relatorio_tmensal/".transforma_mes_ano($documento->mes_ano));?>"><i class="fa fa-print"></i> Imprimir Relatório</a><p/>
                                             </td>
                                         </tr>
                                         <?php
@@ -92,13 +92,13 @@
                                     ?>
                                 </tbody>
                                 <?php
-                                if ($grupo_doc) {
+                                if ($doc_finalizados) {
                                     ?>
                                     <tbody>
                                         <tr>
                                             <td></td>
                                             <td class="center">
-                                                <strong><?= "Média: ".converteHoras(round($media/$conta_grupos)); ?></strong>
+                                                <strong><?= "Média: ".converteHoras(round($media/$conta_documentos)); ?></strong>
                                             </td>
                                             <td></td>
                                         </tr>

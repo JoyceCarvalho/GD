@@ -85,7 +85,8 @@ function converteHoras($segundos){
  * @return date
  */
 function mes_extenso($data){
-    $separador = implode("/", $data);
+
+    $separador = explode("/", $data);
 
     if ($separador[0] == 1) {
         $date = "Janeiro/".$separador[1];
@@ -114,4 +115,17 @@ function mes_extenso($data){
     }
 
     return $date;
+}
+
+/**
+ * Função para retornar a data em formato mysql
+ *
+ * @param date $data
+ * @return date
+ */
+function transforma_mes_ano($data){
+    
+    $d = explode("/", $data);
+    return $d[1]. "-" . $d[0];
+
 }
