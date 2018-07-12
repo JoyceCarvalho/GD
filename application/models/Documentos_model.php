@@ -107,6 +107,19 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->result();
     }
 
+    public function documento_do_mes($mes){
+        $this->db->select('DATE_FORMAT(ldB.data_hora, "%M/%Y") as mes_ano');
+        $this->db->from('tbdocumentos_cad AS dc');
+        $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
+        $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB on ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->where("ldB.data_hora like '$mes%'");
+        $this->db->order_by('ldA.data_hora asc');
+        return $this->db->get()->result();
+    }
+
     /**
      * Método para retornar os dados dos documentos em atraso
      * Utilizado em relatorios/Imprimir.php 

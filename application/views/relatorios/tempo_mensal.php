@@ -84,7 +84,7 @@
                                                 ?>
                                             </td>
                                             <td style="text-align: center;">
-                                                <p><a class="btn btn-sm btn-warning external" style="color: white;" href="<?=base_url("relatorio_tmensal/".transforma_mes_ano($documento->mes_ano));?>"><i class="fa fa-print"></i> Imprimir Relatório</a><p/>
+                                                <p><a class="btn btn-sm btn-warning external" style="color: white;" href="<?=base_url("relatorio_tmensal/".$_SESSION["idempresa"]."/".transforma_mes_ano($documento->mes_ano));?>"><i class="fa fa-print"></i> Imprimir Relatório</a><p/>
                                             </td>
                                         </tr>
                                         <?php
