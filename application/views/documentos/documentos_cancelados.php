@@ -65,7 +65,13 @@
                                                     <strong><?=$documentos->grupo;?></strong>
                                                 </td>
                                                 <td>
-                                                    <?="".converte_data($documentos->prazo);?><br/>
+                                                    <?php
+                                                    if(!empty($documentos->prazo)){
+                                                        echo "".converte_data($documentos->prazo) . "<br/>";
+                                                    } else {
+                                                        echo "<strong>Documento sem prazo!</strong>";
+                                                    }
+                                                    ?>
                                                 </td>
                                                 <td><?=$documentos->data_criacao;?></td>
                                                 <td><?=$documentos->data_cancelamento;?></td>

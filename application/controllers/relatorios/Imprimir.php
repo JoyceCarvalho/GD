@@ -112,8 +112,17 @@ class Imprimir extends CI_Controller {
             
             if($g->fk_idempresa == $_SESSION["idempresa"]){
 
-                $dados["grupo_dados"]  = $grupo;
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["grupo_dados"]    = $grupo;
+                $dados["nome_empresa"]   = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["tempo_medio"]    = $this->timermodel->tempo_documento_grupo($idgrupo);
+                $dados["qnt_documentos"] = $this->docmodel->documentos_trabalhados_grupo($idgrupo);
+
+                $this->load->view('relatorios/imprimir/relatorio_tempo_grupo', $dados);
+
+            } else {
+
+                $this->load->view('errors/acesso_restrito');
+
             }
         }
 

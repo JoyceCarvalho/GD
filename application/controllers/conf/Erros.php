@@ -98,8 +98,8 @@ class Erros extends CI_Controller {
             $dados["submenu"]   = "erro";
             $dados["sub"]       = "errocad";
 
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["listagem_erros"] = $this->errosmodel->listar_erros($_SESSION["idempresa"]);
+            $dados["nome_empresa"]   = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["tipo_erros"]     = $this->errosmodel->listar_tipo_erros($_SESSION["idempresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -128,7 +128,7 @@ class Erros extends CI_Controller {
             $dados["sub"]       = "errocad";
 
             $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["listagem_erros"] = $this->errosmodel->listar_erros($_SESSION["idempresa"]);
+            $dados["tipo_erros"]   = $this->errosmodel->listar_tipo_erros($_SESSION["idempresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');

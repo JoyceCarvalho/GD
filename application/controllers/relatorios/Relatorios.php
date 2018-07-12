@@ -60,30 +60,7 @@ class Relatorios extends CI_Controller {
 
     }
 
-    public function tempo_responsavel(){
-
-        if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
-            redirect("/");
-        }
-
-        $dados["pagina"]  = "Relatório de tempo médio por responsável";
-        $dados["pg"]      = "relatorio";
-        $dados["submenu"] = "tempo";
-        $dados["sub"]     = "tempresp";
-
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["resp_docs"]    = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
-
-        $this->load->view('template/html_header', $dados);
-        $this->load->view('template/header');
-        $this->load->view('template/menu');
-        $this->load->view('relatorios/tempo_responsavel');
-        $this->load->view('template/footer');
-        $this->load->view('template/html_footer');
-
-    }
-
-    public function tempo_grupo(){
+    public function tempo_mensal(){
         
         if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
             redirect("/");
@@ -95,7 +72,7 @@ class Relatorios extends CI_Controller {
         $dados["sub"]      = "tempgrupo";
 
         $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["grupo_doc"]    = $this->grupomodel->grupo_por_documento($_SESSION["idempresa"]);
+        $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados($_SESSION["idempresa"]);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');

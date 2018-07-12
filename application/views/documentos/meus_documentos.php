@@ -72,14 +72,24 @@
                                                         <strong><?=$documentos->grupo;?></strong>
                                                     </td>
                                                     <td>
-                                                        <?="Documento: ".converte_data($documentos->prazo);?><br/>
-                                                        <strong>
-                                                            <?php
-                                                            $this->load->model('etapas_model', 'etapasmodel');
-                                                            $prazo = $this->etapasmodel->prazo_etapa($documentos->idprotocolo, $documentos->idetapa);
-                                                            echo "Etapa: ".converte_data($prazo);
+                                                        <?php
+                                                        if(!empty($documentos->prazo)){
                                                             ?>
-                                                        </strong>
+                                                            Documento: <?=converte_data($documentos->prazo);?> <br/>
+                                                            <strong>
+                                                                <?php
+                                                                $this->load->model('etapas_model', 'etapasmodel');
+                                                                $prazo = $this->etapasmodel->prazo_etapa($documentos->idprotocolo, $documentos->idetapa);
+                                                                echo "Etapa: ".converte_data($prazo);
+                                                                ?>
+                                                            </strong>
+                                                            <?php
+                                                        } else {
+                                                            ?>
+                                                            <strong>Documento sem prazo!</strong>
+                                                            <?php
+                                                        }
+                                                        ?>
                                                     </td>
                                                     <td><?=$documentos->etapa;?></td>
                                                     <td><?=converte_datetime($documentos->data_criacao);?></td>
@@ -159,14 +169,24 @@
                                                         <strong><?=$documentos->grupo;?></strong>
                                                     </td>
                                                     <td>
-                                                        <?="Documento: ".converte_data($documentos->prazo);?><br/>
-                                                        <strong>
-                                                            <?php
-                                                            $this->load->model('etapas_model', 'etapasmodel');
-                                                            $prazo = $this->etapasmodel->prazo_etapa($documentos->idprotocolo, $documentos->idetapa);
-                                                            echo "Etapa: ".converte_data($prazo);
+                                                        <?php
+                                                        if(!empty($documentos->prazo)){
                                                             ?>
-                                                        </strong>
+                                                            Documento: <?=converte_data($documentos->prazo);?> <br/>
+                                                            <strong>
+                                                                <?php
+                                                                $this->load->model('etapas_model', 'etapasmodel');
+                                                                $prazo = $this->etapasmodel->prazo_etapa($documentos->idprotocolo, $documentos->idetapa);
+                                                                echo "Etapa: ".converte_data($prazo);
+                                                                ?>
+                                                            </strong>
+                                                            <?php
+                                                        } else {
+                                                            ?>
+                                                            <strong>Documento sem prazo!</strong>
+                                                            <?php
+                                                        }
+                                                        ?>
                                                     </td>
                                                     <td><?=$documentos->etapa;?></td>
                                                     <td><?=converte_datetime($documentos->data_criacao);?></td>
@@ -539,7 +559,8 @@ window.addEventListener("DOMContentLoaded", function() {
                         body2 += '</div>';
 
                     } else {
-                        reset();
+                        body2 = "<strong>Não foram configurados os tipos de erro!<br/>";
+                        body2 += "Favor vá até o menu configurações cadastre-os e tente novamente!</strong>"
                     }
                     $('#erro_form').html(body2).show();
                     $('#historico_documento').hide();
