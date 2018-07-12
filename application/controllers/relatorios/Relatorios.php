@@ -72,12 +72,12 @@ class Relatorios extends CI_Controller {
         $dados["sub"]      = "tempgrupo";
 
         $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados($_SESSION["idempresa"]);
+        $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados_mes($_SESSION["idempresa"]);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
         $this->load->view('template/menu');
-        $this->load->view('relatorios/tempo_grupo');
+        $this->load->view('relatorios/tempo_mensal');
         $this->load->view('template/footer');
         $this->load->view('template/html_footer');
 

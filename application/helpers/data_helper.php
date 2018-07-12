@@ -77,3 +77,41 @@ function converteHoras($segundos){
     if ($segundos < 10) $segundos = "0".$segundos;
     return $horas.":".$minutos.":".$segundos;
 }
+
+/**
+ * Função responsável por retornar o mes equivalente a data por extenso
+ *
+ * @param date $data
+ * @return date
+ */
+function mes_extenso($data){
+    $separador = implode("/", $data);
+
+    if ($separador[0] == 1) {
+        $date = "Janeiro/".$separador[1];
+    } elseif($separador[0] == 2){
+        $date = "Fevereiro/".$separador[1];
+    } elseif($separador[0] == 3){
+        $date = "Março/".$separador[1];
+    } elseif($separador[0] == 4){
+        $date = "Abril/".$separador[1];
+    } elseif($separador[0] == 5){
+        $date = "Maio/".$separador[1];
+    } elseif($separador[0] == 6){
+        $date = "Junho/".$separador[1];
+    } elseif($separador[0] == 7){
+        $date = "Julho/".$separador[1];
+    } elseif($separador[0] == 8){
+        $date = "Agosto/".$separador[1];
+    } elseif($separador[0] == 9){
+        $date = "Setembro/".$separador[1];
+    } elseif($separador[0] == 10){
+        $date = "Outubro/".$separador[1];
+    } elseif($separador[0] == 11){
+        $date = "Novembro/".$separador[1];
+    } elseif($separador[0] == 12){
+        $date = "Dezembro/".$separador[1];
+    }
+
+    return $date;
+}

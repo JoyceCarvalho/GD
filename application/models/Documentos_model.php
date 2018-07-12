@@ -595,6 +595,27 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método responsável por listar os documetos finalizado por mes
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int  $empresa
+     * @return object
+     */
+    public function listar_documentos_finalizados_mes($empresa){
+        $this->db->select('DATE_FORMAT(ldB.data_hora, "%m/%Y") as mes_ano');
+        $this->db->from("tbdocumentos_cad AS dc");
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
+        $this->db->join("tbgrupo AS g", "g.id = d.fk_idgrupo");
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->where('d.fk_idempresa', $empresa);
+        $this->db->group_by('DATE_FORMAT(ldB.data_hora, "%m/%Y")');
+        $this->db->order_by('ldA.data_hora asc');
+        return $this->db->get()->result();
+    }
+
+    /**
      * Método responsável por listar os documentos pendentes
      * Utilizado no controller documentos/Relatorios.php
      *
