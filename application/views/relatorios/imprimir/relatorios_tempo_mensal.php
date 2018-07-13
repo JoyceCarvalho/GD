@@ -4,7 +4,7 @@ ini_set('display_errors', 'off');
 $this->load->model("timer_model", "timermodel");
 
 //print_r($informacoes_documento);
-foreach ($informacoes_documento as $documento) {
+/*foreach ($informacoes_documento as $documento) {
     $idprotocolo = $documento->idprotocolo;
     $protocolo = $documento->protocolo;
     $nome_documento = $documento->nome_documento;
@@ -13,7 +13,7 @@ foreach ($informacoes_documento as $documento) {
     $responsavel_criacao = $documento->usuario_nome;
     
     $prazo_documento = $documento->prazo;
-}
+}*/
 
 ?>
 <!DOCTYPE html>
