@@ -83,6 +83,7 @@ class Imprimir extends CI_Controller {
 
         if ($empresa == $_SESSION["idempresa"]) {
 
+            $dados["mees_ano"]      = $date;
             $dados["dados_mensais"] = $this->docmodel->documento_do_mes($date);
             $dados["tempo_medio"]   = $this->timermodel->tempo_documento_mensal($date);
             $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
