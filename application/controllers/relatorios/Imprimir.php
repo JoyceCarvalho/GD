@@ -83,7 +83,11 @@ class Imprimir extends CI_Controller {
 
         if ($empresa == $_SESSION["idempresa"]) {
 
-            $dados["dados_mensais"] = $this->docmodel->documento_por_usuario($date);
+            $dados["dados_mensais"] = $this->docmodel->documento_do_mes($date);
+            $dados["tempo_medio"]   = $this->timermodel->tempo_documento_mensal($date);
+            $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+
+            $this->load->view('relatorios/imprimir/relatorios_tempo_mensal', $dados);
             
         } else {
 

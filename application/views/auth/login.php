@@ -50,7 +50,7 @@
                       <label for="Senha" class="label-material">Senha</label>
                     </div><button id="login" type="submit" class="btn btn-primary">Login</button>
                     <!-- This should be submit button but I replaced it with <a> for demo purposes-->
-                  </form><a href="#" class="forgot-pass">Esqueceu a senha?</a><!--<br><small>Não tem uma conta? </small><a href="#" class="signup">Cadastre-se</a>-->
+                  </form><!--<a href="#" class="forgot-pass">Esqueceu a senha?</a><!--<br><small>Não tem uma conta? </small><a href="#" class="signup">Cadastre-se</a>-->
                 </div>
               </div>
             </div>

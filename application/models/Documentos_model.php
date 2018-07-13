@@ -115,7 +115,9 @@ class Documentos_model extends CI_Model {
      * @return object
      */
     public function documento_do_mes($mes){
-        $this->db->select('DATE_FORMAT(ldB.data_hora, "%M/%Y") as mes_ano');
+        $this->db->select('DATE_FORMAT(ldB.data_hora, "%M/%Y") as mes_ano, dc.id as idprotocolo, dc.protocolo AS protocolo, d.id as iddocumento, 
+        d.titulo AS documento, g.titulo AS grupo, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.nome AS nome_usuario, 
+        DATE_FORMAT(ldB.data_hora, "%d/%m/%Y") as data_finalizacao, DATE_FORMAT(dc.prazo, "%d/%m/%Y") as prazo_documento');
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');

@@ -1,12 +1,4 @@
 
-<!-- Breadcrumb-->
-<!--<div class="breadcrumb-holder container-fluid">
-    <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="<?=base_url("home");?>">Página Inicial</a></li>
-        <li class="breadcrumb-item active"> Documentos Finalizados</li>
-    </ul>
-</div>-->
-
 <section class="tables">   
 
     <div class="container-fluid">
@@ -72,7 +64,6 @@
                                             <td><?=$documentos->nome_usuario;?></td>
                                             <td style="text-align: center;">
                                                 <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
                                                 <?php 
                                                     $this->load->model('erros_model', 'errosmodel');
                                                     
