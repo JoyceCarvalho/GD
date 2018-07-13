@@ -107,6 +107,13 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->result();
     }
 
+    /**
+     * Método responsável por retornar os dados dos documentos referentes a determinado mês
+     * Utilizado no controller relatorios/Imprimir.php 
+     *
+     * @param date $mes
+     * @return object
+     */
     public function documento_do_mes($mes){
         $this->db->select('DATE_FORMAT(ldB.data_hora, "%M/%Y") as mes_ano');
         $this->db->from('tbdocumentos_cad AS dc');
