@@ -32,7 +32,7 @@ class Login extends CI_Controller {
     $_SESSION['idusuario']          = (int)$usuario;
     $_SESSION['usuario']            = (string)$user->usuario;
     $_SESSION['nome_user']          = (string)$user->nome;
-    $_SESSION['idempresa']          = (int)$empresa;
+    $_SESSION['guest_empresa']      = (int)$empresa;
     $_SESSION['logado']             = (bool)true;
     $_SESSION['is_confirmed']       = (bool)$user->ativo;
     $_SESSION['is_admin']           = (bool)true;

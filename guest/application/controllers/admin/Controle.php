@@ -26,7 +26,7 @@ class Controle extends CI_Controller {
       $dados['submenu'] = "empresalist";
 
       //dados do banco (nome Empresa, nome usuário) utilizados no menu
-      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['guest_empresa']);
 
       //todas as empresas cadastradas;
       $dados['list_empresa'] = $this->empresamodel->listar_empresas();
@@ -56,7 +56,7 @@ class Controle extends CI_Controller {
       $dados['submenu'] = "empresacad";
 
       //dados do banco (nome Empresa, nome usuário) utilizados no menu
-      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['guest_empresa']);
 
       $this->load->view('template/html_header', $dados);
       $this->load->view('template/header');
@@ -87,7 +87,7 @@ class Controle extends CI_Controller {
     $dados['submenu']       = "empresalist";
 
     //dados do banco (nome empresa logada) utilizados no menu
-    $dados['nome_empresa']          = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+    $dados['nome_empresa']          = $this->empresamodel->nome_empresa($_SESSION['guest_empresa']);
 
     //dados da empresa cadastrada;
     $dados['dados_empresa']         = $this->empresamodel->dados_empresa($id);
@@ -242,7 +242,7 @@ class Controle extends CI_Controller {
       $dados['submenu'] = "empresalist";
 
       //dados do banco (nome Empresa, nome usuário) utilizados no menu
-      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['guest_empresa']);
 
       //todas as empresas cadastradas;
       $dados['list_empresa'] = $this->empresamodel->listar_empresas();
@@ -264,7 +264,7 @@ class Controle extends CI_Controller {
       $dados['submenu'] = "empresalist";
 
       //dados do banco (nome Empresa, nome usuário) utilizados no menu
-      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['guest_empresa']);
 
       //todas as empresas cadastradas;
       $dados['list_empresa'] = $this->empresamodel->listar_empresas();
@@ -367,7 +367,7 @@ class Controle extends CI_Controller {
       $dados['submenu'] = "empresacad";
 
       //dados do banco (nome Empresa, nome usuário) utilizados no menu
-      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['guest_empresa']);
 
       $this->load->view('template/html_header', $dados);
       $this->load->view('template/header');
@@ -385,7 +385,7 @@ class Controle extends CI_Controller {
       $dados['submenu'] = "cadempresa";
 
       //dados do banco (nome Empresa, nome usuário) utilizados no menu
-      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['guest_empresa']);
 
       $this->load->view('template/html_header', $dados);
       $this->load->view('template/header');
@@ -404,7 +404,7 @@ class Controle extends CI_Controller {
     // cria um objeto data
     $data = new stdClass();
 
-    $clientecode = $this->empresamodel->cliente_code($_SESSION["idempresa"]);
+    $clientecode = $this->empresamodel->cliente_code($_SESSION["guest_empresa"]);
 
     $config['upload_path']          = './assets/img/logo_empresas/';
     $config['allowed_types']        = 'jpg';
@@ -427,7 +427,7 @@ class Controle extends CI_Controller {
       'valores'   => $this->input->post('valores')
     );
 
-    if($this->empresamodel->editar_empresa($empresa, $_SESSION['idempresa'])){
+    if($this->empresamodel->editar_empresa($empresa, $_SESSION['guest_empresa'])){
 
       $data->success = "Dados alterados com sucesso!!";
 
@@ -436,9 +436,9 @@ class Controle extends CI_Controller {
       $dados['submenu'] = "dados";
 
       //dados do banco(nome da empresa, nome usuario);
-      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['guest_empresa']);
 
-      $dados['empresa'] = $this->empresamodel->dados_empresa($_SESSION['idempresa']);
+      $dados['empresa'] = $this->empresamodel->dados_empresa($_SESSION['guest_empresa']);
 
       $this->load->view('template/html_header', $dados);
       $this->load->view('template/header');
@@ -456,9 +456,9 @@ class Controle extends CI_Controller {
       $dados['submenu'] = "dados";
 
       //dados do banco(nome da empresa, nome usuario);
-      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+      $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['guest_empresa']);
 
-      $dados['empresa'] = $this->empresamodel->dados_empresa($_SESSION["idempresa"]);
+      $dados['empresa'] = $this->empresamodel->dados_empresa($_SESSION["quest_empresa"]);
 
       $this->load->view('template/html_header', $dados);
       $this->load->view('template/header');

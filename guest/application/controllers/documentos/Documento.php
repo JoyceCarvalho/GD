@@ -28,8 +28,8 @@ class Documento extends CI_Controller {
             $dados["pg"] = "";
             $dados["submenu"] = "novodoc";
 
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
 
             $this->load->view("template/html_header", $dados);
             $this->load->view('template/header');
@@ -261,8 +261,8 @@ class Documento extends CI_Controller {
                     $dados["pg"]        = "documentos";
                     $dados["submenu"]   = "novodoc";
     
-                    $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                    $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+                    $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                    $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
     
                     $this->load->view("template/html_header", $dados);
                     $this->load->view('template/header');
@@ -289,8 +289,8 @@ class Documento extends CI_Controller {
                     $dados["pg"]        = "documentos";
                     $dados["submenu"]   = "novodoc";
     
-                    $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                    $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+                    $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                    $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
     
                     $this->load->view("template/html_header", $dados);
                     $this->load->view('template/header');
@@ -307,8 +307,8 @@ class Documento extends CI_Controller {
                 $dados["pg"]        = "documentos";
                 $dados["submenu"]   = "novodoc";
 
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
 
                 $this->load->view("template/html_header", $dados);
                 $this->load->view('template/header');
@@ -353,8 +353,8 @@ class Documento extends CI_Controller {
         $dados["pg"] = "documentos";
         $dados["submenu"] = "novodoc";
 
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+        $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);;
         $dados["dados_documento"] = $this->docmodel->dados_documento_cad($idprotocolo);
 
         $this->load->view("template/html_header", $dados);
@@ -409,8 +409,8 @@ class Documento extends CI_Controller {
                 $dados["pg"]        = "documentos";
                 $dados["submenu"]   = "novodoc";
 
-                $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
+                $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);;
                 $dados["dados_documento"] = $this->docmodel->dados_documento_cad($idprotocolo);
 
                 $this->load->view("template/html_header", $dados);
@@ -428,8 +428,8 @@ class Documento extends CI_Controller {
                 $dados["pg"]      = "documentos";
                 $dados["submenu"] = "novodoc";
 
-                $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
+                $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);;
                 $dados["dados_documento"] = $this->docmodel->dados_documento_cad($idprotocolo);
 
                 $this->load->view("template/html_header", $dados);
@@ -454,7 +454,7 @@ class Documento extends CI_Controller {
             $dados["pg"]        = "documentos";
             $dados["submenu"]   = "meusdocs";
 
-            $dados["nome_empresa"]       = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["nome_empresa"]       = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
             $dados["documentos_cargo"]   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
             $dados["documentos_usuario"] = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
             
@@ -495,7 +495,7 @@ class Documento extends CI_Controller {
             $dados["pg"]        = "documentos";
             $dados["submenu"]   = "meusdocs";
 
-            $dados["nome_empresa"]       = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["nome_empresa"]       = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
             $dados["documentos_cargo"]   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
             $dados["documentos_usuario"] = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
             

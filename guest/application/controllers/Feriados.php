@@ -25,7 +25,7 @@ class Feriados extends CI_Controller {
             $dados = array(
                 'titulo'        => $this->input->post('titulo'), 
                 'dia'           => $this->input->post('dia'),
-                'fk_idempresa'  => $_SESSION["idempresa"]
+                'fk_idempresa'  => $_SESSION["guest_empresa"]
             );
 
             if($this->feriadosmodel->cadastrar_feriados($dados)){
@@ -37,7 +37,7 @@ class Feriados extends CI_Controller {
                 $dados["submenu"]   = "feriado";
 
                 // dados do banco (nome empresa) menu
-                $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -65,7 +65,7 @@ class Feriados extends CI_Controller {
                 $dados["submenu"]   = "feriado";
 
                 // dados do banco (nome empresa) menu
-                $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -91,7 +91,7 @@ class Feriados extends CI_Controller {
             $dados["pg"]        = "empresa";
             $dados["submenu"]   = "feriado";
 
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
             $dados["dados_feriado"] = $this->feriadosmodel->dados_feriado($id);
 
             $this->load->view('template/html_header', $dados);
@@ -129,7 +129,7 @@ class Feriados extends CI_Controller {
                 $dados["pg"]        = "empresa";
                 $dados["submenu"]   = "feriado";
 
-                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_feriado"] = $this->feriadosmodel->dados_feriado($idferiado);
 
                 $this->load->view('template/html_header', $dados);
@@ -155,7 +155,7 @@ class Feriados extends CI_Controller {
                 $dados["pg"]        = "empresa";
                 $dados["submenu"]   = "feriado";
 
-                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_feriado"] = $this->feriadosmodel->dados_feriado($idferiado);
 
                 $this->load->view('template/html_header');
@@ -193,8 +193,8 @@ class Feriados extends CI_Controller {
                 $dados["submenu"]   = "feriado";
 
                 // dados do banco (nome empresa) menu
-                $dados['nome_empresa']      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados['listagem_feriados'] = $this->feriadosmodel->listar_feriados($_SESSION["idempresa"]);
+                $dados['nome_empresa']      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados['listagem_feriados'] = $this->feriadosmodel->listar_feriados($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -222,8 +222,8 @@ class Feriados extends CI_Controller {
                 $dados["submenu"]   = "feriado";
 
                 // dados do banco (nome empresa) menu
-                $dados['nome_empresa']      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados['listagem_feriados'] = $this->feriadosmodel->listar_feriados($_SESSION["idempresa"]);
+                $dados['nome_empresa']      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados['listagem_feriados'] = $this->feriadosmodel->listar_feriados($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');

@@ -25,8 +25,8 @@ class Relatorios extends CI_Controller {
         $dados["pg"]      = "relatorio";
         $dados["submenu"] = "finalizado";
 
-        $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados($_SESSION["idempresa"]);
+        $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+        $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados($_SESSION["guest_empresa"]);
 
         $this->load->view("template/html_header", $dados);
         $this->load->view('template/header');
@@ -48,8 +48,8 @@ class Relatorios extends CI_Controller {
         $dados["submenu"] = "tempo";
         $dados["sub"]     = "tempgeral";
 
-        $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados($_SESSION["idempresa"]);
+        $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+        $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados($_SESSION["guest_empresa"]);
         
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
@@ -71,8 +71,8 @@ class Relatorios extends CI_Controller {
         $dados["submenu"]  = "tempo";
         $dados["sub"]      = "tempmensal";
 
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados_mes($_SESSION["idempresa"]);
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+        $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados_mes($_SESSION["guest_empresa"]);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
@@ -94,7 +94,7 @@ class Relatorios extends CI_Controller {
         $dados["submenu"] = "produtividade";
         $dados["sub"]     = "individual";
 
-        $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
         $dados['usuario']               = $this->usermodel->dados_usuario($_SESSION["idusuario"]);
         $dados["documentos_fnalizados"] = $this->docmodel->quantidade_documentos_finalizados_usuario($_SESSION["idusuario"]);
         $dados["documentos_andamento"]  = $this->docmodel->numero_documentos($_SESSION["idusuario"]);
@@ -121,8 +121,8 @@ class Relatorios extends CI_Controller {
         $dados["submenu"] = "produtividade";
         $dados["sub"]     = "prod_grupo";
 
-        $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["usuario"]       = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+        $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+        $dados["usuario"]       = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
@@ -143,8 +143,8 @@ class Relatorios extends CI_Controller {
         $dados["pg"]      = "relatorio";
         $dados["submenu"] = "prazos";
 
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["doc_prazo"]    = $this->docmodel->listar_documentos_fora_prazo($_SESSION["idempresa"]);
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+        $dados["doc_prazo"]    = $this->docmodel->listar_documentos_fora_prazo($_SESSION["guest_empresa"]);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');

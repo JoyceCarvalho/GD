@@ -21,8 +21,8 @@ class Grupos extends CI_Controller {
             $dados["submenu"]   = "grupo";
             $dados["sub"]       = "grupolist";
 
-            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["listagem_grupos"]   = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados["listagem_grupos"]   = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -46,8 +46,8 @@ class Grupos extends CI_Controller {
             $dados["submenu"]   = "grupo";
             $dados["sub"]       = "grupocad";
 
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["listagem_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados["listagem_grupos"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -69,7 +69,7 @@ class Grupos extends CI_Controller {
 
             $dados = array(
                 'titulo'        => $this->input->post('titulo'),
-                'fk_idempresa'  => $_SESSION["idempresa"]
+                'fk_idempresa'  => $_SESSION["guest_empresa"]
             );
 
             if ($this->grupomodel->cadastrar_grupo($dados)) {
@@ -81,7 +81,7 @@ class Grupos extends CI_Controller {
                 $dados["submenu"]   = "grupo";
                 $dados["sub"]       = "grupocad";
 
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -109,7 +109,7 @@ class Grupos extends CI_Controller {
                 $dados["submenu"]   = "grupo";
                 $dados["sub"]       = "grupocad";
 
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -135,7 +135,7 @@ class Grupos extends CI_Controller {
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "grupo";
 
-            $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
             $dados["dados_grupo"]   = $this->grupomodel->dados_grupo($id);
 
             $this->load->view('template/html_header', $dados);
@@ -172,7 +172,7 @@ class Grupos extends CI_Controller {
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "grupo";
     
-                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_grupo"]   = $this->grupomodel->dados_grupo($idgrupo);
     
                 $this->load->view('template/html_header', $dados);
@@ -200,7 +200,7 @@ class Grupos extends CI_Controller {
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "grupo";
 
-                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_grupo"]   = $this->grupomodel->dados_grupo($idgrupo);
                 
                 $this->load->view('template/html_header', $dados);
@@ -239,8 +239,8 @@ class Grupos extends CI_Controller {
                 $dados["submenu"]   = "grupo";
                 $dados["sub"]       = "grupolist";
 
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["listagem_grupos"]   = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["listagem_grupos"]   = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -268,8 +268,8 @@ class Grupos extends CI_Controller {
                 $dados["submenu"]   = "grupo";
                 $dados["sub"]       = "grupolist";
 
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["listagem_grupos"]   = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["listagem_grupos"]   = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');

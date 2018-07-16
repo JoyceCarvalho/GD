@@ -24,7 +24,7 @@ class Home extends CI_Controller {
             $dados['submenu']   = "";
 
             //dados do banco(nome da empresa, nome usuario);
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION['guest_empresa']);
             
             //retorna a quantidade de documentos no link meus documentos
             $funcionario = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
@@ -35,7 +35,7 @@ class Home extends CI_Controller {
             //retorna a quantidade de documentos em andamento
             if (($_SESSION["is_admin"] == true) || ($_SESSION["is_coordenador"])) {
 
-                $a = $this->docmodel->listar_documentos_em_andamento($_SESSION["idempresa"]);    
+                $a = $this->docmodel->listar_documentos_em_andamento($_SESSION["guest_empresa"]);    
                 $andamento = count($a);
 
             } else {
@@ -48,11 +48,11 @@ class Home extends CI_Controller {
             $dados["em_andamento"] = $andamento;
 
             //retorna a quantidade de documentos com erro
-            $erro = $this->docmodel->listar_documentos_com_erros($_SESSION["idempresa"]);
+            $erro = $this->docmodel->listar_documentos_com_erros($_SESSION["guest_empresa"]);
             $dados["com_erro"] = count($erro);
 
             //retorna a quantidade de documentos cancelados
-            $cancelados = $this->docmodel->listar_documentos_cancelados($_SESSION["idempresa"]);
+            $cancelados = $this->docmodel->listar_documentos_cancelados($_SESSION["guest_empresa"]);
             $dados["documentos_cancelados"] = count($cancelados);
 
             $this->load->view('template/html_header', $dados);
@@ -79,8 +79,8 @@ class Home extends CI_Controller {
             $dados['submenu']   = "dados";
 
             //dados do banco(nome da empresa, nome usuario);
-            $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
-            $dados['empresa']       = $this->empresamodel->dados_empresa($_SESSION['idempresa']);
+            $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION['guest_empresa']);
+            $dados['empresa']       = $this->empresamodel->dados_empresa($_SESSION['guest_empresa']);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -103,10 +103,10 @@ class Home extends CI_Controller {
         $dados['submenu']   = "usuario";
         $dados['sub']       = "usuariolist";
 
-        $dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+        $dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 
         //dados do banco (nome da empresa, nome usuário);
-        $dados['nome_empresa']      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados['nome_empresa']      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
@@ -123,10 +123,10 @@ class Home extends CI_Controller {
         $dados['submenu']   = "usuario";
         $dados['sub']       = "usuariocad";
 
-        $dados['full_cargos']   = $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-        $dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+        $dados['full_cargos']   = $this->cargosmodel->listar_cargos($_SESSION["guest_empresa"]);
+        $dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["guest_empresa"]);
         //dados do banco (nome da empresa, nome usuário);
-        $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
@@ -146,11 +146,11 @@ class Home extends CI_Controller {
             $dados['pg']        = "empresa";
             $dados['submenu']   = "usuario";
 
-            $dados['full_cargos']   = $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-            $dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+            $dados['full_cargos']   = $this->cargosmodel->listar_cargos($_SESSION["guest_empresa"]);
+            $dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["guest_empresa"]);
             $dados['usuario']       = $this->usermodel->dados_usuario($id);
             //dados do banco (nome da empresa);
-            $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -164,17 +164,17 @@ class Home extends CI_Controller {
 
     public function cargos(){
 
-        if ((isset($_SESSION['idempresa'])) && ($_SESSION["idempresa"] == true)) {
+        if ((isset($_SESSION['guest_empresa'])) && ($_SESSION["guest_empresa"] == true)) {
 
             $dados['pagina']  = "Cargos";
             $dados['pg']      = "empresa";
             $dados['submenu'] = "cargos";
             $dados['sub']     = "cargoslist";
 
-            $dados['listagem_cargos'] = $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
+            $dados['listagem_cargos'] = $this->cargosmodel->listar_cargos($_SESSION["guest_empresa"]);
 
             //dados do banco (nome da empresa);
-            $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -191,7 +191,7 @@ class Home extends CI_Controller {
 
     public function cargos_cad(){
 
-        if((isset($_SESSION['idempresa'])) && ($_SESSION["idempresa"] == true)){
+        if((isset($_SESSION['guest_empresa'])) && ($_SESSION["guest_empresa"] == true)){
 
             $dados['pagina']    = "Cargos";
             $dados['pg']        = "empresa";
@@ -199,7 +199,7 @@ class Home extends CI_Controller {
             $dados['sub']       = "cargoscad";
 
             //dados do banco (nome da empresa) menu
-            $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -225,8 +225,8 @@ class Home extends CI_Controller {
             $dados["sub"]       = "horalist";
 
             // dados do banco (nome empresa) menu
-            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["listagem_horarios"] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados["listagem_horarios"] = $this->horasmodel->listar_horario($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -252,7 +252,7 @@ class Home extends CI_Controller {
             $dados["sub"]       = "horacad";
 
             // dados do banco (nome empresa) menu
-            $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -281,8 +281,8 @@ class Home extends CI_Controller {
             $this->load->model('feriados_model', 'feriadosmodel');
 
             // dados do banco (nome empresa) menu
-            $dados['nome_empresa']      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados['listagem_feriados'] = $this->feriadosmodel->listar_feriados($_SESSION["idempresa"]);
+            $dados['nome_empresa']      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados['listagem_feriados'] = $this->feriadosmodel->listar_feriados($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -310,7 +310,7 @@ class Home extends CI_Controller {
             $this->load->model('feriados_model', 'feriadosmodel');
 
             // dados do banco (nome empresa) menu
-            $dados['nome_empresa']      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados['nome_empresa']      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -335,7 +335,7 @@ class Home extends CI_Controller {
             $dados["submenu"]   = "ausencia";
             $dados["sub"]       = "ausencialist";
 
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -360,7 +360,7 @@ class Home extends CI_Controller {
             $dados["submenu"]   = "ausencia";
             $dados["sub"]       = "ausenciacad";
 
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');

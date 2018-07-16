@@ -23,8 +23,8 @@ class Documento extends CI_Controller {
             $dados["submenu"]   = "documento";
             $dados["sub"]       = "doclist";
 
-            $dados["listagem_documento"]    = $this->docmodel->listar_documentos($_SESSION["idempresa"]);
-            $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["listagem_documento"]    = $this->docmodel->listar_documentos($_SESSION["guest_empresa"]);
+            $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -49,9 +49,9 @@ class Documento extends CI_Controller {
             $dados["submenu"]   = "documento";
             $dados["sub"]       = "doccad";
 
-            $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["listar_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-            $dados["listar_etapas"] = $this->etapasmodel->listar_etapas($_SESSION["idempresa"]);
+            $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados["listar_grupos"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
+            $dados["listar_etapas"] = $this->etapasmodel->listar_etapas($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -76,7 +76,7 @@ class Documento extends CI_Controller {
             $dados = array(
                 'titulo' => $this->input->post('titulo'),
                 'fk_idgrupo' => $this->input->post('grupo'),
-                'fk_idempresa' => $_SESSION["idempresa"]
+                'fk_idempresa' => $_SESSION["guest_empresa"]
             );
 
             $iddocumento = $this->docmodel->cadastrar_documentos($dados);
@@ -102,8 +102,8 @@ class Documento extends CI_Controller {
                 $dados["submenu"]   = "documento";
                 $dados["sub"]       = "doccad";
 
-                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["listar_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["listar_grupos"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -131,8 +131,8 @@ class Documento extends CI_Controller {
                 $dados["submenu"]   = "documento";
                 $dados["doccad"]    = "doccad";
 
-                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["listar_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["listar_grupos"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -155,12 +155,12 @@ class Documento extends CI_Controller {
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "documento";
 
-            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
             $dados["dados_documento"]   = $this->docmodel->dados_documentos($id);
 
             $this->load->model('grupo_model', 'grupomodel');
-            $dados["full_grupos"]       = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-            $dados["listar_etapas"]       = $this->etapasmodel->listar_etapas($_SESSION["idempresa"]);
+            $dados["full_grupos"]       = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
+            $dados["listar_etapas"]       = $this->etapasmodel->listar_etapas($_SESSION["guest_empresa"]);
             $dados["documento_etapa"]   = $this->docetapamodel->listar_docetapa($id);
 
             $this->load->view('template/html_header', $dados);
@@ -221,12 +221,12 @@ class Documento extends CI_Controller {
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "documento";
 
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_documento"]   = $this->docmodel->dados_documentos($iddocumento);
 
                 $this->load->model('grupo_model', 'grupomodel');
-                $dados["full_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-                $dados["listar_etapas"]       = $this->etapasmodel->listar_etapas($_SESSION["idempresa"]);
+                $dados["full_grupos"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
+                $dados["listar_etapas"]       = $this->etapasmodel->listar_etapas($_SESSION["guest_empresa"]);
                 $dados["documento_etapa"]   = $this->docetapamodel->listar_docetapa($iddocumento);
 
                 $this->load->view('template/html_header', $dados);
@@ -254,12 +254,12 @@ class Documento extends CI_Controller {
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "documento";
 
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_documento"]   = $this->docmodel->dados_documentos($iddocumento);
 
                 $this->load->model('grupo_model', 'grupomodel');
-                $dados["full_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-                $dados["listar_etapas"]       = $this->etapasmodel->listar_etapas($_SESSION["idempresa"]);
+                $dados["full_grupos"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
+                $dados["listar_etapas"]       = $this->etapasmodel->listar_etapas($_SESSION["guest_empresa"]);
                 $dados["documento_etapa"]   = $this->docetapamodel->listar_docetapa($iddocumento);
 
                 $this->load->view('template/html_header', $dados);
@@ -291,8 +291,8 @@ class Documento extends CI_Controller {
                 $dados["submenu"]   = "documento";
                 $dados["sub"]       = "doclist";
 
-                $dados["listagem_documento"]    = $this->docmodel->listar_documentos($_SESSION["idempresa"]);
-                $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["listagem_documento"]    = $this->docmodel->listar_documentos($_SESSION["guest_empresa"]);
+                $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -320,8 +320,8 @@ class Documento extends CI_Controller {
                 $dados["submenu"]   = "documento";
                 $dados["sub"]       = "doclist";
 
-                $dados["listagem_documento"]    = $this->docmodel->listar_documentos($_SESSION["idempresa"]);
-                $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["listagem_documento"]    = $this->docmodel->listar_documentos($_SESSION["guest_empresa"]);
+                $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');

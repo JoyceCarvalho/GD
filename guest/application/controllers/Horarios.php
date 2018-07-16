@@ -27,7 +27,7 @@ class Horarios extends CI_Controller {
                 'manha_saida'   => $this->horasmodel->converte_horas($this->input->post('saida_manha')),
                 'tarde_entrada' => $this->horasmodel->converte_horas($this->input->post('entrada_tarde')),
                 'tarde_saida'   => $this->horasmodel->converte_horas($this->input->post('saida_tarde')),
-                'fk_idempresa'  => $_SESSION["idempresa"]
+                'fk_idempresa'  => $_SESSION["guest_empresa"]
             );
 
             if($this->horasmodel->cadastrar_horario($dados)){
@@ -39,7 +39,7 @@ class Horarios extends CI_Controller {
                 $dados["submenu"]   = "horarios";
 
                 // dados do banco (nome empresa) menu
-                $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -67,7 +67,7 @@ class Horarios extends CI_Controller {
                 $dados["submenu"]   = "horarios";
 
                 // dados do banco (nome empresa) menu
-                $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -97,7 +97,7 @@ class Horarios extends CI_Controller {
             $dados["submenu"]   = "horarios";
 
             // dados do banco (nome empresa) menu
-            $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
             $dados['dados_horario'] = $this->horasmodel->dados_horario($id);
 
             $this->load->view('template/html_header', $dados);
@@ -136,7 +136,7 @@ class Horarios extends CI_Controller {
                 $dados["submenu"]   = "horarios";
 
                 // dados do banco (nome empresa) menu
-                $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados['dados_horario'] = $this->horasmodel->dados_horario($idhorario);
 
                 $this->load->view('template/html_header', $dados);
@@ -163,7 +163,7 @@ class Horarios extends CI_Controller {
                 $dados["submenu"]   = "horarios";
 
                 // dados do banco (nome empresa) menu
-                $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados['dados_horario'] = $this->horasmodel->dados_horario($idhorario);
 
                 $this->load->view('template/html_header', $dados);
@@ -202,8 +202,8 @@ class Horarios extends CI_Controller {
                 $dados["submenu"]   = "horarios";
 
                 // dados do banco (nome empresa) menu
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["listagem_horarios"] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["listagem_horarios"] = $this->horasmodel->listar_horario($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -231,8 +231,8 @@ class Horarios extends CI_Controller {
                 $dados["submenu"]   = "horarios";
 
                 // dados do banco (nome empresa) menu
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["listagem_horarios"] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["listagem_horarios"] = $this->horasmodel->listar_horario($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');

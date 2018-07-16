@@ -21,8 +21,8 @@ class Ausencia extends CI_Controller{
             $dados["submenu"]   = "ausencia";
             $dados["sub"]       = "ausencialist";
 
-            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["listagem_ausencia"] = $this->ausenciamodel->listar_ausencia($_SESSION["idempresa"]);
+            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados["listagem_ausencia"] = $this->ausenciamodel->listar_ausencia($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -48,8 +48,8 @@ class Ausencia extends CI_Controller{
             $dados["submenu"]   = "ausencia";
             $dados["sub"]       = "ausenciacad";
 
-            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
             
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -77,7 +77,7 @@ class Ausencia extends CI_Controller{
                 'dia_fim'       => $this->input->post('dia_fim'),
                 'motivo'        => $this->input->post('motivo'),
                 'fk_idusuario'  => $this->input->post('funcionario'),
-                'fk_idempresa'  => $_SESSION["idempresa"]
+                'fk_idempresa'  => $_SESSION["guest_empresa"]
             );
 
             $nome = $this->logsistema->retorna_usuario($this->input->post('funcionario'));
@@ -91,8 +91,8 @@ class Ausencia extends CI_Controller{
                 $dados["submenu"]   = "ausencia";
                 $dados["sub"]       = "ausenciacad";
 
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -120,8 +120,8 @@ class Ausencia extends CI_Controller{
                 $dados["submenu"]   = "ausencia";
                 $dados["sub"]       = "ausenciacad";
 
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -149,9 +149,9 @@ class Ausencia extends CI_Controller{
             $dados["pg"]        = "configuracao";
             $dados["submenu"]   = "ausencia";
 
-            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
             $dados["dados_ausencia"]    = $this->ausenciamodel->dados_ausencia($idausencia);
-            $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+            $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -192,9 +192,9 @@ class Ausencia extends CI_Controller{
                 $dados["pg"]        = "configuracoes";
                 $dados["submenu"]   = "ausencia";
 
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_ausencia"]    = $this->ausenciamodel->dados_ausencia($idausencia);
-                $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+                $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -221,9 +221,9 @@ class Ausencia extends CI_Controller{
                 $dados["pg"]        = "configuracoes";
                 $dados["submenu"]   = "ausencia";
 
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_ausencia"]    = $this->ausenciamodel->dados_ausencia($idausencia);
-                $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+                $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -256,8 +256,8 @@ class Ausencia extends CI_Controller{
                 $dados["submenu"]   = "ausencia";
                 $dados["sub"]       = "ausencialist";
 
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["listagem_ausencia"] = $this->ausenciamodel->listar_ausencia($_SESSION["idempresa"]);
+                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["listagem_ausencia"] = $this->ausenciamodel->listar_ausencia($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -285,8 +285,8 @@ class Ausencia extends CI_Controller{
                 $dados["submenu"]   = "ausencia";
                 $dados["sub"]       = "ausencialist";
 
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["listagem_ausencia"] = $this->ausenciamodel->listar_ausencia($_SESSION["idempresa"]);
+                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["listagem_ausencia"] = $this->ausenciamodel->listar_ausencia($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');

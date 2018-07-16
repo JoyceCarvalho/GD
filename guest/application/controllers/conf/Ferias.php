@@ -21,8 +21,8 @@ class Ferias extends CI_Controller{
             $dados["submenu"]   = "ausencia";
             $dados["sub"]       = "ausencialist";
 
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["listagem_ferias"] = $this->feriasmodel->listar_ferias($_SESSION["idempresa"]);
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados["listagem_ferias"] = $this->feriasmodel->listar_ferias($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -48,8 +48,8 @@ class Ferias extends CI_Controller{
             $dados["submenu"]   = "ausencia";
             $dados["sub"]       = "ausenciacad";
 
-            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -76,7 +76,7 @@ class Ferias extends CI_Controller{
                 'dia_inicio' => $this->input->post('dia_inicio'),
                 'dia_fim' => $this->input->post('dia_fim'),
                 'fk_idusuario' => $this->input->post('funcionario'),
-                'fk_idempresa' => $_SESSION["idempresa"]
+                'fk_idempresa' => $_SESSION["guest_empresa"]
             );
 
             $nome = $this->logsistema->retorna_usuario($this->input->post('funcionario'));
@@ -90,8 +90,8 @@ class Ferias extends CI_Controller{
                 $dados["submenu"] = "ausencia";
                 $dados["sub"]     = "ausenciacad";
 
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -120,8 +120,8 @@ class Ferias extends CI_Controller{
                 $dados["submenu"] = "ausencia";
                 $dados["sub"]     = "ausenciacad";
 
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -149,9 +149,9 @@ class Ferias extends CI_Controller{
 
             $idferias = $this->input->post('idferias');
 
-            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
             $dados["dados_ferias"]      = $this->feriasmodel->dados_ferias($idferias);
-            $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+            $dados["funcionario_full"]  = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -190,9 +190,9 @@ class Ferias extends CI_Controller{
                 $dados["pg"] = "configuracao";
                 $dados["submenu"] = "ausencia";
 
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_ferias"] = $this->feriasmodel->dados_ferias($idferias);
-                $dados["funcionario_full"] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+                $dados["funcionario_full"] = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -219,9 +219,9 @@ class Ferias extends CI_Controller{
                 $dados["pg"] = "configuracao";
                 $dados["submenu"] = "ausencia";
 
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_ferias"] = $this->feriasmodel->dados_ferias($idferias);
-                $dados["funcionario_full"] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+                $dados["funcionario_full"] = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -257,8 +257,8 @@ class Ferias extends CI_Controller{
                 $dados["submenu"]   = "ausencia";
                 $dados["sub"]       = "ausencialist";
 
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["listagem_ferias"] = $this->feriasmodel->listar_ferias($_SESSION["idempresa"]);
+                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["listagem_ferias"] = $this->feriasmodel->listar_ferias($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -285,8 +285,8 @@ class Ferias extends CI_Controller{
                 $dados["submenu"]  = "ausencia";
                 $dados["sub"]      = "ausencialist";
 
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["listagem_ferias"] = $this->feriasmodel->listar_ferias($_SESSION["idempresa"]);
+                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados["listagem_ferias"] = $this->feriasmodel->listar_ferias($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');

@@ -23,8 +23,8 @@ class Competencia extends CI_Controller {
             $dados["pg"]     = "configuracao";
             $dados["submenu"] = "comp";
 
-            $dados["listagem_documento"]    = $this->docmodel->listar_documentos($_SESSION["idempresa"]);
-            $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["listagem_documento"]    = $this->docmodel->listar_documentos($_SESSION["guest_empresa"]);
+            $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -49,11 +49,11 @@ class Competencia extends CI_Controller {
             $dados["pg"] = "configuracao";
             $dados["submenu"] = "competencia";
 
-            $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
             $dados["dados_etapa"]   = $this->docetapamodel->listar_documento_etapa($id);
             $dados["competencia_d"] = $this->compmodel->listar_competencias($id);
-            $dados["dados_usuario"] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
-            $dados["dados_cargo"]   = $this->cargomodel->listar_cargos($_SESSION["idempresa"]);
+            $dados["dados_usuario"] = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
+            $dados["dados_cargo"]   = $this->cargomodel->listar_cargos($_SESSION["guest_empresa"]);
             $dados["documento"]     = $this->compmodel->nome_documento($id);
             $dados["iddocumento"]   = $id;
 
@@ -92,7 +92,7 @@ class Competencia extends CI_Controller {
                         'fk_idetapa'     => $this->input->post("etapa_$i"),
                         'fk_idusuario'   => $this->input->post("idtipo_$i"),
                         'fk_idcargo'     => 0,
-                        'fk_idempresa'   => $_SESSION["idempresa"]
+                        'fk_idempresa'   => $_SESSION["guest_empresa"]
                     );
 
                 } else {
@@ -103,7 +103,7 @@ class Competencia extends CI_Controller {
                         'fk_idetapa'     => $this->input->post("etapa_$i"),
                         'fk_idusuario'   => 0,
                         'fk_idcargo'     => $this->input->post("idtipo_$i"),
-                        'fk_idempresa'   => $_SESSION["idempresa"]
+                        'fk_idempresa'   => $_SESSION["guest_empresa"]
                     );
 
                 }
@@ -138,11 +138,11 @@ class Competencia extends CI_Controller {
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "competencia";
 
-                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_etapa"]   = $this->docetapamodel->listar_documento_etapa($iddocumento);
                 $dados["competencia_d"] = $this->compmodel->listar_competencias($iddocumento);
-                $dados["dados_usuario"] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
-                $dados["dados_cargo"]   = $this->cargomodel->listar_cargos($_SESSION["idempresa"]);
+                $dados["dados_usuario"] = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
+                $dados["dados_cargo"]   = $this->cargomodel->listar_cargos($_SESSION["guest_empresa"]);
                 $dados["documento"]     = $this->compmodel->nome_documento($iddocumento);
                 $dados["iddocumento"]   = $iddocumento;
 
@@ -173,11 +173,11 @@ class Competencia extends CI_Controller {
                 $dados["pg"]        = "configuracao";
                 $dados["submenu"]   = "competencia";
 
-                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_etapa"]   = $this->docetapamodel->listar_documento_etapa($iddocumento);
                 $dados["competencia_d"] = $this->compmodel->listar_competencias($iddocumento);
-                $dados["dados_usuario"] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
-                $dados["dados_cargo"]   = $this->cargomodel->listar_cargos($_SESSION["idempresa"]);
+                $dados["dados_usuario"] = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
+                $dados["dados_cargo"]   = $this->cargomodel->listar_cargos($_SESSION["guest_empresa"]);
                 $dados["documento"]     = $this->compmodel->nome_documento($iddocumento);
                 $dados["iddocumento"]   = $iddocumento;
 
@@ -201,11 +201,11 @@ class Competencia extends CI_Controller {
 
         if($tipo == "funcionario"){
 
-            echo $this->usermodel->listar_usuarios_json($_SESSION["idempresa"]);
+            echo $this->usermodel->listar_usuarios_json($_SESSION["guest_empresa"]);
 
         } elseif($tipo == "cargo"){
             
-            echo $this->cargomodel->listar_cargos_json($_SESSION["idempresa"]);
+            echo $this->cargomodel->listar_cargos_json($_SESSION["guest_empresa"]);
 
         }
 

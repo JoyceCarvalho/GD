@@ -15,7 +15,7 @@ class Cargos extends CI_Controller {
 
         $data = new stdClass();
 
-        $dados = array('titulo' => $this->input->post("titulo"), 'fk_idempresa' => $_SESSION["idempresa"]);
+        $dados = array('titulo' => $this->input->post("titulo"), 'fk_idempresa' => $_SESSION["guest_empresa"]);
 
         if ($this->cargosmodel->cadastrar_cargos($dados)) {
             
@@ -26,7 +26,7 @@ class Cargos extends CI_Controller {
             $dados["submenu"]   = "cargos";
 
             //dados do banco (nome da empresa) menu
-            $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -54,7 +54,7 @@ class Cargos extends CI_Controller {
             $dados["submenu"]   = "cargos";
 
             //dados do banco (nome da empresa) menu
-            $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
             $this->load->view('template/html_header', $dados);
             $this->load->view('template/header');
@@ -76,7 +76,7 @@ class Cargos extends CI_Controller {
             $dados["pg"]            = "empresa";
             $dados["submenu"]       = "cargos";
 
-            $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
             $dados["dados_cargo"]   = $this->cargosmodel->dados_cargo($id);
 
             $this->load->view('template/html_header', $dados);
@@ -110,7 +110,7 @@ class Cargos extends CI_Controller {
                 $dados["pg"]            = "empresa";
                 $dados["submenu"]       = "cargos";
 
-                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_cargo"]   = $this->cargosmodel->dados_cargo($idcargo);
 
                 $this->load->view('template/html_header', $dados);
@@ -136,7 +136,7 @@ class Cargos extends CI_Controller {
                 $dados["pg"]            = "empresa";
                 $dados["submenu"]       = "cargos";
 
-                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dados_cargo"]   = $this->cargosmodel->dados_cargo($idcargo);
 
                 $this->load->view('template/html_header', $dados);
@@ -169,8 +169,8 @@ class Cargos extends CI_Controller {
                 $dados["pg"]            = "empresa";
                 $dados["submenu"]       = "cargos";
 
-                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados['listagem_cargos'] = $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
+                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados['listagem_cargos'] = $this->cargosmodel->listar_cargos($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -197,8 +197,8 @@ class Cargos extends CI_Controller {
                 $dados["pg"]            = "empresa";
                 $dados["submenu"]       = "cargos";
 
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados['listagem_cargos']   = $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
+                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+                $dados['listagem_cargos']   = $this->cargosmodel->listar_cargos($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');

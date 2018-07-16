@@ -49,7 +49,7 @@ class Finalizar extends CI_Controller {
         $etapa = $dados->etapa;
 
         //Trecho de código adaptado do primeiro sistema de Gestão de Documentos criado por Maykel Uroda
-        $horario = $this->horasmodel->verifica_horario($_SESSION["idempresa"]);
+        $horario = $this->horasmodel->verifica_horario($_SESSION["guest_empresa"]);
 
         $primeiro_turno_inicio  = $horario->manha_entrada;
         $primeiro_turno_fim     = $horario->manha_saida;
