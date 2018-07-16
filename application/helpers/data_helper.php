@@ -129,3 +129,16 @@ function transforma_mes_ano($data){
     return $d[1]. "-" . $d[0];
 
 }
+
+/**
+ * Função para conversão de mes ano
+ *
+ * @param date $data
+ * @return date
+ */
+function converte_data_mes_ano($data){
+
+    $d = explode("-", $data);
+    return $d[1] . "/" . $d[0];
+
+}

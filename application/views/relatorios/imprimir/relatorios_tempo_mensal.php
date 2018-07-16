@@ -71,7 +71,7 @@ $this->load->model("timer_model", "timermodel");
                                 ?>
                             </div>
                             <div class="col-xs-6 text-center">
-                                <h1 class="title no-print"> <?=$protocolo . " - " . $nome_documento;?> </h1>                                  
+                                <h1 class="title no-print"> <?=converte_data_mes_ano($mes_ano);?> </h1>                                  
                             </div>
                             <div class="col-xs-3 col-md-3">
                                 <img class="pull-right img-responsive" src="<?=base_url("assets/img/logo_sgt.png");?>" alt="SGT - Gestão e Tecnologia">
@@ -88,9 +88,7 @@ $this->load->model("timer_model", "timermodel");
 
             <!-- Página de titulo (apenas impressão) -->
             <div class="first-page print-only">
-                <h1 class="title"><?=$protocolo;?></h1>
-                <h5 class="document"><?= $nome_documento?></h5>
-                <h6 class="data"><?=$data_criacao;?></h6>
+                <h1 class="title"><?=converte_data_mes_ano($mes_ano);?></h1>
             </div>
             <!-- Fim página de titulo -->
 
@@ -100,18 +98,14 @@ $this->load->model("timer_model", "timermodel");
                     <span class="titulo-sessao">Dados do Mensais</span>
                 </div>
                 <div class="panel-body">
-                    <p>Mês: <?=$protocolo;?></p>
-                    <p>Documento: <?=$nome_documento;?></p>
-                    <p>Documento criado <?=$data_criacao;?></p>
-                    <p>Documento criado por <?=$responsavel_criacao;?>
-                    <p>Prazo para finalização do documento <?=$prazo_documento;?></p>
-                    <p>Documento finalizado em <?=$data_finalizacao;?></p>
+                    <p>Mês: <?=converte_data_mes_ano($mes_ano);?></p>
+                    <p>Quantidade de documento: <?=count($dados_mensais);?></p>
 
                     <div class="line"></div>
 
                     <div class="panel panel-default sessao">
                         <div class="panel-heading">
-                            <span class="subtitulo">Tempo médio do documento</span>
+                            <span class="subtitulo">Tempo médio mensal</span>
                         </div>
                         
                         <div class="panel-body">
@@ -149,7 +143,7 @@ $this->load->model("timer_model", "timermodel");
             </div>
             <div class="panel panel-default sessao no-break geral">
                 <div class="panel-heading">
-                    <span class="titulo-sessao">Tempo por etapa</span>
+                    <span class="titulo-sessao">Documentos</span>
                 </div>
                 <div class="panel-body">
                 
@@ -157,22 +151,24 @@ $this->load->model("timer_model", "timermodel");
                         <table class="table table-striped table-bordered table-condensed">
                             <thead>
                                 <tr>
-                                    <th>Etapa</th>
-                                    <th>Responsável</th>
+                                    <th>Protocolo</th>
+                                    <th>Documento</th>
+                                    <th>Grupo</th>
                                     <th>Tempo</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 
                                 <?php 
-                                foreach ($tempo_por_etapa as $etapa) {
+                                foreach ($dados_mensais as $documento) {
                                     ?>                                
                                     <tr>    
-                                        <td><?=$etapa->etapa_titulo?></td>
-                                        <td><?=$etapa->nome_usuario;?></td>
+                                        <td><?=$documento->protocolo;?></td>
+                                        <td><?=$documento->documento;?></td>
+                                        <td><?=$documento->grupo;?></td>
                                         <td>
                                             <?php
-                                            $tempo = $this->timermodel->tempo_por_etapa($idprotocolo, $etapa->idetapa);
+                                            $tempo = $this->timermodel->listar_timer($documento->idprotocolo);
 
                                             // Trecho adaptado do 1º gestão de documentos
                                             $seconds = 0;
@@ -198,8 +194,6 @@ $this->load->model("timer_model", "timermodel");
                                             $mostraNumero = converteHoras($seconds);
 
                                             echo $mostraNumero;
-
-                                            $charts[$etapa->etapa_titulo] = cutNum(str_replace(":",".",$mostraNumero));
                                             ?>
                                         </td>
                                     </tr>
@@ -209,206 +203,10 @@ $this->load->model("timer_model", "timermodel");
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-sm-3"></div>
-                    <div class="charts-container col-sm-6">
-                        <div id="chart_etapa" class="myChart"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default sessao no-break geral">
-                <div class="panel-heading">
-                    <span class="titulo-sessao">Tempo por responsável</span>
-                </div>
-                <div class="panel-body">
-                    
-                    <div class="col-sm-3">
-
-                        <table class="table table-striped table-bordered table-condensed">
-                            <thead>
-                                <tr>
-                                    <th>Responsável</th>
-                                    <th>Tempo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                foreach ($tempo_por_responsavel as $responsavel) {
-
-                                    $seconds = 0;
-                                    $sum_media = 0;
-
-                                    ?>
-                                    <tr>
-                                        <td><?=$responsavel->nome_usuario?></td>
-                                        <td>
-                                            <?php
-                                            $tempo = $this->timermodel->tempo_por_responsavel($idprotocolo, $responsavel->idusuario);
-
-                                            // Trecho adaptado do 1º gestão de documentos
-                                            $seconds = 0;
-                                            $sum_media = 0;
-                                            foreach ($tempo as $t) {
-                                                
-                                                $action = $t->action;
-                                                switch ($action) {
-                                                    case 'start':
-                                                        $seconds -= $t->timestamp;
-                                                        break;
-                                                    
-                                                    case 'pause':
-                                                        if ($seconds !== 0) {
-                                                            $seconds += $t->timestamp;
-                                                        }
-                                                        break;
-                                                }
-
-                                            }
-
-                                            $sum_media += $seconds;
-                                            $mostraNumero = converteHoras($seconds);
-
-                                            echo $mostraNumero;
-
-                                            $charts_responsavel[$responsavel->nome_usuario] = cutNum(str_replace(":",".",$mostraNumero));
-                                            ?>
-                                        </td>
-                                    </tr>
-                                    <?php
-
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                                
-                    <div class="col-sm-3"></div>
-                    <div class="charts-container col-sm-6">
-                        <div id="chart_resp" class="myChart"></div>
-                    </div>
                 </div>
             </div>
             <!-- Fim do conteudo -->
         </div>
-        <script src="https://code.highcharts.com/highcharts.js"></script>
-        <script src="https://code.highcharts.com/modules/exporting.js"></script>
-        <script src="https://code.highcharts.com/modules/export-data.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script>
-            Highcharts.chart('chart_etapa', {
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: 'Tempo por etapa'
-                },
-                xAxis: {
-                    type: 'category',
-                    labels: {
-                        rotation: -45,
-                        style: {
-                            fontSize: '13px',
-                            fontFamily: 'Verdana, sans-serif'
-                        }
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Tempo médio'
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                credits: {
-                    enabled:false
-                },
-                tooltip: {
-                    pointFormat: '<b>{point.y:.2f}</b>'
-                },
-                series: [{
-                    /*name: 'Population',*/
-                    data: [
-                        <?php
-                        foreach ($charts as $key => $value) {
-                            ?>
-                            ['<?=$key;?>', <?=$value;?>],
-                            <?php
-                        }
-                        ?>
-                    ],
-                    dataLabels: {
-                        enabled: true,
-                        rotation: -90,
-                        color: '#FFFFFF',
-                        align: 'right',
-                        format: '{point.y:.2f}', // one decimal
-                        y: 10, // 10 pixels down from the top
-                        style: {
-                            fontSize: '13px',
-                            fontFamily: 'Verdana, sans-serif'
-                        }
-                    }
-                }]
-            });
-
-            Highcharts.chart('chart_resp', {
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: 'Tempo por responsável'
-                },
-                xAxis: {
-                    type: 'category',
-                    labels: {
-                        rotation: -45,
-                        style: {
-                            fontSize: '13px',
-                            fontFamily: 'Verdana, sans-serif'
-                        }
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Tempo médio'
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                credits: {
-                    enabled: false
-                },
-                tooltip: {
-                    pointFormat: '<b>{point.y:.2f}</b>'
-                },
-                series: [{
-                    /*name: 'Population',*/
-                    data: [
-                        <?php
-                        foreach ($charts_responsavel as $key => $value) {
-                            ?>
-                            ['<?=$key;?>', <?=$value;?>],
-                            <?php
-                        }
-                        ?>
-                    ],
-                    dataLabels: {
-                        enabled: true,
-                        rotation: -90,
-                        color: '#FFFFFF',
-                        align: 'right',
-                        format: '{point.y:.2f}', // one decimal
-                        y: 10, // 10 pixels down from the top
-                        style: {
-                            fontSize: '13px',
-                            fontFamily: 'Verdana, sans-serif'
-                        }
-                    }
-                }]
-            });
-        </script>
     </body>
 </html>

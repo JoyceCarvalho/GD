@@ -122,7 +122,7 @@ class Documentos_model extends CI_Model {
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
         $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
-        $this->db->join('tblog_documentos as ldB on ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
         $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
         $this->db->where("ldB.data_hora like '$mes%'");
         $this->db->order_by('ldA.data_hora asc');
