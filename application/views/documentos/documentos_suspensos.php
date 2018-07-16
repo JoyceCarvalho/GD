@@ -29,7 +29,7 @@
                 <div class="card">
         
                     <div class="card-header d-flex align-items-center">
-                        <h3 class="h4">Documentos Suspensos</h3>
+                        <h3 class="h4">Documentos aguardando exigência</h3>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">                       
@@ -285,6 +285,7 @@ window.addEventListener("DOMContentLoaded", function() {
                             data += '</div>';
                             data += '<hr/>'
                         });
+                        data += '<a href="<?=base_url();?>imprimir_historico/'+id_pro+'" target="_blank" class="btn btn-sm btn-warning" style="color: white"><i class="fa fa-print"></i> Imprimir</a>';
                     } else {
                         reset();
                     }

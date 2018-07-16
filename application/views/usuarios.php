@@ -1,11 +1,3 @@
-<!-- Breadcrumb-->
-<!--<div class="breadcrumb-holder container-fluid">
-    <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="<?=base_url("home");?>">Página Inicial</a></li>
-        <li class="breadcrumb-item active"> Listar Usuário</li>
-    </ul>
-</div>-->
-
 <section class="tables">   
 
     <div class="container-fluid">
@@ -90,6 +82,7 @@
                                                                         <div class="modal-body">                                                
                                                                             <div class="form-group">
                                                                                 <p> Tem certeza que deseja excluir esta informação? </p>
+                                                                                <p><strong>Aviso: Ao excluir um usuário os documentos trabalhados por ele entram na lista de documentos pendentes!</strong></p>
                                                                             </div>
                                                                         </div>
                                                                     

@@ -87,7 +87,7 @@ CREATE TABLE `tbcargos` (
 --
 
 INSERT INTO `tbcargos` (`id`, `titulo`, `fk_idempresa`) VALUES
-(1, 'Administrador', 1);
+(1, 'Administrador Master', 1);
 
 -- --------------------------------------------------------
 

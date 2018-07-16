@@ -182,3 +182,4 @@ $route["produtividade_grupo"]               = "relatorios/relatorios/produtivida
 $route["relatorio_produtividade/(:num)"]    = "relatorios/imprimir/produtividade_relatorio/$1";
 $route["prazos_documentos"]                 = "relatorios/relatorios/listar_prazos";
 $route["em_atraso/(:num)"]                  = "relatorios/imprimir/imprimir_fora_prazo/$1";
+$route["imprimir_historico/(:num)"]         = "relatorios/imprimir/imprimir_historico/$1";

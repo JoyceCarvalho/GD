@@ -37,7 +37,7 @@ class Documentos_model extends CI_Model {
     
     /**
      * Método responsável por cadastrar os logs de documentos
-     * Utilizados pelo controller documentos/Documento.php e documentos/Transferencia.php e documentos/Finalizar.php
+     * Utilizados pelo controller documentos/Documento.php e documentos/Transferencia.php e documentos/Finalizar.php e Usuario.php
      *
      * @param array $dados
      * @return int retorna o numero de linhas afetadas
@@ -218,7 +218,7 @@ class Documentos_model extends CI_Model {
 
     /**
      * Método para editar os dados de ultima etapa do documento cadastrado
-     * Utilizado no controller documento/Transferencia.php 
+     * Utilizado no controller documento/Transferencia.php, Usuario.php
      *
      * @param int $id_protocolo
      * @return int
@@ -822,5 +822,20 @@ class Documentos_model extends CI_Model {
         return $this->db->count_all_results();
     }
 
+    /**
+     * Método responsável por verificar e retornar os documentos que estão sendo trabalhado por determinado usuario
+     * Utilizado no controller Usuario.php
+     *
+     * @param int $usuario
+     * @return object
+     */
+    public function verifica_documento_execucao($usuario){
+
+        $this->db->from('tblog_documentos');
+        $this->db->where('usuario', $usuario);
+        $this->db->where('ultima_etapa = "true"');
+        return $this->db->get()->result();
+
+    }
 
 }

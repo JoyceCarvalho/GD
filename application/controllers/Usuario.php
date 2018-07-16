@@ -164,6 +164,30 @@ class Usuario extends CI_Controller {
 
 			if($this->usermodel->excluir_usuario($id)){
 
+				$this->load->model('Documentos_model', 'docmodel');
+
+				if($this->docmodel->verifica_documento_execucao($id)){
+
+					$documentos = $this->docmodel->verifica_documento_execucao($id);
+
+					foreach ($documentos as $doc) {
+
+						$this->docmodel->editar_documentos_log($doc->documento);
+						
+						$pendente = array(
+							'documento'     => $doc->documento, 
+							'etapa'         => $doc->etapa,
+							'usuario'       => 0,
+							'descricao'     => 'PENDENTE',
+							'data_hora'     => date("Y-m-d H:i:s"),
+							'ultima_etapa'  => 'true'
+						);
+		
+						$documento_log2 = $this->docmodel->cadastrar_log_documento($pendente);	
+					}
+					
+				}
+
 				$data->success = "Usuário excluido com sucesso!";
 
 				$dados['pagina'] 	= "Usuários";

@@ -153,4 +153,31 @@ class Imprimir extends CI_Controller {
         }
 
     }
+
+    public function imprimir_historico($idprotocolo){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+
+        $informacoes_documento = json_decode($this->docmodel->historico_documento($idprotocolo));
+
+        foreach ($informacoes_documento as $doc) {
+            
+            if ($doc->idempresa == $_SESSION["idempresa"]) {
+                
+                $dados["informacoes_documento"] = $informacoes_documento;
+                $dados["historico_documentos"]  = json_decode($this->docmodel->historico_documentos_dados($idprotocolo));
+                $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+
+                $this->load->view('relatorios/imprimir/imprimir_historico', $dados);
+
+            } else {
+
+                $this->load->view('errors/acesso_restrito');
+
+            }
+        }
+
+    }
 }

@@ -119,7 +119,7 @@
                                                             }
                                                         ?>
                                                         <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                        <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD">Suspender Documento</a><br/>
+                                                        <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD">Documento com exigência</a><br/>
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
                                                         <?php 
                                                         
@@ -216,7 +216,7 @@
                                                             }
                                                         ?>
                                                         <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                        <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD">Suspender Documento</a><br/>
+                                                        <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD">Documento com exigência</a><br/>
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
                                                         <?php 
 
@@ -455,6 +455,7 @@ window.addEventListener("DOMContentLoaded", function() {
                             data += '</div>';
                             data += '<hr/>'
                         });
+                        data += '<a href="<?=base_url();?>imprimir_historico/'+id_pro+'" target="_blank" class="btn btn-sm btn-warning" style="color: white"><i class="fa fa-print"></i> Imprimir</a>';
                     } else {
                         reset();
                     }
