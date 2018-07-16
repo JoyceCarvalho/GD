@@ -57,7 +57,7 @@
                                             <tr>
                                                 <td><?=$empresa->nome."<br/><small><strong>".$empresa->cliente_code."</strong></small>";?></td>
                                                 <td>
-                                                    <a href="" class="btn btn-sm btn-success"><i class="fa fa-sign-in"></i> Acessar</a>
+                                                    <a href="<?=base_url("guest/login/acesso/".$empresa->id."/".$_SESSION["idusuario"]);?>" class="btn btn-sm btn-success external"><i class="fa fa-sign-in"></i> Acessar</a>
                                                 </td>
                                                 <td>
                                                     <form method="post" action="<?=base_url('editar_empresa');?>">

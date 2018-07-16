@@ -1,0 +1,51 @@
+/* your styles go here */
+
+.dashbord{
+    color: black;
+}
+
+.dashbord:hover{
+    color: dodgerblue;
+    text-decoration: none;
+}
+
+.dashbord:visited{
+    color: black;
+}
+
+.dashbord{
+    color: black;
+}
+
+#add_steps{
+    text-align: right;
+}
+
+.link-button{
+    color: white;
+}
+
+.scroll-button {
+    position: fixed;
+    right: 15px;
+    width: 50px;
+    height: 50px;
+    bottom: 90px;
+    text-align: center;
+    color: white;
+    display: none;
+    background: rgba(52, 58, 64, 0.5);
+    line-height: 45px;
+}
+
+.scroll-button:focus, .scroll-button:hover{
+    color: white;   
+}
+
+.scroll-button:hover{
+    background: #343a40;
+}
+
+.scroll-button i{
+    font-weight: 800;
+}
