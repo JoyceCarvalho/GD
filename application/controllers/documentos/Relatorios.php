@@ -1,6 +1,8 @@
 <?php
 defined("BASEPATH") or exit("No direct script access allowed");
 
+date_default_timezone_set('America/Sao_Paulo');
+
 class Relatorios extends CI_Controller {
     
     public function __construct(){
@@ -161,26 +163,52 @@ class Relatorios extends CI_Controller {
 
         if($this->docmodel->editar_documentos_log($idprotocolo)){
 
-            $retornar = array(
-                'descricao'     => "RETORNO SUSPENSÃO", 
-                'data_hora'     => date("Y-m-d H:i:s"),
-                'ultima_etapa'  => "true",
-                'usuario'       => $usuario_anterior,
-                'etapa'         => $etapa_anterior,
-                'documento'     => $idprotocolo
-            );
+            if ($usuario_anterior == 0) {
+                
+                $retornar1 = array(
+                    'descricao'     => "RETORNO SUSPENSÃO", 
+                    'data_hora'     => date("Y-m-d H:i:s"),
+                    'ultima_etapa'  => "false",
+                    'usuario'       => 0,
+                    'etapa'         => $etapa_anterior,
+                    'documento'     => $idprotocolo
+                );
+
+                $this->docmodel->cadastrar_log_documento($retornar1);
+
+                $retornar = array(
+                    'descricao'     => "PENDENTE", 
+                    'data_hora'     => date("Y-m-d H:i:s"),
+                    'ultima_etapa'  => "true",
+                    'usuario'       => 0,
+                    'etapa'         => $etapa_anterior,
+                    'documento'     => $idprotocolo
+                );
+
+                $mensagem = "pendente";
+
+            } else {
+
+                $retornar = array(
+                    'descricao'     => "RETORNO SUSPENSÃO", 
+                    'data_hora'     => date("Y-m-d H:i:s"),
+                    'ultima_etapa'  => "true",
+                    'usuario'       => $usuario_anterior,
+                    'etapa'         => $etapa_anterior,
+                    'documento'     => $idprotocolo
+                );
+
+                $mensagem = "retornado";
+
+            }
 
             if ($this->docmodel->cadastrar_log_documento($retornar)) {
-                
-                $mensagem = "retornado";
 
                 redirect("meus_documentos/".$mensagem);
 
             } else {
 
-                $mensagem = "error";
-
-                redirect("meus_documentos/".$mensagem);
+                redirect("meus_documentos/error");
                 
             }
 

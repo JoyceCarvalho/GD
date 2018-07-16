@@ -40,8 +40,8 @@
                                         <th>Documento<br/>/Grupo</th>
                                         <th>Prazo Documento</th>
                                         <th>Data de Criação</th>
-                                        <th>Data Suspensão</th>
-                                        <th>Responsável pela Suspensão</th>
+                                        <th>Data exigência</th>
+                                        <th>Responsável pela exigência</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -69,7 +69,7 @@
                                                 <td><?=$documentos->nome_usuario;?></td>
                                                 <td style="text-align: center;">
                                                     <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                    <a href="<?=base_url('reverte_suspensao/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Reverter Supensão</a><br/>
+                                                    <a href="<?=base_url('reverte_suspensao/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Exigência concluída</a><br/>
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
                                                     <?php 
                                                         $this->load->model('erros_model', 'errosmodel');

@@ -100,7 +100,7 @@
                                         <strong><?=$historico->etapa;?></strong>
                                         <br/>
 
-                                        <p>Responsável: <?=$nome;?></p>
+                                        <p><?=$nome;?></p>
                                         <p><?=$historico->data . ' - ' . $historico->hora;?></p>
                                         
                                         <?php
