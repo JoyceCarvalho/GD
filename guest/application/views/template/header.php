@@ -22,7 +22,7 @@
               <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
                 
                 <!-- Logout    -->
-                <li class="nav-item"><a href="<?=base_url('logout')?>" class="nav-link logout">Logout<i class="fa fa-sign-out"></i></a></li>
+                <li class="nav-item"><a href="http://localhost/GestaoDocumentos_CI/" class="nav-link logout">Voltar <i class="fa fa-backward"></i></a></li>
               </ul>
             </div>
           </div>

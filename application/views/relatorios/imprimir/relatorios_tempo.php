@@ -290,16 +290,28 @@ foreach ($informacoes_documento as $documento) {
             <!-- Fim do conteudo -->
         </div>
         <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/highcharts-3d.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="https://code.highcharts.com/modules/export-data.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script>
             Highcharts.chart('chart_etapa', {
                 chart: {
-                    type: 'column'
+                    type: 'column',
+                    options3d: {
+                        enabled: true,
+                        alpha: 10,
+                        beta: 25,
+                        depth: 70
+                    }
                 },
                 title: {
                     text: 'Tempo por etapa'
+                },
+                plotOptions: {
+                    column: {
+                        depth: 25
+                    }
                 },
                 xAxis: {
                     type: 'category',
@@ -314,7 +326,7 @@ foreach ($informacoes_documento as $documento) {
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Tempo médio'
+                        text: 'Hora:minuto'
                     }
                 },
                 legend: {
@@ -339,11 +351,11 @@ foreach ($informacoes_documento as $documento) {
                     ],
                     dataLabels: {
                         enabled: true,
-                        rotation: -90,
+                        //rotation: -90,
                         color: '#FFFFFF',
-                        align: 'right',
+                        align: 'center',
                         format: '{point.y:.2f}', // one decimal
-                        y: 10, // 10 pixels down from the top
+                        y: 5, // 10 pixels down from the top
                         style: {
                             fontSize: '13px',
                             fontFamily: 'Verdana, sans-serif'
@@ -354,10 +366,21 @@ foreach ($informacoes_documento as $documento) {
 
             Highcharts.chart('chart_resp', {
                 chart: {
-                    type: 'column'
+                    type: 'column',
+                    options3d: {
+                        enabled: true,
+                        alpha: 10,
+                        beta: 25,
+                        depth: 70
+                    }
                 },
                 title: {
                     text: 'Tempo por responsável'
+                },
+                plotOptions: {
+                    column: {
+                        depth: 25
+                    }
                 },
                 xAxis: {
                     type: 'category',
@@ -372,7 +395,7 @@ foreach ($informacoes_documento as $documento) {
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Tempo médio'
+                        text: 'Horas:minutos'
                     }
                 },
                 legend: {
@@ -397,11 +420,11 @@ foreach ($informacoes_documento as $documento) {
                     ],
                     dataLabels: {
                         enabled: true,
-                        rotation: -90,
+                        //rotation: -90,
                         color: '#FFFFFF',
-                        align: 'right',
+                        align: 'center',
                         format: '{point.y:.2f}', // one decimal
-                        y: 10, // 10 pixels down from the top
+                        y: 5, // 10 pixels down from the top
                         style: {
                             fontSize: '13px',
                             fontFamily: 'Verdana, sans-serif'
