@@ -155,6 +155,30 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método para listagem de documento por cargo
+     * Utilizado no controller relatorios/Imprimir.php 
+     *
+     * @param int $cargo
+     * @return object
+     */
+    public function documento_por_cargo($cargo){
+        $this->db->select("d.id as iddocumento, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
+        ldA.data_hora AS data_criacao, u.nome AS nome_usuario, dc.id as idprotocolo");
+        $this->db->from("tbdocumentos_cad AS dc");
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
+        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="cargo"');
+        $this->db->join("tbgrupo AS g", "g.id = d.fk_idgrupo");
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join("tbusuario as u", "u.fk_idcargos = c.fk_idcargo", 'left');
+        $this->db->where("c.fk_idcargo", $cargo);
+        $this->db->group_by("dc.id");
+        $this->db->order_by("ldA.data_hora asc");
+
+        return $this->db->get()->result();
+    }
+
+    /**
      * Método para pegar o id do documento
      * Utilizado no controller documento/Documento.php
      *

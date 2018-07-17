@@ -194,6 +194,7 @@ window.addEventListener("DOMContentLoaded", function() {
                             data += '</div>';
                             data += '<hr/>'
                         });
+                        data += '<a href="<?=base_url();?>imprimir_historico/'+id_pro+'" target="_blank" class="btn btn-sm btn-warning" style="color: white"><i class="fa fa-print"></i> Imprimir</a>';
                     } else {
                         reset();
                     }

@@ -194,6 +194,7 @@
                     <ul id="tempo_medio" class="collapse list-unstyled <?=($submenu == "tempo") ? "show" : "" ?>">
                       <li <?=((isset($sub)) && ($sub == "tempgeral")) ? "class='active'" : "" ?>><a href="<?=base_url("tempo_medio");?>"> Geral</a></li>
                       <li <?=((isset($sub)) && ($sub == "tempmensal")) ? "class='active'" : "" ?>><a href="<?=base_url("tempo_mensal");?>"> Mensal</a></li>
+                      <li <?=((isset($sub)) && ($sub == "tempocargo")) ? "class='active'" : ""?>><a href="<?=base_url("tempo_cargos")?>"> Cargos</a></li>
                     </ul>
                   </li>
                 <?php endif; ?>

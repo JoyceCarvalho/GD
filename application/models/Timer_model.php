@@ -188,4 +188,24 @@ class Timer_model extends CI_Model {
 
         return $this->db->get()->result();
     }
+
+    /**
+     * Método responsável por listar o tempo médio por cargos
+     * Utilizado na view relatorios/tempo_cargo.php
+     *
+     * @param int $idcargo
+     * @return object
+     */
+    public function tempo_documento_cargo($idcargo){
+        
+        $this->db->select("action, timestamp, fk_iddoccad as idprotocolo");
+        $this->db->from("tbtimer as t");
+        $this->db->join("tbusuario as u","u.id = t.fk_idusuario");
+        $this->db->join("tbcargos as c", "c.id = u.fk_idcargos");
+        $this->db->where("c.id", $idcargo);
+        $this->db->group_by("t.id");
+        $this->db->order_by("t.id");
+        
+        return $this->db->get()->result();
+    }
 }

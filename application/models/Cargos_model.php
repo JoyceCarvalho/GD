@@ -110,5 +110,27 @@ class Cargos_model extends CI_Model {
         return $this->db->get()->row('nome');
     }
 
+    /**
+     * Método responsável por retornar os cargos dos documentos trabalhado para saber o tempo médio de cada um
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int $empresa
+     * @return object
+     */
+    public function listar_cargos_tempo($empresa){
+        
+        $this->db->select("c.id as idcargo, c.titulo as cargo");
+        $this->db->from("tbcargos as c");
+        $this->db->join("tbcompetencias as comp", "c.id = comp.fk_idcargo");
+        $this->db->join("tbdocumentos_cad as dc", "comp.fk_iddocumento = dc.fk_iddocumento");
+        $this->db->join('tblog_documentos as ldA', 'dc.id = ldA.documento and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'dc.id = ldB.documento and ldB.descricao = "FINALIZADO"');
+        $this->db->where("c.fk_idempresa", $empresa);
+        $this->db->group_by("c.id");
+        $this->db->order_by("c.titulo asc");
+        
+        return $this->db->get()->result();
+    }
+
 
 }

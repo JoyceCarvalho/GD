@@ -83,6 +83,30 @@ class Relatorios extends CI_Controller {
 
     }
 
+    public function tempo_cargo(){
+
+        if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
+            redirect("/");
+        }
+
+        $dados["pagina"]    = "Relatório de tempo médio por cargo";
+        $dados["pg"]        = "relatorio";
+        $dados["submenu"]   = "tempo";
+        $dados["sub"]       = "tempocargo";
+
+        $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["doc_finalizados"] = $this->cargosmodel->listar_cargos_tempo($_SESSION["idempresa"]);
+
+        $this->load->view('template/html_header', $dados);
+        $this->load->view('template/header');
+        $this->load->view('template/menu');
+        $this->load->view('relatorios/tempo_cargo');
+        $this->load->view('template/footer');
+        $this->load->view('template/html_footer');
+
+
+    }
+
     public function produtividade_individual(){
 
         if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {

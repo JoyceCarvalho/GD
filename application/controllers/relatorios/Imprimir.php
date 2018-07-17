@@ -98,6 +98,32 @@ class Imprimir extends CI_Controller {
 
     }
 
+    public function imprimir_tempo_medio_cargo($cargo){
+
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+
+        $dados_cargo = $this->cargosmodel->dados_cargo($cargo);
+
+        foreach ($dados_cargo as $cargos) {
+            
+            if ($cargos->fk_idempresa == $_SESSION["idempresa"]) {
+                
+                $dados["dados_cargo"]           = $dados_cargo;
+                $dados["documento_trabalhados"] = $this->docmodel->documento_por_cargo($cargo);
+                $dados["tempo_medio"]           = $this->timermodel->tempo_documento_cargo($cargo);
+
+                $this->load->view("relatorios/imprimir/relatorios_tempo_cargo", $dados);
+
+            } else {
+
+                $this->load->view("errors/acesso_restrito");
+
+            }
+        }
+    }
+
     public function produtividade_relatorio($idusuario){
 
         if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
