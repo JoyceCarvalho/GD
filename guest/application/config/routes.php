@@ -53,22 +53,16 @@ $route['default_controller'] = 'login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-// Rotas referentes a empresa (Controle Administrador)
-$route['controle']                  = "admin/controle";
-$route['controle/cadempresa']       = "admin/controle/pagina_cadastro";
-$route['editar_empresa']            = "admin/controle/editar_empresa";
-$route['excluir_empresa']           = "admin/controle/excluir_empresa";
-$route['empresa_edit']              = "admin/controle/empresa_editar";
-$route['cadastrar_empresa']         = "admin/controle/cadastrar_empresa";
-$route['alt_empresa']               = "admin/controle/altera_dadosempresa";
+// Rotas referentes a empresa
+$route['alt_empresa'] = "admin/controle/altera_dadosempresa";
 
 //Rota de alteração de senha (Controller Usuario.php)
 $route["alterar_senha"]  = "usuario/alterar_senha";
 
 // Rotas referentes ao login
 $route["acesso/(:num)/(:num)"] = "login/acesso/$1/$2";
-$route['login_auth'] = "login/login";
-$route['logout']     = "login/logout";
+$route['login_auth']           = "login/login";
+$route['logout']               = "login/logout";
 
 // Rotas referentes aos usuarios
 $route['cad_usuario']      = "usuario/cadastro_usuario";

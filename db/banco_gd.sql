@@ -112,7 +112,7 @@ CREATE TABLE `tbusuario` (
 --
 
 INSERT INTO `tbusuario` (`id`, `nome`, `email`, `usuario`, `senha`, `ativo`, `fk_idempresa`, `fk_idcargos`, `fk_idhorariotrab`) VALUES
-(1, 'Administrador', 'suporte@sgtgestaoetecnologia.com.br', 'admin', 'c01e3f8be69ece3c1f34df2d66c2dfea3bafebba', 1, 1, 1, 1);
+(1, 'Administrador Master', 'suporte@sgtgestaoetecnologia.com.br', 'admin', 'c01e3f8be69ece3c1f34df2d66c2dfea3bafebba', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
