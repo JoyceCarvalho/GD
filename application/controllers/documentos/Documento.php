@@ -255,6 +255,34 @@ class Documento extends CI_Controller {
                 
                 if($documento_log2){
 
+                    /**
+                     * Envio de email
+                     */
+                    require_once(dirname(__FILE__)."/Email.php");
+
+                    $this->enviaEmail = new Email();
+
+                    $dados = $this->docmodel->dados_documento_cad($iddocumento);
+                    $usuario = $this->docmodel->retorna_email_usuario($idMostraDirecionamento);
+
+                    foreach ($dados as $doc) {
+                        
+                        $email = array(
+                            'tipo'      => 'novo',
+                            'protocolo' => $doc->protocolo,
+                            'documento' => $doc->documento_nome,
+                            'email'     => $usuario->usuario_nome,
+                            'nome'      => $usuairo->email_usuario
+                        );
+                        
+                    }
+
+                    $this->enviaEmail->EnviarEmail($email);
+
+                    /**
+                     * Fim do envio de email
+                     */
+
                     $data->success = "Documento de protocolo ".$this->input->post('protocolo')." cadastrado com sucesso!";
     
                     $dados["pagina"]    = "Novo Documento";

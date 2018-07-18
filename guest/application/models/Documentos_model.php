@@ -816,6 +816,23 @@ class Documentos_model extends CI_Model {
         return $this->db->get('')->row();
 
     }
+ 
+    /**
+     * Método responsável por retornar email e usuario que recebeu o documento
+     * Utilizado em todos os controller da pasta documentos
+     *
+     * @param int $protocolo
+     * @return object
+     */
+    public function retorna_email_usuario($protocolo){
+        $this->db->select("u.nome as usuario_nome, u.email as email_usuario");
+        $this->db->from("tblog_documentos as ld");
+        $this->db->join("tbusuario as u", "u.id = ld.usuario");
+        $this->db->where("ld.ultima_etapa = 'true'");
+        $this->db->where("ld.documento", $protocolo);
+        $this->db->limit(1);
+        return $this->db->get()->row();
+    }
 
     /**
      * Método responsável por retornar o usuario responsável pelo documento cadastrado
