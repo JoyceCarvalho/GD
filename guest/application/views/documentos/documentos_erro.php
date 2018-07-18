@@ -106,15 +106,6 @@
 
                 <div class="modal-body" id="historico_documento"></div>
                 
-                <form action="<?=base_url('cancelar_documento');?>" method="post" id="cancelamento">
-                    
-                    <div class="modal-body" id="conteudo">                                                
-                        <div class="form-group">
-                            <p> Não há informações disponíveis no momento. Caso o problema persista entre em contato com o suporte. </p>
-                        </div>
-                    </div>
-
-                </form>
 
                 <form action="<?=base_url('observacao_cad');?>" method="post" id="observacao">
                     <div class="modal-body" id="obs"></div>
@@ -157,7 +148,7 @@ window.addEventListener("DOMContentLoaded", function() {
                         reset();
                     }
                     $('#exampleModalLabel').html(titulo).show();
-                    $('#conteudo').html(body).show();
+                    $('#his_conteudo').html(body).show();
                 });
 
                 $.getJSON('<?=base_url();?>'+'historico/'+id_pro, function (dados){
