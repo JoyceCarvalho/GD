@@ -107,7 +107,7 @@ class Login extends CI_Controller {
     if (isset($_SESSION['logado']) && $_SESSION['logado'] === true) {
 
       // remove session datas
-      foreach ($_SESSION as $key => $value) {
+      foreach ($_SESSION as $key) {
         unset($_SESSION[$key]);
       }
 
