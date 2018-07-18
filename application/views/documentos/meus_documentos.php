@@ -353,12 +353,6 @@ window.addEventListener("DOMContentLoaded", function() {
 			};
             //console.log(id_pro);
             //console.log(format(++tempo));
-
-			//alert(id_pro);
-
-			//$(window).load(function(){ alert("here");
-
-			//var protocol = ($(this).val()); { pro: protocol }
 		
 			$.post('get_time', { pro: id_pro }, function(resp){
 				$('#post_'+id_pro).text(resp.running ? 'Pausar' : 'Iniciar');

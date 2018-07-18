@@ -43,10 +43,7 @@ $this->load->model('cargos_model', 'cargosmodel');
                                 ?>
                             </div>
                             <div class="col-4">
-                                <!--<b>Invoice #007612</b><br>
-                                <br><b>Order ID:</b> 4F3S8J<br>
-                                <b>Payment Due:</b> 2/22/2014<br>
-                                <b>Account:</b> 968-34567-->
+                            
                             </div>
                             <div class="col-4">Empresa
                                 <?php

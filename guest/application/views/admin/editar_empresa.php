@@ -1,10 +1,3 @@
-<!-- Breadcrumb-->
-<!--<div class="breadcrumb-holder container-fluid">
-<ul class="breadcrumb">
-  <li class="breadcrumb-item"><a href="<?=base_url('controle/');?>">Listar Empresas</a></li>
-  <li class="breadcrumb-item active">Editar Empresa </li>
-</ul>
-</div>-->
 <!-- Forms Section-->
 <section class="forms">
     <div class="container-fluid">
@@ -64,39 +57,8 @@
                                         </div>
                                     </div>
                                 <div class="line"></div>
-                                    <?php
-                                }
-                            /* Retirada de edição de coordenador (Não há necessidade para permanecer aqui)
-                            ?>
-                            <h1>Coordenador</h1>
-                            <?php
-                            $i = 0;
-                            foreach ($dados_coordenador as $coordenador) {
-                              $i++;
-                              $idcoordenador = $coordenador->id;
-                                ?>
-                                <input type="hidden" name="id_coordenador[<?=$i;?>]" value="<?=$coordenador->id;?>">
-                                <div class="form-group row">
-                                    <label class="col-sm-3 form-control-label">Nome Completo:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="nome[<?=$i;?>]" class="form-control" value="<?=$coordenador->nome;?>">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 form-control-label">Email:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="email[<?=$i;?>]" class="form-control" value="<?=$coordenador->email;?>">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 form-control-label">Usuário:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="usuario[<?=$i;?>]" class="form-control" value="<?=$coordenador->usuario;?>">
-                                    </div>
-                                </div>
-
                                 <?php
-                            }*/
+                            }
                             ?>
                             <div class="line"></div>
 

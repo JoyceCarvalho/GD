@@ -1,5 +1,6 @@
     
-    <!-- por alguma razão q eu desconheço esse script funciona apenas quando inserido aqui se colocar em um arquivo .js ele não funciona, mas fica por sua conta e risco '\_(>.<)_/` -->
+    <!-- por alguma razão q eu desconheço esse script funciona apenas quando inserido aqui se colocar em um arquivo .js ele não funciona, 
+    mas fica por sua conta e risco '\_(>.<)_/` -->
     <script>
       $(document).ready(function(){
 

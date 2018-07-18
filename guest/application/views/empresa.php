@@ -1,14 +1,5 @@
-<!-- Breadcrumb-->
-<!--<div class="breadcrumb-holder container-fluid">
-  <ul class="breadcrumb">
-    <li class="breadcrumb-item"><a href="<?=base_url();?>">Página Inicial</a></li>
-    <li class="breadcrumb-item active">Dados da Empresa </li>
-  </ul>
-</div>-->
-<!-- Forms Section-->
 <section class="forms">
   <div class="container-fluid">
-
     <?php if (validation_errors()) : ?>
       <div class="col-md-12">
         <div class="alert alert-danger" role="alert">
@@ -38,7 +29,6 @@
             <h3 class="h4">Empresa</h3>
           </div>
           <div class="card-body">
-            <!--<form method="post" action="<?//=base_url('alt_empresa');?>" class="form-horizontal">-->
             <?php
             echo form_open_multipart('alt_empresa');
               foreach ($empresa as $dados) {

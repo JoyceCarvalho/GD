@@ -1,5 +1,4 @@
-<section class="tables">   
-
+<section class="tables"> 
     <div class="container-fluid">
         <?php if (validation_errors()) : ?>
             <div class="col-md-12">
