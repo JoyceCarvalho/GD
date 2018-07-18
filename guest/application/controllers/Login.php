@@ -26,7 +26,7 @@ class Login extends CI_Controller {
     $user           = $this->user_model->get_user($usuario);
     $coordenador    = $this->user_model->is_coordenador($usuario);
 
-    print_r($user);
+    //print_r($user);
 
     // set session user datas
     $_SESSION['idusuario']          = (int)$usuario;
