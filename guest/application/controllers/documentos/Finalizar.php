@@ -49,7 +49,7 @@ class Finalizar extends CI_Controller {
         $etapa = $dados->etapa;
 
         //Trecho de código adaptado do primeiro sistema de Gestão de Documentos criado por Maykel Uroda
-        $horario = $this->horasmodel->verifica_horario($_SESSION["guest_empresa"]);
+        $horario = $this->horasmodel->verifica_horario($_SESSION["idempresa"]);
 
         $primeiro_turno_inicio  = $horario->manha_entrada;
         $primeiro_turno_fim     = $horario->manha_saida;
@@ -240,15 +240,13 @@ class Finalizar extends CI_Controller {
 
                 if($this->docmodel->cadastrar_log_documento($finalizado)){
                     
-                    $mensagem = "finalizado";
-
-                    redirect("meus_documentos/".$mensagem);
+                    $this->session->set_flashdata('success','Documento finalizado com sucesso!');
+                    redirect("meusdocumentos");
 
                 } else {
 
-                    $mensagem = "error";
-
-                    redirect("meus_documentos/".$mensagem);
+                    $this->session->set_flashdata('error', 'Ocorreu um problema ao finalizar o documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
+                    redirect("meusdocumentos");
                 }
             }
         }

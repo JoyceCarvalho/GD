@@ -25,11 +25,11 @@ class Relatorios extends CI_Controller {
         $dados["pg"]      = "documentos";
         $dados["submenu"] = "andamento";
 
-        $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+        $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
         if (($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)) {
 
-            $dados["andamento_doc_c"] = $this->docmodel->listar_documentos_em_andamento($_SESSION["guest_empresa"]);
+            $dados["andamento_doc_c"] = $this->docmodel->listar_documentos_em_andamento($_SESSION["idempresa"]);
 
         } else {
 
@@ -57,8 +57,8 @@ class Relatorios extends CI_Controller {
         $dados["pg"]      = "documentos";
         $dados["submenu"] = "com_erro";
 
-        $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-        $dados["documentos_erro"] = $this->docmodel->listar_documentos_com_erros($_SESSION["guest_empresa"]);
+        $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["documentos_erro"] = $this->docmodel->listar_documentos_com_erros($_SESSION["idempresa"]);
 
         $this->load->view("template/html_header", $dados);
         $this->load->view("template/header");
@@ -78,8 +78,8 @@ class Relatorios extends CI_Controller {
         $dados["pg"]      = "documentos";
         $dados["submenu"] = "cancelados";
 
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-        $dados["doc_cancelados"] = $this->docmodel->listar_documentos_cancelados($_SESSION["guest_empresa"]);
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["doc_cancelados"] = $this->docmodel->listar_documentos_cancelados($_SESSION["idempresa"]);
 
 
         $this->load->view('template/html_header', $dados);
@@ -100,8 +100,8 @@ class Relatorios extends CI_Controller {
         $dados["pg"]      = "documentos";
         $dados["submenu"] = "suspensos";
 
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-        $dados["doc_suspensos"] = $this->docmodel->listar_documentos_suspensos($_SESSION["guest_empresa"]);
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["doc_suspensos"] = $this->docmodel->listar_documentos_suspensos($_SESSION["idempresa"]);
 
 
         $this->load->view('template/html_header', $dados);
@@ -122,8 +122,8 @@ class Relatorios extends CI_Controller {
         $dados["pg"]        = "documentos";
         $dados["submenu"]   = "pendente";
 
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-        $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["guest_empresa"]);
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["idempresa"]);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
@@ -164,6 +164,8 @@ class Relatorios extends CI_Controller {
         if($this->docmodel->editar_documentos_log($idprotocolo)){
 
             if ($usuario_anterior == 0) {
+
+                $status = "Pendente";
                 
                 $retornar1 = array(
                     'descricao'     => "RETORNO SUSPENSÃO", 
@@ -189,6 +191,8 @@ class Relatorios extends CI_Controller {
 
             } else {
 
+                $status = "retorno";
+
                 $retornar = array(
                     'descricao'     => "RETORNO SUSPENSÃO", 
                     'data_hora'     => date("Y-m-d H:i:s"),
@@ -204,11 +208,61 @@ class Relatorios extends CI_Controller {
 
             if ($this->docmodel->cadastrar_log_documento($retornar)) {
 
-                redirect("meus_documentos/".$mensagem);
+                 /**
+                 * Envio de email
+                 */
+                $this->load->model('email_model', 'emailmodel');
+
+                $dados = $this->docmodel->dados_documento_cad($idprotocolo);
+                $usuario = $this->docmodel->retorna_email_usuario($idprotocolo);
+            
+                if ($usuario) {
+                    
+                    foreach ($dados as $doc) {
+                    
+                        $enviar = array(
+                            'tipo'      => 'retorno',
+                            'protocolo' => $doc->protocolo,
+                            'documento' => $doc->documento_nome,
+                            'email'     => $usuario->email_usuario,
+                            'usuario'   => $usuario->usuario_nome,
+                            'status'    => $status
+                        );
+                        
+                    }
+
+                } else {
+
+                    $responsavel = $this->docmodel->retorna_email_responsavel($idprotocolo);
+
+                    foreach ($dados as $doc) {
+                    
+                        $enviar = array(
+                            'tipo'      => 'retorno',
+                            'protocolo' => $doc->protocolo,
+                            'documento' => $doc->documento_nome,
+                            'email'     => $responsavel->email_usuario,
+                            'usuario'   => $responsavel->usuario_nome,
+                            'status'    => $status
+                        );
+                        
+                    }
+
+                }
+
+                $this->emailmodel->enviar_email($enviar);
+
+                /**
+                 * Fim do envio de email
+                 */
+
+                $this->session->set_flashdata('success', 'Documento com exigência concluída!');
+                redirect("meusdocumentos");
 
             } else {
 
-                redirect("meus_documentos/error");
+                $this->session->set_flashdata('error', 'Ocorreu um problema ao transferir o documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
+                redirect("meusdocumentos");
                 
             }
 
@@ -242,14 +296,40 @@ class Relatorios extends CI_Controller {
 
         if($this->docmodel->cadastrar_log_documento($documento)){
 
+            /**
+             * Envio de email
+             */
+            $this->load->model('email_model', 'emailmodel');
+
+            $dados = $this->docmodel->dados_documento_cad($idprotocolo);
+            $usuario = $this->docmodel->retorna_email_usuario($idprotocolo);
+
+
+            foreach ($dados as $doc) {
+                
+                $enviar = array(
+                    'tipo'      => 'novo',
+                    'protocolo' => $doc->protocolo,
+                    'documento' => $doc->documento_nome,
+                    'email'     => $usuario->email_usuario,
+                    'usuario'   => $usuario->usuario_nome
+                );
+                
+            }
+            $this->emailmodel->enviar_email($enviar);
+
+            /**
+             * Fim do envio de email
+             */
+
             $data->success = "Documento tranferido com sucesso";
 
             $dados["pagina"]    = "Documentos Pendentes";
             $dados["pg"]        = "documentos";
             $dados["submenu"]   = "pendente";
 
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-            $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["guest_empresa"]);
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["idempresa"]);
 
             $this->load->view("template/html_header", $dados);
             $this->load->view("template/header");
@@ -266,8 +346,8 @@ class Relatorios extends CI_Controller {
             $dados["pg"]      = "documentos";
             $dados["submenu"] = "pendente";
 
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-            $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["guest_empresa"]);
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["idempresa"]);
 
             $this->load->view("template/html_header", $dados);
             $this->load->view("template/header");
@@ -282,7 +362,7 @@ class Relatorios extends CI_Controller {
 
     public function tranferencia_documento(){
     
-        echo $this->usermodel->usuarios_disponiveis($_SESSION["guest_empresa"]);
+        echo $this->usermodel->usuarios_disponiveis($_SESSION["idempresa"]);
 
     }
 

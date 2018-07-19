@@ -52,7 +52,7 @@ class Transferencia extends CI_Controller {
         $etapa = $dados->etapa;
 
         
-        $horario = $this->horasmodel->verifica_horario($_SESSION["guest_empresa"]);
+        $horario = $this->horasmodel->verifica_horario($_SESSION["idempresa"]);
 
         $primeiro_turno_inicio  = $horario->manha_entrada;
         $primeiro_turno_fim     = $horario->manha_saida;
@@ -380,7 +380,7 @@ class Transferencia extends CI_Controller {
                             'documento' => $idprotocolo
                         );
 
-                        print_r($transfereProximaEtapa);
+                        //print_r($transfereProximaEtapa);
 
                         $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
 
@@ -396,21 +396,46 @@ class Transferencia extends CI_Controller {
 
         if(!empty($idMostraDirecionamento)){
 
-            $mensagem = "transferido";
+             /**
+              * Envio de email
+              */
+            $this->load->model('email_model', 'emailmodel');
+
+            $dados = $this->docmodel->dados_documento_cad($idprotocolo);
+            $usuario = $this->docmodel->retorna_email_usuario($idprotocolo);
+
+
+            foreach ($dados as $doc) {
+                
+                $enviar = array(
+                    'tipo'      => 'novo',
+                    'protocolo' => $doc->protocolo,
+                    'documento' => $doc->documento_nome,
+                    'email'     => $usuario->email_usuario,
+                    'usuario'   => $usuario->usuario_nome
+                );
+                
+            }
+            $this->emailmodel->enviar_email($enviar);
+
+            /**
+             * Fim do envio de email
+             */
+
+            $this->session->set_flashdata('success','Documento transferido com sucesso!');            
             
-            redirect("meus_documentos/".$mensagem);
+            redirect("meusdocumentos");
 
         } elseif($pendencia == true){
             
-            $mensagem = "pendente";
+            $this->session->set_flashdata('warning', 'Documento tranferido com suscesso! Etapa atual pendente!');
 
-            redirect("meus_documentos/".$mensagem);
+            redirect("meusdocumentos");
 
         }else {
 
-            $mensagem = "error";
-
-            redirect("meus_documentos/".$mensagem);
+            $this->session->set_flashdata('error', 'Ocorreu um problema ao transferir o documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
+            redirect("meusdocumentos");
 
         }
 
@@ -456,16 +481,41 @@ class Transferencia extends CI_Controller {
             );
 
             if ($this->docmodel->cadastrar_log_documento($retornar)) {
-                
-                $mensagem = "retornado";
 
-                redirect("meus_documentos/".$mensagem);
+                 /**
+                 * Envio de email
+                 */
+                $this->load->model('email_model', 'emailmodel');
+
+                $dados = $this->docmodel->dados_documento_cad($idprotocolo);
+                $usuario = $this->docmodel->retorna_email_usuario($idprotocolo);
+
+
+                foreach ($dados as $doc) {
+                    
+                    $enviar = array(
+                        'tipo'      => 'retorno',
+                        'protocolo' => $doc->protocolo,
+                        'documento' => $doc->documento_nome,
+                        'email'     => $usuario->email_usuario,
+                        'usuario'   => $usuario->usuario_nome
+                    );
+                    
+                }
+                $this->emailmodel->enviar_email($enviar);
+
+                /**
+                 * Fim do envio de email
+                 */
+                
+                $this->session->set_flashdata("success", "Documento retornado para a etapa anterior!");
+
+                redirect("meusdocumentos");
 
             } else {
 
-                $mensagem = "error";
-
-                redirect("meus_documentos/".$mensagem);
+                $this->session->set_flashdata('error', 'Ocorreu um problema ao transferir o documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
+                redirect("meusdocumentos");
                 
             }
 
@@ -508,16 +558,40 @@ class Transferencia extends CI_Controller {
             );
 
             if ($this->docmodel->cadastrar_log_documento($dados)) {
-                
-                $mensagem = "suspenso";
 
-                redirect("meus_documentos/".$mensagem);
+                 /**
+                 * Envio de email
+                 */
+                $this->load->model('email_model', 'emailmodel');
+
+                $dados = $this->docmodel->dados_documento_cad($idprotocolo);
+                $usuario = $this->docmodel->retorna_email_usuario($idprotocolo);
+
+
+                foreach ($dados as $doc) {
+                    
+                    $enviar = array(
+                        'tipo'      => 'suspenso',
+                        'protocolo' => $doc->protocolo,
+                        'documento' => $doc->documento_nome,
+                        'email'     => $usuario->email_usuario,
+                        'usuario'   => $usuario->usuario_nome
+                    );
+                    
+                }
+                $this->emailmodel->enviar_email($enviar);
+
+                /**
+                 * Fim do envio de email
+                 */
+                
+                $this->session->set_flashdata('success', 'Documento aguardando exigência!');
+                redirect("meusdocumentos");
 
             } else {
                 
-                $mensagem = "error";
-                
-                redirect("meus_documentos/".$mensagem);
+                $this->session->set_flashdata('error', 'Ocorreu um problema ao transferir o documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
+                redirect("meusdocumentos");
             }
 
         }

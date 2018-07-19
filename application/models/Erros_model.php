@@ -91,6 +91,21 @@ class Erros_model extends CI_Model {
      * @param int $id
      * @return object
      */
+    public function detalhes_erro($id){
+        $this->db->select('e.id as id, e.titulo as titulo, et.titulo as tipo');
+        $this->db->from('tberros as e');
+        $this->db->join('tberros_tipo as et', 'et.id = e.fk_idtipo');
+        $this->db->where('e.id = ', $id);
+        return $this->db->get()->row();
+    }
+
+    /**
+     * Método para retorno de dados de um determinadoerro
+     * Utilizado no controller conf/Erros.php
+     *
+     * @param int $id
+     * @return object
+     */
     public function dados_erro($id){
         $this->db->from('tberros');
         $this->db->where('id = ', $id);

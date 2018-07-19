@@ -240,15 +240,13 @@ class Finalizar extends CI_Controller {
 
                 if($this->docmodel->cadastrar_log_documento($finalizado)){
                     
-                    $mensagem = "finalizado";
-
-                    redirect("meus_documentos/".$mensagem);
+                    $this->session->set_flashdata('success','Documento finalizado com sucesso!');
+                    redirect("meusdocumentos");
 
                 } else {
 
-                    $mensagem = "error";
-
-                    redirect("meus_documentos/".$mensagem);
+                    $this->session->set_flashdata('error', 'Ocorreu um problema ao finalizar o documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
+                    redirect("meusdocumentos");
                 }
             }
         }

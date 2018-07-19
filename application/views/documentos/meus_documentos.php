@@ -1,14 +1,4 @@
-
-<!-- Breadcrumb-->
-<!--<div class="breadcrumb-holder container-fluid">
-    <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="<?=base_url("home");?>">Página Inicial</a></li>
-        <li class="breadcrumb-item active"> Meus Documentos</li>
-    </ul>
-</div>-->
-
 <section class="tables">   
-
     <div class="container-fluid">
         <?php if (validation_errors()) : ?>
             <div class="col-md-12">
@@ -17,24 +7,24 @@
                 </div>
             </div>
         <?php endif; ?>
-        <?php if (isset($error)) : ?>
+        <?php if ($this->session->flashdata('error') == TRUE) : ?>
             <div class="col-md-12">
                 <div class="alert alert-danger" role="alert">
-                    <?= $error ?>
+                    <?= $this->session->flashdata('error'); ?>
                 </div>
             </div>
         <?php endif; ?>
-        <?php if (isset($success)) : ?>
+        <?php if ($this->session->flashdata('success') == TRUE) : ?>
             <div class="col-md-12">
                 <div class="alert alert-success" role="alert">
-                    <?= $success ?>
+                    <?= $this->session->flashdata('success'); ?>
                 </div>
             </div>
         <?php endif; ?>
-        <?php if(isset($warning)): ?>
+        <?php if($this->session->flashdata('warning') == TRUE): ?>
             <div class="col-md-12">
                 <div class="alert alert-warning" role="alert">
-                    <?=$warning;?>
+                    <?=$this->session->flashdata('warning');?>
                 </div>
             </div>
         <?php endif; ?>

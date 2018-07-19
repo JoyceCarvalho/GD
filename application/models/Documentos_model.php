@@ -95,7 +95,7 @@ class Documentos_model extends CI_Model {
 
     /**
      * Método para retornar os dados do documento a ser editado
-     * Utilizado no controller documentos/Documento.php
+     * Utilizado em todos os controllers da pasta documentos
      *
      * @param int $id
      * @return object
@@ -833,6 +833,23 @@ class Documentos_model extends CI_Model {
         $this->db->where("ld.documento", $protocolo);
         $this->db->limit(1);
         return $this->db->get()->row();
+    }
+
+    /**
+     * Método responsável por retornar o email e nome do usuario que criou determinado documento
+     * Utilizado no controller documentos/Relatorios.php
+     *
+     * @param int $protocolo
+     * @return object
+     */
+    public function retorna_email_responsavel($protocolo){
+        $this->db->select("u.nome as usuario_nome, u.email as email_usaurio");
+        $this->db->from('tblog_documentos as ld');
+        $this->db->join('tbusuario as u', 'u.id = ld.usuario');
+        $this->db->where('ld.descricao = "CRIADO"');
+        $this->db->where('ld.documento', $protocolo);
+        $this->db->limit(1);
+        return $this->db->get->row();
     }
 
     /**

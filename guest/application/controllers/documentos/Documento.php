@@ -28,8 +28,8 @@ class Documento extends CI_Controller {
             $dados["pg"] = "";
             $dados["submenu"] = "novodoc";
 
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-            $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
 
             $this->load->view("template/html_header", $dados);
             $this->load->view('template/header');
@@ -255,14 +255,40 @@ class Documento extends CI_Controller {
                 
                 if($documento_log2){
 
+                    /**
+                     * Envio de email
+                     */
+                    $this->load->model('email_model', 'emailmodel');
+
+                    $dados = $this->docmodel->dados_documento_cad($iddocumento);
+                    $usuario = $this->docmodel->retorna_email_usuario($iddocumento);
+
+
+                    foreach ($dados as $doc) {
+                        
+                        $enviar = array(
+                            'tipo'      => 'novo',
+                            'protocolo' => $doc->protocolo,
+                            'documento' => $doc->documento_nome,
+                            'email'     => $usuario->email_usuario,
+                            'usuario'   => $usuario->usuario_nome
+                        );
+                        
+                    }
+                    $this->emailmodel->enviar_email($enviar);
+
+                    /**
+                     * Fim do envio de email
+                     */
+
                     $data->success = "Documento de protocolo ".$this->input->post('protocolo')." cadastrado com sucesso!";
     
                     $dados["pagina"]    = "Novo Documento";
                     $dados["pg"]        = "documentos";
                     $dados["submenu"]   = "novodoc";
     
-                    $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-                    $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
+                    $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                    $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
     
                     $this->load->view("template/html_header", $dados);
                     $this->load->view('template/header');
@@ -280,7 +306,6 @@ class Documento extends CI_Controller {
                     );
                     $this->logsistema->cadastrar_log_sistema($log2);
                     //fim log sistema
-
                 } else {
     
                     $data->error = "Ocorreu um problema ao cadastra os dados! Favor entre em contato com o suporte e tente novamente mais tarde.";
@@ -289,8 +314,8 @@ class Documento extends CI_Controller {
                     $dados["pg"]        = "documentos";
                     $dados["submenu"]   = "novodoc";
     
-                    $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-                    $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
+                    $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                    $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
     
                     $this->load->view("template/html_header", $dados);
                     $this->load->view('template/header');
@@ -307,8 +332,8 @@ class Documento extends CI_Controller {
                 $dados["pg"]        = "documentos";
                 $dados["submenu"]   = "novodoc";
 
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-                $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
+                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
 
                 $this->load->view("template/html_header", $dados);
                 $this->load->view('template/header');
@@ -353,8 +378,8 @@ class Documento extends CI_Controller {
         $dados["pg"] = "documentos";
         $dados["submenu"] = "novodoc";
 
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-        $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);;
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
         $dados["dados_documento"] = $this->docmodel->dados_documento_cad($idprotocolo);
 
         $this->load->view("template/html_header", $dados);
@@ -409,8 +434,8 @@ class Documento extends CI_Controller {
                 $dados["pg"]        = "documentos";
                 $dados["submenu"]   = "novodoc";
 
-                $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-                $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);;
+                $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
                 $dados["dados_documento"] = $this->docmodel->dados_documento_cad($idprotocolo);
 
                 $this->load->view("template/html_header", $dados);
@@ -428,8 +453,8 @@ class Documento extends CI_Controller {
                 $dados["pg"]      = "documentos";
                 $dados["submenu"] = "novodoc";
 
-                $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-                $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);;
+                $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
                 $dados["dados_documento"] = $this->docmodel->dados_documento_cad($idprotocolo);
 
                 $this->load->view("template/html_header", $dados);
@@ -454,7 +479,7 @@ class Documento extends CI_Controller {
             $dados["pg"]        = "documentos";
             $dados["submenu"]   = "meusdocs";
 
-            $dados["nome_empresa"]       = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados["nome_empresa"]       = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["documentos_cargo"]   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
             $dados["documentos_usuario"] = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
             
@@ -495,7 +520,7 @@ class Documento extends CI_Controller {
             $dados["pg"]        = "documentos";
             $dados["submenu"]   = "meusdocs";
 
-            $dados["nome_empresa"]       = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados["nome_empresa"]       = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["documentos_cargo"]   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
             $dados["documentos_usuario"] = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
             
@@ -543,27 +568,54 @@ class Documento extends CI_Controller {
                 );  
 
                 if ($this->docmodel->cadastrar_cancelamento($dados)) {
-                    
-                    $mensagem = "cancelado";
 
-                    redirect("meus_documentos/".$mensagem);
+                    /**
+                     * Envio de email
+                     */
+                    $this->load->model('email_model', 'emailmodel');
+
+                    $documento = $this->docmodel->dados_documento_cad($idprotocolo);
+                    $usuario = $this->docmodel->retorna_email_usuario($idprotocolo);
+
+
+                    foreach ($documento as $doc) {
+                        
+                        $enviar = array(
+                            'tipo'      => 'cancelado',
+                            'protocolo' => $doc->protocolo,
+                            'documento' => $doc->documento_nome,
+                            'email'     => $usuario->email_usuario,
+                            'usuario'   => $usuario->usuario_nome,
+                            'motivo'    => $this->input->post("motivo")
+                        );
+                        
+                    }
+                    $this->emailmodel->enviar_email($enviar);
+
+                    /**
+                     * Fim do envio de email
+                     */
+                    
+                    $this->session->set_flashdata('success', 'Documento cancelado!');
+                    redirect("meusdocumentos");
 
                 } else {
 
-                    $mensagem = "error";
-
-                    redirect("meus_documentos/".$mensagem);
+                    $this->session->set_flashdata('error', 'Ocorreu um problama ao cancelar o documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
+                    redirect("meusdocumentos");
 
                 }
             } else {
 
-                redirect("meus_documentos/error");
+                $this->session->set_flashdata('error', 'Ocorreu um problama ao cancelar o documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
+                redirect("meusdocumentos");
 
             }
 
         } else {
             
-            redirect("meus_documentos/error");
+            $this->session->set_flashdata('error', 'Ocorreu um problama ao cancelar o documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
+            redirect("meusdocumentos");
             
         }
         
@@ -586,10 +638,12 @@ class Documento extends CI_Controller {
 
         if ($this->docmodel->cadastrar_observacao($obs)) {
             
-            redirect("meus_documentos/anotado");
+            $this->session->set_flashdata('success', 'Observação cadastrada com sucesso!');
+            redirect("meusdocumentos");
 
         } else {
-            redirect('meus_documentos/error');
+            $this->session->set_flashdata('error', 'Ocorreu um problema ao cadastrar a observação do documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
+            redirect('meusdocumentos');
         }
 
     }

@@ -24,8 +24,12 @@
                         </div>
                         <div class="row">
                             <div class="col-12 table-responsive">
-                                <p>Um novo documento foi recebido para execução!</p>
-                                <p>Protocolo: <?=$protocolo;?> <br/> Documento: <?=$documento;?><br/> Responsável: <?=$usuario;?></p>
+                                <p>O documento <strong><?=$documento;?></strong> de protocolo <strong><?=$protocolo;?></strong> concluiu exigẽncia!</p>
+                                <?php if($status == "retorno"): ?>
+                                    <p>Retornou para <?=$usaurio;?> concluir a execução.</p>
+                                <?php else:?>
+                                    <p>Retornou com status <strong>pendente <strong></p>
+                                <?php endif; ?>
                                 <br/>
                                 <a href="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/meusdocumentos">Acesse o Gestão de Documentos para visualizar o documento completo!</a>
                             </div>
