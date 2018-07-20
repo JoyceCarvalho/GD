@@ -260,6 +260,18 @@ class Transferencia extends CI_Controller {
 
                    $this->docmodel->cadastrar_log_documento($pendente);
 
+                   $this->load->model('timer_model', 'timermodel');
+
+                   $dados = array(
+                        'fk_iddoccad'   => $idprotocolo,
+                        'fk_idetapa'    => $proxima_etapa,
+                        'action'        => "start",
+                        'timestamp'     => time(),
+                        'observacao'    => "PENDENTE"
+                    );
+            
+                    $this->timermodel->cadastrar_tempo($dados);
+
                 } else {
 
                     //echo "Id documento: ". $id_documento. "<br/>";
@@ -584,6 +596,24 @@ class Transferencia extends CI_Controller {
                 /**
                  * Fim do envio de email
                  */
+
+                $this->load->model('timer_model', 'timermodel');
+
+                $etapa_atual = $this->docmodel->etapa_documento($idprotocolo);
+
+                $anterior = $this->docmodel->etapa_anterior($idprotocolo, $etapa_atual);
+
+                $etapa_anterior = $anterior->etapa;
+                
+                $dados = array(
+                    'fk_iddoccad'   => $idprotocolo,
+                    'fk_idetapa'    => $etapa_anterior,
+                    'action'        => "start",
+                    'timestamp'     => time(),
+                    'observacao'    => "SUSPENSO"
+                );
+        
+                $this->timermodel->cadastrar_tempo($dados);
                 
                 $this->session->set_flashdata('success', 'Documento aguardando exigência!');
                 redirect("meusdocumentos");
@@ -598,4 +628,4 @@ class Transferencia extends CI_Controller {
 
     }
 
-}
+} 

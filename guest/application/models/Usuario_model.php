@@ -78,6 +78,7 @@ class Usuario_model extends CI_Model {
         $this->db->where("e.cliente_code = '{$cliente_code}'");
         $this->db->where("u.usuario = '{$usuario}'");
         $this->db->where("u.senha = '{$senha}'");
+        $this->db->where('u.ativo = 1');
 
         return $this->db->get('')->result();
 

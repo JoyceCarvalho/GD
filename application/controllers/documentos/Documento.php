@@ -124,6 +124,18 @@ class Documento extends CI_Controller {
                     //echo "<br/>";
                     $documento_log2 = $this->docmodel->cadastrar_log_documento($pendente);
 
+                    $this->load->model('timer_model', 'timermodel');
+
+                    $dados = array(
+                        'fk_iddoccad'   => $iddocumento,
+                        'fk_idetapa'    => $recebido,
+                        'action'        => "start",
+                        'timestamp'     => time(),
+                        'observacao'    => "PENDENTE"
+                    );
+                
+                    $this->timermodel->cadastrar_tempo($dados);
+
                 } else {
 
                     $usuariosAptos = $this->compmodel->usuario_apto($documento, $recebido, $verificarDataAusencia);
@@ -679,13 +691,13 @@ class Documento extends CI_Controller {
             switch ($action) {
                 case 'start':
                     $seconds -= $t->timestamp;
-                    break;
+                break;
                 case 'pause':
                     // para evitar erro se a primeira ação for pause
                     if ($seconds !== 0) {
                         $seconds += $t->timestamp;
                     }
-                    break;
+                break;
             }
         }
         if ($action === 'start') {

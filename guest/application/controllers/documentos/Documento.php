@@ -124,6 +124,18 @@ class Documento extends CI_Controller {
                     //echo "<br/>";
                     $documento_log2 = $this->docmodel->cadastrar_log_documento($pendente);
 
+                    $this->load->model('timer_model', 'timermodel');
+
+                    $dados = array(
+                        'fk_iddoccad'   => $iddocumento,
+                        'fk_idetapa'    => $recebido,
+                        'action'        => "start",
+                        'timestamp'     => time(),
+                        'observacao'    => "PENDENTE"
+                    );
+                
+                    $this->timermodel->cadastrar_tempo($dados);
+
                 } else {
 
                     $usuariosAptos = $this->compmodel->usuario_apto($documento, $recebido, $verificarDataAusencia);
@@ -679,13 +691,13 @@ class Documento extends CI_Controller {
             switch ($action) {
                 case 'start':
                     $seconds -= $t->timestamp;
-                    break;
+                break;
                 case 'pause':
                     // para evitar erro se a primeira ação for pause
                     if ($seconds !== 0) {
                         $seconds += $t->timestamp;
                     }
-                    break;
+                break;
             }
         }
         if ($action === 'start') {
@@ -715,9 +727,9 @@ class Documento extends CI_Controller {
 
         $this->load->model('timer_model', 'timermodel');
 
-        $timer = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
+        $timer    = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
         $contador = $this->timermodel->contador($idprotocolo, $etapa_documento);
-        $ac = $this->timermodel->get_action($idprotocolo, $etapa_documento);
+        $ac       = $this->timermodel->get_action($idprotocolo, $etapa_documento);
 
         $newAction = 'start';
         if (($contador > 0) && ($ac == 'start')) {
@@ -725,10 +737,10 @@ class Documento extends CI_Controller {
         }
 
         $dados = array(
-            'fk_iddoccad' => $idprotocolo,
-            'fk_idetapa'  => $etapa_documento,
-            'action'      => $newAction,
-            'timestamp'   => time(),
+            'fk_iddoccad'   => $idprotocolo,
+            'fk_idetapa'    => $etapa_documento,
+            'action'        => $newAction,
+            'timestamp'     => time(),
             'fk_idusuario'  => $usuario
         );
 

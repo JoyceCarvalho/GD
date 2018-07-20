@@ -163,6 +163,8 @@ class Relatorios extends CI_Controller {
 
         if($this->docmodel->editar_documentos_log($idprotocolo)){
 
+            $this->load->model('timer_model', 'timermodel');
+
             if ($usuario_anterior == 0) {
 
                 $status = "Pendente";
@@ -177,6 +179,16 @@ class Relatorios extends CI_Controller {
                 );
 
                 $this->docmodel->cadastrar_log_documento($retornar1);
+                
+                $dados = array(
+                    'fk_iddoccad'   => $idprotocolo,
+                    'fk_idetapa'    => $etapa_anterior,
+                    'action'        => "pause",
+                    'timestamp'     => time(),
+                    'observacao'    => "SUSPENSO"
+                );
+        
+                $this->timermodel->cadastrar_tempo($dados);
 
                 $retornar = array(
                     'descricao'     => "PENDENTE", 
@@ -186,6 +198,16 @@ class Relatorios extends CI_Controller {
                     'etapa'         => $etapa_anterior,
                     'documento'     => $idprotocolo
                 );
+                
+                $dados = array(
+                    'fk_iddoccad'   => $idprotocolo,
+                    'fk_idetapa'    => $etapa_anterior,
+                    'action'        => "start",
+                    'timestamp'     => time(),
+                    'observacao'    => "PENDENTE"
+                );
+        
+                $this->timermodel->cadastrar_tempo($dados);
 
                 $mensagem = "pendente";
 
@@ -203,6 +225,16 @@ class Relatorios extends CI_Controller {
                 );
 
                 $mensagem = "retornado";
+             
+                $dados = array(
+                    'fk_iddoccad'   => $idprotocolo,
+                    'fk_idetapa'    => $etapa_anterior,
+                    'action'        => "pause",
+                    'timestamp'     => time(),
+                    'observacao'    => "SUSPENSO"
+                );
+        
+                $this->timermodel->cadastrar_tempo($dados);
 
             }
 
@@ -295,6 +327,18 @@ class Relatorios extends CI_Controller {
         $this->docmodel->editar_documentos_log($idprotocolo);
 
         if($this->docmodel->cadastrar_log_documento($documento)){
+
+            $this->load->model('timer_model', 'timermodel');
+
+            $dados = array(
+                'fk_iddoccad'   => $idprotocolo,
+                'fk_idetapa'    => $etapa,
+                'action'        => "pause",
+                'timestamp'     => time(),
+                'observacao'    => "PENDENTE"
+            );
+    
+            $this->timermodel->cadastrar_tempo($dados);
 
             /**
              * Envio de email
