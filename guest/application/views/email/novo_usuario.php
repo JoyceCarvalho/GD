@@ -24,9 +24,13 @@
                         </div>
                         <div class="row">
                             <div class="col-12 table-responsive">
-                                <p>O documento <strong><?=$documento;?></strong> de protocolo <strong><?=$protocolo;?></strong> está aguardando exigência!</p>
+                                <p>Olá, <?=$nome;?>! Seja Bem Vindo ao SGT - Gestão de Documentos!</p>
+                                <p>Seus dados de acesso são: <br/> 
+                                Código da Empresa: <?=$cliente_code;?> <br/>
+                                Usuário: <?=$usuario;?><br/> 
+                                Senha: <?=$pass;?></p>
                                 <br/>
-                                <a href="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/meusdocumentos">Acesse o Gestão de Documentos para visualizar o documento completo!</a>
+                                <a href="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/meusdocumentos">Acesse o Gestão de Documentos!</a>
                             </div>
                         </div>
                     </section>

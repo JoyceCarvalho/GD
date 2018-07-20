@@ -59,8 +59,12 @@ class Email_model extends CI_Model {
 
         } elseif($dados["tipo"] == "retorno_suspensao"){
 
-            $this->email->mensagem($this->load->view('email/documento_resuspensao', $dados, TRUE));
+            $this->email->message($this->load->view('email/documento_resuspensao', $dados, TRUE));
 
+        } elseif($dados["tipo"] == "novo_usuario"){
+
+            $this->email->message($this->load->view('email/novo_usuario', $dados, TRUE));
+            
         }
 
         $this->email->send();
