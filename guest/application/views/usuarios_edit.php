@@ -73,7 +73,7 @@
                                         <select class="form-control" name="horas" id="horas">
                                             <?php 
                                             foreach ($full_horarios as $horas) {
-                                                if ($user->fk_horariotrab == $horas->id) {
+                                                if ($user->fk_idhorariotrab == $horas->id) {
                                                     $sel = "selected=\"selected\"";
                                                 } else {
                                                     $sel = "";

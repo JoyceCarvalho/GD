@@ -166,7 +166,6 @@
           <i class="fa fa-folder-open"></i> Documentos
         </a>
         <ul id="documentos" class="collapse list-unstyled <?=($pg == "documentos") ? "show" : "" ?>">
-          <li <?=($submenu == "meusdocs") ? "class='active'" : "" ?>> <a href="<?=base_url('meusdocumentos');?>"> <i class="fa fa-archive"></i>Meus Documentos </a></li>
           <li <?=($submenu == "andamento") ? "class='active'" : "" ?>> <a href="<?=base_url('andamento');?>"> <i class="fa fa-battery-half"></i>Em Andamento </a></li>
           <li <?=($submenu == "com_erro") ? "class='active'" : "" ?>> <a href="<?=base_url('erro');?>"> <i class="icon-bill"></i> Documentos com Erro </a></li>
           <li <?=($submenu == "cancelados") ? "class='active'" : "" ?>> <a href="<?=base_url('cancelados');?>"> <i class="fa fa-ban"></i>Documentos Cancelados </a></li>

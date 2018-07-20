@@ -715,9 +715,9 @@ class Documento extends CI_Controller {
 
         $this->load->model('timer_model', 'timermodel');
 
-        $timer = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
+        $timer    = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
         $contador = $this->timermodel->contador($idprotocolo, $etapa_documento);
-        $ac = $this->timermodel->get_action($idprotocolo, $etapa_documento);
+        $ac       = $this->timermodel->get_action($idprotocolo, $etapa_documento);
 
         $newAction = 'start';
         if (($contador > 0) && ($ac == 'start')) {
@@ -725,10 +725,10 @@ class Documento extends CI_Controller {
         }
 
         $dados = array(
-            'fk_iddoccad' => $idprotocolo,
-            'fk_idetapa'  => $etapa_documento,
-            'action'      => $newAction,
-            'timestamp'   => time(),
+            'fk_iddoccad'   => $idprotocolo,
+            'fk_idetapa'    => $etapa_documento,
+            'action'        => $newAction,
+            'timestamp'     => time(),
             'fk_idusuario'  => $usuario
         );
 

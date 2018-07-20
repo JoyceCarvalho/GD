@@ -18,7 +18,7 @@ $this->load->model('cargos_model', 'cargosmodel');
                                         <?php
                                     } else {
                                         ?>
-                                        <img class="img-responsive" src="<?=base_url("assets/img/logo_sgt.png");?>" alt="<?=$empresa->nome;?>">
+                                        <img class="img-responsive" src="<?=base_url("assets/img/logo_sgt.jpg");?>" alt="<?=$empresa->nome;?>">
                                         <?php
                                     }
                                 }   
@@ -43,10 +43,7 @@ $this->load->model('cargos_model', 'cargosmodel');
                                 ?>
                             </div>
                             <div class="col-4">
-                                <!--<b>Invoice #007612</b><br>
-                                <br><b>Order ID:</b> 4F3S8J<br>
-                                <b>Payment Due:</b> 2/22/2014<br>
-                                <b>Account:</b> 968-34567-->
+                            
                             </div>
                             <div class="col-4">Empresa
                                 <?php

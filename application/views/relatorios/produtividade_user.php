@@ -18,7 +18,7 @@ $this->load->model('cargos_model', 'cargosmodel');
                                         <?php
                                     } else {
                                         ?>
-                                        <img class="img-responsive" src="<?=base_url("assets/img/logo_sgt.png");?>" alt="<?=$empresa->nome;?>">
+                                        <img class="img-responsive" src="<?=base_url("assets/img/logo_sgt.jpg");?>" alt="<?=$empresa->nome;?>">
                                         <?php
                                     }
                                 }   

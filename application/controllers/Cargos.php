@@ -19,7 +19,7 @@ class Cargos extends CI_Controller {
 
         if ($this->cargosmodel->cadastrar_cargos($dados)) {
             
-            $data->success = "Cargo ". $this->input->post('titulo') ." casdastrado com sucesso!";
+            $data->success = "Cargo ". $this->input->post('titulo') ." cadastrado com sucesso!";
 
             $dados['pagina']    = "Cargos";
             $dados['pg']        = "empresa";
@@ -104,7 +104,7 @@ class Cargos extends CI_Controller {
 
             if($this->cargosmodel->editar_cargo($dados, $idcargo)){
 
-                $data->success = "Cargo ".$this->input->post('titulo'). "atualizado com sucesso";
+                $data->success = "Cargo ".$this->input->post('titulo'). " atualizado com sucesso";
 
                 $dados["pagina"]        = "Cargos";
                 $dados["pg"]            = "empresa";
