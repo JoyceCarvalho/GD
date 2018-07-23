@@ -83,6 +83,24 @@ class Usuario_model extends CI_Model {
         return $this->db->get('')->result();
 
     }
+
+    /**
+     * Método responsável por verificar se o usuário já esta cadastrado no banco de dados
+     * Utilizado no controller Usuario.php
+     *
+     * @param string $usuario
+     * @param int $empresa
+     * @return object
+     */
+    public function verifica_usuario($usuario, $empresa){
+
+        $this->db->from('tbusuario');
+        $this->db->where('fk_idempresa', $empresa);
+        $this->db->where('usuario', $usuario);
+        $this->db->where('ativo = 1');
+
+        return $this->db->get('')->result();
+    }
     
     /**
      * Método responsável por retornar o id do usuario logado

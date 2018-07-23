@@ -36,9 +36,9 @@ class Login extends CI_Controller {
     $this->load->library('form_validation');
 
     // set validation rules
-    $this->form_validation->set_rules('cliente_code', 'Código da Empresa', 'required|alpha_numeric');
-    $this->form_validation->set_rules('usuario', 'Usuário', 'required|alpha_numeric');
-    $this->form_validation->set_rules('senha', 'Senha', 'required');
+    $this->form_validation->set_rules('cliente_code', 'Código da Empresa', 'trim|required');
+    $this->form_validation->set_rules('usuario', 'Usuário', 'trim|required');
+    $this->form_validation->set_rules('senha', 'Senha', 'trim|required');
 
     if ($this->form_validation->run() == false) {
 

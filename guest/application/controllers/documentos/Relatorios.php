@@ -253,7 +253,7 @@ class Relatorios extends CI_Controller {
                     foreach ($dados as $doc) {
                     
                         $enviar = array(
-                            'tipo'      => 'retorno',
+                            'tipo'      => 'retorno_suspensao',
                             'protocolo' => $doc->protocolo,
                             'documento' => $doc->documento_nome,
                             'email'     => $usuario->email_usuario,
@@ -270,7 +270,7 @@ class Relatorios extends CI_Controller {
                     foreach ($dados as $doc) {
                     
                         $enviar = array(
-                            'tipo'      => 'retorno',
+                            'tipo'      => 'retorno_suspensao',
                             'protocolo' => $doc->protocolo,
                             'documento' => $doc->documento_nome,
                             'email'     => $responsavel->email_usuario,

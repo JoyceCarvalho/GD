@@ -81,7 +81,7 @@
                                     
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Usuário:</label>
-                                <div class="col-sm-9">
+                                <div class="col-sm-9" id="resultado">
                                     <input type="text" name="usuario" class="form-control">
                                 </div>
                             </div>
@@ -106,3 +106,23 @@
         </div>
     </div>
 </section>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script>
+    $(document).ready(function(){        
+        $("input[name='usuario']").blur(function(){
+            var nome_usuario = $(this).val();
+            $.get('<?=base_url()?>verifica_usuario/'+nome_usuario, function(dados){
+                console.log(dados);
+                if (dados === "true") {
+                    var input = '<input type="text" name="usuario" class="form-control is-invalid" value="'+nome_usuario+'">';
+                    input += '<div class="invalid-feedback"> Esse usuário já existe no sistema! Favor tentar outro.</div>';
+                    $("#resultado").html(input);
+                } else {
+                    var input = '<input type="text" name="usuario" class="form-control is-valid" value="'+nome_usuario+'">';
+                    $("#resultado").html(input);
+                }
+                $("#resultado").html(input);
+            })
+        })
+    });
+</script>

@@ -26,7 +26,7 @@
                             <div class="col-12 table-responsive">
                                 <p>O documento <strong><?=$documento;?></strong> de protocolo <strong><?=$protocolo;?></strong> concluiu exigẽncia!</p>
                                 <?php if($status == "retorno"): ?>
-                                    <p>Retornou para <?=$usaurio;?> concluir a execução.</p>
+                                    <p>Retornou para <?=$usuario;?> concluir a execução.</p>
                                 <?php else:?>
                                     <p>Retornou com status <strong>pendente <strong></p>
                                 <?php endif; ?>

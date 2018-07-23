@@ -187,6 +187,22 @@
                                     ?>
                                 </tbody>
                             </table>
+                            <?php
+                            if($andamento_doc_c){
+                                foreach ($andamento_doc_c as $documentos) {
+                                    ?>
+                                    <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
+                                    <?
+                                }
+                            }
+                            if(isset($andamento_doc_f)){
+                                foreach ($andamento_doc_f as $documentos) {
+                                    ?>
+                                    
+                                    <?php
+                                }
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -248,10 +264,13 @@ window.addEventListener("DOMContentLoaded", function() {
 
 			var id_pro = $(this).val();
 
+            //console.log(id_pro);
+
             $('#historico_'+id_pro).click(function(e){
 
-                //var iddocumento = $('#id_protocolo').val();
+                var iddocumento = parseInt($('#id_protocolo').val());
                 //console.log(id_pro);
+                //console.log('valor_documento '+iddocumento);
 
                 $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
                     if (dados.length>0) {
@@ -266,14 +285,15 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
-                    $('#exampleModalLabel').html(titulo).show();
-                    $('#his_conteudo').html(body).show();
                     $('#conteudo').hide();
                     $("#erro").hide();
                     $("#doc_conteudo").hide();
                     $('#etapa').hide();
                     $('#erro_form').hide();
                     $('#observacao').hide();
+
+                    $('#exampleModalLabel').html(titulo).show();
+                    $('#his_conteudo').html(body).show();
                 });
 
                 $.getJSON('<?=base_url();?>'+'historico/'+id_pro, function (dados){
@@ -324,6 +344,10 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
+                    $('#historico_documento').hide();
+                    $('#cancelamento').hide();
+                    $("#observacao").hide();
+
                     $("#exampleModalLabel").html(titulo).show();
                     $("#his_conteudo").html(body).show();
 
@@ -368,10 +392,8 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
+
                     $('#erro_form').html(body2).show();
-                    $('#historico_documento').hide();
-                    $('#cancelamento').hide();
-                    $("#observacao").hide();
                 });
 
             });
@@ -392,11 +414,13 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
-                    $("#exampleModalLabel").html(titulo).show();
-                    $("#his_conteudo").html(body).show();
                     $('#historico_documento').hide();
                     $('#cancelamento').hide();
                     $('#observacao').hide();
+                    $('#etapa').hide();
+
+                    $("#exampleModalLabel").html(titulo).show();
+                    $("#his_conteudo").html(body).show();
 
                 });
                 $.getJSON('<?=base_url();?>'+'vizualizar_erros/'+id_pro, function (dados){
@@ -437,6 +461,14 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
+
+                    $('#historico_documento').hide();
+                    $('#erro').hide();
+                    $('#cancelamento').hide();
+                    $("#doc_conteudo").hide();
+                    $('#etapa').hide();
+                    $('#erro_form').hide();
+
                     $("#exampleModalLabel").html(titulo).show();
                     $("#his_conteudo").html(body).show();
                 });
@@ -449,15 +481,9 @@ window.addEventListener("DOMContentLoaded", function() {
                 body2 += '<div class="form-group">';
                 body2 += '<button type="submit" class="btn btn-sm btn-primary">Cadastrar Observação</button>';
                 body2 += '</div>';
-
+                
                 $("#observacao").show();
                 $("#obs").html(body2).show();
-                $('#historico_documento').hide();
-                $('#erro').hide();
-                $('#cancelamento').hide();
-                $("#doc_conteudo").hide();
-                $('#etapa').hide();
-                $('#erro_form').hide();
             });
 
             $("#ver_obs_"+id_pro).click(function(e){
@@ -476,6 +502,14 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
+
+                    $('#historico_documento').hide();
+                    $('#erro').hide();
+                    $('#cancelamento').hide();
+                    $("#doc_conteudo").hide();
+                    $('#etapa').hide();
+                    $('#erro_form').hide();
+
                     $("#exampleModalLabel").html(titulo).show();
                     $("#his_conteudo").html(body).show();
                 });
@@ -497,12 +531,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
                     $("#observacao").show();
                     $("#obs").html(body).show();
-                    $('#historico_documento').hide();
-                    $('#erro').hide();
-                    $('#cancelamento').hide();
-                    $("#doc_conteudo").hide();
-                    $('#etapa').hide();
-                    $('#erro_form').hide();
                 });
 
             });

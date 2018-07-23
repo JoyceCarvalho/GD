@@ -147,6 +147,9 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
+                    $("#observacao").hide();
+                    $("#obs").hide();
+
                     $('#exampleModalLabel').html(titulo).show();
                     $('#his_conteudo').html(body).show();
                 });
@@ -199,6 +202,13 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
+                    $('#historico_documento').hide();
+                    $('#erro').hide();
+                    $('#cancelamento').hide();
+                    $("#doc_conteudo").hide();
+                    $('#etapa').hide();
+                    $('#erro_form').hide();
+
                     $("#exampleModalLabel").html(titulo).show();
                     $("#his_conteudo").html(body).show();
                 });
@@ -214,12 +224,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
                 $("#observacao").show();
                 $("#obs").html(body2).show();
-                $('#historico_documento').hide();
-                $('#erro').hide();
-                $('#cancelamento').hide();
-                $("#doc_conteudo").hide();
-                $('#etapa').hide();
-                $('#erro_form').hide();
             });
 
             $("#ver_obs_"+id_pro).click(function(e){
@@ -238,6 +242,13 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
+                    $('#historico_documento').hide();
+                    $('#erro').hide();
+                    $('#cancelamento').hide();
+                    $("#doc_conteudo").hide();
+                    $('#etapa').hide();
+                    $('#erro_form').hide();
+
                     $("#exampleModalLabel").html(titulo).show();
                     $("#his_conteudo").html(body).show();
                 });
@@ -258,13 +269,7 @@ window.addEventListener("DOMContentLoaded", function() {
                     }
 
                     $("#observacao").show();
-                    $("#obs").html(body).show();
-                    $('#historico_documento').hide();
-                    $('#erro').hide();
-                    $('#cancelamento').hide();
-                    $("#doc_conteudo").hide();
-                    $('#etapa').hide();
-                    $('#erro_form').hide();
+                    $("#obs").html(body).show();                    
                 });
 
             });

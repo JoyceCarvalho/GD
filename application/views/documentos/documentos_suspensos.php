@@ -103,6 +103,10 @@
                     <h4 id="exampleModalLabel" class="modal-title"></h4>
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                 </div>
+
+                <div class="modal-body" id="his_conteudo"></div>
+
+                <div class="modal-body" id="historico_documento"></div>
                 
                 <form action="<?=base_url('cancelar_documento');?>" method="post" id="cancelamento">
                     
@@ -112,25 +116,20 @@
                         </div>
                     </div>
 
-                    <div class="modal-body" id="historico_documento">
-                        
-                    </div>
-
                 </form>
+
+                <form action="<?=base_url('observacao_cad');?>" method="post" id="observacao">
+                    <div class="modal-body" id="obs"></div>
+                </form>
+
 
                 <form action="<?=base_url("erro_documento_cad");?>" method="post" id="erro">
                     
-                    <div class="modal-body" id="doc_conteudo">                                                
-                        
-                    </div>
+                    <div class="modal-body" id="doc_conteudo"></div>
 
-                    <div class="modal-body" id="etapa">
-                    
-                    </div>
+                    <div class="modal-body" id="etapa"></div>
 
-                    <div class="modal-body" id="erro_form">
-                        
-                    </div>
+                    <div class="modal-body" id="erro_form"></div>
                 </form>
             
                 <div class="modal-footer">
@@ -252,12 +251,15 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
-                    $('#exampleModalLabel').html(titulo).show();
-                    $('#conteudo').html(body).show();
+                    $('#conteudo').hide();
                     $("#erro").hide();
                     $("#doc_conteudo").hide();
                     $('#etapa').hide();
                     $('#erro_form').hide();
+                    $('#observacao').hide();
+
+                    $('#exampleModalLabel').html(titulo).show();
+                    $('#his_conteudo').html(body).show();
                 });
 
                 $.getJSON('<?=base_url();?>'+'historico/'+id_pro, function (dados){
@@ -294,7 +296,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
             $("#cancelar_"+id_pro).click(function(e){
                 //var iddocumento = $('#id_protocolo').val();
-                console.log(id_pro);
+                //console.log(id_pro);
 
                 $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
                     if (dados.length>0) {
@@ -318,14 +320,17 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
-                    $('#exampleModalLabel').html(titulo).show();
-                    $('#cancelamento').show();
-                    $('#conteudo').html(body).show();
                     $('#historico_documento').hide();
                     $('#erro').hide();
                     $("#doc_conteudo").hide();
                     $('#etapa').hide();
                     $('#erro_form').hide();
+                    $("#observacao").hide();
+
+                    $('#exampleModalLabel').html(titulo).show();
+                    $('#his_conteudo').html(body).show();
+                    $('#cancelamento').show();
+                    $('#conteudo').html(body2).show();
                 });
             });
 
@@ -345,8 +350,12 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
+                    $('#historico_documento').hide();
+                    $('#cancelamento').hide();
+                    $("#observacao").hide();
+
                     $("#exampleModalLabel").html(titulo).show();
-                    $("#doc_conteudo").html(body).show();
+                    $("#his_conteudo").html(body).show();
 
                 });
                 $.getJSON('<?=base_url();?>'+'etapa_json/'+id_pro, function(dados){
@@ -374,7 +383,7 @@ window.addEventListener("DOMContentLoaded", function() {
                         $.each(dados, function(i, obj){
                             body2 += '<option value="'+obj.id+'">'+obj.titulo+'</option>';
                         });
-                        body2 += '</select>';
+                        body2 += '</select>'
                         body2 += '</div>';
                         body2 += '<hr/>';
                         body2 += '<div class="form-group">';
@@ -387,11 +396,10 @@ window.addEventListener("DOMContentLoaded", function() {
                         body2 += '</div>';
 
                     } else {
-                        reset();
+                        body2 = "<strong>Não foram configurados os tipos de erro!<br/>";
+                        body2 += "Favor vá até o menu configurações cadastre-os e tente novamente!</strong>"
                     }
                     $('#erro_form').html(body2).show();
-                    $('#historico_documento').hide();
-                    $('#cancelamento').hide();
                 });
 
             });
@@ -412,10 +420,13 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
-                    $("#exampleModalLabel").html(titulo).show();
-                    $("#doc_conteudo").html(body).show();
                     $('#historico_documento').hide();
                     $('#cancelamento').hide();
+                    $('#observacao').hide();
+                    $('#etapa').hide();
+
+                    $("#exampleModalLabel").html(titulo).show();
+                    $("#doc_conteudo").html(body).show();
 
                 });
                 $.getJSON('<?=base_url();?>'+'vizualizar_erros/'+id_pro, function (dados){

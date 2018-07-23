@@ -386,12 +386,12 @@ class Documento extends CI_Controller {
 
         $iddocumento = $this->docmodel->documento_id($idprotocolo);
 
-        $dados["pagina"] = "Novo Documento";
-        $dados["pg"] = "documentos";
-        $dados["submenu"] = "novodoc";
+        $dados["pagina"]    = "Novo Documento";
+        $dados["pg"]        = "documentos";
+        $dados["submenu"]   = "novodoc";
 
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
+        $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
         $dados["dados_documento"] = $this->docmodel->dados_documento_cad($idprotocolo);
 
         $this->load->view("template/html_header", $dados);
@@ -509,7 +509,8 @@ class Documento extends CI_Controller {
         }
 
     }
-
+    
+    /** não utilizado */
     public function meus_documentos_msg($mensagem){
         
         if((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)){
@@ -550,6 +551,7 @@ class Documento extends CI_Controller {
         }
         
     }
+    /** Fim */
     
     public function cancelar_documento(){
 
