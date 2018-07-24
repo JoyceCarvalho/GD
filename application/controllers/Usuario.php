@@ -21,10 +21,10 @@ class Usuario extends CI_Controller {
 		$this->load->library('form_validation');
 
 		// set validation rules
-		$this->form_validation->set_rules('nome', 'Nome', 'required|alpha_numeric');
+		$this->form_validation->set_rules('nome', 'Nome', 'required');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 		$this->form_validation->set_rules('usuario', 'Usuário', 'trim|required|min_length[5]|max_length[12]');
-		$this->form_validation->set_rules('senha', 'Senha', 'trim|required|min_length[8]');
+		$this->form_validation->set_rules('senha', 'Senha', 'trim|required|min_length[6]');
 
 		if($this->form_validation->run() == FALSE){
 			
@@ -368,14 +368,16 @@ class Usuario extends CI_Controller {
 
 	}
 
-	public function verifica_usuario($usuario){
+	public function verifica_user(){
 
-		$usuario = count($this->usermodel->verifica_usuario($usuario, $_SESSION["idempresa"]));
+		$usuario = $_POST["usuario"];
 
-		if($usuario > 0){
-			echo "true";
+		$user = count($this->usermodel->verifica_usuario($usuario, $_SESSION["idempresa"]));
+
+		if($user > 0){
+			echo json_encode(array('mensagem' => 'Esse usuário já existe no sistema! Favor tentar outro.', 'valido' => 'not'));
 		} else {
-			echo "false";
+			echo json_encode(array('mensagem' => 'Usuário válidado!', 'valido' => 'is'));
 		}
 
 	}

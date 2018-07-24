@@ -25,11 +25,11 @@ class Relatorios extends CI_Controller {
         $dados["pg"]      = "documentos";
         $dados["submenu"] = "andamento";
 
-        $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
         if (($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)) {
 
-            $dados["andamento_doc_c"] = $this->docmodel->listar_documentos_em_andamento($_SESSION["idempresa"]);
+            $dados["andamento_doc_c"] = $this->docmodel->listar_documentos_em_andamento($_SESSION["guest_empresa"]);
 
         } else {
 
@@ -57,8 +57,8 @@ class Relatorios extends CI_Controller {
         $dados["pg"]      = "documentos";
         $dados["submenu"] = "com_erro";
 
-        $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["documentos_erro"] = $this->docmodel->listar_documentos_com_erros($_SESSION["idempresa"]);
+        $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+        $dados["documentos_erro"] = $this->docmodel->listar_documentos_com_erros($_SESSION["guest_empresa"]);
 
         $this->load->view("template/html_header", $dados);
         $this->load->view("template/header");
@@ -78,8 +78,8 @@ class Relatorios extends CI_Controller {
         $dados["pg"]      = "documentos";
         $dados["submenu"] = "cancelados";
 
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["doc_cancelados"] = $this->docmodel->listar_documentos_cancelados($_SESSION["idempresa"]);
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+        $dados["doc_cancelados"] = $this->docmodel->listar_documentos_cancelados($_SESSION["guest_empresa"]);
 
 
         $this->load->view('template/html_header', $dados);
@@ -100,8 +100,8 @@ class Relatorios extends CI_Controller {
         $dados["pg"]      = "documentos";
         $dados["submenu"] = "suspensos";
 
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["doc_suspensos"] = $this->docmodel->listar_documentos_suspensos($_SESSION["idempresa"]);
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+        $dados["doc_suspensos"] = $this->docmodel->listar_documentos_suspensos($_SESSION["guest_empresa"]);
 
 
         $this->load->view('template/html_header', $dados);
@@ -122,8 +122,8 @@ class Relatorios extends CI_Controller {
         $dados["pg"]        = "documentos";
         $dados["submenu"]   = "pendente";
 
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["idempresa"]);
+        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+        $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["guest_empresa"]);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
@@ -366,14 +366,14 @@ class Relatorios extends CI_Controller {
              * Fim do envio de email
              */
 
-            $data->success = "Documento tranferido com sucesso";
+            $data->success = "Documento transferido com sucesso";
 
             $dados["pagina"]    = "Documentos Pendentes";
             $dados["pg"]        = "documentos";
             $dados["submenu"]   = "pendente";
 
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["idempresa"]);
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["guest_empresa"]);
 
             $this->load->view("template/html_header", $dados);
             $this->load->view("template/header");
@@ -390,8 +390,8 @@ class Relatorios extends CI_Controller {
             $dados["pg"]      = "documentos";
             $dados["submenu"] = "pendente";
 
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["idempresa"]);
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+            $dados["doc_pendentes"] = $this->docmodel->listar_documentos_pendente($_SESSION["guest_empresa"]);
 
             $this->load->view("template/html_header", $dados);
             $this->load->view("template/header");
@@ -406,7 +406,7 @@ class Relatorios extends CI_Controller {
 
     public function tranferencia_documento(){
     
-        echo $this->usermodel->usuarios_disponiveis($_SESSION["idempresa"]);
+        echo $this->usermodel->usuarios_disponiveis($_SESSION["guest_empresa"]);
 
     }
 

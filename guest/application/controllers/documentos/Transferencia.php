@@ -52,7 +52,7 @@ class Transferencia extends CI_Controller {
         $etapa = $dados->etapa;
 
         
-        $horario = $this->horasmodel->verifica_horario($_SESSION["idempresa"]);
+        $horario = $this->horasmodel->verifica_horario($_SESSION["guest_empresa"]);
 
         $primeiro_turno_inicio  = $horario->manha_entrada;
         $primeiro_turno_fim     = $horario->manha_saida;

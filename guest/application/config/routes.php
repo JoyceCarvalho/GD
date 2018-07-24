@@ -69,7 +69,7 @@ $route['cad_usuario']             = "usuario/cadastro_usuario";
 $route['editar_usuario']          = "home/editar_usuario";
 $route['edit_usuario']            = "usuario/editar_usuario";
 $route['excluir_usuario']         = "usuario/excluir_usuario";
-$route['verifica_usuario/(:any)'] = "usuario/verifica_usuario/$1";
+$route['verifica_usuario']        = "usuario/verifica_user";
 
 // Rotas do referentes aos cargos
 $route['cad_cargo']      = "cargos/cadastrar_cargo";

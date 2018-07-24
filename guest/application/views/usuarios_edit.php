@@ -1,3 +1,4 @@
+<!-- Forms Section-->
 <section class="forms"> 
     <div class="container-fluid">
 
@@ -96,6 +97,7 @@
                                     <label class="col-sm-3 form-control-label">Usuário:</label>
                                     <div class="col-sm-9">
                                         <input type="text" name="usuario" class="form-control" value="<?=$user->usuario;?>">
+                                        <div id="resposta"></div>
                                     </div>
                                 </div>
 
@@ -143,3 +145,27 @@
         </div>
     </div>
 </section>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script>
+    $('#usuario').blur(function() { 
+        
+        $.ajax({ 
+            url: '<?=base_url();?>verifica_usuario/', 
+            type: 'POST', 
+            data:{"usuario" : $('#usuario').val()}, 
+            success: function(data) { 
+                data = $.parseJSON(data); 
+                //console.log(data); 
+                if(data.valido == "not"){
+                    var input = '<div style="color:#dc3545;">'+data.mensagem+'</div>';
+                    $("#resposta").html(input);
+                    $("#usuario").css('border-color', '#dc3545');
+                } else {
+                    var input = '<div style="color:#28a745;">'+data.mensagem+'</div>';
+                    $("#resposta").html(input);
+                    $("#usuario").css('border-color', '#28a745');
+                }
+            } 
+        }); 
+    });
+</script>

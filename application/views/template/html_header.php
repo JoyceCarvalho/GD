@@ -22,11 +22,11 @@
     <link rel="stylesheet" href="<?=base_url('assets/css/custom.css');?>">
     <!-- Favicon-->
     <link rel="shortcut icon" href="<?=base_url('assets/img/favicon.ico');?>">
-
+    
     <!-- Datatable -->
     <link rel="stylesheet" href="<?=base_url('assets/vendor/datatables/dataTables.bootstrap4.css');?>">
     <!--<link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">-->
-
+    
     <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/main.css');?>">
 
     <!-- jQuery -->

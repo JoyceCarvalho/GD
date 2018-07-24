@@ -23,8 +23,8 @@ class Usuario extends CI_Controller {
 		// set validation rules
 		$this->form_validation->set_rules('nome', 'Nome', 'required|alpha_numeric');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
-		$this->form_validation->set_rules('usuario', 'Usuário', 'trim|required|min_length[5]|max_length[12]');
-		$this->form_validation->set_rules('senha', 'Senha', 'trim|required|min_length[8]');
+		$this->form_validation->set_rules('usuario', 'Usuário', 'trim|required|min_length[2]|max_length[12]');
+		$this->form_validation->set_rules('senha', 'Senha', 'trim|required|min_length[6]');
 
 		if($this->form_validation->run() == FALSE){
 			
@@ -33,11 +33,11 @@ class Usuario extends CI_Controller {
 			$dados['submenu'] 	= "usuario";
 			$dados["sub"]		= "usuariocad";
 
-			$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
-			$dados['full_cargos']	 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-			$dados['full_horarios'] 	= $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+			$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
+			$dados['full_cargos']	 	= $this->cargosmodel->listar_cargos($_SESSION["guest_empresa"]);
+			$dados['full_horarios'] 	= $this->horasmodel->listar_horario($_SESSION["guest_empresa"]);
 			//dados do banco (nome da empresa, nome usuário);
-			$dados['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+			$dados['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
 			$this->load->view('template/html_header', $dados);
 			$this->load->view('template/header');
@@ -55,7 +55,7 @@ class Usuario extends CI_Controller {
 				'senha' 			=> sha1($this->input->post('senha')),
 				'fk_idcargos' 		=> $this->input->post('cargo'),
 				'fk_idhorariotrab' 	=> $this->input->post('horas'),
-				'fk_idempresa'		=> $_SESSION['idempresa']
+				'fk_idempresa'		=> $_SESSION['guest_empresa']
 			);
 	
 			if ($this->usermodel->cadastrar_usuario($dados)) {
@@ -65,7 +65,7 @@ class Usuario extends CI_Controller {
 				 */
 				$this->load->model('email_model', 'emailmodel');
 	
-				$empresa = $this->empresamodel->dados_empresa($_SESSION["idempresa"]);
+				$empresa = $this->empresamodel->dados_empresa($_SESSION["guest_empresa"]);
 	
 				foreach ($empresa as $dados) {
 					
@@ -92,11 +92,11 @@ class Usuario extends CI_Controller {
 				$info['submenu'] 	= "usuario";
 				$info["sub"]		= "usuariocad";
 	
-				$info['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
-				$info['full_cargos'] 		= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-				$info['full_horarios'] 	= $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+				$info['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
+				$info['full_cargos'] 		= $this->cargosmodel->listar_cargos($_SESSION["guest_empresa"]);
+				$info['full_horarios'] 	= $this->horasmodel->listar_horario($_SESSION["guest_empresa"]);
 				//dados do banco (nome da empresa, nome usuário);
-				$info['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+				$info['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 	
 				$this->load->view('template/html_header', $info);
 				$this->load->view('template/header');
@@ -124,11 +124,11 @@ class Usuario extends CI_Controller {
 				$dados['submenu'] 	= "usuario";
 				$dados["sub"]		= "usuariocad";
 	
-				$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
-				$dados['full_cargos']	 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-				$dados['full_horarios'] 	= $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+				$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
+				$dados['full_cargos']	 	= $this->cargosmodel->listar_cargos($_SESSION["guest_empresa"]);
+				$dados['full_horarios'] 	= $this->horasmodel->listar_horario($_SESSION["guest_empresa"]);
 				//dados do banco (nome da empresa, nome usuário);
-				$dados['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+				$dados['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 	
 				$this->load->view('template/html_header', $dados);
 				$this->load->view('template/header');
@@ -163,11 +163,11 @@ class Usuario extends CI_Controller {
 			$dados['pg'] 		= "empresa";
 			$dados['submenu'] 	= "usuario";
 
-			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["guest_empresa"]);
+			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["guest_empresa"]);
 			$dados['usuario'] 		= $this->usermodel->dados_usuario($idusuario);
 			//dados do banco (nome da empresa);
-			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
 			$this->load->view('template/html_header', $dados);
 			$this->load->view('template/header');
@@ -194,11 +194,11 @@ class Usuario extends CI_Controller {
 			$dados['pg'] 		= "empresa";
 			$dados['submenu'] 	= "usuario";
 
-			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["guest_empresa"]);
+			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["guest_empresa"]);
 			$dados['usuario'] 		= $this->usermodel->dados_usuario($idusuario);
 			//dados do banco (nome da empresa);
-			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
 			$this->load->view('template/html_header', $dados);
 			$this->load->view('template/header');
@@ -251,9 +251,9 @@ class Usuario extends CI_Controller {
 				$dados['submenu'] 	= "usuario";
 				$dados['sub']		= "usuariolist";
 
-				$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+				$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["guest_empresa"]);
 				//dados do banco (nome da empresa, nome usuário);
-				$dados['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+				$dados['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
 				$this->load->view('template/html_header', $dados);
 				$this->load->view('template/header');
@@ -283,7 +283,7 @@ class Usuario extends CI_Controller {
 
 				$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($id);
 				//dados do banco (nome da empresa);
-				$dados['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+				$dados['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
 				$this->load->view('template/html_header', $dados);
 				$this->load->view('template/header');
@@ -321,11 +321,11 @@ class Usuario extends CI_Controller {
 			$dados['pg'] 		= "empresa";
 			$dados['submenu'] 	= "usuario";
 
-			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["guest_empresa"]);
+			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["guest_empresa"]);
 			$dados['usuario'] 		= $this->usermodel->dados_usuario($usuario);
 			//dados do banco (nome da empresa);
-			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
 			$this->load->view('template/html_header', $dados);
 			$this->load->view('template/header');
@@ -352,11 +352,11 @@ class Usuario extends CI_Controller {
 			$dados['pg'] 		= "empresa";
 			$dados['submenu'] 	= "usuario";
 
-			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["guest_empresa"]);
+			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["guest_empresa"]);
 			$dados['usuario'] 		= $this->usermodel->dados_usuario($usuario);
 			//dados do banco (nome da empresa);
-			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
 			$this->load->view('template/html_header', $dados);
 			$this->load->view('template/header');
@@ -368,14 +368,16 @@ class Usuario extends CI_Controller {
 
 	}
 
-	public function verifica_usuario($usuario){
+	public function verifica_user(){
 
-		$usuario = count($this->usermodel->verifica_usuario($usuario, $_SESSION["idempresa"]));
+		$usuario = $_POST["usuario"];
 
-		if($usuario > 0){
-			echo "true";
+		$user = count($this->usermodel->verifica_usuario($usuario, $_SESSION["guest_empresa"]));
+
+		if($user > 0){
+			echo json_encode(array('mensagem' => 'Esse usuário já existe no sistema! Favor tentar outro.', 'valido' => 'not'));
 		} else {
-			echo "false";
+			echo json_encode(array('mensagem' => 'Usuário válidado!', 'valido' => 'is'));
 		}
 
 	}

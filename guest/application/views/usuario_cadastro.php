@@ -81,8 +81,9 @@
                                     
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Usuário:</label>
-                                <div class="col-sm-9" id="resultado">
-                                    <input type="text" name="usuario" class="form-control">
+                                <div class="col-sm-9">
+                                    <input type="text" id="usuario" name="usuario" class="form-control">
+                                    <div id="resposta"></div>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -108,21 +109,25 @@
 </section>
 <script src="http://code.jquery.com/jquery.js"></script>
 <script>
-    $(document).ready(function(){        
-        $("input[name='usuario']").blur(function(){
-            var nome_usuario = $(this).val();
-            $.get('<?=base_url()?>verifica_usuario/'+nome_usuario, function(dados){
-                console.log(dados);
-                if (dados === "true") {
-                    var input = '<input type="text" name="usuario" class="form-control is-invalid" value="'+nome_usuario+'">';
-                    input += '<div class="invalid-feedback"> Esse usuário já existe no sistema! Favor tentar outro.</div>';
-                    $("#resultado").html(input);
+    $('#usuario').blur(function() { 
+        
+        $.ajax({ 
+            url: '<?=base_url();?>verifica_usuario/', 
+            type: 'POST', 
+            data:{"usuario" : $('#usuario').val()}, 
+            success: function(data) { 
+                data = $.parseJSON(data); 
+                //console.log(data); 
+                if(data.valido == "not"){
+                    var input = '<div style="color:red;">'+data.mensagem+'</div>';
+                    $("#resposta").html(input);
+                    $("#usuario").css('border-color', 'red');
                 } else {
-                    var input = '<input type="text" name="usuario" class="form-control is-valid" value="'+nome_usuario+'">';
-                    $("#resultado").html(input);
+                    var input = '<div style="color:#28a745;">'+data.mensagem+'</div>';
+                    $("#resposta").html(input);
+                    $("#usuario").css('border-color', '#28a745');
                 }
-                $("#resultado").html(input);
-            })
-        })
+            } 
+        }); 
     });
 </script>

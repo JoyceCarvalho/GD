@@ -366,7 +366,7 @@ class Relatorios extends CI_Controller {
              * Fim do envio de email
              */
 
-            $data->success = "Documento tranferido com sucesso";
+            $data->success = "Documento transferido com sucesso";
 
             $dados["pagina"]    = "Documentos Pendentes";
             $dados["pg"]        = "documentos";

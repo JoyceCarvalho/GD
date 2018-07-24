@@ -223,15 +223,12 @@
     <header class="page-header">
       <div class="container-fluid">
         <!--<h2 class="no-margin-bottom"><?//=$pagina;?></h2>-->              
-          <div class="app-title">
-            <h1><?=$pagina?></h1>
-          </div>
-          <?php if($submenu != ""): ?>
-            <ul class="app-breadcrumb breadcrumb">
-              <li class="breadcrumb-item"><a href="<?=base_url('home');?>"><i class="fa fa-home fa-lg"></i></a></li>
-              <li class="breadcrumb-item"><?=$pagina?></li>
-            </ul>
-          <?php endif; ?>
+        <?php if($submenu != ""): ?>
+          <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><a href="<?=base_url('home');?>"><i class="fa fa-home fa-lg"></i></a></li>
+            <li class="breadcrumb-item"><?=$pagina?></li>
+          </ul>
+        <?php endif; ?>
       </div>
     </header>
   
