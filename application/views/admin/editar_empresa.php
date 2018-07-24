@@ -52,7 +52,8 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 form-control-label">Cliente Code:</label>
                                         <div class="col-sm-9">
-                                            <input type="cliente_code" class="form-control" name="cliente_code" value="<?=$empresa->cliente_code;?>">
+                                            <input type="cliente_code" class="form-control" id="cliente_code" name="cliente_code" value="<?=$empresa->cliente_code;?>">
+                                            <div id="resposta"></div>
                                             <small class="help-block-none">Código do SGT do cliente (se houver).</small>
                                         </div>
                                     </div>
@@ -75,3 +76,28 @@
         </div>
     </div>
 </section>
+<script>
+    $("#cliente_code").blur(function(){
+        $.ajax({
+            url: '<?=base_url('verifica_empresa');?>',
+            type: 'POST',
+            data:{"cliente_code": $("#cliente_code").val()},
+            success: function(data) {
+                data = $.parseJSON(data);
+                //console.log(data);
+                if(data.valido == "is"){
+                    
+                    var input = '<div style="color:#28a745;">'+data.mensagem+'</div>';
+                    $("#resposta").html(input);
+                    $("#cliente_code").css('border-color', '#28a745');
+
+                } else {
+
+                    var input = '<div style="color:#dc3545">'+data.mensagem+'</div>';
+                    $("#resposta").html(input);
+                    $('#cliente_code').css('border-color', '#dc3545');
+                }
+            }
+        });
+    });
+</script>

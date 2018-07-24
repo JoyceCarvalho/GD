@@ -86,4 +86,17 @@ class Controle extends CI_Controller {
       $this->load->view('template/html_footer');
     }
   }
+
+  public function verifica_empresa(){
+
+    $cliente_code = $_POST['cliente_code'];
+
+    $empresa = count($this->empresamodel->verifica_existencia($cliente_code));
+
+    if($empresa > 0){
+      echo json_encode(array('mensagem' => 'Este cliente code já está sendo utilizado! Favor tentar outro.', 'valido' => 'not'));
+    } else {
+      echo json_encode(array('mensagem' => 'Cliente code válido', 'valido' => 'is'));
+    }
+  }
 }

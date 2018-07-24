@@ -61,6 +61,7 @@ $route['excluir_empresa']           = "admin/controle/excluir_empresa";
 $route['empresa_edit']              = "admin/controle/empresa_editar";
 $route['cadastrar_empresa']         = "admin/controle/cadastrar_empresa";
 $route['alt_empresa']               = "admin/controle/altera_dadosempresa";
+$route["verifica_empresa"]          = "admin/controle/verifica_empresa";
 
 //Rota de alteração de senha (Controller Usuario.php)
 $route["alterar_senha"]  = "usuario/alterar_senha";

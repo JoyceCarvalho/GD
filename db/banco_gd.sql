@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 06-Jul-2018 às 18:23
+-- Generation Time: 24-Jul-2018 às 14:13
 -- Versão do servidor: 10.1.24-MariaDB
 -- PHP Version: 7.1.6
 
@@ -49,6 +49,25 @@ INSERT INTO `tbempresa` (`id`, `nome`, `cliente_code`, `logo_code`, `missao`, `v
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `tbcargos`
+--
+
+CREATE TABLE `tbcargos` (
+  `id` int(11) NOT NULL,
+  `titulo` varchar(100) DEFAULT NULL,
+  `fk_idempresa` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `tbcargos`
+--
+
+INSERT INTO `tbcargos` (`id`, `titulo`, `fk_idempresa`) VALUES
+(1, 'Administrador Master', 1)
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `tbhorario_trab`
 --
 
@@ -69,25 +88,6 @@ CREATE TABLE `tbhorario_trab` (
 
 INSERT INTO `tbhorario_trab` (`id`, `titulo`, `manha_entrada`, `manha_saida`, `tarde_entrada`, `tarde_saida`, `fk_idempresa`, `ativo`) VALUES
 (1, 'Regular', '07:00:00', '12:00:00', '13:00:00', '18:00:00', 1, 1);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `tbcargos`
---
-
-CREATE TABLE `tbcargos` (
-  `id` int(11) NOT NULL,
-  `titulo` varchar(100) DEFAULT NULL,
-  `fk_idempresa` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Extraindo dados da tabela `tbcargos`
---
-
-INSERT INTO `tbcargos` (`id`, `titulo`, `fk_idempresa`) VALUES
-(1, 'Administrador Master', 1);
 
 -- --------------------------------------------------------
 
@@ -132,39 +132,12 @@ CREATE TABLE `tbausencia` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `tbcancelamento`
---
-
-CREATE TABLE `tbcancelamento` (
-  `id` int(11) NOT NULL,
-  `motivo` varchar(255) DEFAULT NULL,
-  `data_hora` datetime DEFAULT NULL,
-  `fk_iddocumento` int(11) NOT NULL,
-  `fk_idusuario` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `tbgrupo`
 --
 
 CREATE TABLE `tbgrupo` (
   `id` int(11) NOT NULL,
   `titulo` varchar(255) DEFAULT NULL,
-  `fk_idempresa` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `tbetapa`
---
-
-CREATE TABLE `tbetapa` (
-  `id` int(11) NOT NULL,
-  `titulo` varchar(255) DEFAULT NULL,
-  `ativo` int(11) DEFAULT '1',
   `fk_idempresa` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -184,18 +157,6 @@ CREATE TABLE `tbdocumento` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `tbdocumentoetapa`
---
-
-CREATE TABLE `tbdocumentoetapa` (
-  `iddocumento` int(11) NOT NULL,
-  `idetapa` int(11) NOT NULL,
-  `ordem` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `tbdocumentos_cad`
 --
 
@@ -206,6 +167,61 @@ CREATE TABLE `tbdocumentos_cad` (
   `status` varchar(20) DEFAULT NULL,
   `prazo` date DEFAULT NULL,
   `fk_iddocumento` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbcancelamento`
+--
+
+CREATE TABLE `tbcancelamento` (
+  `id` int(11) NOT NULL,
+  `motivo` varchar(255) DEFAULT NULL,
+  `data_hora` datetime DEFAULT NULL,
+  `fk_iddocumento` int(11) NOT NULL,
+  `fk_idusuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbcompetencias`
+--
+
+CREATE TABLE `tbcompetencias` (
+  `id` int(11) NOT NULL,
+  `tipo` varchar(12) DEFAULT NULL,
+  `fk_iddocumento` int(11) DEFAULT NULL,
+  `fk_idetapa` int(11) DEFAULT NULL,
+  `fk_idusuario` int(11) DEFAULT NULL,
+  `fk_idcargo` int(11) DEFAULT NULL,
+  `fk_idempresa` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbetapa`
+--
+
+CREATE TABLE `tbetapa` (
+  `id` int(11) NOT NULL,
+  `titulo` varchar(255) DEFAULT NULL,
+  `ativo` int(11) DEFAULT '1',
+  `fk_idempresa` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbdocumentoetapa`
+--
+
+CREATE TABLE `tbdocumentoetapa` (
+  `iddocumento` int(11) NOT NULL,
+  `idetapa` int(11) NOT NULL,
+  `ordem` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -260,22 +276,6 @@ CREATE TABLE `tberros_documentos` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `tbcompetencias`
---
-
-CREATE TABLE `tbcompetencias` (
-  `id` int(11) NOT NULL,
-  `tipo` varchar(12) DEFAULT NULL,
-  `fk_iddocumento` int(11) DEFAULT NULL,
-  `fk_idetapa` int(11) DEFAULT NULL,
-  `fk_idusuario` int(11) DEFAULT NULL,
-  `fk_idcargo` int(11) DEFAULT NULL,
-  `fk_idempresa` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `tbferiados`
 --
 
@@ -298,6 +298,33 @@ CREATE TABLE `tbferias_func` (
   `dia_fim` date DEFAULT NULL,
   `fk_idusuario` int(11) NOT NULL,
   `fk_idempresa` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbobservacoes`
+--
+
+CREATE TABLE `tbobservacoes` (
+  `id` int(11) NOT NULL,
+  `descricao` text,
+  `fk_idusuario` int(11) DEFAULT NULL,
+  `fk_idetapa` int(11) DEFAULT NULL,
+  `fk_idprotocolo` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tbprazoetapa`
+--
+
+CREATE TABLE `tbprazoetapa` (
+  `id` int(11) NOT NULL,
+  `prazo` date DEFAULT NULL,
+  `fk_iddocumento` int(11) DEFAULT NULL,
+  `fk_idetapas` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -347,33 +374,6 @@ CREATE TABLE `tblog_sistema` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `tbobservacoes`
---
-
-CREATE TABLE `tbobservacoes` (
-  `id` int(11) NOT NULL,
-  `descricao` text,
-  `fk_idusuario` int(11) DEFAULT NULL,
-  `fk_idetapa` int(11) DEFAULT NULL,
-  `fk_idprotocolo` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `tbprazoetapa`
---
-
-CREATE TABLE `tbprazoetapa` (
-  `id` int(11) NOT NULL,
-  `prazo` date DEFAULT NULL,
-  `fk_iddocumento` int(11) DEFAULT NULL,
-  `fk_idetapas` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `tbtimer`
 --
 
@@ -383,7 +383,8 @@ CREATE TABLE `tbtimer` (
   `fk_idetapa` int(11) DEFAULT NULL,
   `action` varchar(5) DEFAULT NULL,
   `timestamp` int(10) UNSIGNED DEFAULT NULL,
-  `fk_idusuario` int(11) DEFAULT NULL
+  `fk_idusuario` int(11) DEFAULT NULL,
+  `observacao` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -711,7 +712,7 @@ ALTER TABLE `tbdocumentos_cad`
 -- Limitadores para a tabela `tberros`
 --
 ALTER TABLE `tberros`
-  ADD CONSTRAINT `fk_tipo` FOREIGN KEY (`fk_idtipo`) REFERENCES `tberros_tipo` (`id`);
+  ADD CONSTRAINT `fk_tipo` FOREIGN KEY (`fk_idtipo`) REFERENCES `tberros_tipo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tberros_documentos`

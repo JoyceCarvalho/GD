@@ -149,4 +149,20 @@ class Empresa_model extends CI_Model {
       return $this->db->get()->row('cliente_code');
     }
 
+    /**
+     * Método responsável por retornar se o cliente code já está sendo utilizado ou não
+     * Utilizado no controller admin/Controle.php
+     *
+     * @param int $cliente_code
+     * @return string
+     */
+    public function verifica_existencia($cliente_code){
+        
+        $this->db->select('cliente_code');
+        $this->db->from('tbempresa');
+        $this->db->where('cliente_code', $cliente_code);
+
+        return $this->db->get()->row();        
+    }
+
 }

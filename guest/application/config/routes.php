@@ -54,7 +54,8 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 // Rotas referentes a empresa
-$route['alt_empresa'] = "admin/controle/altera_dadosempresa";
+$route['alt_empresa']      = "admin/controle/altera_dadosempresa";
+$route["verifica_empresa"] = "admin/controle/verifica_empresa";
 
 //Rota de alteração de senha (Controller Usuario.php)
 $route["alterar_senha"]  = "usuario/alterar_senha";
