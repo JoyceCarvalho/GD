@@ -132,11 +132,22 @@ class Controle extends CI_Controller {
 
     $idempresa = $this->input->post('id_empresa');
     
-    $empresa = array(
-      'nome' => $this->input->post("empresa"),
-      'cliente_code' => $clientecode,
-      'logo_code'    => $logo_code
-    );
+    if(!empty($clientecode)){
+      
+      $empresa = array(
+        'nome' => $this->input->post("empresa"),
+        'cliente_code' => $clientecode,
+        'logo_code'    => $logo_code
+      );
+
+    } else {
+
+      $empresa = array(
+        'nome' => $this->input->post("empresa"),
+        'cliente_code' => $clientecode
+      );
+
+    }
 
     if($this->empresamodel->editar_empresa($empresa, $idempresa)){
 
