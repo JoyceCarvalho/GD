@@ -5,7 +5,7 @@ date_default_timezone_set('America/Sao_Paulo');
 
 class Finalizar extends CI_Controller {
     
-    public function __construct(){
+    function __construct(){
         parent::__construct();
 
         $this->load->model('documentos_model', 'docmodel');
@@ -198,8 +198,9 @@ class Finalizar extends CI_Controller {
                 
                 $HoraFimQuebradaExplode = explode(":", $HoraFimQuebrada);
                 $HoraFimQuebradaMinutos = ($HoraFimQuebradaExplode[0] * 60) + $HoraFimQuebradaExplode[1];
-                
-                $minutos_fim = ($primeiro_turno_fim_min - $HoraFimQuebradaExplode);
+                //echo $primeiro_turno_fim_min . "<br/>" . $HoraFimQuebradaMinutos;
+                //print_r($HoraFimQuebradaExplode);
+                $minutos_fim = ($primeiro_turno_fim_min - $HoraFimQuebradaMinutos);
 
             }else{
                 

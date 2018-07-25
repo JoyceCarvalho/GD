@@ -3,7 +3,7 @@ defined("BASEPATH") or exit("No direct script access allowed");
 
 class Imprimir extends CI_Controller {
     
-    public function __construct(){
+    function __construct(){
         parent::__construct();
 
         $this->load->model("documentos_model", "docmodel");
@@ -61,6 +61,8 @@ class Imprimir extends CI_Controller {
                 $dados["tempo_medio"]           = $this->timermodel->listar_timer($id);
                 $dados["tempo_por_etapa"]       = $this->timermodel->timer_etapa($id);
                 $dados["tempo_por_responsavel"] = $this->timermodel->timer_responsavel($id);
+                $dados["tempo_em_suspensao"]    = $this->timermodel->tempo_em_suspensao($id);
+                $dados["tempo_pendente"]        = $this->timermodel->tempo_pendente($id);
                 $dados["data_finalizacao"]      = $this->docmodel->finalizacao_data_documento($id);
                 $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 

@@ -94,6 +94,7 @@
                                                     }
                                                     ?>
                                                     <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
+                                                    <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
                                                 </td>
                                             </tr>
                                             <?php
@@ -155,11 +156,55 @@
 <script>
 window.addEventListener("DOMContentLoaded", function() {
 	
+    var format = function(seconds) {
+		var tempos = {
+			segundos: 60
+		,   minutos: 60
+		,   horas: 24
+		,   dias: ''
+		};
+		var parts = [], string = '', resto, dias;
+		for (var unid in tempos) {
+			if (typeof tempos[unid] === 'number') {
+				resto = seconds % tempos[unid];
+				seconds = (seconds - resto) / tempos[unid];
+			} else {
+				resto = seconds;
+			}
+			parts.unshift(resto);
+		}
+		dias = parts.shift();
+		if (dias) {
+			string = dias + (dias > 1 ? ' dias ' : ' dia ');
+		}
+		for (var i = 0; i < 3; i++) {
+			parts[i] = ('0' + parts[i]).substr(-2);
+		}
+		string += parts.join(':');
+		return string;
+	};
+
 	$(function(){
 			
 		$.each($('input[id=id_protocolo]'),function (){
 
 			var id_pro = $(this).val();
+
+            var tempo = 0;
+			var interval = 0;
+			var timer = function(){ 
+				$('.timer_'+id_pro).html(format(++tempo));
+			};
+
+            //console.log(id_pro);
+            $.post('get_time_pendente', { pro: id_pro }, function(resp){
+                //console.log(resp);
+				tempo = resp.seconds;
+				timer();
+				if (resp.running) {
+					interval = setInterval(timer, 1000);
+				}
+			});
 	
             $('#historico_'+id_pro).click(function(e){
 

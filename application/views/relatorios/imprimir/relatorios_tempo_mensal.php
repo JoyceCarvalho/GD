@@ -119,7 +119,7 @@ $this->load->model("timer_model", "timermodel");
                             $sum_media += $seconds;
                             $mostraNumero = converteHoras($seconds);
 
-                            echo "O tempo médio desenvolvido no documento foi <strong>" . $mostraNumero . "</strong>";
+                            echo "O tempo médio mensal foi <strong>" . $mostraNumero . "</strong>";
                             
                             ?>
                         </div>                                

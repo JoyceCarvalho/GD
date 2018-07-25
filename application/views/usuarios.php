@@ -45,7 +45,7 @@
                                 <tbody>
                                     <?php
                                         foreach ($listagem_usuarios as $usuario) {
-                                            if (($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"]) or ($_SESSION["idusuario"] == $usuario->id)) {
+                                            if ((($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"]) or ($_SESSION["idusuario"] == $usuario->id)) && ($usuario->id != 1)) {
                                                 ?>
                                                 <tr>
                                                     <td><?=$usuario->nome;?></td>

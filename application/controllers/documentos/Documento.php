@@ -5,7 +5,7 @@ date_default_timezone_set('America/Sao_Paulo');
 
 class Documento extends CI_Controller {
     
-    public function __construct(){
+    function __construct(){
         parent::__construct();
 
         $this->load->model('empresa_model', 'empresamodel');
@@ -517,7 +517,7 @@ class Documento extends CI_Controller {
 
             if($mensagem == "pendente"){
 
-                $dados["warning"] = "Documento tranferido com suscesso! Etapa atual pendente!";
+                $dados["warning"] = "Documento transferido com sucesso! Etapa atual pendente!";
 
             } elseif ($mensagem != "error") {
 
@@ -683,6 +683,81 @@ class Documento extends CI_Controller {
 
         $this->load->model('timer_model', 'timermodel');
         $timer = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
+
+        $seconds = 0;
+        $action = 'pause'; // sempre inicia pausado
+
+        foreach ($timer as $t ) {
+            
+            $action = $t->action;
+            switch ($action) {
+                case 'start':
+                    $seconds -= $t->timestamp;
+                break;
+                case 'pause':
+                    // para evitar erro se a primeira ação for pause
+                    if ($seconds !== 0) {
+                        $seconds += $t->timestamp;
+                    }
+                break;
+            }
+        }
+        if ($action === 'start') {
+            $seconds += time();
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode(array(
+            'seconds' => $seconds,
+            'running' => $action === 'start',
+        ));
+    }
+
+    public function get_time_suspenso(){
+        
+        $idprotocolo = $this->input->post("pro");
+
+        $this->load->model('timer_model', 'timermodel');
+        $timer = $this->timermodel->get_time_suspenso($idprotocolo);
+
+        $seconds = 0;
+        $action = 'pause'; // sempre inicia pausado
+
+        foreach ($timer as $t ) {
+            
+            $action = $t->action;
+            switch ($action) {
+                case 'start':
+                    $seconds -= $t->timestamp;
+                break;
+                case 'pause':
+                    // para evitar erro se a primeira ação for pause
+                    if ($seconds !== 0) {
+                        $seconds += $t->timestamp;
+                    }
+                break;
+            }
+        }
+        if ($action === 'start') {
+            $seconds += time();
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode(array(
+            'seconds' => $seconds,
+            'running' => $action === 'start',
+        ));
+
+    }
+
+    public function get_time_pendente(){
+        
+        $idprotocolo = $this->input->post("pro");
+
+        $etapa_documento = $this->docmodel->etapa_documento($idprotocolo);
+
+        $this->load->model('timer_model', 'timermodel');
+        $timer = $this->timermodel->get_time_pendente($idprotocolo, $etapa_documento);
 
         $seconds = 0;
         $action = 'pause'; // sempre inicia pausado

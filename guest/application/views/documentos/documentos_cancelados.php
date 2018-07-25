@@ -428,6 +428,8 @@ window.addEventListener("DOMContentLoaded", function() {
                     }
                     $('#historico_documento').hide();
                     $('#cancelamento').hide();
+                    $('#his_conteudo').hide();
+                    $('#his_conteudo').hide();
                     $("#observacao").hide();
                     $("#obs").hide();
 

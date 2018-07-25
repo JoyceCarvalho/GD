@@ -330,7 +330,7 @@ window.addEventListener("DOMContentLoaded", function() {
                     }
                     $('#exampleModalLabel').html(titulo).show();
                     $('#cancelamento').show();
-                    $('#conteudo').html(body).show();
+                    $('#his_conteudo').html(body).show();
                     $('#historico_documento').hide();
                     $('#erro').hide();
                     $("#doc_conteudo").hide();
@@ -428,6 +428,7 @@ window.addEventListener("DOMContentLoaded", function() {
                     }
                     $('#historico_documento').hide();
                     $('#cancelamento').hide();
+                    $('#his_conteudo').hide();
                     $("#observacao").hide();
                     $("#obs").hide();
 

@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Erros extends CI_Controller {
     
-    public function __construct(){
+    function __construct(){
         parent::__construct();
         
         $this->load->model('empresa_model', 'empresamodel');

@@ -23,6 +23,42 @@ class Timer_model extends CI_Model {
     }
 
     /**
+     * Método responsável por retornar o tempo do documento aguardando exigência
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param int $protocolo
+     * @return object
+     */
+    public function get_time_suspenso($protocolo){
+        
+        $this->db->select('action, timestamp');
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad', $protocolo);
+        $this->db->where('observacao = "SUSPENSO"');
+        $this->db->order_by('id');
+        
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por retornar o tempo do documento aguardando exigência
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param int $protocolo
+     * @return object
+     */
+    public function get_time_pendente($protocolo){
+        
+        $this->db->select('action, timestamp');
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad', $protocolo);
+        $this->db->where('observacao = "PENDENTE"');
+        $this->db->order_by('id');
+        
+        return $this->db->get()->result();
+    }
+
+    /**
      * Método responsável por retornar o total de linhas referentes ao objeto determinado
      * Utilizado no controller documentos/Documento.php
      *
@@ -185,6 +221,7 @@ class Timer_model extends CI_Model {
         $this->db->join("tblog_documentos as ld", "ld.documento = t.fk_iddoccad and ld.descricao = 'FINALIZADO'");
         $this->db->where("ld.data_hora like '$dia_mes%'");
         $this->db->group_by('t.id');
+        $this->db->order_by('t.id asc');
 
         return $this->db->get()->result();
     }
@@ -208,4 +245,42 @@ class Timer_model extends CI_Model {
         
         return $this->db->get()->result();
     }
+
+    /**
+     * Método responsável por listar o tempo médio do documento em exigencia(suspensão)
+     * Utilizado no controller relatorios/Imprimir.php
+     *
+     * @param int $idprotocolo
+     * @return object
+     */
+    public function tempo_em_suspensao($idprotocolo){
+
+        $this->db->select('action, timestamp, fk_iddoccad as idprotocolo');
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad', $idprotocolo);
+        $this->db->where('observacao = "SUSPENSO"');
+        $this->db->order_by('id asc');
+        
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por listar o tempo médio do documento pendente
+     * Utilizado no controller relatorios/Imprimir.php
+     *
+     * @param int $idprotocolo
+     * @return object
+     */
+    public function tempo_pendente($idprotocolo){
+
+        $this->db->select('action, timestamp, fk_iddoccad as idprotocolo');
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad', $idprotocolo);
+        $this->db->where('observacao = "PENDENTE"');
+        $this->db->order_by('id asc');
+        
+        return $this->db->get()->result();
+
+    }
+
 }

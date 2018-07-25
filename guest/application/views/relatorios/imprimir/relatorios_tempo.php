@@ -287,6 +287,82 @@ foreach ($informacoes_documento as $documento) {
                     </div>
                 </div>
             </div>
+
+            <?php if($tempo_em_suspensao): ?>
+                <div class="panel panel-default sessao no-break geral">
+                    <div class="panel-heading">
+                        <span class="titulo-sessao">Tempo médio aguardando exigência</span>
+                    </div>
+                    <div class="panel-body">
+                        
+                        <?php
+                        // Trecho adaptado do 1º gestão de documentos
+                        $seconds = 0;
+                        $sum_media = 0;
+
+                        foreach ($tempo_em_suspensao as $tempo) {
+                            
+                            $action = $tempo->action;
+                            switch ($action) {
+                                case 'start':
+                                    $seconds -= $tempo->timestamp;
+                                    break;
+                                
+                                case 'pause':
+                                    if($seconds !== 0){
+                                        $seconds += $tempo->timestamp;
+                                    }
+                                    break;
+                            }
+                        }
+                        $sum_media += $seconds;
+                        $mostraNumero = converteHoras($seconds);
+
+                        echo "O tempo do documento aguardando exigência foi <strong>" . $mostraNumero . "</strong>";
+                        
+                        ?>
+
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if($tempo_pendente): ?>
+                <div class="panel panel-default sessao no-break geral">
+                    <div class="panel-heading">
+                        <span class="titulo-sessao">Tempo médio pendente</span>
+                    </div>
+                    <div class="panel-body">
+                        
+                        <?php
+                        // Trecho adaptado do 1º gestão de documentos
+                        $seconds = 0;
+                        $sum_media = 0;
+
+                        foreach ($tempo_pendente as $tempo) {
+                            
+                            $action = $tempo->action;
+                            switch ($action) {
+                                case 'start':
+                                    $seconds -= $tempo->timestamp;
+                                    break;
+                                
+                                case 'pause':
+                                    if($seconds !== 0){
+                                        $seconds += $tempo->timestamp;
+                                    }
+                                    break;
+                            }
+                        }
+                        $sum_media += $seconds;
+                        $mostraNumero = converteHoras($seconds);
+
+                        echo "O tempo em que o documento encontrou-se pendente foi <strong>" . $mostraNumero . "</strong>";
+                        
+                        ?>
+
+                    </div>
+                </div>
+            <?php endif; ?>
             <!-- Fim do conteudo -->
         </div>
         <script src="https://code.highcharts.com/highcharts.js"></script>

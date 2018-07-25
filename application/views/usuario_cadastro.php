@@ -90,7 +90,7 @@
                                 <label class="col-sm-3 form-control-label">Senha:</label>
                                 <div class="col-sm-9">
                                     <input type="password" name="senha" class="form-control">
-                                    <small class="help-block-none">A senha deve conter pelo menos 6 caracteres. Para uma senha mais segura mescle números, letras e caracteres especiais</small>
+                                    <small style="color:#696969;" class="help-block-none">A senha deve conter pelo menos 6 caracteres. Para uma senha mais segura mescle números, letras e caracteres especiais</small>
                                 </div>
                             </div>
                             <div class="line"></div>

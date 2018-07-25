@@ -4,7 +4,7 @@ defined("BASEPATH") or exit("No direct script access allowed");
 date_default_timezone_set('America/Sao_Paulo');
 
 class Transferencia extends CI_Controller {
-    public function __construct(){
+    function __construct(){
         
         parent::__construct();
 
@@ -297,11 +297,42 @@ class Transferencia extends CI_Controller {
                             //echo "usuariosAptosCargo";
                             //print_r($usuariosAptosCargo);
 
-                            foreach ($usuariosAptosCargo as $user) {
+                            if(!empty($usuariosAptosCargo)){
                                 
-                                echo $usuarios_aptos[] = $user->id;
-                                $usuariosAptosQuantidade[$user->id] = 0;
+                                foreach ($usuariosAptosCargo as $user) {
+                                    
+                                    echo $usuarios_aptos[] = $user->id;
+                                    $usuariosAptosQuantidade[$user->id] = 0;
+                                    
+                                }
+
+                            } else {
+
+                                $pendente = array(
+                                    'documento'     => $idprotocolo, 
+                                    'etapa'         => $proxima_etapa,
+                                    'usuario'       => 0,
+                                    'descricao'     => 'PENDENTE',
+                                    'data_hora'     => date("Y-m-d H:i:s"),
+                                    'ultima_etapa'  => 'true'
+                                );
                                 
+                                $pendencia = true;
+            
+                               $this->docmodel->cadastrar_log_documento($pendente);
+            
+                               $this->load->model('timer_model', 'timermodel');
+            
+                               $dados = array(
+                                    'fk_iddoccad'   => $idprotocolo,
+                                    'fk_idetapa'    => $proxima_etapa,
+                                    'action'        => "start",
+                                    'timestamp'     => time(),
+                                    'observacao'    => "PENDENTE"
+                                );
+                        
+                                $this->timermodel->cadastrar_tempo($dados);
+
                             }
 
                         }
@@ -311,93 +342,96 @@ class Transferencia extends CI_Controller {
                     //echo "<br/><br/>";
                     //var_dump($usuarios_aptos);
 
-                    $usuariosAptosImplode = implode(",", $usuarios_aptos);
-
-                    $contaUsuariosAptos = count($usuarios_aptos);
-
-                    $verificaNumeroDocumentos = $this->docmodel->numero_documentos($usuariosAptosImplode);
-
-                    if ($verificaNumeroDocumentos == 0) {
-
-                        //var_dump($contaUsuariosAptos);
+                    if(!$pendencia){
                         
-                        if ($contaUsuariosAptos > 1) {
+                        $usuariosAptosImplode = implode(",", $usuarios_aptos);
 
-                            $numeroRandomico = rand(0, $contaUsuariosAptos);
-                            $idEscolhido = $usuarios_aptos[$numeroRandomico];
+                        $contaUsuariosAptos = count($usuarios_aptos);
 
-                        } else {
+                        $verificaNumeroDocumentos = $this->docmodel->numero_documentos($usuariosAptosImplode);
 
-                            $idEscolhido = $usuarios_aptos[0];
+                        if ($verificaNumeroDocumentos == 0) {
 
-                        }
-
-                        $transfereProximaEtapa = array(
-                            'descricao' => 'TRANSFERIDO',
-                            'data_hora' => date("Y-m-d H:i:s"),
-                            'ultima_etapa' => 'true',
-                            'usuario' => $idEscolhido,
-                            'etapa' => $proxima_etapa,
-                            'documento' => $idprotocolo
-                        );
-
-                        $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
-                        //print_r($transfereProximaEtapa);
-
-                        $idMostraDirecionamento = $idEscolhido;
-                        
-                    } else {
-
-                        $usuarios_quantidada_documento = $this->docmodel->quantidade_documentos_usuario($usuariosAptosImplode);
-
-                        foreach ($usuarios_quantidada_documento as $usuariosDocumento ) {
+                            //var_dump($contaUsuariosAptos);
                             
-                            $usuariosAptosQuantidade[$usuariosDocumento->usuario] = $usuariosDocumento->quantidade_documento;
+                            if ($contaUsuariosAptos > 1) {
 
-                        }
-
-                        asort($usuariosAptosQuantidade);
-
-                        $controlaMenor = 1;
-                        foreach ($usuariosAptosQuantidade as $key => $quantidade) {
-                            if ($controlaMenor == 1) {
-                                
-                                $quantidadeVerificar = $quantidade;
-                                $usuariosAptosPrimeiraEtapa[] = $key;
+                                $numeroRandomico = rand(0, $contaUsuariosAptos);
+                                $idEscolhido = $usuarios_aptos[$numeroRandomico];
 
                             } else {
 
-                                if ($quantidadeVerificar = $quantidade) {
-                                    $usuariosAptosPrimeiraEtapa[] = $key;
-                                }
+                                $idEscolhido = $usuarios_aptos[0];
 
                             }
 
-                            $controlaMenor ++;
+                            $transfereProximaEtapa = array(
+                                'descricao' => 'TRANSFERIDO',
+                                'data_hora' => date("Y-m-d H:i:s"),
+                                'ultima_etapa' => 'true',
+                                'usuario' => $idEscolhido,
+                                'etapa' => $proxima_etapa,
+                                'documento' => $idprotocolo
+                            );
+
+                            $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
+                            //print_r($transfereProximaEtapa);
+
+                            $idMostraDirecionamento = $idEscolhido;
+                            
+                        } else {
+
+                            $usuarios_quantidada_documento = $this->docmodel->quantidade_documentos_usuario($usuariosAptosImplode);
+
+                            foreach ($usuarios_quantidada_documento as $usuariosDocumento ) {
+                                
+                                $usuariosAptosQuantidade[$usuariosDocumento->usuario] = $usuariosDocumento->quantidade_documento;
+
+                            }
+
+                            asort($usuariosAptosQuantidade);
+
+                            $controlaMenor = 1;
+                            foreach ($usuariosAptosQuantidade as $key => $quantidade) {
+                                if ($controlaMenor == 1) {
+                                    
+                                    $quantidadeVerificar = $quantidade;
+                                    $usuariosAptosPrimeiraEtapa[] = $key;
+
+                                } else {
+
+                                    if ($quantidadeVerificar = $quantidade) {
+                                        $usuariosAptosPrimeiraEtapa[] = $key;
+                                    }
+
+                                }
+
+                                $controlaMenor ++;
+
+                            }
+
+                            $contaUsuarioAptosPrimeiraEtapa = count($usuariosAptosPrimeiraEtapa);
+                            
+                            $numeroRandomicoPrimeiraEtapa = rand(0,$contaUsuarioAptosPrimeiraEtapa - 1);
+                            
+                            $idEscolhidoPrimeiraEtapa = $usuariosAptosPrimeiraEtapa[$numeroRandomicoPrimeiraEtapa];
+
+                            $transfereProximaEtapa = array(
+                                'descricao' => 'TRANSFERIDO', 
+                                'data_hora' => date("Y-m-d H:i:s"),
+                                'ultima_etapa' => 'true',
+                                'usuario' => $idEscolhidoPrimeiraEtapa,
+                                'etapa' => $proxima_etapa,
+                                'documento' => $idprotocolo
+                            );
+
+                            //print_r($transfereProximaEtapa);
+
+                            $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
+
+                            $idMostraDirecionamento = $idEscolhidoPrimeiraEtapa;
 
                         }
-
-                        $contaUsuarioAptosPrimeiraEtapa = count($usuariosAptosPrimeiraEtapa);
-                        
-                        $numeroRandomicoPrimeiraEtapa = rand(0,$contaUsuarioAptosPrimeiraEtapa - 1);
-                        
-                        $idEscolhidoPrimeiraEtapa = $usuariosAptosPrimeiraEtapa[$numeroRandomicoPrimeiraEtapa];
-
-                        $transfereProximaEtapa = array(
-                            'descricao' => 'TRANSFERIDO', 
-                            'data_hora' => date("Y-m-d H:i:s"),
-                            'ultima_etapa' => 'true',
-                            'usuario' => $idEscolhidoPrimeiraEtapa,
-                            'etapa' => $proxima_etapa,
-                            'documento' => $idprotocolo
-                        );
-
-                        //print_r($transfereProximaEtapa);
-
-                        $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
-
-                        $idMostraDirecionamento = $idEscolhidoPrimeiraEtapa;
-
                     }
 
                 }
@@ -440,7 +474,7 @@ class Transferencia extends CI_Controller {
 
         } elseif($pendencia == true){
             
-            $this->session->set_flashdata('warning', 'Documento tranferido com suscesso! Etapa atual pendente!');
+            $this->session->set_flashdata('warning', 'Documento tranferido com sucesso! Etapa atual pendente!');
 
             redirect("meusdocumentos");
 

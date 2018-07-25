@@ -82,6 +82,7 @@
                                                         }
                                                     ?>
                                                     <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
+                                                    <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
                                                 </td>
                                             </tr>
                                             <?php
@@ -184,53 +185,15 @@ window.addEventListener("DOMContentLoaded", function() {
 				$('.timer_'+id_pro).html(format(++tempo));
 			};
 
-			//alert(id_pro);
-
-			//$(window).load(function(){ alert("here");
-
-			//var protocol = ($(this).val()); { pro: protocol }
-		
-			$.post('get_time', { pro: id_pro }, function(resp){
-				$('#post_'+id_pro).text(resp.running ? 'Pausar' : 'Iniciar');
+            //console.log(id_pro);
+            
+			$.post('get_time_suspenso', { pro: id_pro }, function(resp){
+                //console.log(resp);
 				tempo = resp.seconds;
 				timer();
 				if (resp.running) {
 					interval = setInterval(timer, 1000);
 				}
-				botao = $('#post_'+id_pro).text();
-				if(botao === "Pausar"){
-					$('.blockA').css("pointer-events", "none");
-					$('.blockB').css("pointer-events", "none");
-					$('.blockC').css("pointer-events", "none");
-					$('.blockD').css("pointer-events", "none");
-				}
-			});
-			
-			$('#post_'+id_pro).on('click', function(){ 
-				var btn = this;
-				btn.disabled = true;
-				$.post('grava_acao', { pro: id_pro }, function(resp){
-					btn.disabled = false;
-					$(btn).text(resp.running ? 'Pausar' : 'Iniciar');
-					if (resp.running) {
-						timer();
-						interval = setInterval(timer, 1000);
-					} else {
-						clearInterval(interval);
-					}
-					botao = $('#post_'+id_pro).text();
-					if(botao === "Pausar"){
-						$('.blockA').css("pointer-events", "none");
-						$('.blockB').css("pointer-events", "none");
-						$('.blockC').css("pointer-events", "none");
-						$('.blockD').css("pointer-events", "none");
-					}else{
-						$('.blockA').css("pointer-events", "");
-						$('.blockB').css("pointer-events", "");
-						$('.blockC').css("pointer-events", "");
-						$('.blockD').css("pointer-events", "");
-					}
-				});
 			});
 
             $('#historico_'+id_pro).click(function(e){

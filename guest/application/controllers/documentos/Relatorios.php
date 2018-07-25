@@ -5,7 +5,7 @@ date_default_timezone_set('America/Sao_Paulo');
 
 class Relatorios extends CI_Controller {
     
-    public function __construct(){
+    function __construct(){
         parent::__construct();
         
         $this->load->model("empresa_model", "empresamodel");

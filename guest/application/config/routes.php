@@ -160,10 +160,12 @@ $route["andamento"]                  = "documentos/Relatorios";
 $route["erro"]                       = "documentos/Relatorios/documentos_com_erro";
 $route["cancelados"]                 = "documentos/Relatorios/documentos_cancelados";
 $route["suspenso"]                   = "documentos/Relatorios/documentos_suspensos";
+$route["get_time_suspenso"]          = "documentos/Documento/get_time_suspenso";
 $route["reverte_suspensao/(:any)"]   = "documentos/Relatorios/reverte_suspensao/$1";
 $route["observacao_cad"]             = "documentos/Documento/cadastrar_observacao";
 $route["ver_observacao/(:any)"]      = "documentos/Documento/ver_observacao/$1";
 $route["pendentes"]                  = "documentos/Relatorios/documentos_pendentes";
+$route["get_time_pendente"]          = "documentos/Documento/get_time_pendente";
 $route["transferencia"]              = "documentos/Relatorios/tranferencia_documento";
 $route["transfere_para"]             = "documentos/Relatorios/transfere_para";
 
