@@ -33,6 +33,57 @@
 
                     <div class="card-body">
 
+                        <form action="<?=base_url('tempo_mensal');?>" method="post">
+                            <div class="row col-sm-12">
+                                <div class="form-group col-sm-3">
+                                    <label>Mês</label>
+                                    <select class="form-control" name="filtrar_mes" id="filtro_mes">
+                                        <option value="nda"> -- Todos -- </option>
+                                        <?php 
+                                        foreach($finalizados as $doc){
+                                            $idmes = explode("/", $doc->mes_ano);
+                                            $mes = mes_extenso($doc->mes_ano);
+                                            $mes = explode("/", $mes);
+
+                                            if($mes_filtrado == $idmes[0]){
+                                                $sel = "selected=\"selected\"";
+                                            } else {
+                                                $sel = "";
+                                            }
+                                            ?>
+                                            <option <?=$sel;?> value="<?=$idmes[0];?>"><?=$mes[0];?></option>
+                                            <?php
+                                        } 
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-sm-3">
+                                    <label>Ano</label>
+                                    <select class="form-control" name="filtrar_ano" id="filtro_ano">
+                                        <option value="nda"> -- Todos -- </option>
+                                        <?php 
+                                        foreach($finalizados_ano as $doc){
+                                            if($ano_filtrado == $doc->ano){
+                                                $sel = "selected=\"selected\"";
+                                            } else {
+                                                $sel = "";
+                                            }
+                                            ?>
+                                            <option <?=$sel;?> value="<?=$doc->ano;?>"><?=$doc->ano;?></option>
+                                            <?php
+                                        } 
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-sm-3">
+                                    <label>&nbsp;</label><br/>
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filtrar</button>
+                                </div>
+                            </div>
+                        </form>
+
                         <div class="table-responsive">                       
 
                             <table class="table table-striped table-hover" id="datatable">
@@ -50,7 +101,7 @@
                                     foreach ($doc_finalizados as $documento) {
                                         ?>
                                         <tr>
-                                            <td><?=$documento->mes_ano;?></td>
+                                            <td><?=mes_extenso($documento->mes_ano);?></td>
                                             <td>
                                                 <?php
                                                 $this->load->model('timer_model', 'timermodel');

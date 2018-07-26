@@ -33,6 +33,37 @@
 
                     <div class="card-body">
 
+                        <form action="<?=base_url('tempo_medio');?>" method="post">
+                            <div class="row col-sm-12">
+                                <div class="form-group col-sm-3">
+                                    <label>Mês</label>
+                                    <select class="form-control" name="filtrar_mesano" id="filtro_mesano">
+                                        <option value="nda"> -- Todos -- </option>
+                                        <?php 
+                                        foreach($finalizados as $doc){
+                                            $mesano = explode("/", $doc->data_finalizacao);
+                                            $mesanoconverte = $mesano[2]. "-". $mesano[1];
+
+                                            if($mesano_filtrado == $mesanoconverte){
+                                                $sel = "selected=\"selected\"";
+                                            } else {
+                                                $sel = "";
+                                            }
+                                            ?>
+                                            <option <?=$sel;?> value="<?=$mesanoconverte;?>"><?=$mesano[1]."/".$mesano[2];?></option>
+                                            <?php
+                                        } 
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-sm-3">
+                                    <label>&nbsp;</label><br/>
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filtrar</button>
+                                </div>
+                            </div>
+                        </form>
+
                         <div class="table-responsive">                       
 
                             <table class="table table-striped table-hover" id="datatable">

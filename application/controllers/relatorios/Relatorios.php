@@ -43,13 +43,34 @@ class Relatorios extends CI_Controller {
             redirect("/");
         }
 
+        if(isset($_POST["filtrar_mesano"])){
+
+            $mesano = $this->input->post('filtrar_mesano');
+
+            if((!empty($mesano)) && ($mesano != "nda")){
+
+                $dados["doc_finalizados"] = $this->docmodel->filtro_documentos_finalizados($_SESSION["idempresa"], $mesano);
+                $dados["mesano_filtrado"]    = $mesano;                
+
+            } else {
+
+                $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados($_SESSION["idempresa"]);
+                $dados["mesano_filtrado"]    = "";
+
+            }
+
+        } else {
+            $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados($_SESSION["idempresa"]);
+            $dados["mesano_filtrado"]    = "";
+        }
+
         $dados["pagina"]  = "Relatório de Tempo Médio";
         $dados["pg"]      = "relatorio";
         $dados["submenu"] = "tempo";
         $dados["sub"]     = "tempgeral";
 
         $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados($_SESSION["idempresa"]);
+        $dados["finalizados"]      = $this->docmodel->listar_documentos_finalizados_filtro($_SESSION["idempresa"]);
         
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
@@ -66,13 +87,72 @@ class Relatorios extends CI_Controller {
             redirect("/");
         }
 
+        if((isset($_POST["filtrar_mes"])) or  (isset($_POST["filtrar_ano"]))){
+            
+            $mes = $this->input->post('filtrar_mes');
+            $ano = $this->input->post('filtrar_ano');
+
+            if(((!empty($mes)) && ($mes != "nda")) or ((!empty($ano)) && ($ano != "nda"))){
+
+                $mes_true = false;
+                $ano_true = false;
+
+                if((!empty($mes)) && ($mes != "nda")){
+                    $mes_true  = true;
+                }
+
+                if((!empty($ano)) && ($ano != "nda")){
+                    $ano_true = true;
+                }
+
+                if(($mes_true == true) and ($ano_true == true)){
+
+                    $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados_filtro_mesano($_SESSION["idempresa"], $mes, $ano);
+                    $dados["mes_filtrado"]    = $mes;
+                    $dados["ano_filtrado"]    = $ano;
+
+                } elseif(($mes_true == true) and ($ano_true == false)){
+
+                    $dados["doc_finalizados"] = $this->docmodel->filtro_documentos_por_mes($_SESSION["idempresa"], $mes);
+                    $dados["mes_filtrado"]    = $mes;
+                    $dados["ano_filtrado"]    = "";
+
+                } elseif(($mes_true == false) and ($ano_true == true)){
+
+                    $dados["doc_finalizados"] = $this->docmodel->filtro_documentos_por_ano($_SESSION["idempresa"], $ano);
+                    $dados["mes_filtrado"]    = $mes;
+                    $dados["ano_filtrado"]    = "";
+                    
+                } else {
+                    $dados["doc_finalizados"] = "";
+                    $dados["mes_filtrado"]    = "";
+                    $dados["ano_filtrado"]    = "";
+                }
+
+            } else {
+
+                $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados_mes($_SESSION["idempresa"]);
+                $dados["mes_filtrado"]    = "";
+                $dados["ano_filtrado"]    = "";
+
+            }
+
+        } else {
+
+            $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados_mes($_SESSION["idempresa"]);
+            $dados["mes_filtrado"]    = "";
+            $dados["ano_filtrado"]    = "";
+
+        }
+
         $dados["pagina"]   = "Relatório de tempo médio mensal";
         $dados["pg"]       = "relatorio";
         $dados["submenu"]  = "tempo";
         $dados["sub"]      = "tempmensal";
 
-        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados_mes($_SESSION["idempresa"]);
+        $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["finalizados"]       = $this->docmodel->listar_documentos_finalizados_mes($_SESSION["idempresa"]);
+        $dados["finalizados_ano"]   = $this->docmodel->listar_documentos_finalizados_ano($_SESSION["idempresa"]);
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');

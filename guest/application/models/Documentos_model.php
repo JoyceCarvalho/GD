@@ -642,6 +642,53 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método responsável por listar os dados para o filtro de mes e ano
+     * Utilizado no controller relatorios/Relatorios.php
+     *
+     * @param int $empresa
+     * @return object
+     */
+    public function listar_documentos_finalizados_filtro($empresa){
+        $this->db->select('dc.id as idprotocolo, dc.protocolo AS protocolo, d.id as iddocumento, d.titulo AS documento, g.titulo AS grupo, 
+        DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.nome AS nome_usuario, DATE_FORMAT(ldB.data_hora, "%d/%m/%Y") as data_finalizacao, 
+        DATE_FORMAT(dc.prazo, "%d/%m/%Y") as prazo_documento');
+        $this->db->from('tbdocumentos_cad AS dc');
+        $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
+        $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->where('d.fk_idempresa', $empresa);
+        $this->db->group_by('DATE_FORMAT(ldB.data_hora, "%m/%Y")');
+        $this->db->order_by("ldA.data_hora asc");
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por retornar os dados depois de filtrados
+     *
+     * @param int $empresa
+     * @param date $mesano
+     * @return object
+     */
+    public function filtro_documentos_finalizados($empresa, $mesano){
+        $data = '"'.$mesano.'-%"';
+        $this->db->select('dc.id as idprotocolo, dc.protocolo AS protocolo, d.id as iddocumento, d.titulo AS documento, g.titulo AS grupo, 
+        DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.nome AS nome_usuario, DATE_FORMAT(ldB.data_hora, "%d/%m/%Y") as data_finalizacao, 
+        DATE_FORMAT(dc.prazo, "%d/%m/%Y") as prazo_documento');
+        $this->db->from('tbdocumentos_cad AS dc');
+        $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
+        $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->where('d.fk_idempresa', $empresa);
+        $this->db->where("ldB.data_hora like $data");
+        $this->db->order_by("ldA.data_hora asc");
+        return $this->db->get()->result();
+    }
+
+    /**
      * Método responsável por listar os documetos finalizado por mes
      * Utilizado no controller relatorios/Relatorios.php 
      *
@@ -657,6 +704,100 @@ class Documentos_model extends CI_Model {
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
         $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
         $this->db->where('d.fk_idempresa', $empresa);
+        $this->db->group_by('DATE_FORMAT(ldB.data_hora, "%m/%Y")');
+        $this->db->order_by('ldA.data_hora asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por listar o ano dos documentos finalizados
+     * Utilizado no controller relatorios/Relatorios.php
+     *
+     * @param int $empresa
+     * @return object
+     */
+    public function listar_documentos_finalizados_ano($empresa){
+        $this->db->select('YEAR(ldB.data_hora) as ano');
+        $this->db->from("tbdocumentos_cad AS dc");
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
+        $this->db->join("tbgrupo AS g", "g.id = d.fk_idgrupo");
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->where('d.fk_idempresa', $empresa);
+        $this->db->group_by('YEAR(ldB.data_hora)');
+        $this->db->order_by('ldA.data_hora asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por retornar os documentos finalizados no mes e ano filtrado pelo usuario
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int $empresa
+     * @param int $mes
+     * @param int $ano
+     * @return object
+     */
+    public function listar_documentos_finalizados_filtro_mesano($empresa, $mes, $ano){
+        $mesano_filtro = '"'.$ano.'-'.$mes.'-%"';
+        $this->db->select('DATE_FORMAT(ldB.data_hora, "%m/%Y") as mes_ano');
+        $this->db->from("tbdocumentos_cad AS dc");
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
+        $this->db->join("tbgrupo AS g", "g.id = d.fk_idgrupo");
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->where('d.fk_idempresa', $empresa);
+        $this->db->where("ldB.data_hora like $mesano_filtro");
+        $this->db->group_by('DATE_FORMAT(ldB.data_hora, "%m/%Y")');
+        $this->db->order_by('ldA.data_hora asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por listar os documentos de acordo com o mes escolhido
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int  $empresa
+     * @param int $mes
+     * @return object
+     */
+    public function filtro_documentos_por_mes($empresa, $mes){
+        $mes_filtro = '"%-'.$mes.'-%"';
+        $this->db->select('DATE_FORMAT(ldB.data_hora, "%m/%Y") as mes_ano');
+        $this->db->from("tbdocumentos_cad AS dc");
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
+        $this->db->join("tbgrupo AS g", "g.id = d.fk_idgrupo");
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->where('d.fk_idempresa', $empresa);
+        $this->db->where("ldB.data_hora like $mes_filtro");
+        $this->db->group_by('DATE_FORMAT(ldB.data_hora, "%m/%Y")');
+        $this->db->order_by('ldA.data_hora asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por listar os documentos de acordo com o ano escolhido
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int  $empresa
+     * @param int $ano
+     * @return object
+     */
+    public function filtro_documentos_por_ano($empresa, $ano){
+        $mes_filtro = '"%-'.$mes.'-%"';
+        $this->db->select('DATE_FORMAT(ldB.data_hora, "%m/%Y") as mes_ano');
+        $this->db->from("tbdocumentos_cad AS dc");
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
+        $this->db->join("tbgrupo AS g", "g.id = d.fk_idgrupo");
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->where('d.fk_idempresa', $empresa);
+        $this->db->where("ldB.data_hora like $mes_filtro");
         $this->db->group_by('DATE_FORMAT(ldB.data_hora, "%m/%Y")');
         $this->db->order_by('ldA.data_hora asc');
         return $this->db->get()->result();
