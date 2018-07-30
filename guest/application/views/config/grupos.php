@@ -31,6 +31,11 @@
                         <h3 class="h4">Grupos de Documentos</h3>
                     </div>
                     <div class="card-body">
+
+                        <div class="form-group">
+                            <a href="<?=base_url('grupodocumentos_cad')?>" class="btn btn-sm btn-success">Cadastrar Grupo Documento</a>
+                        </div>
+
                         <div class="table-responsive">                       
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>

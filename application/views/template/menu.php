@@ -102,6 +102,20 @@
               </ul>
             </li>
           <?php endif; ?>
+          
+          <!-- Somente acesso de administrador ou coordenador -->
+          <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
+            <li <?=($submenu == "ausencia") ? "class='active'" : "" ?>>
+              <a href="#ausencia" aria-expanded="<?=($submenu == "ausencia") ? "true" : "false" ?>" data-toggle="collapse">
+                <i class="fa fa-user-times"></i> Ausência de Funcionário
+              </a>
+
+              <ul id="ausencia" class="collapse list-unstyled <?=($submenu == "ausencia") ? "show" : "" ?>">
+                <li <?=((isset($sub)) && ($sub == "ausencialist")) ? "class='active'" : "" ?>><a href="<?=base_url('ausencia_ferias');?>"> Listar</a></li>
+                <li <?=((isset($sub)) && ($sub == "ausenciacad")) ? "class='active'" : "" ?>><a href="<?=base_url('ausencia_ferias_cad');?>"> Cadastrar</a></li>
+              </ul>
+            </li>
+          <?php endif;?>
         </ul>
       </li>
 
@@ -159,20 +173,6 @@
               <i class="fa fa-black-tie"></i>Competência 
             </a>
           </li>
-
-          <!-- Somente acesso de administrador ou coordenador -->
-          <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
-            <li <?=($submenu == "ausencia") ? "class='active'" : "" ?>>
-              <a href="#ausencia" aria-expanded="<?=($submenu == "ausencia") ? "true" : "false" ?>" data-toggle="collapse">
-                <i class="fa fa-user-times"></i> Ausência de Funcionário
-              </a>
-
-              <ul id="ausencia" class="collapse list-unstyled <?=($submenu == "ausencia") ? "show" : "" ?>">
-                <li <?=((isset($sub)) && ($sub == "ausencialist")) ? "class='active'" : "" ?>><a href="<?=base_url('ausencia_ferias');?>"> Listar</a></li>
-                <li <?=((isset($sub)) && ($sub == "ausenciacad")) ? "class='active'" : "" ?>><a href="<?=base_url('ausencia_ferias_cad');?>"> Cadastrar</a></li>
-              </ul>
-            </li>
-          <?php endif;?>
         </ul>
       </li>
 

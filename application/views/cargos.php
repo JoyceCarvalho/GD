@@ -31,6 +31,11 @@
                         <h3 class="h4">Cargos cadastrados</h3>
                     </div>
                     <div class="card-body">
+
+                        <div class="form-group">
+                            <a href="<?=base_url('home/cargos_cad')?>" class="btn btn-sm btn-success">Cadastrar Cargo</a>
+                        </div>
+
                         <div class="table-responsive">                       
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>

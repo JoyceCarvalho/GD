@@ -32,6 +32,13 @@
                         <h3 class="h4">Ausência Funcionário</h3>
                     </div>
                     <div class="card-body">
+
+                        <div class="form-group">
+                            <a href="<?=base_url('ausencia');?>" class="btn btn-sm btn-success">Listar Ausências</a>
+                        </div>
+
+                        <hr><br>
+
                         <form method="post" action="<?=base_url('cad_ausencia');?>" class="form-horizontal">
                             
                             <div class="form-group row">

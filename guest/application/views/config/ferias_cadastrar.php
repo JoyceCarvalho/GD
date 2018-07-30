@@ -32,6 +32,13 @@
                         <h3 class="h4">Férias de Funcionário</h3>
                     </div>
                     <div class="card-body">
+
+                        <div class="form-group">
+                            <a href="<?=base_url('ferias')?>" class="btn btn-sm btn-success">Listar Férias Funcionário</a>
+                        </div>
+
+                        <hr><br>
+
                         <form method="post" action="<?=base_url('cad_ferias');?>" class="form-horizontal">
                             
                             <div class="form-group row">

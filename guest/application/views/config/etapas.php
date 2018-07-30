@@ -31,6 +31,11 @@
                         <h3 class="h4">Etapas de documentos</h3>
                     </div>
                     <div class="card-body">
+
+                        <div class="form-group">
+                            <a href="<?=base_url('etapas_cad')?>" class="btn btn-sm btn-success">Cadastrar Etapas</a>
+                        </div>
+
                         <div class="table-responsive">                       
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>
