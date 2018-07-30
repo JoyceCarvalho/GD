@@ -129,6 +129,11 @@
         select.setAttribute('class', 'form-control');
         select.setAttribute('name', 'etapa['+n_item()+']');
         select.setAttribute('id', 'etapa_'+n_item());
+        var option = document.createElement('option');
+        option.setAttribute('value', 'nda');
+        var txtOption = document.createTextNode('-- Selecione --');
+        option.appendChild(txtOption);
+        select.appendChild(option);
         <?php 
             foreach ($listar_etapas as $etapa) {
             ?>
