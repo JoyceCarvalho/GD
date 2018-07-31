@@ -47,10 +47,43 @@ class Documento extends CI_Controller {
 
     public function cadastrar_novo_documento(){
 
-        if ((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)) {
+        if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
+            redirect("/");
+        }
+        
+        $data = new stdClass();
 
-            $data = new stdClass();
+        $validate = false;
+
+        if($this->input->post('prazo_final') > date('Y-m-d')){
             
+            $validate = true;
+
+            $steps_number = $this->input->post('prazo_etapa');
+    
+            if(isset($steps_number)){
+    
+                for ($i=1; $i <= $steps_number; ++$i) { 
+                    
+                    if($this->input->post("prazo[$i]") > date('Y-m-d')){
+                        $validate = true;
+                    } else {
+                        $validate = false;
+                       //arrumar está retornando uma pagina em branco
+                        exit();
+
+                    }
+    
+                }
+    
+            }
+
+        } else{
+            $validate = false;
+        }
+            
+        if($validate == true){
+
             $dados = array(
                 'protocolo'      => $this->input->post('protocolo'),
                 'atos'           => $this->input->post('atos'),
@@ -354,10 +387,24 @@ class Documento extends CI_Controller {
                 $this->load->view('template/footer');
                 $this->load->view('template/html_footer');
             }
-
         } else {
-            // Redireciona para o root quando não estiver logado
-            redirect("/");
+
+            $data->error = "A data não pode ser antes da data de criação do documento!";
+    
+            $dados["pagina"]    = "Novo Documento";
+            $dados["pg"]        = "documentos";
+            $dados["submenu"]   = "novodoc";
+
+            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+            $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+
+            $this->load->view("template/html_header", $dados);
+            $this->load->view('template/header');
+            $this->load->view('template/menu', $data);
+            $this->load->view('documentos/novo_documento');
+            $this->load->view('template/footer');
+            $this->load->view('template/html_footer');
+
         }
 
     }
