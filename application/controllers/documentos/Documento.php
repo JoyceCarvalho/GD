@@ -66,11 +66,30 @@ class Documento extends CI_Controller {
                 for ($i=1; $i <= $steps_number; ++$i) { 
                     
                     if($this->input->post("prazo[$i]") > date('Y-m-d')){
+
                         $validate = true;
+
                     } else {
+
                         $validate = false;
+                        
                        //arrumar está retornando uma pagina em branco
-                        exit();
+                        //exit();]
+                        $data->error = "A data não pode ser antes da data de criação do documento!";
+    
+                        $dados["pagina"]    = "Novo Documento";
+                        $dados["pg"]        = "documentos";
+                        $dados["submenu"]   = "novodoc";
+
+                        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                        $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
+
+                        $this->load->view("template/html_header", $dados);
+                        $this->load->view('template/header');
+                        $this->load->view('template/menu', $data);
+                        $this->load->view('documentos/novo_documento');
+                        $this->load->view('template/footer');
+                        $this->load->view('template/html_footer');
 
                     }
     
