@@ -35,17 +35,17 @@
     <!--<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>-->
     <script>
-    $(document).ready(function(){
+      $(document).ready(function(){
         $('#datatable').DataTable({
             "language": {
-                  "lengthMenu": "Mostrando _MENU_ registros por página",
-                  "zeroRecords": "Nenhum registro encontrado",
-                  "info": "Mostrando página _PAGE_ de _PAGES_",
-                  "infoEmpty": "Nenhum registro disponível",
-                  "infoFiltered": "(filtrado do total de _MAX_ registros)"
-              }
-          });
-    });
+              "lengthMenu": "Mostrando _MENU_ registros por página",
+              "zeroRecords": "Nenhum registro encontrado",
+              "info": "Mostrando página _PAGE_ de _PAGES_",
+              "infoEmpty": "Nenhum registro disponível",
+              "infoFiltered": "(filtrado do total de _MAX_ registros)"
+            }
+        });
+      });
     </script>
   </body>
 </html>
