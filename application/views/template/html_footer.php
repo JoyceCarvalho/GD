@@ -27,6 +27,7 @@
     <script src="<?=base_url('assets/vendor/datatables/jquery.dataTables.js');?>"></script>
     <script src="<?=base_url('assets/vendor/datatables/dataTables.bootstrap4.js');?>"></script>
     <script src="<?=base_url('assets/vendor/jquery-validation/jquery.validate.min.js');?>"></script>
+    <script src="<?=base_url('assets/js/jquery.mask.min.js');?>"></script>
     <script src="<?=base_url('assets/js/custom.js');?>"></script>
     <!-- Main File-->
     <script src="<?=base_url('assets/js/front.js');?>"></script>

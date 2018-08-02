@@ -993,6 +993,24 @@ class Documentos_model extends CI_Model {
         return $this->db->get->row();
     }
 
+     /**
+     * Método responsável por retornar o prazo e o titulo da etapa do documento
+     * Utilizado no controllers documentos/Transferencia.php e documentos/Documento.php 
+     *
+     * @param int $protocolo
+     * @return object
+     */
+    public function retorna_etapa_prazo($protocolo){
+        $this->db->select('e.titulo as etapa, DATE_FORMAT(pe.prazo, "%d/%m/%Y") as prazo_etapa');
+        $this->db->from('tblog_documentos as ld');
+        $this->db->join('tbetapa as e', 'e.id = ld.etapa');
+        $this->db->join('tbprazoetapa as pe', 'pe.fk_iddocumento = ld.documento and pe.fk_idetapas = ld.etapa', 'left');
+        $this->db->where('ld.documento', $protocolo);
+        $this->db->where('ld.ultima_etapa = "true"');
+        $this->db->limit(1);
+        return $this->db->get()->row();
+    }
+
     /**
      * Método responsável por retornar o usuario responsável pelo documento cadastrado
      * Utilizado no controller documentos/Documento.php

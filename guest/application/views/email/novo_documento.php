@@ -25,7 +25,16 @@
                         <div class="row">
                             <div class="col-12 table-responsive">
                                 <p>Um novo documento foi recebido para execução!</p>
-                                <p>Protocolo: <?=$protocolo;?> <br/> Documento: <?=$documento;?><br/> Responsável: <?=$usuario;?></p>
+                                <p>Protocolo: <?=$protocolo;?> <br/> 
+                                Documento: <?=$documento;?><br/> 
+                                Etapa: <?=$etapa;?> <br/>
+                                Responsável: <?=$usuario;?><br/>
+                                <?php if(!empty($prazo)): ?>
+                                    Prazo para finalização <?=$prazo;?>!<br/>
+                                <?php else: ?>
+                                    Documento sem prazo de finalização!
+                                <?php endif; ?>
+                                </p>
                                 <br/>
                                 <a href="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/meusdocumentos">Acesse o Gestão de Documentos para visualizar o documento completo!</a>
                             </div>

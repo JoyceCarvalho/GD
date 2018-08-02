@@ -17,7 +17,7 @@ class Ausencia extends CI_Controller{
         if ((isset($_SESSION['logado'])) && ($_SESSION["logado"] == true)) {
             
             $dados["pagina"]    = "Ausência Funcionário";
-            $dados["pg"]        = "configuracao";
+            $dados["pg"]        = "empresa";
             $dados["submenu"]   = "ausencia";
             $dados["sub"]       = "ausencialist";
 
@@ -44,7 +44,7 @@ class Ausencia extends CI_Controller{
         if((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)){
 
             $dados["pagina"]    = "Ausência Funcionário";
-            $dados["pg"]        = "configuracao";
+            $dados["pg"]        = "empresa";
             $dados["submenu"]   = "ausencia";
             $dados["sub"]       = "ausenciacad";
 
@@ -87,7 +87,7 @@ class Ausencia extends CI_Controller{
                 $data->success = "Ausência do dia ".$this->input->post('dia_inicio')." cadastrada com sucesso!";
 
                 $dados["pagina"]    = "Ausência Funcionário";
-                $dados["pg"]        = "configuracao";
+                $dados["pg"]        = "empresa";
                 $dados["submenu"]   = "ausencia";
                 $dados["sub"]       = "ausenciacad";
 
@@ -116,7 +116,7 @@ class Ausencia extends CI_Controller{
                 $data->error = "Ocorreu um problema ao cadastrar ausência de funcionário! Favor entre em contato com o suporte e tente novamente mais tarde!";
 
                 $dados["pagina"]    = "Ausência Funcionário";
-                $dados["pg"]        = "configuracao";
+                $dados["pg"]        = "empresa";
                 $dados["submenu"]   = "ausencia";
                 $dados["sub"]       = "ausenciacad";
 
@@ -146,7 +146,7 @@ class Ausencia extends CI_Controller{
             $idausencia = $this->input->post('idausencia');
 
             $dados["pagina"]    = "Ausência Funcionário";
-            $dados["pg"]        = "configuracao";
+            $dados["pg"]        = "empresa";
             $dados["submenu"]   = "ausencia";
 
             $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
@@ -189,7 +189,7 @@ class Ausencia extends CI_Controller{
                 $data->success = "Ausência do funcionário alterado com sucesso!";
 
                 $dados["pagina"]    = "Ausência Funcionário";
-                $dados["pg"]        = "configuracoes";
+                $dados["pg"]        = "empresa";
                 $dados["submenu"]   = "ausencia";
 
                 $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
@@ -218,7 +218,7 @@ class Ausencia extends CI_Controller{
                 $data->error = "Ocorreu um problema ao alterar os dados! Favor entre em contato com o suporte e tente novamente mais tarde.";
 
                 $dados["pagina"]    = "Ausência Funcionário";
-                $dados["pg"]        = "configuracoes";
+                $dados["pg"]        = "empresa";
                 $dados["submenu"]   = "ausencia";
 
                 $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
@@ -252,7 +252,7 @@ class Ausencia extends CI_Controller{
                 $data->success = "Dados excluidos com sucesso!";
 
                 $dados["pagina"]    = "Ausência Funcionário";
-                $dados["pg"]        = "configuracoes";
+                $dados["pg"]        = "empresa";
                 $dados["submenu"]   = "ausencia";
                 $dados["sub"]       = "ausencialist";
 
@@ -281,7 +281,7 @@ class Ausencia extends CI_Controller{
                 $data->error = "Ocorreu um problema ao excluir os dados! Favor entre em contato com o suporte e tente novamente mais tarde.";
 
                 $dados["pagina"]    = "Ausência Funcionário";
-                $dados["pg"]        = "configuracoes";
+                $dados["pg"]        = "empresa";
                 $dados["submenu"]   = "ausencia";
                 $dados["sub"]       = "ausencialist";
 

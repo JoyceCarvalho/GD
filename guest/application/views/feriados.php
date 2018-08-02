@@ -54,8 +54,7 @@
                                                 <td><?=$feriado->titulo;?></td>
                                                 <td>
                                                     <?php 
-                                                    $dia = explode("-", $feriado->dia);
-                                                    echo $dia[2]."/".$dia[1]."/".$dia[0];
+                                                    echo verifica_tipo_data($feriado->dia);
                                                     ?>
                                                 </td>
                                                 <td>

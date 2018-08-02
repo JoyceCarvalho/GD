@@ -22,9 +22,15 @@ class Feriados extends CI_Controller {
 
             $data = new stdClass();
 
+            $dia = $this->input->post('dia');
+
+            if(strlen($dia) != 10){
+                $dia = transforma_data($this->input->post('dia'));
+            }
+
             $dados = array(
                 'titulo'        => $this->input->post('titulo'), 
-                'dia'           => $this->input->post('dia'),
+                'dia'           => $dia,
                 'fk_idempresa'  => $_SESSION["idempresa"]
             );
 
@@ -116,9 +122,15 @@ class Feriados extends CI_Controller {
 
             $idferiado = $this->input->post('idferiado');
 
+            $dia = $this->input->post('dia');
+
+            if(strlen($dia) != 10){
+                $dia = transforma_data($this->input->post('dia'));
+            }
+
             $dados = array(
                 'titulo' => $this->input->post('titulo'),
-                'dia'    => $this->input->post('dia') 
+                'dia'    => $dia 
             );
 
             if ($this->feriadosmodel->editar_feriado($dados, $idferiado)) {

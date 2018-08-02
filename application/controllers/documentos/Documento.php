@@ -75,21 +75,8 @@ class Documento extends CI_Controller {
                         
                        //arrumar está retornando uma pagina em branco
                         //exit();]
-                        $data->error = "A data não pode ser antes da data de criação do documento!";
-    
-                        $dados["pagina"]    = "Novo Documento";
-                        $dados["pg"]        = "documentos";
-                        $dados["submenu"]   = "novodoc";
-
-                        $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                        $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-
-                        $this->load->view("template/html_header", $dados);
-                        $this->load->view('template/header');
-                        $this->load->view('template/menu', $data);
-                        $this->load->view('documentos/novo_documento');
-                        $this->load->view('template/footer');
-                        $this->load->view('template/html_footer');
+                        $this->session->set_flashdata('error_date', 'As datas de prazo não podem ser inferior à data de criação do documento!');
+                        redirect("novo_documento");
 
                     }
     
@@ -98,7 +85,14 @@ class Documento extends CI_Controller {
             }
 
         } else{
+
             $validate = false;
+
+            //$data->error = "As datas de prazo não podem ser inferior à data de criação do documento!";
+    
+            $this->session->set_flashdata('error_date', 'As datas de prazo não podem ser inferior à data de criação do documento!');
+            redirect("novo_documento");
+
         }
             
         if($validate == true){
@@ -326,6 +320,7 @@ class Documento extends CI_Controller {
 
                     $dados = $this->docmodel->dados_documento_cad($iddocumento);
                     $usuario = $this->docmodel->retorna_email_usuario($iddocumento);
+                    $prazos_etapas = $this->docmodel->retorna_etapa_prazo($iddocumento);
 
 
                     foreach ($dados as $doc) {
@@ -334,6 +329,8 @@ class Documento extends CI_Controller {
                             'tipo'      => 'novo',
                             'protocolo' => $doc->protocolo,
                             'documento' => $doc->documento_nome,
+                            'etapa'     => $prazos_etapas->etapa,
+                            'prazo'     => $prazos_etapas->prazo_etapa,
                             'email'     => $usuario->email_usuario,
                             'usuario'   => $usuario->usuario_nome
                         );
@@ -345,21 +342,8 @@ class Documento extends CI_Controller {
                      * Fim do envio de email
                      */
 
-                    $data->success = "Documento de protocolo ".$this->input->post('protocolo')." cadastrado com sucesso!";
+                    $success = "Documento de protocolo ".$this->input->post('protocolo')." cadastrado com sucesso!";
     
-                    $dados["pagina"]    = "Novo Documento";
-                    $dados["pg"]        = "documentos";
-                    $dados["submenu"]   = "novodoc";
-    
-                    $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                    $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-    
-                    $this->load->view("template/html_header", $dados);
-                    $this->load->view('template/header');
-                    $this->load->view('template/menu', $data);
-                    $this->load->view('documentos/novo_documento');
-                    $this->load->view('template/footer');
-                    $this->load->view('template/html_footer');
 
                     //log do sistema
                     $mensagem = "Iniciou o documento de protocolo ".$this->input->post('protocolo');
@@ -370,59 +354,29 @@ class Documento extends CI_Controller {
                     );
                     $this->logsistema->cadastrar_log_sistema($log2);
                     //fim log sistema
+
+                    $this->session->set_flashdata('success', $success);
+                    redirect("novo_documento");
+
                 } else {
     
-                    $data->error = "Ocorreu um problema ao cadastra os dados! Favor entre em contato com o suporte e tente novamente mais tarde.";
+                    //$data->error = "Ocorreu um problema ao cadastra os dados! Favor entre em contato com o suporte e tente novamente mais tarde.";
     
-                    $dados["pagina"]    = "Novo Documento";
-                    $dados["pg"]        = "documentos";
-                    $dados["submenu"]   = "novodoc";
-    
-                    $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                    $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-    
-                    $this->load->view("template/html_header", $dados);
-                    $this->load->view('template/header');
-                    $this->load->view('template/menu', $data);
-                    $this->load->view('documentos/novo_documento');
-                    $this->load->view('template/footer');
-                    $this->load->view('template/html_footer');
+                    $this->session->set_flashdata('error', "Ocorreu um problema ao cadastrar os dados! Favor entre em contato com o suporte e tente novamente mais tarde.");
+                    redirect("novo_documento");
+
                 }
+
             } else {
                 
-                $data->error = "Ocorreu um problema ao cadastra os dados! Favor entre em contato com o suporte e tente novamente mais tarde.";
-    
-                $dados["pagina"]    = "Novo Documento";
-                $dados["pg"]        = "documentos";
-                $dados["submenu"]   = "novodoc";
+                $this->session->set_flashdata('error', "Ocorreu um problema ao cadastrar os dados! Favor entre em contato com o suporte e tente novamente mais tarde.");
+                redirect("novo_documento");
 
-                $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-
-                $this->load->view("template/html_header", $dados);
-                $this->load->view('template/header');
-                $this->load->view('template/menu', $data);
-                $this->load->view('documentos/novo_documento');
-                $this->load->view('template/footer');
-                $this->load->view('template/html_footer');
             }
         } else {
 
-            $data->error = "A data não pode ser antes da data de criação do documento!";
-    
-            $dados["pagina"]    = "Novo Documento";
-            $dados["pg"]        = "documentos";
-            $dados["submenu"]   = "novodoc";
-
-            $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["grupo_dados"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-
-            $this->load->view("template/html_header", $dados);
-            $this->load->view('template/header');
-            $this->load->view('template/menu', $data);
-            $this->load->view('documentos/novo_documento');
-            $this->load->view('template/footer');
-            $this->load->view('template/html_footer');
+            $this->session->set_flashdata('error', "A data não pode ser antes da data de criação do documento!");
+            redirect("novo_documento");
 
         }
 

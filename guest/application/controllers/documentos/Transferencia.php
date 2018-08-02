@@ -202,7 +202,7 @@ class Transferencia extends CI_Controller {
                 $HoraFimQuebradaExplode = explode(":", $HoraFimQuebrada);
                 $HoraFimQuebradaMinutos = ($HoraFimQuebradaExplode[0] * 60) + $HoraFimQuebradaExplode[1];
                 
-                $minutos_fim = ($primeiro_turno_fim_min - $HoraFimQuebradaExplode);
+                $minutos_fim = ($primeiro_turno_fim_min - $HoraFimQuebradaMinutos);
 
             }else{
                 
@@ -272,6 +272,32 @@ class Transferencia extends CI_Controller {
             
                     $this->timermodel->cadastrar_tempo($dados);
 
+                    /**
+                     * Envio de email
+                     */
+                    $this->load->model('email_model', 'emailmodel');
+
+                    $dados = $this->docmodel->dados_documento_cad($idprotocolo);
+                    $usuario = $this->docmodel->retorna_email_responsavel($idprotocolo);
+
+
+                    foreach ($dados as $doc) {
+                        
+                        $enviar = array(
+                            'tipo'      => 'pendente',
+                            'protocolo' => $doc->protocolo,
+                            'documento' => $doc->documento_nome,
+                            'email'     => $usuario->email_usuario,
+                            'usuario'   => $usuario->usuario_nome
+                        );
+                        
+                    }
+                    $this->emailmodel->enviar_email($enviar);
+
+                    /**
+                     * Fim do envio de email
+                     */
+
                 } else {
 
                     //echo "Id documento: ". $id_documento. "<br/>";
@@ -332,6 +358,32 @@ class Transferencia extends CI_Controller {
                                 );
                         
                                 $this->timermodel->cadastrar_tempo($dados);
+
+                                /**
+                                 * Envio de email
+                                 */
+                                $this->load->model('email_model', 'emailmodel');
+
+                                $dados = $this->docmodel->dados_documento_cad($idprotocolo);
+                                $usuario = $this->docmodel->retorna_email_responsavel($idprotocolo);
+
+
+                                foreach ($dados as $doc) {
+                                    
+                                    $enviar = array(
+                                        'tipo'      => 'pendente',
+                                        'protocolo' => $doc->protocolo,
+                                        'documento' => $doc->documento_nome,
+                                        'email'     => $usuario->email_usuario,
+                                        'usuario'   => $usuario->usuario_nome
+                                    );
+                                    
+                                }
+                                $this->emailmodel->enviar_email($enviar);
+
+                                /**
+                                 * Fim do envio de email
+                                 */
 
                             }
 
@@ -449,6 +501,7 @@ class Transferencia extends CI_Controller {
 
             $dados = $this->docmodel->dados_documento_cad($idprotocolo);
             $usuario = $this->docmodel->retorna_email_usuario($idprotocolo);
+            $prazos_etapas = $this->docmodel->retorna_etapa_prazo($idprotocolo);
 
 
             foreach ($dados as $doc) {
@@ -457,6 +510,8 @@ class Transferencia extends CI_Controller {
                     'tipo'      => 'novo',
                     'protocolo' => $doc->protocolo,
                     'documento' => $doc->documento_nome,
+                    'etapa'     => $prazos_etapas->etapa,
+                    'prazo'     => $prazos_etapas->prazo_etapa,
                     'email'     => $usuario->email_usuario,
                     'usuario'   => $usuario->usuario_nome
                 );

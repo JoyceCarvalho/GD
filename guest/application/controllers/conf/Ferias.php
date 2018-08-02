@@ -17,7 +17,7 @@ class Ferias extends CI_Controller{
         if ((isset($_SESSION['logado'])) && ($_SESSION["logado"] == true)) {
             
             $dados["pagina"]    = "Férias Funcionário";
-            $dados["pg"]        = "configuracao";
+            $dados["pg"]        = "empresa";
             $dados["submenu"]   = "ausencia";
             $dados["sub"]       = "ausencialist";
 
@@ -44,7 +44,7 @@ class Ferias extends CI_Controller{
         if ((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)) {
             
             $dados["pagina"]    = "Férias Funcionário";
-            $dados["pg"]        = "configuracao";
+            $dados["pg"]        = "empresa";
             $dados["submenu"]   = "ausencia";
             $dados["sub"]       = "ausenciacad";
 
@@ -187,7 +187,7 @@ class Ferias extends CI_Controller{
                 $data->success = "Alteração realizada com sucesso!";
 
                 $dados["pagina"] = "Férias Funcionário!";
-                $dados["pg"] = "configuracao";
+                $dados["pg"] = "empresa";
                 $dados["submenu"] = "ausencia";
 
                 $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
@@ -216,7 +216,7 @@ class Ferias extends CI_Controller{
                 $data->error = "Ocorreu um problema ao editar as informações! Favor entre em contato com o suporte e tente novamente mais tarde.";
 
                 $dados["pagina"] = "Férias Funcionário!";
-                $dados["pg"] = "configuracao";
+                $dados["pg"] = "empresa";
                 $dados["submenu"] = "ausencia";
 
                 $dados["nome_empresa"] = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);

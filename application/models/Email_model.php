@@ -11,19 +11,6 @@ class Email_model extends CI_Model {
 
     }
 
-    public function verifica_coordenador(){
-        
-        $empresa = $_SESSION["idempresa"];
-
-        $this->db->select('u.email as email');
-        $this->db->from('tbusuario as u');
-        $this->db->join('tbcargos as c', 'c.id = u.fk_idcargos');
-        $this->db->where('u.fk_idempresa', $empresa);
-        $this->db->where('c.titulo = "Coordenador"');
-
-        return $this->db->get()->row('email');
-    }
-
     public function enviar_email($dados){
         
         $config['protocol'] = 'smtp';
@@ -43,7 +30,11 @@ class Email_model extends CI_Model {
 
         $this->email->from('contato@sgtgestaoetecnologia.com.br', 'SGT - Gestão e tecnologia');
         $this->email->to($dados["email"], $dados["usuario"]);
-        $this->email->cc($this->verifica_coordenador());
+
+        $this->load->model('Usuario_model', 'usermodel');
+        $coordenador = $this->usermodel->verifica_coordenador();
+        
+        $this->email->cc($coordenador);
 
         $this->email->subject('SGT - Gestão de Documentos');
 

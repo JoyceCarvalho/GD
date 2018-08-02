@@ -331,7 +331,7 @@ class Home extends CI_Controller {
         if((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)){
 
             $dados["pagina"]    = "Ausência / Férias";
-            $dados["pg"]        = "configuracao";
+            $dados["pg"]        = "empresa";
             $dados["submenu"]   = "ausencia";
             $dados["sub"]       = "ausencialist";
 
@@ -356,7 +356,7 @@ class Home extends CI_Controller {
         if((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)){
 
             $dados["pagina"]    = "Ausência / Férias";
-            $dados["pg"]        = "configuracao";
+            $dados["pg"]        = "empresa";
             $dados["submenu"]   = "ausencia";
             $dados["sub"]       = "ausenciacad";
 

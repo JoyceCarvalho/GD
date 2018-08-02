@@ -38,6 +38,35 @@ function converte_data($date){
 }
 
 /**
+ * Função para transformar data d/m em data mysql "yyyy-mm-dd"
+ *
+ * @param date $data
+ * @return string
+ */
+function transforma_data($data){
+    $dia = explode('/', $data);
+
+    return '0000-'.$dia[1].'-'.$dia[0];
+}
+
+/**
+ * Verifica se data contém ou não ano
+ *
+ * @param date $data
+ * @return data
+ */
+function verifica_tipo_data($data){
+    $d = explode('-', $data);
+    if($d[0] == "0000"){
+        $dia = $d[2]."/".$d[1];
+    } else {
+        $dia = $d[2]."/".$d[1]."/".$d[0];
+    }
+
+    return $dia;
+}
+
+/**
  * Transformar o number_format sem arredondamento
  *
  * @param number $num

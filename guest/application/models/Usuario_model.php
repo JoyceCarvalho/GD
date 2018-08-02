@@ -288,4 +288,24 @@ class Usuario_model extends CI_Model {
         return json_encode($this->db->get()->result());
     }
 
+    /**
+     * Método responsável por retornar o email do coordenador da empresa selecionada
+     * Utilizado no model Email_model.php 
+     *
+     * @return object
+     */
+    public function verifica_coordenador(){
+        
+        $empresa = $_SESSION["guest_empresa"];
+
+        $this->db->select('u.email as email');
+        $this->db->from('tbusuario as u');
+        $this->db->join('tbcargos as c', 'c.id = u.fk_idcargos');
+        $this->db->where('u.fk_idempresa', $empresa);
+        $this->db->where('c.titulo = "Coordenador"');
+
+        return $this->db->get()->row('email');
+    }
+
+
 }
