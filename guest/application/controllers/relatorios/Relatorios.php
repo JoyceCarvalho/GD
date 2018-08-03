@@ -13,6 +13,7 @@ class Relatorios extends CI_Controller {
         $this->load->model('usuario_model', 'usermodel');
         $this->load->model('cargos_model', 'cargosmodel');
         $this->load->model('grupo_model', 'grupomodel');
+        $this->load->model('filtros_model', 'filtromodel');
     }
 
     public function finalizados(){
@@ -21,12 +22,65 @@ class Relatorios extends CI_Controller {
             redirect("/");
         }
 
+        if((isset($_POST["filtrar_grupo"])) or (isset($_POST["filtrar_documento"]))){
+
+            $filtro_grupo = $this->input->post('filtrar_grupo');
+            $filtro_documento = $this->input->post('filtrar_documento');
+
+            $grupo = false;
+            $documento = false;
+
+            if ((!empty($filtro_grupo)) && ($filtro_grupo != "nda")) {
+                $grupo = true;
+            }
+
+            if((!empty($filtro_documento)) && ($filtro_documento != "nda")){
+                $documento = true;
+            }
+
+            if(($grupo == true) && ($documento == true)){
+                        
+                $dados["doc_finalizados"]    = $this->filtromodel->resultado_filtro_grupo_e_doc($_SESSION["guest_empresa"], $filtro_documento, $filtro_grupo);
+                $dados["grupo_filtrado"]     = $filtro_grupo;
+                $dados["documento_filtrado"] = $filtro_documento;
+
+            } elseif(($grupo == true) && ($documento == false)) {
+
+                $dados["doc_finalizados"]    = $this->filtromodel->resultado_filtro_grupo($_SESSION["guest_empresa"], $filtro_grupo);
+                $dados["grupo_filtrado"]     = $filtro_grupo;
+                $dados["documento_filtrado"] = "";
+
+            } elseif(($grupo == false) && ($documento == true)){
+                
+                $dados["doc_finalizados"]    = $this->filtromodel->resultados_filtro_documentos($_SESSION["guest_empresa"], $filtro_documento);
+                $dados["grupo_filtrado"]     = "";
+                $dados["documento_filtrado"] = $filtro_documento; 
+
+            }else {
+
+                $dados["doc_finalizados"]    = $this->docmodel->listar_documentos_finalizados($_SESSION["guest_empresa"]);
+                $dados["grupo_filtrado"]     = "";
+                $dados["documento_filtrado"] = "";
+
+            }
+
+        } else {
+
+            $dados["doc_finalizados"]    = $this->docmodel->listar_documentos_finalizados($_SESSION["guest_empresa"]);
+            $dados["grupo_filtrado"]     = "";
+            $dados["documento_filtrado"] = "";
+
+        }
+
         $dados["pagina"]  = "Documentos Finalizados";
         $dados["pg"]      = "relatorio";
         $dados["submenu"] = "finalizado";
 
-        $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
-        $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados($_SESSION["guest_empresa"]);
+        $dados["nome_empresa"]              = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+        
+        $dados["grupo_documentos"]          = $this->filtromodel->listar_grupo_documentos_final($_SESSION["guest_empresa"]);
+        $dados["documentos_finalizados"]    = $this->filtromodel->listar_documentos_finalizados($_SESSION["guest_empresa"]);
+        //$dados["doc_finalizados"]           = $this->docmodel->listar_documentos_finalizados($_SESSION["guest_empresa"]);
 
         $this->load->view("template/html_header", $dados);
         $this->load->view('template/header');
@@ -43,34 +97,104 @@ class Relatorios extends CI_Controller {
             redirect("/");
         }
 
-        if(isset($_POST["filtrar_mesano"])){
+        if((isset($_POST["filtrar_mesano"])) or (isset($_POST["filtrar_grupo"])) or (isset($_POST["filtrar_documento"]))){
 
             $mesano = $this->input->post('filtrar_mesano');
+            $grupo_filtrado = $this->input->post('filtrar_grupo');
+            $documento_filtrado = $this->input->post('filtrar_documento');
+
+            $mensal     = false;
+            $grupo      = false;
+            $documento  = false;
 
             if((!empty($mesano)) && ($mesano != "nda")){
+                $mensal = true;
+            }
 
-                $dados["doc_finalizados"] = $this->docmodel->filtro_documentos_finalizados($_SESSION["idempresa"], $mesano);
-                $dados["mesano_filtrado"]    = $mesano;                
+            if((!empty($grupo_filtrado)) && ($grupo_filtrado != "nda")){
+                $grupo = true;
+            }
+
+            if((!empty($documento_filtrado)) && ($documento_filtrado != "nda")){
+                $documento = true;
+            }
+
+            if(($mensal == true) && ($grupo == true) && ($documento == true)){
+
+                $dados["doc_finalizados"]    = $this->filtromodel->filtro_tempo_mes_grupo_doc($mesano, $grupo_filtrado, $documento_filtrado);
+                $dados["mesano_filtrado"]    = $mesano;
+                $dados["grupo_filtrado"]     = $grupo_filtrado;
+                $dados["documento_filtrado"] = $documento_filtrado;
+
+            } elseif(($mensal == true) && ($grupo == false) && ($documento == false)){
+
+                $dados["doc_finalizados"]    = $this->docmodel->filtro_documentos_finalizados($_SESSION["guest_empresa"], $mesano);
+                $dados["mesano_filtrado"]    = $mesano;
+                $dados["grupo_filtrado"]     = "";
+                $dados["documento_filtrado"] = "";
+
+            } elseif(($mensal == false) && ($grupo == true) && ($documento == false)){
+
+                $dados["doc_finalizados"]    = $this->filtromodel->filtro_tempo_grupo($grupo_filtrado);
+                $dados["mesano_filtrado"]    = "";
+                $dados["grupo_filtrado"]     = $grupo_filtrado;
+                $dados["documento_filtrado"] = "";
+
+            } elseif(($mensal == false) && ($grupo == false) && ($documento == true)){
+            
+                $dados["doc_finalizados"]    = $this->filtromodel->resultados_filtro_documentos($_SESSION["guest_empresa"], $documento_filtrado);
+                $dados["mesano_filtrado"]    = "";
+                $dados["grupo_filtrado"]     = "";
+                $dados["documento_filtrado"] = $documento_filtrado;
+
+            } elseif(($mensal == true) && ($grupo == true) && ($documento == false)){
+
+                $dados["doc_finalizados"]    = $this->filtromodel->filtro_tempo_mensal_grupo($mesano, $grupo_filtrado);
+                $dados["mesano_filtrado"]    = $mesano;
+                $dados["grupo_filtrado"]     = $grupo_filtrado;
+                $dados["documento_filtrado"] = "";
+
+            } elseif(($mensal == true) && ($grupo == false) && ($documento == true)){
+
+                $dados["doc_finalizados"]    = $this->filtromodel->filtro_tempo_mensal_documento($mesano, $documento_filtrado);
+                $dados["mesano_filtrado"]    = $mesano;
+                $dados["grupo_filtrado"]     = "";
+                $dados["documento_filtrado"] = $documento_filtrado;
+
+            } elseif(($mensal == false) && ($grupo == true) && ($documento == true)){
+
+                $dados["doc_finalizados"]    = $this->filtromodel->resultado_filtro_grupo_e_doc($_SESSION["guest_empresa"], $documento_filtrado, $grupo_filtrado);
+                $dados["mesano_filtrado"]    = "";
+                $dados["grupo_filtrado"]     = $grupo_filtrado;
+                $dados["documento_filtrado"] = $documento_filtrado;
 
             } else {
 
-                $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados($_SESSION["idempresa"]);
+                $dados["doc_finalizados"]    = $this->docmodel->listar_documentos_finalizados($_SESSION["guest_empresa"]);
                 $dados["mesano_filtrado"]    = "";
+                $dados["grupo_filtrado"]     = "";
+                $dados["documento_filtrado"] = "";
 
             }
 
         } else {
-            $dados["doc_finalizados"] = $this->docmodel->listar_documentos_finalizados($_SESSION["idempresa"]);
+            $dados["doc_finalizados"]    = $this->docmodel->listar_documentos_finalizados($_SESSION["guest_empresa"]);
             $dados["mesano_filtrado"]    = "";
+            $dados["grupo_filtrado"]     = "";
+            $dados["documento_filtrado"] = "";
         }
+
+        //print_r($dados);
 
         $dados["pagina"]  = "Relatório de Tempo Médio";
         $dados["pg"]      = "relatorio";
         $dados["submenu"] = "tempo";
         $dados["sub"]     = "tempgeral";
 
-        $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["finalizados"]      = $this->docmodel->listar_documentos_finalizados_filtro($_SESSION["idempresa"]);
+        $dados["nome_empresa"]           = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
+        $dados["finalizados"]            = $this->docmodel->listar_documentos_finalizados_filtro($_SESSION["guest_empresa"]);
+        $dados["grupo_documentos"]       = $this->filtromodel->listar_grupo_documentos_final($_SESSION["guest_empresa"]);
+        $dados["documentos_finalizados"] = $this->filtromodel->listar_documentos_finalizados($_SESSION["guest_empresa"]);
         
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');

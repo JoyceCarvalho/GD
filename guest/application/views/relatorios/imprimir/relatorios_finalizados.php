@@ -108,9 +108,16 @@ foreach ($etapas_documento as $etapas) {
                 <div class="panel-body">
                     <p>Protocolo: <?=$protocolo;?></p>
                     <p>Documento: <?=$nome_documento;?></p>
+                    <p>Grupo de documentos: <?=$grupo_documento;?></p>
                     <p>Documento criado <?=$data_criacao;?></p>
                     <p>Documento criado por <?=$responsavel_criacao;?>
-                    <p>Prazo para finalização do documento <?=$prazo_documento;?></p>
+                    
+                    <?php if(!empty($prazo_documento)): ?>
+                        <p>Prazo para finalização do documento <?=$prazo_documento;?></p>
+                    <?php else: ?>
+                        <p>Documento sem prazos para finalização!</p>
+                    <?php endif; ?>
+
                     <p>Documento finalizado em <?=$data_finalizacao;?></p>
 
                     <div class="line"></div>

@@ -57,6 +57,7 @@ class Timer_model extends CI_Model {
         
         return $this->db->get()->result();
     }
+    
 
     /**
      * Método responsável por retornar o total de linhas referentes ao objeto determinado
@@ -115,6 +116,43 @@ class Timer_model extends CI_Model {
         $this->db->from('tbtimer');
         $this->db->where('fk_iddoccad = ', $protocolo);
         $this->db->order_by('id asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método para retorno de tempo de documentos em determinado grupo de documentos
+     * Utilizado no controller relatorios/Imprimir.php
+     *
+     * @param int $grupo
+     * @return object
+     */
+    public function listar_timer_grupo($grupo){
+        $this->db->select("action, timestamp");
+        $this->db->from("tbtimer as t");
+        $this->db->join('tblog_documentos as ld','ld.documento = t.fk_iddoccad and ld.descricao = "FINALIZADO"');
+        $this->db->join("tbdocumentos_cad as dc", "dc.id = t.fk_iddoccad");
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
+        $this->db->where("d.fk_idgrupo", $grupo);
+        $this->db->order_by("t.id asc");
+        return $this->db->get()->result();
+    }
+
+
+    /**
+     * Método para retorno de tempo de documentos em determinado documentos
+     * Utilizado no controller relatorios/Imprimir.php
+     *
+     * @param int $documento
+     * @return object
+     */
+    public function listar_timer_documento($documento){
+        $this->db->select("action, timestamp");
+        $this->db->from("tbtimer as t");
+        $this->db->join('tblog_documentos as ld','ld.documento = t.fk_iddoccad and ld.descricao = "FINALIZADO"');
+        $this->db->join("tbdocumentos_cad as dc", "dc.id = t.fk_iddoccad");
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
+        $this->db->where("d.fk_idgrupo", $documento);
+        $this->db->order_by("t.id asc");
         return $this->db->get()->result();
     }
 

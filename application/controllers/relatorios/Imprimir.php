@@ -13,6 +13,7 @@ class Imprimir extends CI_Controller {
         $this->load->model("timer_model", "timermodel");
         $this->load->model('usuario_model', 'usermodel');
         $this->load->model("cargos_model", "cargosmodel");
+        $this->load->model('filtros_model', 'filtromodel');
     }
 
     public function imprimir_finalizados($id){
@@ -96,6 +97,64 @@ class Imprimir extends CI_Controller {
 
             $this->load->view('errors/acesso_restrito');
 
+        }
+
+    }
+
+    public function filtro_tempo_grupo($grupo){
+
+        if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
+            redirect("/");
+        }
+
+        $this->load->model('Grupo_model', 'grupomodel');
+
+        $dados_grupo = $this->grupomodel->dados_grupo($grupo);
+
+        foreach ($dados_grupo as $grupo) {
+            
+            if ($grupo->fk_idempresa == $_SESSION["idempresa"]) {
+                
+                $dados["titulo_grupo"]     = $grupo->titulo;
+                $dados["tempo_medio"]      = $this->timermodel->listar_timer_grupo($grupo->id);
+                $dados["documentos_grupo"] = $this->filtromodel->resultado_filtro_grupo($_SESSION["idempresa"], $grupo->id);
+                $dados["nome_empresa"]     = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+
+                $this->load->view('relatorios/imprimir/tempo_filtro_grupo', $dados);
+
+            } else {
+
+                $this->load->view('errors/acesso_restrito');
+
+            }
+        }
+
+    }
+
+    public function filtro_tempo_documentos($documento){
+
+        if((!isset($_SESSION["logado"])) && ($_SESSION["logado"])){
+            redirect('/');
+        }
+
+        $dados_documento = $this->docmodel->dados_documentos($documento);
+
+        foreach ($dados_documento as $doc) {
+            
+            if($doc->fk_idempresa == $_SESSION["idempresa"]){
+
+                $dados["titulo_documento"]     = $doc->titulo;
+                $dados["tempo_medio"]          = $this->timermodel->listar_timer_documento($documento);
+                $dados["protocolos_documento"] = $this->filtromodel->resultados_filtro_documentos($_SESSION["idempresa"], $documento);
+                $dados["nome_empresa"]         = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+
+                $this->load->view('relatorios/imprimir/tempo_filtro_documento', $dados);
+
+            } else {
+
+                $this->load->view('errors/acesso_restrito');
+
+            }
         }
 
     }
@@ -208,4 +267,60 @@ class Imprimir extends CI_Controller {
         }
 
     }
+
+    public function filtro_por_grupo($grupo){
+
+        if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
+            redirect("/");
+        }
+
+        $this->load->model('Grupo_model', 'grupomodel');
+
+        $dados_grupo = $this->grupomodel->dados_grupo($grupo);
+
+        foreach ($dados_grupo as $grupo) {
+            
+            if ($grupo->fk_idempresa == $_SESSION["idempresa"]) {
+                
+                $dados["titulo_grupo"]     = $grupo->titulo;
+                $dados["documentos_grupo"] = $this->filtromodel->resultado_filtro_grupo($_SESSION["idempresa"], $grupo->id);
+                $dados["nome_empresa"]     = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+
+                $this->load->view('relatorios/imprimir/imprimir_filtro_grupo', $dados);
+
+            } else {
+
+                $this->load->view('errors/acesso_restrito');
+
+            }
+        }
+
+    }
+
+    public function filtro_por_documento($documento){
+
+        if((!isset($_SESSION["logado"])) && ($_SESSION["logado"])){
+            redirect('/');
+        }
+
+        $dados_documento = $this->docmodel->dados_documentos($documento);
+
+        foreach ($dados_documento as $doc) {
+            
+            if($doc->fk_idempresa == $_SESSION["idempresa"]){
+
+                $dados["titulo_documento"]     = $doc->titulo;
+                $dados["protocolos_documento"] = $this->filtromodel->resultados_filtro_documentos($_SESSION["idempresa"], $documento);
+                $dados["nome_empresa"]         = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
+
+                $this->load->view('relatorios/imprimir/imprimir_filtro_documento', $dados);
+
+            } else {
+
+                $this->load->view('errors/acesso_restrito');
+
+            }
+        }
+    }
+
 }

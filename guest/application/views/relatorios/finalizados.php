@@ -26,12 +26,80 @@
             <div class="col-lg-12">
     
                 <div class="card">
-        
                     <div class="card-header d-flex align-items-center">
                         <h3 class="h4">Documentos Finalizados</h3>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">                       
+                        <form action="<?=base_url('finalizados');?>" method="post">
+                            <div class="row col-sm-12">
+                                <div class="form-group col-sm-3">
+                                    <label>Grupo</label>
+                                    <select class="form-control" name="filtrar_grupo" id="filtro_grupo">
+                                        <option value="nda"> -- Todos -- </option>
+                                        <?php 
+                                        foreach($grupo_documentos as $doc){
+                                            if($grupo_filtrado == $doc->idgrupo){
+                                                $sel = "selected=\"selected\"";
+                                            } else {
+                                                $sel = "";
+                                            }
+                                            ?>
+                                            <option <?=$sel;?> value="<?=$doc->idgrupo;?>"><?=$doc->titulo_grupo;?></option>
+                                            <?php
+                                        } 
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-sm-3">
+                                    <label>Documento</label>
+                                    <select class="form-control" name="filtrar_documento" id="filtro_documento">
+                                        <option value="nda"> -- Todos -- </option>
+                                        <?php 
+                                        foreach($documentos_finalizados as $doc){
+                                            if($documento_filtrado == $doc->iddocumento){
+                                                $sel = "selected=\"selected\"";
+                                            } else {
+                                                $sel = "";
+                                            }
+                                            ?>
+                                            <option <?=$sel;?> value="<?=$doc->iddocumento;?>"><?=$doc->titulo_documento;?></option>
+                                            <?php
+                                        } 
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-sm-3">
+                                    <label>&nbsp;</label><br/>
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filtrar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="table-responsive">         
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <?php 
+                                    if (!empty($grupo_filtrado)) {
+                                        ?>
+                                        <a target="_blank" href="<?=base_url('imprimir_por_grupo/'.$grupo_filtrado)?>" class="btn btn-sm btn-info"><i class="fa fa-print"></i>Imprimir por grupo de documentos</a>
+                                        <br><br>
+                                        <?php
+                                    }
+                                    ?>
+                                </div>
+                                <div class="col-sm-3">
+                                    <?php
+                                    if(!empty($documento_filtrado)){
+                                        ?>
+                                        <a target="_blank" href="<?=base_url('imprimir_por_documento/'.$documento_filtrado);?>" class="btn btn-sm btn-success"><i class="fa fa-print"></i>Imprimir protocolos por documento</a>
+                                        <br><br>
+                                        <?php
+                                    }
+                                    ?>
+                                </div>
+                            </div>
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>
                                     <tr>
@@ -56,7 +124,13 @@
                                             </td>
                                             <td><?=$documentos->data_criacao;?></td>
                                             <td>
-                                                <?=$documentos->prazo_documento;?><br/>
+                                                <?php
+                                                if(!empty($documentos->prazo_documento)){
+                                                    echo $documentos->prazo_documento;
+                                                } else {
+                                                    echo "<strong>Documento sem prazos!</strong>";
+                                                }
+                                                ?>
                                             </td>
                                             <td><?=$documentos->data_finalizacao;?></td>
                                             <td><?=$documentos->nome_usuario;?></td>
@@ -249,5 +323,4 @@ window.addEventListener("DOMContentLoaded", function() {
 	});
 	
 });
-
 </script>

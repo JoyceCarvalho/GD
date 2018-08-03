@@ -32,7 +32,6 @@
                     </div>
 
                     <div class="card-body">
-
                         <form action="<?=base_url('tempo_medio');?>" method="post">
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-3">
@@ -58,6 +57,44 @@
                                 </div>
 
                                 <div class="form-group col-sm-3">
+                                    <label>Grupo</label>
+                                    <select class="form-control" name="filtrar_grupo" id="filtro_grupo">
+                                        <option value="nda"> -- Todos -- </option>
+                                        <?php 
+                                        foreach($grupo_documentos as $doc){
+                                            if($grupo_filtrado == $doc->idgrupo){
+                                                $sel = "selected=\"selected\"";
+                                            } else {
+                                                $sel = "";
+                                            }
+                                            ?>
+                                            <option <?=$sel;?> value="<?=$doc->idgrupo;?>"><?=$doc->titulo_grupo;?></option>
+                                            <?php
+                                        } 
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-sm-3">
+                                    <label>Documento</label>
+                                    <select class="form-control" name="filtrar_documento" id="filtro_documento">
+                                        <option value="nda"> -- Todos -- </option>
+                                        <?php 
+                                        foreach($documentos_finalizados as $doc){
+                                            if($documento_filtrado == $doc->iddocumento){
+                                                $sel = "selected=\"selected\"";
+                                            } else {
+                                                $sel = "";
+                                            }
+                                            ?>
+                                            <option <?=$sel;?> value="<?=$doc->iddocumento;?>"><?=$doc->titulo_documento;?></option>
+                                            <?php
+                                        } 
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-sm-3">
                                     <label>&nbsp;</label><br/>
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filtrar</button>
                                 </div>
@@ -65,14 +102,48 @@
                         </form>
 
                         <div class="table-responsive">                       
+                            
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <?php
+                                    if (!empty($mesano_filtrado)) {
+                                        ?>
+                                        <a href="<?=base_url('relatorio_tmensal/'.$_SESSION["idempresa"]."/".$mesano_filtrado);?>" target="_blank" class="btn btn-sm btn-danger"><i class="fa fa-print"></i> Imprimir relatório mensal</a>
+                                        <br><br>
+                                        <?php
+                                    }
+                                    ?>
+                                </div>
+                                <div class="col-sm-3">
+                                    <?php
+                                    if (!empty($grupo_filtrado)) {
+                                        ?>
+                                        <a href="<?=base_url('relatorio_tempo_grupo/'.$grupo_filtrado);?>" target="_blank" class="btn btn-sm btn-info"><i class="fa fa-print"></i> Imprimir grupo de documentos</a>
+                                        <br><br>
+                                        <?php
+                                    }
+                                    ?>
+                                </div>
+                                <div class="col-sm-3">
+                                    <?php
+                                    if(!empty($documento_filtrado)){
+                                        ?>
+                                        <a target="_blank" href="<?=base_url('relatorio_tempo_documento/'.$documento_filtrado);?>" class="btn btn-sm btn-success"><i class="fa fa-print"></i>Imprimir protocolos por documento</a>
+                                        <br><br>
+                                        <?php
+                                    }
+                                    ?>
+                                </div>
+                            </div>
 
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>
                                     <tr>
                                         <th width="20%">Protocolo</th>
                                         <th width="30%">Documento<br/>/Grupo</th>
+                                        <th width="20%">Finalização</th>
                                         <th width="10%">Tempo médio</th>
-                                        <th width="40%"></th>
+                                        <th width="20%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -87,6 +158,7 @@
                                                 <?=$documentos->documento;?><br/>
                                                 <strong><?=$documentos->grupo;?></strong>
                                             </td>
+                                            <td><?=$documentos->data_finalizacao;?></td>
                                             <td>
                                                 <?php
                                                 $this->load->model('timer_model', 'timermodel');
@@ -130,6 +202,7 @@
                                     ?>
                                     <tbody>
                                         <tr>
+                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td class="center">

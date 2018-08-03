@@ -102,6 +102,7 @@ foreach ($informacoes_documento as $documento) {
                 <div class="panel-body">
                     <p>Protocolo: <?=$protocolo;?></p>
                     <p>Documento: <?=$nome_documento;?></p>
+                    <p>Grupo de documentos: <?=$grupo_documento;?></p>
                     <p>Documento criado <?=$data_criacao;?></p>
                     <p>Documento criado por <?=$responsavel_criacao;?>
                     <p>Prazo para finalização do documento <?=$prazo_documento;?></p>
