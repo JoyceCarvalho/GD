@@ -59,7 +59,7 @@ $this->load->model("timer_model", "timermodel");
                                 ?>
                             </div>
                             <div class="col-xs-6 text-center">
-                                <h1 class="title no-print"> <?=converte_data_mes_ano($mes_ano);?> </h1>                                  
+                                <h1 class="title no-print"> <?=mes_extenso(converte_data_mes_ano($mes_ano));?> </h1>                                  
                             </div>
                             <div class="col-xs-3 col-md-3">
                                 <img class="pull-right img-responsive" src="<?=base_url("assets/img/logo_sgt.png");?>" alt="SGT - Gestão e Tecnologia">
@@ -76,7 +76,7 @@ $this->load->model("timer_model", "timermodel");
 
             <!-- Página de titulo (apenas impressão) -->
             <div class="first-page print-only">
-                <h1 class="title"><?=converte_data_mes_ano($mes_ano);?></h1>
+                <h1 class="title"><?=mes_extenso(converte_data_mes_ano($mes_ano));?></h1>
             </div>
             <!-- Fim página de titulo -->
 
@@ -86,7 +86,7 @@ $this->load->model("timer_model", "timermodel");
                     <span class="titulo-sessao">Dados do Mensais</span>
                 </div>
                 <div class="panel-body">
-                    <p>Mês: <?=converte_data_mes_ano($mes_ano);?></p>
+                    <p>Mês: <?=mes_extenso(converte_data_mes_ano($mes_ano));?></p>
                     <p>Quantidade de documento: <?=count($dados_mensais);?></p>
 
                     <div class="line"></div>

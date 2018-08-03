@@ -209,25 +209,18 @@
               </a>
 
               <ul id="tempo_medio" class="collapse list-unstyled <?=($submenu == "tempo") ? "show" : "" ?>">
-                <li <?=((isset($sub)) && ($sub == "tempgeral")) ? "class='active'" : "" ?>><a href="<?=base_url("tempo_medio");?>"> Geral</a></li>
-                <li <?=((isset($sub)) && ($sub == "tempmensal")) ? "class='active'" : "" ?>><a href="<?=base_url("tempo_mensal");?>"> Mensal</a></li>
+                <li <?=((isset($sub)) && ($sub == "tempgeral")) ? "class='active'" : "" ?>><a href="<?=base_url("tempo_medio");?>"> Geral Consolidado</a></li>
                 <li <?=((isset($sub)) && ($sub == "tempocargo")) ? "class='active'" : ""?>><a href="<?=base_url("tempo_cargos")?>"> Cargos</a></li>
               </ul>
             </li>
           <?php endif; ?>
-          <li <?=($submenu == "produtividade") ? "class='active'" : "" ?>>
-            <a href="#produtividade" aria-expanded="<?=($submenu == "produtividade") ? "true" : "false" ?>" data-toggle="collapse">
-              <i class="fa fa-line-chart"></i> Produtividade
-            </a>
 
-            <ul id="produtividade" class="collapse list-unstyled <?=($submenu == "produtividade") ? "show" : "" ?>">
-              <?php if((($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true))): ?>
-                <li <?=((isset($sub)) && ($sub == "prod_grupo")) ? "class='active'" : "" ?>><a href="<?=base_url("produtividade_grupo");?>"> Grupo</a></li>
-              <?php else: ?>
-                <li <?=((isset($sub)) && ($sub == "individual")) ? "class='active'" : "" ?>><a href="<?=base_url("produtividade_indivudual");?>"> Individual</a></li>
-              <?php endif; ?>
-            </ul>
-          </li>
+          <?php if((($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true))): ?>
+            <li <?=($submenu == "produtividade") ? "class='active'" : "" ?>><a href="<?=base_url("produtividade_grupo");?>"><i class="fa fa-line-chart"></i> Produtividade Individual</a></li>
+          <?php else: ?>
+            <li <?=($submenu == "produtividade") ? "class='active'" : "" ?>><a href="<?=base_url("produtividade_indivudual");?>"><i class="fa fa-line-chart"></i> Produtividade Individual</a></li>
+          <?php endif; ?>
+
           <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
             <li <?=($submenu == "prazos") ? "class='active'" : "";?>><a href="<?=base_url('prazos_documentos');?>"><i class="fa fa-list-alt"></i> Documentos em atraso</a></li>
           <?php endif; ?>
