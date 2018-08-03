@@ -184,3 +184,9 @@ $route["relatorio_produtividade/(:num)"]    = "relatorios/imprimir/produtividade
 $route["prazos_documentos"]                 = "relatorios/relatorios/listar_prazos";
 $route["em_atraso/(:num)"]                  = "relatorios/imprimir/imprimir_fora_prazo/$1";
 $route["imprimir_historico/(:num)"]         = "relatorios/imprimir/imprimir_historico/$1";
+
+//Rotas referentes a impressão por filtros
+$route["imprimir_por_grupo/(:num)"]        = "relatorios/imprimir/filtro_por_grupo/$1";
+$route["imprimir_por_documento/(:num)"]    = "relatorios/imprimir/filtro_por_documento/$1";
+$route["relatorio_tempo_grupo/(:num)"]     = "relatorios/imprimir/filtro_tempo_grupo/$1";
+$route["relatorio_tempo_documento/(:num)"] = "relatorios/imprimir/filtro_tempo_documentos/$1";
