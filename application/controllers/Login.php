@@ -111,6 +111,8 @@ class Login extends CI_Controller {
         unset($_SESSION[$key]);
       }
 
+      session_destroy();
+
       // logout com sucesso
       $this->load->view('template/html_header');
       $this->load->view('auth/login');
