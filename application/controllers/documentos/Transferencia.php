@@ -333,7 +333,7 @@ class Transferencia extends CI_Controller {
                                 
                                 foreach ($usuariosAptosCargo as $user) {
                                 
-                                    echo $usuarios_aptos[] = $user->id;
+                                    $usuarios_aptos[] = $user->id;
                                     $usuariosAptosQuantidade[$user->id] = 0;
                                     
                                 }

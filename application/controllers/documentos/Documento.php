@@ -55,47 +55,49 @@ class Documento extends CI_Controller {
 
         $validate = false;
 
-        if($this->input->post('prazo_final') > date('Y-m-d')){
+        if($this->input->post('prazos') == 1){
+
+            if($this->input->post('prazo_final') > date('Y-m-d')){
             
-            $validate = true;
+                $validate = true;
 
-            $steps_number = $this->input->post('prazo_etapa');
-    
-            if(isset($steps_number)){
-    
-                for ($i=1; $i <= $steps_number; ++$i) { 
-                    
-                    if($this->input->post("prazo[$i]") > date('Y-m-d')){
-
-                        $validate = true;
-
-                    } else {
-
-                        $validate = false;
+                $steps_number = $this->input->post('prazo_etapa');
+        
+                if(isset($steps_number)){
+        
+                    for ($i=1; $i <= $steps_number; ++$i) { 
                         
-                       //arrumar está retornando uma pagina em branco
-                        //exit();]
-                        $this->session->set_flashdata('error_date', 'As datas de prazo não podem ser inferior à data de criação do documento!');
-                        redirect("novo_documento");
+                        if($this->input->post("prazo[$i]") > date('Y-m-d')){
 
+                            $validate = true;
+
+                        } else {
+
+                            $validate = false;
+                            
+                        //arrumar está retornando uma pagina em branco
+                            //exit();]
+                            $this->session->set_flashdata('error_date', 'As datas de prazo não podem ser inferior à data de criação do documento!');
+                            redirect("novo_documento");
+
+                        }
+        
                     }
-    
+        
                 }
-    
+            } else{
+
+                $validate = false;
+
+                //$data->error = "As datas de prazo não podem ser inferior à data de criação do documento!";
+        
+                $this->session->set_flashdata('error_date', 'As datas de prazo não podem ser inferior à data de criação do documento!');
+                redirect("novo_documento");
             }
-
-        } else{
-
-            $validate = false;
-
-            //$data->error = "As datas de prazo não podem ser inferior à data de criação do documento!";
-    
-            $this->session->set_flashdata('error_date', 'As datas de prazo não podem ser inferior à data de criação do documento!');
-            redirect("novo_documento");
 
         }
             
-        if($validate == true){
+        if(($validate == true) or ($this->input->post('prazos') == 0)){
 
             $dados = array(
                 'protocolo'      => $this->input->post('protocolo'),

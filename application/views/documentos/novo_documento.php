@@ -75,6 +75,8 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <input type="hidden" id="if_prazos" name="prazos" value="0">
                             
                             <div class="form-group row" id="addprazo"></div>
 
@@ -160,6 +162,7 @@
                     option += '<input type="hidden" name="prazo_etapa" value="'+dados.length+'">';
                     option += "</div>";
                     $('#mensagem').html('<span class="mensagem">Total de estados encontrados.: '+dados.length+'</span>'); 
+                    $('#if_prazos').val('1');
                     console.log("Total de etapas "+dados.length+"!");
                 } else {
                     reset();
