@@ -344,7 +344,7 @@ class Relatorios extends CI_Controller {
             redirect("/");
         }
 
-        $dados["pagina"]  = "Produtividade Grupo";
+        $dados["pagina"]  = "Produtividade Individual";
         $dados["pg"]      = "relatorio";
         $dados["submenu"] = "produtividade";
         $dados["sub"]     = "prod_grupo";

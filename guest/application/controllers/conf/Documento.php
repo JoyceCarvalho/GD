@@ -104,6 +104,7 @@ class Documento extends CI_Controller {
 
                 $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["listar_grupos"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
+                $dados["listar_etapas"] = $this->etapasmodel->listar_etapas($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
@@ -133,6 +134,7 @@ class Documento extends CI_Controller {
 
                 $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["listar_grupos"] = $this->grupomodel->listar_grupos($_SESSION["guest_empresa"]);
+                $dados["listar_etapas"] = $this->etapasmodel->listar_etapas($_SESSION["guest_empresa"]);
 
                 $this->load->view('template/html_header', $dados);
                 $this->load->view('template/header');
