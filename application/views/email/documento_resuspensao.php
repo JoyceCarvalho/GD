@@ -24,7 +24,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12 table-responsive">
-                                <p>O documento <strong><?=$documento;?></strong> de protocolo <strong><?=$protocolo;?></strong> concluiu exigẽncia!</p>
+                                <p>O documento <strong><?=$documento;?></strong> de protocolo <strong><?=$protocolo;?></strong> concluiu exigência!</p>
                                 <?php if($status == "retorno"): ?>
                                     <p>Retornou para <?=$usuario;?> concluir a execução.</p>
                                 <?php else:?>
