@@ -6,6 +6,21 @@ class Timer_model extends CI_Model {
     }
 
     /**
+     * Veridica se o documentos retornor da suspensão
+     * Utlizado no controller documentos/Documentos.php
+     *
+     * @param int $documento
+     * @return object
+     */
+    public function verifica_reinicio($documento){
+        $this->db->select('count(*) as registros');
+        $this->db->from('tblog_documentos');
+        $this->db->where('documento', $documento);
+        $this->db->where('descricao = "RETORNO SUSPENSÃO"');
+        return $this->db->get()->row('registros');
+    }
+
+    /**
      * Médoto responsável por retornar os dados de determinado documento
      * Utilizado no controller documento/Documento.php
      *
@@ -18,6 +33,24 @@ class Timer_model extends CI_Model {
         $this->db->from('tbtimer');
         $this->db->where('fk_iddoccad = ', $protocolo);
         $this->db->where('fk_idetapa =', $etapa);
+        $this->db->order_by('id');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por retornar o tempo do documento após retorno de suspensão
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param int $protocolo
+     * @param int $etapa
+     * @return object retorna um objeto de dados
+     */
+    public function get_time_reinicio($protocolo, $etapa){
+        $this->db->select("action, timestamp");
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad', $protocolo);
+        $this->db->where('fk_idetapa', $etapa);
+        $this->db->where('observacao = "REINICIO"');
         $this->db->order_by('id');
         return $this->db->get()->result();
     }

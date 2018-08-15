@@ -984,7 +984,7 @@ class Documentos_model extends CI_Model {
      * @return object
      */
     public function retorna_email_responsavel($protocolo){
-        $this->db->select("u.nome as usuario_nome, u.email as email_usaurio");
+        $this->db->select("u.nome as usuario_nome, u.email as email_usuario");
         $this->db->from('tblog_documentos as ld');
         $this->db->join('tbusuario as u', 'u.id = ld.usuario');
         $this->db->where('ld.descricao = "CRIADO"');

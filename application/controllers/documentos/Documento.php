@@ -704,7 +704,20 @@ class Documento extends CI_Controller {
         $etapa_documento = $this->docmodel->etapa_documento($idprotocolo);
 
         $this->load->model('timer_model', 'timermodel');
-        $timer = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
+
+        $verifica_documento = $this->timermodel->verifica_reinicio($idprotocolo);
+
+        if($verifica_documento){
+
+            $timer = $this->timermodel->get_time_reinicio($idprotocolo, $etapa_documento);
+            //print_r($timer);
+
+        } else {
+
+            $timer = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
+            //print_r($timer);
+
+        }
 
         $seconds = 0;
         $action = 'pause'; // sempre inicia pausado
@@ -826,22 +839,38 @@ class Documento extends CI_Controller {
 
         $this->load->model('timer_model', 'timermodel');
 
-        $timer    = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
-        $contador = $this->timermodel->contador($idprotocolo, $etapa_documento);
-        $ac       = $this->timermodel->get_action($idprotocolo, $etapa_documento);
+        $timer              = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
+        $contador           = $this->timermodel->contador($idprotocolo, $etapa_documento);
+        $ac                 = $this->timermodel->get_action($idprotocolo, $etapa_documento);
+        $verifica_documento = $this->timermodel->verifica_reinicio($idprotocolo);
 
         $newAction = 'start';
         if (($contador > 0) && ($ac == 'start')) {
             $newAction = 'pause';
         }
 
-        $dados = array(
-            'fk_iddoccad'   => $idprotocolo,
-            'fk_idetapa'    => $etapa_documento,
-            'action'        => $newAction,
-            'timestamp'     => time(),
-            'fk_idusuario'  => $usuario
-        );
+        if($verifica_documento > 0){
+            
+            $dados = array(
+                'fk_iddoccad'  => $idprotocolo,
+                'fk_idetapa'   => $etapa_documento,
+                'action'       => $newAction,
+                'timestamp'    => time(),
+                'fk_idusuario' => $usuario,
+                'observacao'   => "REINICIO"
+            );
+
+        } else {
+
+            $dados = array(
+                'fk_iddoccad'   => $idprotocolo,
+                'fk_idetapa'    => $etapa_documento,
+                'action'        => $newAction,
+                'timestamp'     => time(),
+                'fk_idusuario'  => $usuario
+            );
+
+        }
 
         $this->timermodel->cadastrar_tempo($dados);
 

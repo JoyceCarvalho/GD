@@ -79,7 +79,13 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Senha:</label>
                                 <div class="col-sm-9">
-                                    <input type="password" name="senha" class="form-control" required>
+                                    <div class="input-group">
+                                        <input id="input" type="text" name="senha" class="form-control" aria-describedby="button-addon4" required>
+                                        <div class="input-group-append" id="button-addon4">
+                                            <span id="ver_senha" class="btn btn-outline-secondary" type="button"><i class="fa fa-eye"></i></span>
+                                            <span id="gerar_senha" class="btn btn-outline-secondary" type="button">Gerar senha</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="line"></div>
@@ -120,5 +126,28 @@
                 }
             }
         });
+    });
+
+    $("#ver_senha").click(function(){
+        var senha = document.getElementById('input').type;
+        
+        if (senha == "text") {
+
+            document.getElementById('input').type = "password";
+            $("#ver_senha").html('<i class="fa fa-eye-slash"></i>');
+
+        } else {
+
+            document.getElementById('input').type = "text";
+            $("#ver_senha").html('<i class="fa fa-eye"></i>');
+
+        }
+    });
+
+    $("#gerar_senha").click(function(){
+        
+        var gerar = '<?=gerar_senha()?>';
+        $('#input').val(gerar);
+
     });
 </script>

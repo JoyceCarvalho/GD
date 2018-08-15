@@ -107,7 +107,7 @@
                         var mes = dia.substring(3,5);
                         //console.log(dia_d)
                         //console.log(mes);
-                        if (mes == 4 || mes == 6 || mes == 9 || mes == 11 && dia_d > 30) 
+                        if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && (dia_d > 30)) 
                         aRet = false;
                         else 
                         if (mes == 2 && dia_d > 28) 

@@ -125,7 +125,14 @@
                                             <div class="modal-body">                                                
                                                 <div class="form-group">
                                                     <label>Nova Senha</label>
-                                                    <input type="password" name="senha" placeholder="Nova senha" class="form-control">
+                                                    <!--<input type="password" name="senha" placeholder="Nova senha" class="form-control">-->
+                                                    <div class="input-group">
+                                                        <input id="input" type="text" name="senha" placeholder="Nova senha" class="form-control" aria-describedby="button-addon4">
+                                                        <div class="input-group-append" id="button-addon4">
+                                                            <span id="ver_senha" class="btn btn-outline-secondary" type="button"><i class="fa fa-eye"></i></span>
+                                                            <span id="gerar_senha" class="btn btn-outline-secondary" type="button">Gerar senha</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -167,5 +174,28 @@
                 }
             } 
         }); 
+    });
+
+    $("#ver_senha").click(function(){
+        var senha = document.getElementById('input').type;
+        
+        if (senha == "text") {
+
+            document.getElementById('input').type = "password";
+            $("#ver_senha").html('<i class="fa fa-eye-slash"></i>');
+
+        } else {
+
+            document.getElementById('input').type = "text";
+            $("#ver_senha").html('<i class="fa fa-eye"></i>');
+
+        }
+    });
+
+    $("#gerar_senha").click(function(){
+        
+        var gerar = '<?=gerar_senha()?>';
+        $('#input').val(gerar);
+
     });
 </script>

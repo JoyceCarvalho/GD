@@ -23,7 +23,7 @@ class Usuario extends CI_Controller {
 		// set validation rules
 		$this->form_validation->set_rules('nome', 'Nome', 'required');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
-		$this->form_validation->set_rules('usuario', 'Usuário', 'trim|required|min_length[5]|max_length[12]');
+		$this->form_validation->set_rules('usuario', 'Usuário', 'trim|required|min_length[3]|max_length[12]');
 		$this->form_validation->set_rules('senha', 'Senha', 'trim|required|min_length[6]');
 
 		if($this->form_validation->run() == FALSE){

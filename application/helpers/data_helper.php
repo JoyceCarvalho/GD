@@ -171,3 +171,15 @@ function converte_data_mes_ano($data){
     return $d[1] . "/" . $d[0];
 
 }
+
+/**
+ * Gera uma senha aleatória para o usuário
+ *
+ * @return string
+ */
+function gerar_senha(){
+    
+    $senha = "ABCDEFGHIJKLMNOPQRSTUVYXWZabcdefghijklmnopqrstuvyxwz0123456789!@#$%*()_+";
+    
+    return substr(str_shuffle($senha), 0, 8);
+}
