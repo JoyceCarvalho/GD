@@ -880,7 +880,7 @@ class Documento extends CI_Controller {
         )); 
     }
 
-
+    
     public function historico_documento($id){
 
         echo $this->docmodel->historico_documento($id);

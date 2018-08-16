@@ -163,12 +163,19 @@
                                                 <?php
                                                 $this->load->model('timer_model', 'timermodel');
 
-                                                $timer = $this->timermodel->listar_timer($documentos->idprotocolo);
+                                                $verfica = $this->timermodel->verifica_reinicio($documentos->idprotocolo);
+
+                                                if($verfica){
+                                                    $timer = $this->timermodel->listar_timer_suspenso($documentos->idprotocolo);
+                                                } else {
+                                                    $timer = $this->timermodel->listar_timer($documentos->idprotocolo);
+                                                }
 
                                                 // Trecho adaptado do 1º gestão de documentos
                                                 $seconds = 0;
                                                 $sum_media = 0;
                                                 foreach ($timer as $t) {
+                                                    //echo $t->id . "<br/>";
                                                     $action = $t->action;
                                                     switch ($action) {
                                                         case 'start':

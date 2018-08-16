@@ -403,7 +403,7 @@ foreach ($informacoes_documento as $documento) {
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Hora:minuto'
+                        text: 'Hora : minuto'
                     }
                 },
                 legend: {
@@ -472,7 +472,7 @@ foreach ($informacoes_documento as $documento) {
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Horas:minutos'
+                        text: 'Horas : minutos'
                     }
                 },
                 legend: {

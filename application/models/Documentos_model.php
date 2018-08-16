@@ -115,7 +115,7 @@ class Documentos_model extends CI_Model {
      * @param date $mes
      * @return object
      */
-    public function documento_do_mes($mes){
+    public function documento_do_mes($mes, $empresa){
         $this->db->select('DATE_FORMAT(ldB.data_hora, "%M/%Y") as mes_ano, dc.id as idprotocolo, dc.protocolo AS protocolo, d.id as iddocumento, 
         d.titulo AS documento, g.titulo AS grupo, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.nome AS nome_usuario, 
         DATE_FORMAT(ldB.data_hora, "%d/%m/%Y") as data_finalizacao, DATE_FORMAT(dc.prazo, "%d/%m/%Y") as prazo_documento');
@@ -126,6 +126,7 @@ class Documentos_model extends CI_Model {
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
         $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
         $this->db->where("ldB.data_hora like '$mes%'");
+        $this->db->where('d.fk_idempresa', $empresa);
         $this->db->order_by('ldA.data_hora asc');
         return $this->db->get()->result();
     }
