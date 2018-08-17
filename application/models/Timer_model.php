@@ -276,10 +276,28 @@ class Timer_model extends CI_Model {
      * @return object
      */
     public function tempo_por_responsavel($protocolo, $responsavel){
+        $this->db->select('action, timestamp, observacao');
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad', $protocolo);
+        $this->db->where('fk_idusuario', $responsavel);
+        $this->db->order_by('id asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por listar o tempo de desenvolvimento do documento depois de entrar em exigência
+     * Utilizado na view relatorios/imprimir/relatorios_tempo.php 
+     *
+     * @param int $protocolo
+     * @param int $responsavel
+     * @return object
+     */
+    public function tempo_por_responsavel_sus($protocolo, $responsavel){
         $this->db->select('action, timestamp');
         $this->db->from('tbtimer');
         $this->db->where('fk_iddoccad', $protocolo);
         $this->db->where('fk_idusuario', $responsavel);
+        $this->db->where('observacao = "REINICIO"');
         $this->db->order_by('id asc');
         return $this->db->get()->result();
     }

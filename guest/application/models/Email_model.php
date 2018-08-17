@@ -34,7 +34,9 @@ class Email_model extends CI_Model {
         $this->load->model('Usuario_model', 'usermodel');
         $coordenador = $this->usermodel->verifica_coordenador();
         
-        $this->email->cc($coordenador);
+        if ($coordenador) {
+            $this->email->cc($coordenador);
+        }
 
         $this->email->subject('SGT - Gestão de Documentos');
 

@@ -8,24 +8,28 @@ $this->load->model('cargos_model', 'cargosmodel');
             <div class="col-lg-12">     
                 <div class="tile">
                     <section class="invoice">
-                        <div class="row mb-4">
-                            <div class="col-6" style="text-align: left;">
-                                <?php
-                                foreach ($nome_empresa as $empresa) {
-                                    if (!empty($empresa->logo_code)) {
-                                        ?>
-                                        <img class="img-responsive" src="<?=base_url();?>assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>">
+                        <div class="col-12">
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                    <div class="col-xs-3 col-md-3">
                                         <?php
-                                    } else {
+                                        foreach ($nome_empresa as $empresa) {
+                                            if (!empty($empresa->logo_code)) {
+                                                ?>
+                                                <img class="img-responsive" src="<?=base_url();?>assets/img/logo_empresas/<?=$empresa->logo_code;?>" style="max-width: 200px" alt="<?=$empresa->nome;?>">
+                                                <?php
+                                            } else {
+                                                ?>
+                                                <img class="img-responsive" src="<?=base_url("assets/img/logo_sgt.png");?>" alt="<?=$empresa->nome;?>">
+                                                <?php
+                                            }
+                                        }   
                                         ?>
-                                        <img class="img-responsive" src="<?=base_url("assets/img/logo_sgt.jpg");?>" alt="<?=$empresa->nome;?>">
-                                        <?php
-                                    }
-                                }   
-                                ?>
-                            </div>
-                            <div class="col-6"> 
-                                <h5 class="text-right">Data: <?=date('d/m/Y');?></h5>
+                                    </div>
+                                </div>
+                                <div class="col-6"> 
+                                    <h5 class="text-right">Data: <?=date('d/m/Y');?></h5>
+                                </div>
                             </div>
                         </div>
                         <div class="row invoice-info">

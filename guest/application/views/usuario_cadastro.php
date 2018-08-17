@@ -89,7 +89,15 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Senha:</label>
                                 <div class="col-sm-9">
-                                    <input type="password" name="senha" class="form-control">
+                                    
+                                    <div class="input-group">
+                                        <input id="input" type="text" name="senha" class="form-control" aria-describedby="button-addon4">
+                                        <div class="input-group-append" id="button-addon4">
+                                            <span id="ver_senha" class="btn btn-outline-secondary" type="button"><i class="fa fa-eye"></i></span>
+                                            <span id="gerar_senha" class="btn btn-outline-secondary" type="button">Gerar senha</span>
+                                        </div>
+                                    </div>
+                                    <small style="color:#696969;" class="help-block-none">A senha deve conter pelo menos 6 caracteres. Para uma senha mais segura mescle números, letras e caracteres especiais</small>
                                 </div>
                             </div>
                             <div class="line"></div>
@@ -119,9 +127,9 @@
                 data = $.parseJSON(data); 
                 //console.log(data); 
                 if(data.valido == "not"){
-                    var input = '<div style="color:red;">'+data.mensagem+'</div>';
+                    var input = '<div style="color:#dc3545;">'+data.mensagem+'</div>';
                     $("#resposta").html(input);
-                    $("#usuario").css('border-color', 'red');
+                    $("#usuario").css('border-color', '#dc3545');
                 } else {
                     var input = '<div style="color:#28a745;">'+data.mensagem+'</div>';
                     $("#resposta").html(input);
@@ -129,5 +137,28 @@
                 }
             } 
         }); 
+    });
+
+    $("#ver_senha").click(function(){
+        var senha = document.getElementById('input').type;
+        
+        if (senha == "text") {
+
+            document.getElementById('input').type = "password";
+            $("#ver_senha").html('<i class="fa fa-eye-slash"></i>');
+
+        } else {
+
+            document.getElementById('input').type = "text";
+            $("#ver_senha").html('<i class="fa fa-eye"></i>');
+
+        }
+    });
+
+    $("#gerar_senha").click(function(){
+        
+        var gerar = '<?=gerar_senha()?>';
+        $('#input').val(gerar);
+
     });
 </script>

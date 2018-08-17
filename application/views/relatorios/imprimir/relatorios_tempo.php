@@ -243,8 +243,14 @@ foreach ($informacoes_documento as $documento) {
                                         <td><?=$responsavel->nome_usuario?></td>
                                         <td>
                                             <?php
-                                            $tempo = $this->timermodel->tempo_por_responsavel($idprotocolo, $responsavel->idusuario);
+                                            $verifica = $this->timermodel->verifica_reinicio($idprotocolo);
 
+                                            if($verifica){
+                                                $tempo = $this->timermodel->tempo_por_responsavel_sus($idprotocolo, $responsavel->idusuario);
+                                            } else {
+                                                $tempo = $this->timermodel->tempo_por_responsavel($idprotocolo, $responsavel->idusuario);
+                                            }
+                                            
                                             // Trecho adaptado do 1º gestão de documentos
                                             $seconds = 0;
                                             $sum_media = 0;

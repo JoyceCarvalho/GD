@@ -6,6 +6,21 @@ class Timer_model extends CI_Model {
     }
 
     /**
+     * Veridica se o documentos retornor da suspensão
+     * Utlizado no controller documentos/Documentos.php
+     *
+     * @param int $documento
+     * @return object
+     */
+    public function verifica_reinicio($documento){
+        $this->db->select('count(*) as registros');
+        $this->db->from('tblog_documentos');
+        $this->db->where('documento', $documento);
+        $this->db->where('descricao = "RETORNO SUSPENSÃO"');
+        return $this->db->get()->row('registros');
+    }
+
+    /**
      * Médoto responsável por retornar os dados de determinado documento
      * Utilizado no controller documento/Documento.php
      *
@@ -18,6 +33,24 @@ class Timer_model extends CI_Model {
         $this->db->from('tbtimer');
         $this->db->where('fk_iddoccad = ', $protocolo);
         $this->db->where('fk_idetapa =', $etapa);
+        $this->db->order_by('id');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por retornar o tempo do documento após retorno de suspensão
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param int $protocolo
+     * @param int $etapa
+     * @return object retorna um objeto de dados
+     */
+    public function get_time_reinicio($protocolo, $etapa){
+        $this->db->select("action, timestamp");
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad', $protocolo);
+        $this->db->where('fk_idetapa', $etapa);
+        $this->db->where('observacao = "REINICIO"');
         $this->db->order_by('id');
         return $this->db->get()->result();
     }
@@ -89,6 +122,7 @@ class Timer_model extends CI_Model {
         $this->db->from('tbtimer');
         $this->db->where('fk_iddoccad = ', $protocolo);
         $this->db->where('fk_idetapa =', $etapa);
+        $this->db->where('observacao != "SUSPENSO"');
         $this->db->order_by('id desc');
         return $this->db->get()->row('action');
     }
@@ -112,9 +146,25 @@ class Timer_model extends CI_Model {
      * @return object
      */
     public function listar_timer($protocolo){
-        $this->db->select('action, timestamp');
+        $this->db->select('id, action, timestamp');
         $this->db->from('tbtimer');
         $this->db->where('fk_iddoccad = ', $protocolo);
+        $this->db->order_by('id asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por retornar o tempo desenvolvido no documento que voltou da suspensão(exigencia)
+     * Utilizado na view relatorios/tempo_medio.php 
+     *
+     * @param int $protocolo
+     * @return object
+     */
+    public function listar_timer_suspenso($protocolo){
+        $this->db->select('id, action, timestamp');
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad = ', $protocolo);
+        $this->db->where('observacao = "REINICIO"');
         $this->db->order_by('id asc');
         return $this->db->get()->result();
     }
@@ -168,9 +218,12 @@ class Timer_model extends CI_Model {
         $this->db->select('t.fk_idetapa as idetapa, e.titulo as etapa_titulo, u.nome as nome_usuario');
         $this->db->from('tbtimer as t');
         $this->db->join('tbetapa as e', 'e.id = t.fk_idetapa');
+        $this->db->join('tbdocumentos_cad as dc', 'dc.id = t.fk_iddoccad');
+        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = dc.fk_iddocumento and de.idetapa = e.id');
         $this->db->join('tbusuario as u', 'u.id = t.fk_idusuario');
         $this->db->where('t.fk_iddoccad', $protocolo);
         $this->db->group_by('t.fk_idetapa');
+        $this->db->order_by('de.ordem asc');
         
         return $this->db->get()->result();
 
@@ -209,6 +262,7 @@ class Timer_model extends CI_Model {
         $this->db->from('tbtimer');
         $this->db->where('fk_iddoccad = ', $protocolo);
         $this->db->where('fk_idetapa', $etapa);
+        $this->db->where('observacao != "SUSPENSO"');
         $this->db->order_by('id asc');
         return $this->db->get()->result();
     }
@@ -222,10 +276,28 @@ class Timer_model extends CI_Model {
      * @return object
      */
     public function tempo_por_responsavel($protocolo, $responsavel){
+        $this->db->select('action, timestamp, observacao');
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad', $protocolo);
+        $this->db->where('fk_idusuario', $responsavel);
+        $this->db->order_by('id asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por listar o tempo de desenvolvimento do documento depois de entrar em exigência
+     * Utilizado na view relatorios/imprimir/relatorios_tempo.php 
+     *
+     * @param int $protocolo
+     * @param int $responsavel
+     * @return object
+     */
+    public function tempo_por_responsavel_sus($protocolo, $responsavel){
         $this->db->select('action, timestamp');
         $this->db->from('tbtimer');
         $this->db->where('fk_iddoccad', $protocolo);
         $this->db->where('fk_idusuario', $responsavel);
+        $this->db->where('observacao = "REINICIO"');
         $this->db->order_by('id asc');
         return $this->db->get()->result();
     }
