@@ -87,7 +87,7 @@ foreach ($dados_cargo as $cargo) {
             <!-- Conteudo do Relatório -->
             <div class="panel panel-default sessao no-break geral">  
                 <div class="panel-heading">
-                    <span class="titulo-sessao">Dados do Mensais</span>
+                    <span class="titulo-sessao">Dados do Cargo</span>
                 </div>
                 <div class="panel-body">
                     <p>Cargo: <?=$titulo_cargo;?></p>
@@ -146,7 +146,7 @@ foreach ($dados_cargo as $cargo) {
                                     <th>Protocolo</th>
                                     <th>Documento</th>
                                     <th>Grupo</th>
-                                    <th>Tempo</th>
+                                    <th>Tempo total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -160,13 +160,13 @@ foreach ($dados_cargo as $cargo) {
                                         <td><?=$documento->grupo;?></td>
                                         <td>
                                             <?php
-                                            $tempo = $this->timermodel->listar_timer($documento->idprotocolo);
+                                            $timer = $this->timermodel->listar_timer($documento->idprotocolo);
 
                                             // Trecho adaptado do 1º gestão de documentos
                                             $seconds = 0;
                                             $sum_media = 0;
-                                            foreach ($tempo as $t) {
-                                                
+                                            foreach ($timer as $t) {
+                                                //echo $t->id . "<br/>";
                                                 $action = $t->action;
                                                 switch ($action) {
                                                     case 'start':
@@ -174,16 +174,14 @@ foreach ($dados_cargo as $cargo) {
                                                         break;
                                                     
                                                     case 'pause':
-                                                        if ($seconds !== 0) {
+                                                        if($seconds !== 0){
                                                             $seconds += $t->timestamp;
                                                         }
                                                         break;
                                                 }
-
                                             }
-
                                             $sum_media += $seconds;
-                                            $mostraNumero = converteHoras($seconds);
+                                            $mostraNumero = converteHoras($sum_media);
 
                                             echo $mostraNumero;
                                             ?>

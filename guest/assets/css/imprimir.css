@@ -186,6 +186,10 @@
         page-break-after: auto;
     }
 
+    .topo {
+        padding-top: 50px;
+    }
+
     .titulo-sessao {
         font-size: 18pt !important;
     }

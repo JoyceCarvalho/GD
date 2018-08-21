@@ -8,7 +8,7 @@ class Imprimir extends CI_Controller {
 
         $this->load->model("documentos_model", "docmodel");
         $this->load->model("etapas_model", "etapasmodel");
-        $this->load->model("DocEtapas_model", "docetapamodel");
+        $this->load->model("DocEtapas_model", "docetapa");
         $this->load->model("empresa_model", "empresamodel");
         $this->load->model("timer_model", "timermodel");
         $this->load->model('usuario_model', 'usermodel');
@@ -68,10 +68,12 @@ class Imprimir extends CI_Controller {
                 
                 $dados["informacoes_documento"] = $informacoes_documento;
                 $dados["tempo_medio"]           = $tempomedio;
+                $dados["qnt_etapas_documento"]  = $this->docetapa->qnt_etapas_por_documento($id);
                 $dados["tempo_por_etapa"]       = $this->timermodel->timer_etapa($id);
                 $dados["tempo_por_responsavel"] = $this->timermodel->timer_responsavel($id);
                 $dados["tempo_em_suspensao"]    = $this->timermodel->tempo_em_suspensao($id);
                 $dados["tempo_pendente"]        = $this->timermodel->tempo_pendente($id);
+                $dados["tempo_total_documento"] = $this->timermodel->listar_timer($id);
                 $dados["data_finalizacao"]      = $this->docmodel->finalizacao_data_documento($id);
                 $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
                 
@@ -96,7 +98,7 @@ class Imprimir extends CI_Controller {
 
             $dados["mes_ano"]       = $date;
             $dados["dados_mensais"] = $this->docmodel->documento_do_mes($date, $_SESSION["idempresa"]);
-            $dados["tempo_medio"]   = $this->timermodel->tempo_documento_mensal($date);
+            $dados["tempo_medio"]   = $this->timermodel->tempo_documento_mensal($date, $_SESSION["idempresa"]);
             $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
             $this->load->view('relatorios/imprimir/relatorios_tempo_mensal', $dados);
@@ -124,7 +126,6 @@ class Imprimir extends CI_Controller {
             if ($grupo->fk_idempresa == $_SESSION["idempresa"]) {
                 
                 $dados["titulo_grupo"]     = $grupo->titulo;
-                $dados["tempo_medio"]      = $this->timermodel->listar_timer_grupo($grupo->id);
                 $dados["documentos_grupo"] = $this->filtromodel->resultado_filtro_grupo($_SESSION["idempresa"], $grupo->id);
                 $dados["nome_empresa"]     = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
@@ -152,7 +153,6 @@ class Imprimir extends CI_Controller {
             if($doc->fk_idempresa == $_SESSION["idempresa"]){
 
                 $dados["titulo_documento"]     = $doc->titulo;
-                $dados["tempo_medio"]          = $this->timermodel->listar_timer_documento($documento);
                 $dados["protocolos_documento"] = $this->filtromodel->resultados_filtro_documentos($_SESSION["idempresa"], $documento);
                 $dados["nome_empresa"]         = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 

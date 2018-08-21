@@ -147,7 +147,7 @@ $this->load->model("cargos_model", "cargosmodel");
                                                 if($sum_media > 0){
 
                                                     $divide = $sum_media / $count;
-                                                    $mostraNumero = converteHoras($divide);
+                                                    $mostraNumero = converteHoras(count($divide));
 
                                                 } else {
 

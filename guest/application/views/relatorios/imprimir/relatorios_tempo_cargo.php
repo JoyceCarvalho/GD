@@ -87,7 +87,7 @@ foreach ($dados_cargo as $cargo) {
             <!-- Conteudo do Relatório -->
             <div class="panel panel-default sessao no-break geral">  
                 <div class="panel-heading">
-                    <span class="titulo-sessao">Dados do Mensais</span>
+                    <span class="titulo-sessao">Dados do Cargo</span>
                 </div>
                 <div class="panel-body">
                     <p>Cargo: <?=$titulo_cargo;?></p>
@@ -146,7 +146,7 @@ foreach ($dados_cargo as $cargo) {
                                     <th>Protocolo</th>
                                     <th>Documento</th>
                                     <th>Grupo</th>
-                                    <th>Tempo</th>
+                                    <th>Tempo total</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -182,6 +182,10 @@
         border: none;
     }
 
+    .topo {
+        padding-top: 50px;
+    }
+
     .sessao:last-child{
         page-break-after: auto;
     }

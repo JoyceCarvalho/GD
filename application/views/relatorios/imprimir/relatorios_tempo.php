@@ -136,9 +136,9 @@ foreach ($informacoes_documento as $documento) {
                                         break;
                                 }
                             }
-                            $sum_media += $seconds;
-                            $mostraNumero = converteHoras($seconds);
-
+                            $sum_media = $seconds/$qnt_etapas_documento;
+                            $mostraNumero = converteHoras(round($sum_media));
+                            
                             echo "O tempo médio desenvolvido no documento foi <strong>" . $mostraNumero . "</strong>";
                             
                             ?>
@@ -173,8 +173,14 @@ foreach ($informacoes_documento as $documento) {
                                         <td><?=$etapa->nome_usuario;?></td>
                                         <td>
                                             <?php
-                                            $tempo = $this->timermodel->tempo_por_etapa($idprotocolo, $etapa->idetapa);
-
+                                            $verifica = $this->timermodel->verifica_reinicio($idprotocolo);
+                                            
+                                            if($verifica > 0){
+                                                $tempo = $this->timermodel->tempo_por_etapa_suspenso($idprotocolo, $etapa->idetapa);
+                                            } else {
+                                                $tempo = $this->timermodel->tempo_por_etapa($idprotocolo, $etapa->idetapa);
+                                            }
+                                            
                                             // Trecho adaptado do 1º gestão de documentos
                                             $seconds = 0;
                                             $sum_media = 0;
@@ -244,8 +250,8 @@ foreach ($informacoes_documento as $documento) {
                                         <td>
                                             <?php
                                             $verifica = $this->timermodel->verifica_reinicio($idprotocolo);
-
-                                            if($verifica){
+                                            
+                                            if($verifica > 0){
                                                 $tempo = $this->timermodel->tempo_por_responsavel_sus($idprotocolo, $responsavel->idusuario);
                                             } else {
                                                 $tempo = $this->timermodel->tempo_por_responsavel($idprotocolo, $responsavel->idusuario);
@@ -296,7 +302,7 @@ foreach ($informacoes_documento as $documento) {
             </div>
 
             <?php if($tempo_em_suspensao): ?>
-                <div class="panel panel-default sessao no-break geral">
+                <div class="panel panel-default sessao no-break topo">
                     <div class="panel-heading">
                         <span class="titulo-sessao">Tempo médio aguardando exigência</span>
                     </div>
@@ -334,7 +340,7 @@ foreach ($informacoes_documento as $documento) {
             <?php endif; ?>
 
             <?php if($tempo_pendente): ?>
-                <div class="panel panel-default sessao no-break geral">
+                <div class="panel panel-default sessao no-break topo">
                     <div class="panel-heading">
                         <span class="titulo-sessao">Tempo médio pendente</span>
                     </div>
@@ -370,6 +376,39 @@ foreach ($informacoes_documento as $documento) {
                     </div>
                 </div>
             <?php endif; ?>
+
+            <div class="panel panel-default sessao no-break topo geral">
+                <div class="panel-heading">
+                    <span class="titulo-sessao">Tempo total desenvolvido no documento</span>
+                </div>
+                <div class="panel-body">
+                    <?php
+                    $seconds = 0;
+                    //$sum_media = 0;
+
+                    foreach ($tempo_total_documento as $tempo) {
+                        
+                        $action = $tempo->action;
+                        switch ($action) {
+                            case 'start':
+                                $seconds -= $tempo->timestamp;
+                                break;
+                            
+                            case 'pause':
+                                if($seconds !== 0){
+                                    $seconds += $tempo->timestamp;
+                                }
+                                break;
+                        }
+                    }
+                    
+                    //$sum_media += $seconds;
+                    $mostraNumero = converteHoras($seconds);
+
+                    echo "O tempo total do documento foi <strong>" . $mostraNumero . "</strong>";
+                    ?>
+                </div>
+            </div>
             <!-- Fim do conteudo -->
         </div>
         <script src="https://code.highcharts.com/highcharts.js"></script>

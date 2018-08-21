@@ -1,5 +1,45 @@
 <?php
 date_default_timezone_set('America/Sao_Paulo');
+
+$this->load->model('timer_model', 'timermodel');
+$this->load->model('DocEtapas_model', 'docetapa');
+
+$media = 0;
+foreach ($documentos_grupo as $documentos) {
+    $quantidade_etapas = $this->docetapa->qnt_etapas_por_documento($documentos->idprotocolo);
+    $verfica = $this->timermodel->verifica_reinicio($documentos->idprotocolo);
+
+    if($verfica){
+        $timer = $this->timermodel->listar_timer_suspenso($documentos->idprotocolo);
+    } else {
+        $timer = $this->timermodel->listar_timer($documentos->idprotocolo);
+    }
+
+    // Trecho adaptado do 1º gestão de documentos
+    $seconds = 0;
+    $sum_media = 0;
+    foreach ($timer as $t) {
+        //echo $t->id . "<br/>";
+        $action = $t->action;
+        switch ($action) {
+            case 'start':
+                $seconds -= $t->timestamp;
+                break;
+            
+            case 'pause':
+                if($seconds !== 0){
+                    $seconds += $t->timestamp;
+                }
+                break;
+        }
+    }
+    $sum_media += $seconds/$quantidade_etapas;
+    $media += $sum_media;
+}
+
+$quantidade_documentos = count($documentos_grupo);
+$tempo_medio_grupo = converteHoras(round($media/$quantidade_documentos));
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -90,36 +130,11 @@ date_default_timezone_set('America/Sao_Paulo');
 
                     <div class="panel panel-default sessao">
                         <div class="panel-heading">
-                            <span class="subtitulo">Tempo médio mensal</span>
+                            <span class="subtitulo">Tempo médio do grupo</span>
                         </div>
                         
                         <div class="panel-body">
-                            <?php
-                            // Trecho adaptado do 1º gestão de documentos
-                            $seconds = 0;
-                            $sum_media = 0;
-
-                            foreach ($tempo_medio as $tempo) {
-                                
-                                $action = $tempo->action;
-                                switch ($action) {
-                                    case 'start':
-                                        $seconds -= $tempo->timestamp;
-                                        break;
-                                    
-                                    case 'pause':
-                                        if($seconds !== 0){
-                                            $seconds += $tempo->timestamp;
-                                        }
-                                        break;
-                                }
-                            }
-                            $sum_media += $seconds;
-                            $mostraNumero = converteHoras($seconds);
-
-                            echo "O tempo médio mensal foi <strong>" . $mostraNumero . "</strong>";
-                            
-                            ?>
+                            O tempo médio do grupo foi <strong><?=$tempo_medio_grupo?></strong>
                         </div>                            
                     </div>                   
                 </div>
@@ -155,9 +170,14 @@ date_default_timezone_set('America/Sao_Paulo');
 
                                 <p>
                                     <?php
-                                    $this->load->model('timer_model', 'timermodel');
+                                    $quantidade_etapas = $this->docetapa->qnt_etapas_por_documento($doc->idprotocolo);
+                                    $verfica = $this->timermodel->verifica_reinicio($doc->idprotocolo);
 
-                                    $timer = $this->timermodel->listar_timer($doc->idprotocolo);
+                                    if($verfica){
+                                        $timer = $this->timermodel->listar_timer_suspenso($doc->idprotocolo);
+                                    } else {
+                                        $timer = $this->timermodel->listar_timer($doc->idprotocolo);
+                                    }
 
                                     // Trecho adaptado do 1º gestão de documentos
                                     $seconds = 0;
@@ -177,9 +197,9 @@ date_default_timezone_set('America/Sao_Paulo');
                                                 break;
                                         }
                                     }
-                                    $sum_media += $seconds;
-                                    $media += $sum_media;
-                                    $mostraNumero = converteHoras($seconds);
+                                    $sum_media = $seconds/$quantidade_etapas;
+                                    
+                                    $mostraNumero = converteHoras(round($sum_media));
 
                                     ?>
                                     <strong>Tempo médio do documento <?=$mostraNumero;?> </strong>

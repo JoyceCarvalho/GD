@@ -147,5 +147,22 @@ class DocEtapas_model extends CI_Model{
         return json_encode($this->db->get()->result());
     }
 
+     /**
+     * Método responsável por retornar o numero de etapas por documento
+     * Utilizado no controller relatorios/Imprimir.php
+     * e nas views relatorios/imprimir/relatorios_tempo_mensa.php, relatorios/imprimir/relatorios_tempo.php, relatorios/imprimir/tempo_filtro_documento.php 
+     * relatorios/imprimir/tempo_filtro_grupo.php e relatorios/tempo_medio.php
+     *
+     * @param int $documento
+     * @return int
+     */
+    public function qnt_etapas_por_documento($documento){
+        $this->db->select('count(de.idetapa) qnt_etapas');
+        $this->db->from('tbdocumentoetapa as de');
+        $this->db->join('tbdocumentos_cad as dc', 'de.iddocumento = dc.fk_iddocumento');
+        $this->db->where('dc.id', $documento);
+        
+        return $this->db->get()->row('qnt_etapas');
+    }
 
 }

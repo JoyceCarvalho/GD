@@ -14,6 +14,7 @@ class Relatorios extends CI_Controller {
         $this->load->model('cargos_model', 'cargosmodel');
         $this->load->model('grupo_model', 'grupomodel');
         $this->load->model('filtros_model', 'filtromodel');
+        $this->load->model('DocEtapas_model', 'docetapa');
     }
 
     public function finalizados(){

@@ -262,8 +262,26 @@ class Timer_model extends CI_Model {
         $this->db->from('tbtimer');
         $this->db->where('fk_iddoccad = ', $protocolo);
         $this->db->where('fk_idetapa', $etapa);
-        $this->db->where('observacao != "SUSPENSO"');
+        $this->db->where('observacao is null');
         $this->db->order_by('id asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsavel por listar o tempo do documento em determinada etapa depois de retornar de exigência
+     * Utilizado na view relatorios/imprimir/relatorios_tempo.php 
+     *
+     * @param int $protocolo
+     * @param int $etapa
+     * @return object
+     */
+    public function tempo_por_etapa_suspenso($protocolo, $etapa){
+        $this->db->select('action, timestamp');
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad', $protocolo);
+        $this->db->where('fk_idetapa', $etapa);
+        $this->db->where('observacao = "REINICIO"');
+
         return $this->db->get()->result();
     }
 
@@ -324,12 +342,16 @@ class Timer_model extends CI_Model {
      * @param int $grupo
      * @return object
      */
-    public function tempo_documento_mensal($dia_mes){
+    public function tempo_documento_mensal($dia_mes, $empresa){
         
         $this->db->select("action, timestamp, fk_iddoccad as idprotocolo");
         $this->db->from('tbtimer as t');
         $this->db->join("tblog_documentos as ld", "ld.documento = t.fk_iddoccad and ld.descricao = 'FINALIZADO'");
+        $this->db->join("tbdocumentos_cad as dc", "dc.id = ld.documento");
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
         $this->db->where("ld.data_hora like '$dia_mes%'");
+        $this->db->where("d.fk_idempresa", $empresa);
+        $this->db->where("(t.observacao is null or t.observacao != 'SUSPENSO')");
         $this->db->group_by('t.id');
         $this->db->order_by('t.id asc');
 

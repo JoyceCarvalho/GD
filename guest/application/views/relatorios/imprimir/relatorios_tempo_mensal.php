@@ -2,6 +2,45 @@
 ini_set('display_errors', 'off');
 
 $this->load->model("timer_model", "timermodel");
+$this->load->model('DocEtapas_model', 'docetapa');
+
+$media = 0;
+
+foreach ($dados_mensais as $documentos) {
+
+    $quantidade_etapas = $this->docetapa->qnt_etapas_por_documento($documentos->idprotocolo);
+    $verfica = $this->timermodel->verifica_reinicio($documentos->idprotocolo);
+
+    if($verfica){
+        $timer = $this->timermodel->listar_timer_suspenso($documentos->idprotocolo);
+    } else {
+        $timer = $this->timermodel->listar_timer($documentos->idprotocolo);
+    }
+
+    // Trecho adaptado do 1º gestão de documentos
+    $seconds = 0;
+    $sum_media = 0;
+    foreach ($timer as $t) {
+        //echo $t->id . "<br/>";
+        $action = $t->action;
+        switch ($action) {
+            case 'start':
+                $seconds -= $t->timestamp;
+                break;
+            
+            case 'pause':
+                if($seconds !== 0){
+                    $seconds += $t->timestamp;
+                }
+                break;
+        }
+    }
+    $sum_media += $seconds/$quantidade_etapas;
+    $media += $sum_media;
+}
+
+$total_documentos = count($dados_mensais);
+$tempo_medio_mes = converteHoras(round($media/$total_documentos));
 
 ?>
 <!DOCTYPE html>
@@ -86,7 +125,7 @@ $this->load->model("timer_model", "timermodel");
                     <span class="titulo-sessao">Dados do Mensais</span>
                 </div>
                 <div class="panel-body">
-                    <p>Mês: <?=mes_extenso(converte_data_mes_ano($mes_ano));?></p>
+                    <?=mes_extenso(converte_data_mes_ano($mes_ano));?></p>
                     <p>Quantidade de documento: <?=count($dados_mensais);?></p>
 
                     <div class="line"></div>
@@ -97,32 +136,7 @@ $this->load->model("timer_model", "timermodel");
                         </div>
                         
                         <div class="panel-body">
-                            <?php
-                            // Trecho adaptado do 1º gestão de documentos
-                            $seconds = 0;
-                            $sum_media = 0;
-
-                            foreach ($tempo_medio as $tempo) {
-                                
-                                $action = $tempo->action;
-                                switch ($action) {
-                                    case 'start':
-                                        $seconds -= $tempo->timestamp;
-                                        break;
-                                    
-                                    case 'pause':
-                                        if($seconds !== 0){
-                                            $seconds += $tempo->timestamp;
-                                        }
-                                        break;
-                                }
-                            }
-                            $sum_media += $seconds;
-                            $mostraNumero = converteHoras($seconds);
-
-                            echo "O tempo médio mensal foi <strong>" . $mostraNumero . "</strong>";
-                            
-                            ?>
+                            O tempo médio mensal foi <strong><?=$tempo_medio_mes?></strong>
                         </div>                                
 
                     </div> 
@@ -156,7 +170,13 @@ $this->load->model("timer_model", "timermodel");
                                         <td><?=$documento->grupo;?></td>
                                         <td>
                                             <?php
-                                            $tempo = $this->timermodel->listar_timer($documento->idprotocolo);
+                                            $quantidade_etapas = $this->docetapa->qnt_etapas_por_documento($documento->idprotocolo);
+                                            $verfica = $this->timermodel->verifica_reinicio($documento->idprotocolo);
+                                            if($verfica > 0){
+                                                $tempo = $this->timermodel->listar_timer_suspenso($documento->idprotocolo);
+                                            } else {
+                                                $tempo = $this->timermodel->listar_timer($documento->idprotocolo);
+                                            }
 
                                             // Trecho adaptado do 1º gestão de documentos
                                             $seconds = 0;
@@ -167,19 +187,19 @@ $this->load->model("timer_model", "timermodel");
                                                 switch ($action) {
                                                     case 'start':
                                                         $seconds -= $t->timestamp;
-                                                        break;
+                                                    break;
                                                     
                                                     case 'pause':
                                                         if ($seconds !== 0) {
                                                             $seconds += $t->timestamp;
                                                         }
-                                                        break;
+                                                    break;
                                                 }
 
                                             }
 
-                                            $sum_media += $seconds;
-                                            $mostraNumero = converteHoras($seconds);
+                                            $sum_media = $seconds/$quantidade_etapas;
+                                            $mostraNumero = converteHoras(round($sum_media));
 
                                             echo $mostraNumero;
                                             ?>

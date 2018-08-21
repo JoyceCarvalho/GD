@@ -1,3 +1,7 @@
+<?php
+$this->load->model('timer_model', 'timermodel');
+$this->load->model('DocEtapas_model', 'docetapa');
+?>
 <section class="tables">   
     <div class="container-fluid">
         <?php if (validation_errors()) : ?>
@@ -161,8 +165,7 @@
                                             <td><?=$documentos->data_finalizacao;?></td>
                                             <td>
                                                 <?php
-                                                $this->load->model('timer_model', 'timermodel');
-
+                                                $quantidade_etapas = $this->docetapa->qnt_etapas_por_documento($documentos->idprotocolo);
                                                 $verfica = $this->timermodel->verifica_reinicio($documentos->idprotocolo);
 
                                                 if($verfica){
@@ -189,9 +192,9 @@
                                                             break;
                                                     }
                                                 }
-                                                $sum_media += $seconds;
+                                                $sum_media += $seconds/$quantidade_etapas;
                                                 $media += $sum_media;
-                                                $mostraNumero = converteHoras($seconds);
+                                                $mostraNumero = converteHoras(round($sum_media));
 
                                                 echo "<strong>" . $mostraNumero . "</strong>";
                                                 ?>
