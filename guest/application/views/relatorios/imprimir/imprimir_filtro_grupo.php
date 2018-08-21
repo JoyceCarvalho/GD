@@ -46,7 +46,8 @@ date_default_timezone_set('America/Sao_Paulo');
                                 foreach ($nome_empresa as $empresa) {
                                     if (!empty($empresa->logo_code)) {
                                         ?>
-                                        <img class="pull-right img-responsive" src="<?=base_url();?>assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>">
+                                        <!--<img class="pull-right img-responsive" src="<?//=base_url();?>assets/img/logo_empresas/<?//=$empresa->logo_code;?>" alt="<?//=$empresa->nome;?>">-->
+                                        <img src="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>" class="pull-right img-responsive">
                                         <?php
                                     } else {
                                         ?>

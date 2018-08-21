@@ -54,7 +54,7 @@ class Login extends CI_Controller {
       // pega as variaveis do formulario
       $cliente_code = $this->input->post('cliente_code');
       $usuario = $this->input->post('usuario');
-      $senha = sha1($this->input->post('senha'));
+      $senha = $this->input->post('senha');
 
       if ($this->user_model->verificar_dados($usuario, $senha, $cliente_code)) {
 
@@ -120,7 +120,7 @@ class Login extends CI_Controller {
 
     } else {
 
-      // aqi o usuario não esta logado nos não podemos deslogalo,
+      // aqi o usuario não esta logado nos não podemos deslogado,
       // redirecionamos ele para a raiz
       redirect('/');
 

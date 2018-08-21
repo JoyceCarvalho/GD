@@ -11,6 +11,7 @@ class Controle extends CI_Controller {
     $this->load->model('Horario_model', 'horasmodel');
     $this->load->model('Cargos_model', 'cargosmodel');
     $this->load->model('Erros_model', 'errosmodel');
+    $this->load->model('Usuario_model', 'usermodel');
   }
 
   /**
@@ -362,7 +363,7 @@ class Controle extends CI_Controller {
       'nome' => $this->input->post('nome'),
       'email' => $this->input->post('email'),
       'usuario' => $this->input->post('usuario'),
-      'senha' => sha1($this->input->post('senha')),
+      'senha' => $this->usermodel->hash_password($this->input->post('senha')),
       'fk_idempresa' => $idempresa,
       'fk_idcargos' => $idcargo,
       'fk_idhorariotrab' => $horario_trab

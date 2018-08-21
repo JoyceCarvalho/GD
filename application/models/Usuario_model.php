@@ -68,19 +68,20 @@ class Usuario_model extends CI_Model {
      * @param string $usuario
      * @param string $senha
      * @param string $cliente_code
-     * @return void
+     * @return bool
      */
     public function verificar_dados($usuario, $senha, $cliente_code){
 
-        $this->db->select("u.usuario as usuario, u.senha as senha, e.id as idempresa, e.cliente_code as cliente_code");
+        $this->db->select("u.senha as senha");
         $this->db->from('tbusuario as u');
         $this->db->join('tbempresa as e', 'u.fk_idempresa = e.id and e.ativo = 1');
         $this->db->where("e.cliente_code = '{$cliente_code}'");
         $this->db->where("u.usuario = '{$usuario}'");
-        $this->db->where("u.senha = '{$senha}'");
         $this->db->where('u.ativo = 1');
 
-        return $this->db->get('')->result();
+        $hash = $this->db->get('')->row('senha');
+
+        return $this->verify_password_hash($senha, $hash);
 
     }
 
@@ -190,6 +191,33 @@ class Usuario_model extends CI_Model {
 
         return $this->db->get('')->result();
     }
+
+    /**
+	 * função para inserir hash na senha.
+	 * 
+	 * @access public
+	 * @param mixed $password
+	 * @return string|bool se o hash for concluido com sucesso retorna string, se não o boleano falso em caso de falha
+	 */
+	public function hash_password($senha) {
+		
+		return password_hash($senha, PASSWORD_BCRYPT);
+		
+	}
+	
+	/**
+	 * Verifica se a senha de entrada é igual a senha cadastrada no banco.
+	 * 
+	 * @access private
+	 * @param mixed $password
+	 * @param mixed $hash
+	 * @return bool
+	 */
+	private function verify_password_hash($senha, $hash) {
+		
+		return password_verify($senha, $hash);
+		
+	}
 
     /**
      * Método responsável por listar os usuários da empresa em formato json
