@@ -101,7 +101,7 @@ foreach ($etapas_documento as $etapas) {
             <!-- Fim página de titulo -->
 
             <!-- Conteudo do Relatório -->
-            <div class="panel panel-default sessao no-break geral">  
+            <div class="panel panel-default sessao no-break">  
                 <div class="panel-heading">
                     <span class="titulo-sessao">Dados do Documento</span>
                 </div>

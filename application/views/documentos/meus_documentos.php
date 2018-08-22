@@ -89,17 +89,17 @@
                                                             $last_step = $this->docetapamodel->ultima_etapa($documentos->iddocumento);
                                                             if ($last_step == $documentos->idetapa) {
                                                                 ?>
-                                                                <a href="<?=base_url('finalizar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockA">Finalizar Documento</a>
+                                                                <a href="<?=base_url('finalizar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockA_<?=$documentos->idprotocolo?>">Finalizar Documento</a>
                                                                 <?php
                                                             } else {
                                                                 ?>
-                                                                <a href="<?=base_url('proxima_etapa/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockB">Encaminhar Próxima Etapa</a>
+                                                                <a href="<?=base_url('proxima_etapa/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockB_<?=$documentos->idprotocolo?>">Encaminhar Próxima Etapa</a>
                                                                 <?php
                                                             }
                                                             
                                                             if ($documentos->ordem > 1) {
                                                                 ?>
-                                                                <a href="<?=base_url('etapa_aterior/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockC">Retornar Etapa Aterior</a>
+                                                                <a href="<?=base_url('etapa_aterior/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockC_<?=$documentos->idprotocolo;?>">Retornar Etapa Aterior</a>
                                                                 <?php
                                                             }
                                                             if($documentos->ordem == 1){
@@ -109,13 +109,13 @@
                                                             }
                                                         ?>
                                                         <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                        <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD">Documento com exigência</a><br/>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
+                                                        <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD_<?=$documentos->idprotocolo;?>">Documento com exigência</a><br/>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="blockE_<?=$documentos->idprotocolo;?>" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
                                                         <?php 
                                                         
                                                         if ($documentos->ordem > 1) {
                                                             ?>
-                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>" class="blockF_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
                                                             <?php
                                                         }
 
@@ -186,17 +186,17 @@
                                                             $last_step = $this->docetapamodel->ultima_etapa($documentos->iddocumento);
                                                             if ($last_step == $documentos->idetapa) {
                                                                 ?>
-                                                                <a href="<?=base_url('finalizar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockA">Finalizar Documento</a><br/>
+                                                                <a href="<?=base_url('finalizar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockA_<?=$documentos->idprotocolo?>">Finalizar Documento</a><br/>
                                                                 <?php
                                                             } else {
                                                                 ?>
-                                                                <a href="<?=base_url('proxima_etapa/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockB">Encaminhar Próxima Etapa</a><br/>
+                                                                <a href="<?=base_url('proxima_etapa/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockB_<?=$documentos->idprotocolo;?>">Encaminhar Próxima Etapa</a><br/>
                                                                 <?php
                                                             }
                                                             
                                                             if ($documentos->ordem > 1) {
                                                                 ?>
-                                                                <a href="<?=base_url('etapa_aterior/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockC">Retornar Etapa Aterior</a><br/>
+                                                                <a href="<?=base_url('etapa_aterior/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockC_<?=$documentos->idprotocolo;?>">Retornar Etapa Aterior</a><br/>
                                                                 <?php
                                                             }
                                                             if($documentos->ordem == 1){
@@ -206,13 +206,13 @@
                                                             }
                                                         ?>
                                                         <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                        <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD">Documento com exigência</a><br/>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
+                                                        <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD_<?=$documentos->idprotocolo;?>">Documento com exigência</a><br/>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="blockE_<?=$documentos->idprotocolo;?>" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
                                                         <?php 
 
                                                         if ($documentos->ordem > 1) {
                                                             ?>
-                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>" class="blockF_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
                                                             <?php
                                                         }
                                                         $this->load->model('erros_model', 'errosmodel');
@@ -348,15 +348,18 @@ window.addEventListener("DOMContentLoaded", function() {
 				$('#post_'+id_pro).text(resp.running ? 'Pausar' : 'Iniciar');
 				tempo = resp.seconds;
 				timer();
+                //console.log('Retorna o tipo ' + resp.running);
 				if (resp.running) {
 					interval = setInterval(timer, 1000);
 				}
 				botao = $('#post_'+id_pro).text();
 				if(botao === "Pausar"){
-					$('.blockA').css("pointer-events", "none");
-					$('.blockB').css("pointer-events", "none");
-					$('.blockC').css("pointer-events", "none");
-					$('.blockD').css("pointer-events", "none");
+					$('.blockA_'+id_pro).css("pointer-events", "none");
+					$('.blockB_'+id_pro).css("pointer-events", "none");
+					$('.blockC_'+id_pro).css("pointer-events", "none");
+					$('.blockD_'+id_pro).css("pointer-events", "none");
+                    $('.blockE_'+id_pro).css("pointer-events", "none");
+                    $('.blockF_'+id_pro).css("pointer-events", "none");
 				}
 			});
 			
@@ -364,6 +367,7 @@ window.addEventListener("DOMContentLoaded", function() {
 				var btn = this;
 				btn.disabled = true;
 				$.post('grava_acao', { pro: id_pro }, function(resp){
+                    //console.log(id_pro);
 					btn.disabled = false;
 					$(btn).text(resp.running ? 'Pausar' : 'Iniciar');
 					if (resp.running) {
@@ -372,17 +376,22 @@ window.addEventListener("DOMContentLoaded", function() {
 					} else {
 						clearInterval(interval);
 					}
+                    //console.log(resp.running);
 					botao = $('#post_'+id_pro).text();
 					if(botao === "Pausar"){
-						$('.blockA').css("pointer-events", "none");
-						$('.blockB').css("pointer-events", "none");
-						$('.blockC').css("pointer-events", "none");
-						$('.blockD').css("pointer-events", "none");
+						$('.blockA_'+id_pro).css("pointer-events", "none");
+						$('.blockB_'+id_pro).css("pointer-events", "none");
+						$('.blockC_'+id_pro).css("pointer-events", "none");
+						$('.blockD_'+id_pro).css("pointer-events", "none");
+                        $('.blockE_'+id_pro).css("pointer-events", "none");
+                        $('.blockF_'+id_pro).css("pointer-events", "none");
 					}else{
-						$('.blockA').css("pointer-events", "");
-						$('.blockB').css("pointer-events", "");
-						$('.blockC').css("pointer-events", "");
-						$('.blockD').css("pointer-events", "");
+						$('.blockA_'+id_pro).css("pointer-events", "");
+						$('.blockB_'+id_pro).css("pointer-events", "");
+						$('.blockC_'+id_pro).css("pointer-events", "");
+						$('.blockD_'+id_pro).css("pointer-events", "");
+                        $('.blockE_'+id_pro).css("pointer-events", "");
+                        $('.blockF_'+id_pro).css("pointer-events", "");
 					}
 				});
 			});

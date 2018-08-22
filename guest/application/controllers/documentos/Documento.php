@@ -707,36 +707,55 @@ class Documento extends CI_Controller {
 
         $verifica_documento = $this->timermodel->verifica_reinicio($idprotocolo);
 
-        if($verifica_documento){
+        if($verifica_documento > 0){
 
             $timer = $this->timermodel->get_time_reinicio($idprotocolo, $etapa_documento);
             //print_r($timer);
+
+            $seconds = 0;
+            $action = 'pause'; // sempre inicia pausado
+
+            foreach ($timer as $t ) {
+                
+                $action = $t->action;
+                switch ($action) {
+                    case 'start':
+                        $seconds -= $t->timestamp;
+                    break;
+                    case 'pause':
+                        // para evitar erro se a primeira ação for pause
+                        if ($seconds !== 0) {
+                            $seconds += $t->timestamp;
+                        }
+                    break;
+                }
+            }
 
         } else {
 
             $timer = $this->timermodel->get_timer($idprotocolo, $etapa_documento);
             //print_r($timer);
+            $seconds = 0;
+            $action = 'pause'; // sempre inicia pausado
 
-        }
-
-        $seconds = 0;
-        $action = 'pause'; // sempre inicia pausado
-
-        foreach ($timer as $t ) {
-            
-            $action = $t->action;
-            switch ($action) {
-                case 'start':
-                    $seconds -= $t->timestamp;
-                break;
-                case 'pause':
-                    // para evitar erro se a primeira ação for pause
-                    if ($seconds !== 0) {
-                        $seconds += $t->timestamp;
-                    }
-                break;
+            foreach ($timer as $t ) {
+                
+                $action = $t->action;
+                switch ($action) {
+                    case 'start':
+                        $seconds -= $t->timestamp;
+                    break;
+                    case 'pause':
+                        // para evitar erro se a primeira ação for pause
+                        if ($seconds !== 0) {
+                            $seconds += $t->timestamp;
+                        }
+                    break;
+                }
             }
+
         }
+
         if ($action === 'start') {
             $seconds += time();
         }

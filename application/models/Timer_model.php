@@ -122,7 +122,7 @@ class Timer_model extends CI_Model {
         $this->db->from('tbtimer');
         $this->db->where('fk_iddoccad = ', $protocolo);
         $this->db->where('fk_idetapa =', $etapa);
-        $this->db->where('observacao != "SUSPENSO"');
+        $this->db->where('(observacao != "SUSPENSO" or observacao is null)');
         $this->db->order_by('id desc');
         return $this->db->get()->row('action');
     }
