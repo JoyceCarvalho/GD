@@ -85,7 +85,7 @@ class Login extends CI_Controller {
       } else {
 
         // login com falha
-        $data->error = 'Dados incorretos';
+        $data->error = 'Dados incorretos!';
 
         // envia erro para a view
         $this->load->view('template/html_header', $data);

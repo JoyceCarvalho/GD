@@ -52,7 +52,7 @@ class Usuario extends CI_Controller {
 				'nome' 				=> $this->input->post('nome'),
 				'email' 			=> $this->input->post('email'),
 				'usuario' 			=> $this->input->post('usuario'),
-				'senha' 			=> $this->usermodel->hash_passwword($this->input->post('senha')),
+				'senha' 			=> $this->usermodel->hash_password($this->input->post('senha')),
 				'fk_idcargos' 		=> $this->input->post('cargo'),
 				'fk_idhorariotrab' 	=> $this->input->post('horas'),
 				'fk_idempresa'		=> $_SESSION['idempresa']

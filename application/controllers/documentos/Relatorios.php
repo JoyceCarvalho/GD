@@ -357,7 +357,7 @@ class Relatorios extends CI_Controller {
                 
                     $dados = array(
                         'fk_iddoccad'   => $idprotocolo,
-                        'fk_idetapa'    => $etapa_anterior,
+                        'fk_idetapa'    => $recebido,
                         'action'        => "pause",
                         'timestamp'     => time(),
                         'observacao'    => "SUSPENSO"
