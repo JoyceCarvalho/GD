@@ -329,11 +329,9 @@ foreach ($informacoes_documento as $documento) {
                             }
                         }
                         $sum_media += $seconds;
-                        $mostraNumero = converteHoras($seconds);
-
-                        echo "O tempo do documento aguardando exigência foi <strong>" . $mostraNumero . "</strong>";
-                        
                         ?>
+                        <input type="hidden" name="tempo_exigencia" id="t_exigencia" value="<?=$seconds;?>">
+                        O tempo do documento aguardando exigência foi <strong id="tempo_exigencia"></strong>
 
                     </div>
                 </div>
@@ -366,12 +364,13 @@ foreach ($informacoes_documento as $documento) {
                                     break;
                             }
                         }
-                        $sum_media += $seconds;
-                        $mostraNumero = converteHoras($seconds);
+                        //$sum_media += $seconds;
+                        //$mostraNumero = converteHoras($seconds);
 
-                        echo "O tempo em que o documento encontrou-se pendente foi <strong>" . $mostraNumero . "</strong>";
-                        
-                        ?>
+                        //echo "O tempo em que o documento encontrou-se pendente foi <strong>" . $mostraNumero . "</strong>";
+                        ?>                        
+                        <input type="hidden" name="total_pendente" id="t_pendente" value="<?=$seconds;?>">
+                        O tempo em que o documento encontrou-se pendente foi <strong class="tempo_pendente"></strong>
 
                     </div>
                 </div>
@@ -402,11 +401,9 @@ foreach ($informacoes_documento as $documento) {
                         }
                     }
                     
-                    //$sum_media += $seconds;
-                    $mostraNumero = converteHoras($seconds);
-
-                    echo "O tempo total do documento foi <strong>" . $mostraNumero . "</strong>";
                     ?>
+                    <input type="hidden" name="tempo_documento" id="t_total" value="<?=$seconds;?>">
+                    O tempo total do documento foi <strong id="tempo_total"></strong>
                 </div>
             </div>
             <!-- Fim do conteudo -->
@@ -416,6 +413,11 @@ foreach ($informacoes_documento as $documento) {
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="https://code.highcharts.com/modules/export-data.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="<?=base_url('assets/vendor/popper.js/umd/popper.min.js')?>"> </script>
+        <script src="<?=base_url('assets/vendor/jquery.cookie/jquery.cookie.js');?>"> </script>
+        <script src="<?=base_url('assets/vendor/jquery-validation/jquery.validate.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/jquery.mask.min.js');?>"></script>
         <script>
             Highcharts.chart('chart_etapa', {
                 chart: {
@@ -554,6 +556,59 @@ foreach ($informacoes_documento as $documento) {
                     }
                 }]
             });
+        </script>
+        <script>
+            window.addEventListener("DOMContentLoaded", function() {
+
+                var format = function(seconds) {
+                    var tempos = {
+                        segundos: 60
+                    ,   minutos: 60
+                    ,   horas: 24
+                    ,   dias: ''
+                    };
+                    var parts = [], string = '', resto, dias;
+                    for (var unid in tempos) {
+                        if (typeof tempos[unid] === 'number') {
+                            resto = seconds % tempos[unid];
+                            seconds = (seconds - resto) / tempos[unid];
+                        } else {
+                            resto = seconds;
+                        }
+                        parts.unshift(resto);
+                    }
+                    dias = parts.shift();
+                    if (dias) {
+                        string = dias + (dias > 1 ? ' dias ' : ' dia ');
+                    }
+                    for (var i = 0; i < 3; i++) {
+                        parts[i] = ('0' + parts[i]).substr(-2);
+                    }
+                    string += parts.join(':');
+                    return string;
+                };
+
+                $(function (){
+
+                    $(document).ready(function() {
+
+                        <?php if($tempo_em_suspensao): ?>
+                            var tempo = parseInt($("#t_exigencia").val());
+                            $('#tempo_exigencia').html(format(++tempo));
+                        <?php endif; ?>
+
+                        <?php if($tempo_pendente): ?>   
+                            var tempo_pendente = parseInt($('#t_pendente').val());
+                            $('#tempo_pendente').html(format(++tempo_total));
+                        <?php endif; ?>
+
+                        var tempo_total = parseInt($("#t_total").val());
+                        $('#tempo_total').html(format(++tempo_total));
+                    });
+
+                })
+            });
+            
         </script>
     </body>
 </html>
