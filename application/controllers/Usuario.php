@@ -33,7 +33,7 @@ class Usuario extends CI_Controller {
 			$dados['submenu'] 	= "usuario";
 			$dados["sub"]		= "usuariocad";
 
-			$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
+			$dados['listagem_usuarios'] 	= $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
 			$dados['full_cargos']	 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
 			$dados['full_horarios'] 	= $this->horasmodel->listar_horario($_SESSION["idempresa"]);
 			//dados do banco (nome da empresa, nome usuário);
@@ -49,10 +49,10 @@ class Usuario extends CI_Controller {
 		} else {
 
 			$dados = array(
-				'nome' 				=> $this->input->post('nome'),
-				'email' 			=> $this->input->post('email'),
-				'usuario' 			=> $this->input->post('usuario'),
-				'senha' 			=> $this->usermodel->hash_password($this->input->post('senha')),
+				'nome' 			=> $this->input->post('nome'),
+				'email' 		=> $this->input->post('email'),
+				'usuario' 		=> $this->input->post('usuario'),
+				'senha' 		=> $this->usermodel->hash_password($this->input->post('senha')),
 				'fk_idcargos' 		=> $this->input->post('cargo'),
 				'fk_idhorariotrab' 	=> $this->input->post('horas'),
 				'fk_idempresa'		=> $_SESSION['idempresa']
