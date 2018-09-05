@@ -354,6 +354,7 @@ class Relatorios extends CI_Controller {
                 $enviar = array(
                     'tipo'      => 'novo',
                     'protocolo' => $doc->protocolo,
+                    'etapa'     => $etapa,
                     'documento' => $doc->documento_nome,
                     'email'     => $usuario->email_usuario,
                     'usuario'   => $usuario->usuario_nome

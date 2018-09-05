@@ -370,7 +370,7 @@ foreach ($informacoes_documento as $documento) {
                         //echo "O tempo em que o documento encontrou-se pendente foi <strong>" . $mostraNumero . "</strong>";
                         ?>                        
                         <input type="hidden" name="total_pendente" id="t_pendente" value="<?=$seconds;?>">
-                        O tempo em que o documento encontrou-se pendente foi <strong class="tempo_pendente"></strong>
+                        O tempo em que o documento encontrou-se pendente foi <strong id="tempo_em_pendencia"></strong>
 
                     </div>
                 </div>
@@ -598,8 +598,9 @@ foreach ($informacoes_documento as $documento) {
                         <?php endif; ?>
 
                         <?php if($tempo_pendente): ?>   
-                            var tempo_pendente = parseInt($('#t_pendente').val());
-                            $('#tempo_pendente').html(format(++tempo_total));
+                            var tempo = parseInt($('#t_pendente').val());
+                            $('#tempo_em_pendencia').html(format(++tempo));
+                            //console.log(format(++tempo));
                         <?php endif; ?>
 
                         var tempo_total = parseInt($("#t_total").val());

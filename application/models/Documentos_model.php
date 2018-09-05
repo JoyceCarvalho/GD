@@ -466,8 +466,8 @@ class Documentos_model extends CI_Model {
         $this->db->join('tbusuario as u', 'u.fk_idcargos = c.fk_idcargo', 'left');
         $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
         $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
-        $this->db->where("ldB.usuario = 0");
-        $this->db->where("u.id = $usuario");
+        $this->db->where("ldB.usuario = $usuario");
+        $this->db->group_by('dc.id');
         $this->db->order_by('de.ordem asc, ldA.data_hora asc');
         return $this->db->get()->result();
     }
@@ -485,6 +485,7 @@ class Documentos_model extends CI_Model {
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="funcionario"');
         $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
         $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');

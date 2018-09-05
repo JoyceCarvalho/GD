@@ -33,6 +33,7 @@ class Timer_model extends CI_Model {
         $this->db->from('tbtimer');
         $this->db->where('fk_iddoccad = ', $protocolo);
         $this->db->where('fk_idetapa =', $etapa);
+        $this->db->where('fk_idusuario is not null');
         $this->db->order_by('id');
         return $this->db->get()->result();
     }
