@@ -492,6 +492,7 @@ class Documentos_model extends CI_Model {
         $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
         $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
         $this->db->where("ldB.usuario = $usuario");
+        $this->db->group_by('dc.id');
         $this->db->order_by('de.ordem asc, ldA.data_hora asc');
         return $this->db->get()->result();
     }
