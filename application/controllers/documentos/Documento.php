@@ -57,7 +57,7 @@ class Documento extends CI_Controller {
 
         if($this->input->post('prazos') == 1){
 
-            if($this->input->post('prazo_final') > date('Y-m-d')){
+            if($this->input->post('prazo_final') >= date('Y-m-d')){
             
                 $validate = true;
 
@@ -67,7 +67,7 @@ class Documento extends CI_Controller {
         
                     for ($i=1; $i <= $steps_number; ++$i) { 
                         
-                        if($this->input->post("prazo[$i]") > date('Y-m-d')){
+                        if($this->input->post("prazo[$i]") >= date('Y-m-d')){
 
                             $validate = true;
 
@@ -665,12 +665,20 @@ class Documento extends CI_Controller {
 
         $idprotocolo = $this->input->post('idprotocolo');
 
-        $obs = array(
-            'descricao'     => $this->input->post('observacao'), 
-            'fk_idprotocolo' => $idprotocolo,
-            'fk_idusuario'   => $_SESSION["idusuario"],
-            'fk_idetapa'     => $this->docmodel->etapa_documento($idprotocolo)
-        );
+        if($this->docmodel->etapa_documento($idprotocolo)){
+            $obs = array(
+                'descricao'      => $this->input->post('observacao'), 
+                'fk_idprotocolo' => $idprotocolo,
+                'fk_idusuario'   => $_SESSION["idusuario"],
+                'fk_idetapa'     => $this->docmodel->etapa_documento($idprotocolo)
+            );
+        } else {
+            $obs = array(
+                'descricao'      => $this->input->post('observacao'),
+                'fk_idprotocolo' => $idprotocolo,
+                'fk_idusuario'   => $_SESSION["idusuario"]
+            );
+        }
 
         if ($this->docmodel->cadastrar_observacao($obs)) {
             

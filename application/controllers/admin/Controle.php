@@ -178,8 +178,8 @@ class Controle extends CI_Controller {
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
-        $this->load->view('template/menu');
-        $this->load->view("admin/editar_empresa", $data);
+        $this->load->view('template/menu', $data);
+        $this->load->view("admin/editar_empresa");
         $this->load->view('template/footer');
         $this->load->view('template/html_footer');
 
@@ -201,8 +201,8 @@ class Controle extends CI_Controller {
 
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');
-        $this->load->view('template/menu');
-        $this->load->view("admin/editar_empresa", $data);
+        $this->load->view('template/menu', $data);
+        $this->load->view("admin/editar_empresa");
         $this->load->view('template/footer');
         $this->load->view('template/html_footer');
       }
@@ -225,8 +225,8 @@ class Controle extends CI_Controller {
 
       $this->load->view('template/html_header', $dados);
       $this->load->view('template/header');
-      $this->load->view('template/menu');
-      $this->load->view("admin/editar_empresa", $data);
+      $this->load->view('template/menu', $data);
+      $this->load->view("admin/editar_empresa");
       $this->load->view('template/footer');
       $this->load->view('template/html_footer');
     }

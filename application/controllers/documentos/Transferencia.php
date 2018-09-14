@@ -535,7 +535,7 @@ class Transferencia extends CI_Controller {
 
         } elseif($pendencia == true){
             
-            $this->session->set_flashdata('warning', 'Documento tranferido com sucesso! Etapa atual pendente!');
+            $this->session->set_flashdata('warning', 'Documento transferido com sucesso! Etapa atual pendente!');
 
             redirect("meusdocumentos");
 

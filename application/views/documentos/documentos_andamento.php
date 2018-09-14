@@ -76,9 +76,20 @@
                                                     ?>
                                                 </td>
                                                 <td><?=$documentos->etapa;?></td>
-                                                <td><?=$documentos->nome_usuario;?></td>
+                                                <td>
+                                                    <?php
+                                                    if(!empty($documentos->nome_usuario)){
+                                                        echo $documentos->nome_usuario;
+                                                    } else {
+                                                        if($documentos->descricao == "PENDENTE"){
+                                                            echo "<strong>Documento Pendente</strong> - Sem responsável";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </td>
                                                 <td style="text-align: center;">
                                                     <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
+                                                    <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Documento com exigência</a><br/>
                                                     <?php 
                                                     if ($documentos->idresponsavel == $_SESSION["idusuario"]) {
                                                         ?>
@@ -146,9 +157,20 @@
                                                     ?>
                                                 </td>
                                                 <td><?=$documentos->etapa;?></td>
-                                                <td><?=$documentos->nome_usuario;?></td>
+                                                <td>
+                                                    <?php
+                                                    if(!empty($documentos->nome_usuario)){
+                                                        echo $documentos->nome_usuario;
+                                                    } else {
+                                                        if($documentos->descricao == "PENDENTE"){
+                                                            echo "<strong>Documento Pendente</strong> - Sem responsável";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </td>
                                                 <td style="text-align: center;">
                                                     <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
+                                                    <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Documento com exigência</a><br/>
                                                     <?php 
                                                     if ($documentos->idresponsavel == $_SESSION["idusuario"]) {
                                                         ?>
@@ -187,22 +209,6 @@
                                     ?>
                                 </tbody>
                             </table>
-                            <?php
-                            if($andamento_doc_c){
-                                foreach ($andamento_doc_c as $documentos) {
-                                    ?>
-                                    <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
-                                    <?
-                                }
-                            }
-                            if(isset($andamento_doc_f)){
-                                foreach ($andamento_doc_f as $documentos) {
-                                    ?>
-                                    
-                                    <?php
-                                }
-                            }
-                            ?>
                         </div>
                     </div>
                 </div>

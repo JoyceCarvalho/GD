@@ -101,7 +101,7 @@ class Documentos_model extends CI_Model {
      * @return object
      */
     public function dados_documento_cad($id){
-        $this->db->select("dc.protocolo as protocolo, dc.id as id, d.fk_idgrupo as grupo, d.titulo as documento_nome, d.id as iddocumento");
+        $this->db->select("dc.protocolo as protocolo, dc.id as id, d.fk_idgrupo as grupo, d.titulo as documento_nome, d.id as iddocumento, dc.prazo as prazo");
         $this->db->from('tbdocumentos_cad as dc');
         $this->db->join('tbdocumento as d', "d.id = dc.fk_iddocumento");
         $this->db->where('dc.id', $id);
@@ -506,7 +506,8 @@ class Documentos_model extends CI_Model {
      */
     public function listar_documentos_em_andamento($empresa){
         $this->db->select('d.id as iddocumento, e.id as idetapa, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
-        e.titulo AS etapa, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.id AS idresponsavel, u.nome AS nome_usuario, de.ordem as ordem, dc.id as idprotocolo');
+        e.titulo AS etapa, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.id AS idresponsavel, u.nome AS nome_usuario, de.ordem as ordem, 
+        dc.id as idprotocolo, ldB.descricao as descricao');
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
@@ -884,7 +885,7 @@ class Documentos_model extends CI_Model {
     public function listar_observacoes_json($idprotocolo){
         $this->db->select('o.descricao as observacao, e.titulo as etapa, u.nome as nome_usuario');
         $this->db->from("tbobservacoes as o");
-        $this->db->join("tbetapa as e", 'e.id = o.fk_idetapa');
+        $this->db->join("tbetapa as e", 'e.id = o.fk_idetapa', 'left');
         $this->db->join('tbusuario as u', 'u.id = o.fk_idusuario');
         $this->db->where("o.fk_idprotocolo = ", $idprotocolo);
         return json_encode($this->db->get()->result());
