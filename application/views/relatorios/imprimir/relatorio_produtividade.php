@@ -94,7 +94,7 @@ $this->load->model("cargos_model", "cargosmodel");
                                     </thead>
                                     <tbody>
                                         <tr>
-                                        <td>
+                                            <td>
                                                 <?=$documentos_andamento;?>
                                             </td>
                                             <td>
@@ -147,16 +147,18 @@ $this->load->model("cargos_model", "cargosmodel");
                                                 if($sum_media > 0){
 
                                                     $divide = $sum_media / $count;
-                                                    $mostraNumero = converteHoras(round($divide));
+                                                    //$mostraNumero = converteHoras(round($divide));
 
                                                 } else {
 
-                                                    $mostraNumero = "00:00:00"; 
+                                                    $divide = "00:00:00"; 
 
                                                 }
 
-                                                echo $mostraNumero;
+                                                //echo $mostraNumero;
                                                 ?>
+                                                <input type="hidden" name="t_total" id="t_total" value="<?=$divide;?>">
+                                                <strong id="tempo_total"></strong>
                                             </td>
                                             <td>
                                                 <?=$erros_user;?>
@@ -170,6 +172,49 @@ $this->load->model("cargos_model", "cargosmodel");
                 </div>
             </div>
         </div>
+        <script>
+        window.addEventListener("DOMContentLoaded", function() {
+
+            var format = function(seconds) {
+                var tempos = {
+                    segundos: 60
+                ,   minutos: 60
+                ,   horas: 24
+                ,   dias: ''
+                };
+                var parts = [], string = '', resto, dias;
+                for (var unid in tempos) {
+                    if (typeof tempos[unid] === 'number') {
+                        resto = seconds % tempos[unid];
+                        seconds = (seconds - resto) / tempos[unid];
+                    } else {
+                        resto = seconds;
+                    }
+                    parts.unshift(resto);
+                }
+                dias = parts.shift();
+                if (dias) {
+                    string = dias + (dias > 1 ? ' dias ' : ' dia ');
+                }
+                for (var i = 0; i < 3; i++) {
+                    parts[i] = ('0' + parts[i]).substr(-2);
+                }
+                string += parts.join(':');
+                return string;
+            };
+
+            $(function (){
+
+                $(document).ready(function() {
+
+                    var tempo_total = parseInt($("#t_total").val());
+                    $('#tempo_total').html(format(++tempo_total));
+                });
+
+            })
+        });
+
+        </script>
         <!-- Essential javascripts for application to work-->
         <script src="<?=base_url('assets/js/jquery-3.2.1.min.js');?>"></script>
         <script src="<?=base_url('assets/js/popper.min.js');?>"></script>

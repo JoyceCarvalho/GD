@@ -1,3 +1,6 @@
+<?php 
+$this->load->model('etapas_model', 'etapasmodel');
+?>
 <section class="tables">   
     <div class="container-fluid">
         <?php if (validation_errors()) : ?>
@@ -72,6 +75,15 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <?php
+                                    if (!empty($doc->prazo)) {
+                                        $this->etapasmodel->prazo_etapa();
+                                        ?>
+                                        
+                                        <?php
+                                    }
+                                ?>
                                 
                                 <div class="form-group row" id="addprazo"></div>
 

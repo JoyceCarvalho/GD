@@ -329,9 +329,20 @@ class Timer_model extends CI_Model {
      * @return object
      */
     public function tempo_documento_usuario($responsavel){
+
+        //subquery
+        $this->db->select('id');
+        $this->db->from('tbtimer');
+        $this->db->where('fk_idusuario', $responsavel);
+        $this->db->where("action = 'start'");
+        $this->db->order_by("id desc");
+        $this->db->limit(1);
+        $subquery1 = $this->db->get_compiled_select();
+
         $this->db->select('action, timestamp, fk_iddoccad as idprotocolo');
         $this->db->from('tbtimer');
         $this->db->where('fk_idusuario', $responsavel);
+        $this->db->where("id != ($subquery1)");
         $this->db->order_by('id asc');
         return $this->db->get()->result();
     }
@@ -413,6 +424,10 @@ class Timer_model extends CI_Model {
         $this->db->order_by('id asc');
         
         return $this->db->get()->result();
+
+    }
+
+    public function andamento_produtividade(){
 
     }
 
