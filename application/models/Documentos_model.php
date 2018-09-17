@@ -402,11 +402,16 @@ class Documentos_model extends CI_Model {
      */
     public function historico_documentos_dados($idprotocolo){
         $this->db->select("ld.descricao as descricao, u.nome as nome, DATE_FORMAT(ld.data_hora, '%d/%m/%Y') as data, DATE_FORMAT(ld.data_hora,'%H:%i') as hora, 
-        e.titulo as etapa, ld.documento as idprotocolo, e.id as idetapa, c.motivo as motivo");
+        e.titulo as etapa, ld.documento as idprotocolo, e.id as idetapa, c.motivo as motivo, et.titulo as natureza_erro, er.titulo as tipo_erro, 
+        ed.descricao as erro, o.descricao as observacao");
         $this->db->from("tblog_documentos as ld");
         $this->db->join("tbusuario as u", "u.id = ld.usuario", "left");
         $this->db->join("tbetapa as e", "e.id = ld.etapa", "left");
         $this->db->join('tbcancelamento as c', 'c.fk_iddocumento = ld.documento', 'left');
+        $this->db->join("tberros_documentos as ed", "ed.fk_iddocumentos = ld.documento and ed.fk_idetapa = e.id and (ld.descricao = 'RETORNO COM ERRO')", "left");
+        $this->db->join('tberros as er', 'er.id = ed.fk_iderros', 'left');
+        $this->db->join('tberros_tipo as et', 'et.id = er.fk_idtipo', 'left');
+        $this->db->join('tbobservacoes as o', 'o.fk_idprotocolo = ld.documento and o.fk_idetapa = e.id', 'left');
         $this->db->where("ld.documento", $idprotocolo);
         $this->db->order_by("ld.id asc");
 
@@ -463,7 +468,7 @@ class Documentos_model extends CI_Model {
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
         $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
-        $this->db->join('tbusuario as u', 'u.fk_idcargos = c.fk_idcargo', 'left');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
         $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
         $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
         $this->db->where("ldB.usuario = $usuario");
@@ -935,9 +940,9 @@ class Documentos_model extends CI_Model {
      */
     public function quantidade_documentos_finalizados_usuario($usuario){
         $this->db->select('count(*) as total');
-        $this->db->from('tblog_documentos');
-        $this->db->where("usuario in ($usuario)");
-        $this->db->where("descricao = 'FINALIZADO'");
+        $this->db->from('tblog_documentos as ldA');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = ldA.documento and ldB.descricao = "FINALIZADO"');
+        $this->db->where("ldA.usuario", $usuario);
         
         return $this->db->get()->row('total');
     }

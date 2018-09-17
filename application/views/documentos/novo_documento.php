@@ -121,8 +121,7 @@
                     })
                     $('#mensagem').html('<span class="mensagem">Total de estados encontrados.: '+dados.length+'</span>'); 
                 }else{
-                    Reset();
-                    $('#mensagem').html('<span class="mensagem">Não foram encontrados documentos cadastrados neste grupo!</span>');  
+                    var option = '<option>Não foram encontrados documentos cadastrados neste grupo!</option>';
                 }
                 $('#sel_docs').html(option).show(); 
                 $("#p_doc").show();

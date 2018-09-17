@@ -81,6 +81,15 @@
                                                             <?php
                                                         }
                                                     ?>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
+                                                    <?php
+                                                    $this->load->model('documentos_model', 'docmodel');
+                                                    if ($this->docmodel->verifica_observacoes($documentos->idprotocolo) > 0) {
+                                                        ?>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a><br/>
+                                                        <?php
+                                                    }
+                                                    ?>
                                                     <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
                                                     <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
                                                 </td>
@@ -245,6 +254,16 @@ window.addEventListener("DOMContentLoaded", function() {
                             if (obj.descricao == 'CANCELADO') {
                                 data += '<br/></br/> <label>Motivo Cancelamento</label><br/>';
                                 data += '<p>'+obj.motivo+'</p>';
+                            }
+                            if(obj.erro != null){
+                                data += "<label><strong>Erro:</strong></label><br/>";
+                                data += '<label>'+obj.tipo_erro+'</label>';
+                                data += ' - <strong>'+obj.natureza_erro+'</strong><br/>';
+                                data += '<p>'+obj.erro+'</p>';
+                            }
+                            if(obj.observacao != null){
+                                data += '<label><strong>Observação:</strong></label>';
+                                data += '<p>'+obj.observacao+'</p>';
                             }
                             data += '</div>';
                             data += '<hr/>'
@@ -412,6 +431,89 @@ window.addEventListener("DOMContentLoaded", function() {
                     $("#erro_form").html(body2).show();
                     
                 })
+            });
+
+            $("#observacao_"+id_pro).click(function(e){
+                $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function(dados){
+                    if(dados.length > 0){
+                        var titulo = 'Observações do documento';
+                        var body = '<div class="form-group">';
+                        $.each(dados, function(i, obj){
+                            body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
+                            body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
+                            body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
+                        })
+                        body += '</div>';
+                        body += '<hr/>';
+                    } else {
+                        reset();
+                    }
+                    $("#exampleModalLabel").html(titulo).show();
+                    $("#his_conteudo").html(body).show();
+                });
+                body2 = '<div class="form-group">';
+                body2 += '<label>Observação:</label>';
+                body2 += '<textarea class="form-control" rows="6" name="observacao"></textarea>';
+                body2 += '<input type="hidden" name="idprotocolo" value="'+id_pro+'">';
+                body2 += '</div>';
+                body2 += '<div class="form-group">';
+                body2 += '<button type="submit" class="btn btn-sm btn-primary">Cadastrar Observação</button>';
+                body2 += '</div>';
+                $("#observacao").show();
+                $("#obs").html(body2).show();
+                $('#historico_documento').hide();
+                $('#erro').hide();
+                $('#cancelamento').hide();
+                $("#doc_conteudo").hide();
+                $('#etapa').hide();
+                $('#erro_form').hide();
+            });
+            $("#ver_obs_"+id_pro).click(function(e){
+                $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function(dados){
+                    if (dados.length>0) {
+                        var titulo = 'Observações documento';
+                        var body = '<div class="form-group">';
+                        $.each(dados, function(i, obj){
+                            body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
+                            body += '<label><strong>Documento:</strong> '+obj.nome_documento+'</label><br/>';
+                            body += '<label><strong>Protocolo:</strong> '+obj.protocolo+'</label><br/>';
+                        });
+                        body += '</div>';
+                        body += '<hr/>';
+                    } else {
+                        reset();
+                    }
+                    $("#exampleModalLabel").html(titulo).show();
+                    $("#his_conteudo").html(body).show();
+                });
+                $.getJSON('<?=base_url();?>'+'ver_observacao/'+id_pro, function (dados){
+                    //console.log(id_pro);
+                    if (dados.length>0) {
+                        //console.log(dados);
+                        var body = '<div class="form-group">';
+                        $.each(dados, function(i, obj){
+                            if(obj.etapa == null){
+                                etapa = "Período de exigência";
+                            } else {
+                                etapa = obj.etapa;
+                            }
+                            body += '<label>'+etapa+' - <strong>'+obj.nome_usuario+'</strong></label><br/>';
+                            body += '<label><b>Observação:</b></label>';
+                            body += '<p>'+obj.observacao+'</p>'
+                            body += '<hr/>';
+                        })
+                    } else {
+                        reset();
+                    }
+                    $("#observacao").show();
+                    $("#obs").html(body).show();
+                    $('#historico_documento').hide();
+                    $('#erro').hide();
+                    $('#cancelamento').hide();
+                    $("#doc_conteudo").hide();
+                    $('#etapa').hide();
+                    $('#erro_form').hide();
+                });
             });
 
 		});

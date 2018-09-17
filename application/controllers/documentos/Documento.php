@@ -412,9 +412,10 @@ class Documento extends CI_Controller {
         $dados["pg"]        = "documentos";
         $dados["submenu"]   = "novodoc";
 
-        $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-        $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
-        $dados["dados_documento"] = $this->docmodel->dados_documento_cad($idprotocolo);
+        $dados["nome_empresa"]     = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["grupo_dados"]      = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
+        $dados["dados_documento"]  = $this->docmodel->dados_documento_cad($idprotocolo);
+        $dados["etapas_documento"] = json_decode($this->etapasmodel->listar_etapas_json($iddocumento));
 
         $this->load->view("template/html_header", $dados);
         $this->load->view('template/header');
@@ -435,10 +436,22 @@ class Documento extends CI_Controller {
 
         $idprotocolo = $this->input->post("idprotocolo");
 
-        $dados = array(
-            'status'         => 'Modificado', 
-            'fk_iddocumento' => $this->input->post('documento')
-        );
+        if(empty($this->input->post('prazo_final'))){
+            
+            $dados = array(
+                'status'         => 'Modificado', 
+                'fk_iddocumento' => $this->input->post('documento')
+            );
+
+        } else {
+
+            $dados = array(
+                'status'         => 'Modificado',
+                'fk_iddocumento' => $this->input->post('documento'),
+                'prazo'          => $this->input->post('prazo_final')
+            );
+
+        }
 
         if ($this->docmodel->editar_novo_documento($idprotocolo, $dados)) {
             
@@ -462,41 +475,15 @@ class Documento extends CI_Controller {
     
                 }
 
-                $data->success = "Documento atualizado com sucesso!";
-        
-                $dados["pagina"]    = "Novo Documento";
-                $dados["pg"]        = "documentos";
-                $dados["submenu"]   = "novodoc";
-
-                $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
-                $dados["dados_documento"] = $this->docmodel->dados_documento_cad($idprotocolo);
-
-                $this->load->view("template/html_header", $dados);
-                $this->load->view('template/header');
-                $this->load->view('template/menu', $data);
-                $this->load->view('documentos/meus_documentos');
-                $this->load->view('template/footer');
-                $this->load->view('template/html_footer');
+                //$data->success = "Documento atualizado com sucesso!";
+                $this->session->set_flashdata('success', 'Documento atualizado com sucesso!');        
+                redirect('meusdocumentos');
     
             } else {
 
-                $data->success = "Ocorreu um problema ao editar o documento. Favor entre em contato com o suporte e tente novamente mais tarde!";
-    
-                $dados["pagina"]  = "Novo Documento";
-                $dados["pg"]      = "documentos";
-                $dados["submenu"] = "novodoc";
-
-                $dados["nome_empresa"]    = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["grupo_dados"]     = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);;
-                $dados["dados_documento"] = $this->docmodel->dados_documento_cad($idprotocolo);
-
-                $this->load->view("template/html_header", $dados);
-                $this->load->view('template/header');
-                $this->load->view('template/menu', $data);
-                $this->load->view('documentos/meus_documentos');
-                $this->load->view('template/footer');
-                $this->load->view('template/html_footer');
+                //$data->success = "Ocorreu um problema ao editar o documento. Favor entre em contato com o suporte e tente novamente mais tarde!";
+                $this->session->set_flashdata('error', 'Ocorreu um problema ao editar o documento. Favor entre em contato com o suporte e tente novamente mais tarde!');
+                redirect('meusdocumentos');
 
             }
             

@@ -76,9 +76,20 @@
                                                     ?>
                                                 </td>
                                                 <td><?=$documentos->etapa;?></td>
-                                                <td><?=$documentos->nome_usuario;?></td>
+                                                <td>
+                                                    <?php
+                                                    if(!empty($documentos->nome_usuario)){
+                                                        echo $documentos->nome_usuario;
+                                                    } else {
+                                                        if($documentos->descricao == "PENDENTE"){
+                                                            echo "<strong>Documento Pendente</strong> - Sem responsável";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </td>
                                                 <td style="text-align: center;">
                                                     <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
+                                                    <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Documento com exigência</a><br/>
                                                     <?php 
                                                     if ($documentos->idresponsavel == $_SESSION["idusuario"]) {
                                                         ?>
@@ -146,9 +157,20 @@
                                                     ?>
                                                 </td>
                                                 <td><?=$documentos->etapa;?></td>
-                                                <td><?=$documentos->nome_usuario;?></td>
+                                                <td>
+                                                    <?php
+                                                    if(!empty($documentos->nome_usuario)){
+                                                        echo $documentos->nome_usuario;
+                                                    } else {
+                                                        if($documentos->descricao == "PENDENTE"){
+                                                            echo "<strong>Documento Pendente</strong> - Sem responsável";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </td>
                                                 <td style="text-align: center;">
                                                     <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
+                                                    <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Documento com exigência</a><br/>
                                                     <?php 
                                                     if ($documentos->idresponsavel == $_SESSION["idusuario"]) {
                                                         ?>
@@ -316,6 +338,16 @@ window.addEventListener("DOMContentLoaded", function() {
                             if (obj.descricao == 'CANCELADO') {
                                 data += '<br/></br/> <label>Motivo Cancelamento</label><br/>';
                                 data += '<p>'+obj.motivo+'</p>';
+                            }
+                            if(obj.erro != null){
+                                data += "<label><strong>Erro:</strong></label><br/>";
+                                data += '<label>'+obj.tipo_erro+'</label>';
+                                data += ' - <strong>'+obj.natureza_erro+'</strong><br/>';
+                                data += '<p>'+obj.erro+'</p>';
+                            }
+                            if(obj.observacao != null){
+                                data += '<label><strong>Observação:</strong></label>';
+                                data += '<p>'+obj.observacao+'</p>';
                             }
                             data += '</div>';
                             data += '<hr/>'

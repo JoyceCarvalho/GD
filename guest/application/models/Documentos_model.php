@@ -101,7 +101,7 @@ class Documentos_model extends CI_Model {
      * @return object
      */
     public function dados_documento_cad($id){
-        $this->db->select("dc.protocolo as protocolo, dc.id as id, d.fk_idgrupo as grupo, d.titulo as documento_nome, d.id as iddocumento");
+        $this->db->select("dc.protocolo as protocolo, dc.id as id, d.fk_idgrupo as grupo, d.titulo as documento_nome, d.id as iddocumento, dc.prazo as prazo");
         $this->db->from('tbdocumentos_cad as dc');
         $this->db->join('tbdocumento as d', "d.id = dc.fk_iddocumento");
         $this->db->where('dc.id', $id);
@@ -459,11 +459,11 @@ class Documentos_model extends CI_Model {
         e.titulo AS etapa, ldA.data_hora AS data_criacao, u.nome AS nome_usuario, de.ordem as ordem, dc.id as idprotocolo');
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
-        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="cargo"');
+        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="cargo"', 'left');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
         $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
-        $this->db->join('tbusuario as u', 'u.fk_idcargos = c.fk_idcargo', 'left');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
         $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
         $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
         $this->db->where("ldB.usuario = $usuario");
@@ -506,7 +506,8 @@ class Documentos_model extends CI_Model {
      */
     public function listar_documentos_em_andamento($empresa){
         $this->db->select('d.id as iddocumento, e.id as idetapa, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
-        e.titulo AS etapa, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.id AS idresponsavel, u.nome AS nome_usuario, de.ordem as ordem, dc.id as idprotocolo');
+        e.titulo AS etapa, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.id AS idresponsavel, u.nome AS nome_usuario, de.ordem as ordem, 
+        dc.id as idprotocolo, ldB.descricao as descricao');
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
@@ -884,7 +885,7 @@ class Documentos_model extends CI_Model {
     public function listar_observacoes_json($idprotocolo){
         $this->db->select('o.descricao as observacao, e.titulo as etapa, u.nome as nome_usuario');
         $this->db->from("tbobservacoes as o");
-        $this->db->join("tbetapa as e", 'e.id = o.fk_idetapa');
+        $this->db->join("tbetapa as e", 'e.id = o.fk_idetapa', 'left');
         $this->db->join('tbusuario as u', 'u.id = o.fk_idusuario');
         $this->db->where("o.fk_idprotocolo = ", $idprotocolo);
         return json_encode($this->db->get()->result());
@@ -934,9 +935,9 @@ class Documentos_model extends CI_Model {
      */
     public function quantidade_documentos_finalizados_usuario($usuario){
         $this->db->select('count(*) as total');
-        $this->db->from('tblog_documentos');
-        $this->db->where("usuario in ($usuario)");
-        $this->db->where("descricao = 'FINALIZADO'");
+        $this->db->from('tblog_documentos as ldA');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = ldA.documento and ldB.descricao = "FINALIZADO"');
+        $this->db->where("ldA.usuario", $usuario);
         
         return $this->db->get()->row('total');
     }

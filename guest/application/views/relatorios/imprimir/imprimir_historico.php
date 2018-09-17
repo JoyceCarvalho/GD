@@ -31,8 +31,7 @@
                                     foreach ($nome_empresa as $empresa) {
                                         if (!empty($empresa->logo_code)) {
                                             ?>
-                                            <!--<img class="img-responsive" src="<?//=base_url();?>assets/img/logo_empresas/<?//=$empresa->logo_code;?>" alt="<?//=$empresa->nome;?>">-->
-                                            <img src="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>" class="pull-right img-responsive">
+                                            <img class="img-responsive" src="<?=base_url();?>assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>">
                                             <?php
                                         } else {
                                             ?>
@@ -111,7 +110,20 @@
                                             <p><?=$historico->motivo;?></p>
                                             <?php
                                         }
-                                        ?>
+                                        if($historico->erro != null){
+                                            ?>
+                                            <label><strong>Erro:</strong></label><br/>
+                                            <label><?=$historico->tipo_erro;?></label> - <strong><?=$historico->natureza_erro;?></strong><br/>
+                                            <p><?=$historico->erro;?></p>
+                                            <?php
+                                        }
+                                        if($historico->observacao != null){
+                                            ?>
+                                            <label><strong>Observação:</strong></label>
+                                            <p><?=$historico->observacao;?></p>
+                                            <?php
+                                        }
+                                        ?>                                        
                                     </div>
                                     <hr>
                                     <?php

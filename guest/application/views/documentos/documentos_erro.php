@@ -175,6 +175,16 @@ window.addEventListener("DOMContentLoaded", function() {
                                 data += '<br/></br/> <label>Motivo Cancelamento</label><br/>';
                                 data += '<p>'+obj.motivo+'</p>';
                             }
+                            if(obj.erro != null){
+                                data += "<label><strong>Erro:</strong></label><br/>";
+                                data += '<label>'+obj.tipo_erro+'</label>';
+                                data += ' - <strong>'+obj.natureza_erro+'</strong><br/>';
+                                data += '<p>'+obj.erro+'</p>';
+                            }
+                            if(obj.observacao != null){
+                                data += '<label><strong>Observação:</strong></label>';
+                                data += '<p>'+obj.observacao+'</p>';
+                            }
                             data += '</div>';
                             data += '<hr/>'
                         });

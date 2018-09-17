@@ -110,7 +110,20 @@
                                             <p><?=$historico->motivo;?></p>
                                             <?php
                                         }
-                                        ?>
+                                        if($historico->erro != null){
+                                            ?>
+                                            <label><strong>Erro:</strong></label><br/>
+                                            <label><?=$historico->tipo_erro;?></label> - <strong><?=$historico->natureza_erro;?></strong><br/>
+                                            <p><?=$historico->erro;?></p>
+                                            <?php
+                                        }
+                                        if($historico->observacao != null){
+                                            ?>
+                                            <label><strong>Observação:</strong></label>
+                                            <p><?=$historico->observacao;?></p>
+                                            <?php
+                                        }
+                                        ?>                                        
                                     </div>
                                     <hr>
                                     <?php
