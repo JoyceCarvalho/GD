@@ -109,6 +109,7 @@ $this->load->model("cargos_model", "cargosmodel");
                                                 //trecho de codigo adaptado do 1º Gestão de Documentos (contém várias modificações)
                                                 $seconds    = 0;
                                                 $sum_media  = 0;
+                                                //print_r($tempomedio);
                                                 foreach ($tempomedio as $tempo) {
                                                     $id = $tempo->idprotocolo;
                                                     if ($id == $aux) {
@@ -142,11 +143,12 @@ $this->load->model("cargos_model", "cargosmodel");
                                                     $aux = $tempo->idprotocolo;
                                                 }
 
-                                                $sum_media += $seconds;
+                                                $sum_media = $seconds;
+                                                //echo $seconds;
 
                                                 if($sum_media > 0){
 
-                                                    $divide = $sum_media / $count;
+                                                    $divide = ($sum_media / $count);
                                                     //$mostraNumero = converteHoras(round($divide));
 
                                                 } else {
@@ -155,7 +157,7 @@ $this->load->model("cargos_model", "cargosmodel");
 
                                                 }
 
-                                                //echo $mostraNumero;
+                                                //echo $sum_media;
                                                 ?>
                                                 <input type="hidden" name="t_total" id="t_total" value="<?=$divide;?>">
                                                 <strong id="tempo_total"></strong>

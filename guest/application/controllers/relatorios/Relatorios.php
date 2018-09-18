@@ -323,11 +323,18 @@ class Relatorios extends CI_Controller {
         $dados["submenu"] = "produtividade";
         $dados["sub"]     = "individual";
 
+        $verifica_pause = $this->timermodel->verifica_pause($_SESSION["idusuario"]);
+        if($verifica_pause->action == "start"){
+            $tempomedio = $this->timermodel->tempo_documento_usuario($_SESSION["idusuario"], $verifica_pause->id);
+        } else {
+            $tempomedio = $this->timermodel->tempo_documento_usuario_rel($_SESSION["idusuario"]);
+        }
+
         $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
         $dados['usuario']               = $this->usermodel->dados_usuario($_SESSION["idusuario"]);
         $dados["documentos_fnalizados"] = $this->docmodel->quantidade_documentos_finalizados_usuario($_SESSION["idusuario"]);
         $dados["documentos_andamento"]  = $this->docmodel->numero_documentos($_SESSION["idusuario"]);
-        $dados["tempomedio"]            = $this->timermodel->tempo_documento_usuario($_SESSION["idusuario"]);
+        $dados["tempomedio"]            = $tempomedio;
         $dados["erros_user"]            = $this->docmodel->erros_usuario_documento($_SESSION["idusuario"]);
         
         $this->load->view('template/html_header', $dados);

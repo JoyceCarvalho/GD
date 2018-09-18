@@ -69,7 +69,7 @@ $this->load->model('cargos_model', 'cargosmodel');
                                     <thead>
                                         <tr>
                                             <th>Quantidade de Documentos em Andamento</th>
-                                            <th>Quantidade de Documentos Finalizados</th>
+                                            <th>Quantidade de Documentos Trabalhados</th>
                                             <th>Tempo médio por documento</th>
                                             <th>Quantidade de Erros por documento</th>
                                         </tr>

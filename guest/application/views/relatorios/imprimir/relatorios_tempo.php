@@ -151,7 +151,7 @@ foreach ($informacoes_documento as $documento) {
             </div>
             <div class="panel panel-default sessao no-break geral">
                 <div class="panel-heading">
-                    <span class="titulo-sessao">Tempo por etapa</span>
+                    <span class="titulo-sessao">Tempo total do documento por etapa</span>
                 </div>
                 <div class="panel-body">
                 
@@ -225,7 +225,7 @@ foreach ($informacoes_documento as $documento) {
             </div>
             <div class="panel panel-default sessao no-break geral">
                 <div class="panel-heading">
-                    <span class="titulo-sessao">Tempo por responsável</span>
+                    <span class="titulo-sessao">Tempo total do documento por responsável</span>
                 </div>
                 <div class="panel-body">
                     
@@ -305,7 +305,7 @@ foreach ($informacoes_documento as $documento) {
             <?php if($tempo_em_suspensao): ?>
                 <div class="panel panel-default sessao no-break topo">
                     <div class="panel-heading">
-                        <span class="titulo-sessao">Tempo médio aguardando exigência</span>
+                        <span class="titulo-sessao">Tempo do documento aguardando exigência</span>
                     </div>
                     <div class="panel-body">
                         
@@ -341,7 +341,7 @@ foreach ($informacoes_documento as $documento) {
             <?php if($tempo_pendente): ?>
                 <div class="panel panel-default sessao no-break topo">
                     <div class="panel-heading">
-                        <span class="titulo-sessao">Tempo médio pendente</span>
+                        <span class="titulo-sessao">Tempo do documento pendente</span>
                     </div>
                     <div class="panel-body">
                         
@@ -427,7 +427,7 @@ foreach ($informacoes_documento as $documento) {
                     }
                 },
                 title: {
-                    text: 'Tempo por etapa'
+                    text: 'Tempo total do documento por etapa'
                 },
                 plotOptions: {
                     column: {
@@ -496,7 +496,7 @@ foreach ($informacoes_documento as $documento) {
                     }
                 },
                 title: {
-                    text: 'Tempo por responsável'
+                    text: 'Tempo total do documento por responsável'
                 },
                 plotOptions: {
                     column: {

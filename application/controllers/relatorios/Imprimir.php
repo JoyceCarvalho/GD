@@ -203,11 +203,18 @@ class Imprimir extends CI_Controller {
 
         if ($_SESSION["idempresa"] == $usuario->fk_idempresa) {
 
+            $verifica_pause = $this->timermodel->verifica_pause($idusuario);
+            if($verifica_pause->action == "start"){
+                $tempomedio = $this->timermodel->tempo_documento_usuario($idusuario, $verifica_pause->id);
+            } else {
+                $tempomedio = $this->timermodel->tempo_documento_usuario_rel($idusuario);
+            }
+
             $dados["usuario"]               = $usuario;
             $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
             $dados["documentos_fnalizados"] = $this->docmodel->quantidade_documentos_finalizados_usuario($idusuario);
             $dados["documentos_andamento"]  = $this->docmodel->numero_documentos($idusuario);
-            $dados["tempomedio"]            = $this->timermodel->tempo_documento_usuario($idusuario);
+            $dados["tempomedio"]            = $tempomedio;
             $dados["erros_user"]            = $this->docmodel->erros_usuario_documento($idusuario);
             
             $this->load->view('relatorios/imprimir/relatorio_produtividade',$dados);
