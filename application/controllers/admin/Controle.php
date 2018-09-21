@@ -12,6 +12,7 @@ class Controle extends CI_Controller {
     $this->load->model('Cargos_model', 'cargosmodel');
     $this->load->model('Erros_model', 'errosmodel');
     $this->load->model('Usuario_model', 'usermodel');
+    $this->load->model('Email_model', 'emailmodel');
   }
 
   /**
@@ -371,6 +372,17 @@ class Controle extends CI_Controller {
 
 
     if ($this->empresamodel->cadastrar_coordenador($coordenador)) {
+
+      $enviar = array(
+        'tipo'         => 'novo_usuario',
+        'pass' 		   => $this->input->post('senha'),
+        'cliente_code' => $this->input->post("cliente_code"),
+        'email'    	   => $this->input->post('email'),
+        'nome'         => $this->input->post('nome'),
+        'usuario'	   => $this->input->post('usuario')
+      );
+     
+      $this->emailmodel->enviar_email($enviar);
 
       $data->success = "Empresa cadastrada com sucesso!";
 
