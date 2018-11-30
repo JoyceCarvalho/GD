@@ -40,9 +40,9 @@
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>
                                     <tr>
-                                        <th>Documento</th>
-                                        <th>Grupo</th>
-                                        <th>Etapas</th>
+                                        <th width="50%">Documento</th>
+                                        <th width="10%">Grupo</th>
+                                        <th width="20%">Etapas</th>
                                         <th></th>
                                         <th></th>
                                     </tr>

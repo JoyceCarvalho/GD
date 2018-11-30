@@ -89,7 +89,7 @@ class Documento extends CI_Controller {
                     'idetapa'     => $this->input->post("etapa[$i]"),
                     'ordem'       => $i
                 );
-
+                //print_r($doc_etapas);
                 $cadastro = $this->docetapamodel->cadastrar_documento_etapa($doc_etapa);
             }
 
@@ -193,6 +193,10 @@ class Documento extends CI_Controller {
 
             $total = $this->input->post('total');
 
+            if($total > 1){
+                $this->docetapamodel->excluir_documentos($iddocumento);
+            }
+
             for($i=1; $i<=$total; $i++){
 
                 $idetapa = $this->input->post("etapa[$i]");
@@ -208,7 +212,7 @@ class Documento extends CI_Controller {
                     $this->docetapamodel->editar_docetapa($iddocumento, $idetapa, $docetapa);
 
                 } else {
-
+                    
                     $this->docetapamodel->cadastrar_documento_etapa($docetapa);
 
                 }

@@ -35,6 +35,17 @@ class DocEtapas_model extends CI_Model{
     }
 
     /**
+     * Método para excluir etapas não utilizadas mais no documento
+     * Utilizada no controller conf/Documentos.php
+     *
+     * @return void
+     */
+    public function excluir_documentos($iddocumento){
+        $this->db->where('iddocumento = ', $iddocumento);
+        return $this->db->delete('tbdocumentoetapa');
+    }
+
+    /**
      * Método para listar etapas de documento pela ordem de etapas
      * Utilizado no controller conf/Documento.php 
      *

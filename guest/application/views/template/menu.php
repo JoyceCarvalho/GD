@@ -8,12 +8,13 @@
           ?>
           <?php if (!empty($empresa->logo_code)): ?>
             <div class="avatar">
-              <!--<img src="http://localhost/GestaoDocumentos_CI/assets/img/logo_empresas/<?//=$empresa->logo_code;?>" alt="<?//=$empresa->nome;?>" class="img-fluid rounded-circle">-->
-              <img src="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>" class="img-fluid rounded-circle">
+              <img src="http://localhost/GestaoDocumentos_CI/assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>" class="img-fluid rounded-circle">
+              <!--<img src="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>" class="img-fluid rounded-circle">-->
             </div>
           <?php else: ?>
             <div class="avatar">
               <img src="http://localhost/GestaoDocumentos_CI/assets/img/logo_sgt.png" alt="<?=$empresa->nome;?>" class="img-fluid rounded-circle">
+		<!--<img src="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/assets/img/logo_sgt.png" alt="<?=$empresa->nome;?>" class="img-fluid rounded-circle">-->
             </div>
           <?php endif; ?>
           <div class="title">
