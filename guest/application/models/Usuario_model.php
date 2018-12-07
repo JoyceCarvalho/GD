@@ -168,7 +168,7 @@ class Usuario_model extends CI_Model {
         $this->db->from('tbusuario');
         $this->db->join('tbcargos', 'tbusuario.fk_idcargos = tbcargos.id');
         $this->db->where('tbusuario.id', $id_user);
-        $this->db->where("tbcargos.titulo = 'Coordenador'");
+        $this->db->where("tbcargos.titulo = 'Coordenador%'");
 
         return $this->db->get('')->result();
     }

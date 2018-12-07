@@ -32,9 +32,11 @@
                     </div>
                     <div class="card-body">
 
-                        <div class="form-group">
-                            <a href="<?=base_url('home/usuario_cad')?>" class="btn btn-sm btn-success">Cadastrar Usuários</a>
-                        </div>
+			<?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
+		                <div class="form-group">
+		                    <a href="<?=base_url('home/usuario_cad')?>" class="btn btn-sm btn-success">Cadastrar Usuários</a>
+		                </div>
+	                <?php endif; ?>
 
                         <div class="table-responsive">                       
                             <table class="table table-striped table-hover" id="datatable">

@@ -168,7 +168,7 @@ class Usuario_model extends CI_Model {
         $this->db->from('tbusuario');
         $this->db->join('tbcargos', 'tbusuario.fk_idcargos = tbcargos.id');
         $this->db->where('tbusuario.id', $id_user);
-        $this->db->where("tbcargos.titulo = 'Coordenador'");
+        $this->db->where("tbcargos.titulo like 'Coordenador%'");
 
         return $this->db->get('')->result();
     }
@@ -330,7 +330,7 @@ class Usuario_model extends CI_Model {
         $this->db->from('tbusuario as u');
         $this->db->join('tbcargos as c', 'c.id = u.fk_idcargos');
         $this->db->where('u.fk_idempresa', $empresa);
-        $this->db->where('c.titulo = "Coordenador"');
+        $this->db->where('c.titulo like "Coordenador%"');
 
         return $this->db->get()->row('email');
     }
