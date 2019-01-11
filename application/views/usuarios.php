@@ -7,17 +7,24 @@
                 </div>
             </div>
         <?php endif; ?>
-        <?php if (isset($error)) : ?>
+        <?php if($this->session->flashdata('error') == TRUE): ?>
             <div class="col-md-12">
                 <div class="alert alert-danger" role="alert">
-                    <?= $error ?>
+                    <?= $this->session->flashdata('error'); ?>
                 </div>
             </div>
         <?php endif; ?>
-        <?php if (isset($success)) : ?>
+        <?php if($this->session->flashdata('success') == TRUE): ?>
             <div class="col-md-12">
                 <div class="alert alert-success" role="alert">
-                    <?= $success ?>
+                    <?= $this->session->flashdata('success'); ?>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php if($this->session->flashdata('warning') == TRUE): ?>
+            <div class="col-md-12">
+                <div class="alert alert-warning" role="alert">
+                    <?= $this->session->flashdata('warning'); ?>
                 </div>
             </div>
         <?php endif; ?>

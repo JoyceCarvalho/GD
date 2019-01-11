@@ -12,6 +12,7 @@ class Home extends CI_Controller {
         $this->load->model('horario_model', 'horasmodel');
         $this->load->model('cargos_model', 'cargosmodel');
         $this->load->model('documentos_model', 'docmodel');
+        $this->load->model('pop_model', 'popmodel');
 
     }
 
@@ -148,6 +149,7 @@ class Home extends CI_Controller {
 
             $dados['full_cargos']   = $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
             $dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
+            $dados['full_pop']      = $this->popmodel->listar_pop($id);
             $dados['usuario']       = $this->usermodel->dados_usuario($id);
             //dados do banco (nome da empresa);
             $dados['nome_empresa']  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);

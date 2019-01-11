@@ -11,6 +11,7 @@ class Usuario extends CI_Controller {
 		$this->load->model('empresa_model', 'empresamodel');
 		$this->load->model('cargos_model', 'cargosmodel');
 		$this->load->model('LogsSistema_model', 'logsistema');
+		$this->load->model('pop_model', 'popmodel');
 	}
 
 
@@ -25,26 +26,11 @@ class Usuario extends CI_Controller {
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 		$this->form_validation->set_rules('usuario', 'Usuário', 'trim|required|min_length[3]|max_length[12]');
 		$this->form_validation->set_rules('senha', 'Senha', 'trim|required|min_length[6]');
-
+		
 		if($this->form_validation->run() == FALSE){
 			
-			$dados['pagina'] 	= "Usuários";
-			$dados['pg'] 		= "empresa";
-			$dados['submenu'] 	= "usuario";
-			$dados["sub"]		= "usuariocad";
-
-			$dados['listagem_usuarios'] 	= $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
-			$dados['full_cargos']	 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-			$dados['full_horarios'] 	= $this->horasmodel->listar_horario($_SESSION["idempresa"]);
-			//dados do banco (nome da empresa, nome usuário);
-			$dados['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-
-			$this->load->view('template/html_header', $dados);
-			$this->load->view('template/header');
-			$this->load->view('template/menu', $data);
-			$this->load->view('usuario_cadastro');
-			$this->load->view('template/footer');
-			$this->load->view('template/html_footer');
+			$this->session->set_flashdata('error', 'Dados inválidos!');        
+            redirect('home/usuario_cad');
 
 		} else {
 
@@ -57,16 +43,65 @@ class Usuario extends CI_Controller {
 				'fk_idhorariotrab' 	=> $this->input->post('horas'),
 				'fk_idempresa'		=> $_SESSION['idempresa']
 			);
+
+			$usuario = $this->usermodel->cadastrar_usuario($dados);
 	
-			if ($this->usermodel->cadastrar_usuario($dados)) {
-	
+			if ($usuario) {
+				
+				$tipo_pop = $this->input->post("tipo_pop");
+				$qnt_pop = $this->input->post('qnt_pop');
+
+				if($qnt_pop > 0){
+					
+					for ($i=1; $i <= $qnt_pop; $i++) { 
+					
+						if($tipo_pop == "texto"){
+						
+							$pop = $this->input->post("pop_$i");
+				
+						} elseif($tipo_pop == "arquivo"){
+							//echo "entra no laço!";
+							$pop_name = $_FILES['pop_'.$i];
+							//print_r($pop_name);
+							$config['upload_path']          = './pop/';
+							$config['allowed_types']        = 'pdf';
+							$config['file_name']			= $pop_name["name"];
+				
+							$this->load->library('upload');
+							$this->upload->initialize($config);
+							if (!$this->upload->do_upload('pop_'.$i)){
+				
+								//$warning = "Ops! Pode ter ocorrido um problema ao cadastrar o POP do colaborador.";
+								$this->session->set_flashdata("warning", "Ops! Ocorreu um problema ao cadastrar o POP do colaborador.");
+								$pop = null;
+				
+							} else {
+								
+								$pop = $config["file_name"];
+							
+							}
+				
+						} 
+
+						$arquivos_pop = array(
+							'arquivo' 	   => $pop,
+							'fk_idusuario' => $usuario
+						);
+
+						if(!$this->popmodel->cadastrar_pop($arquivos_pop)){
+							$this->session->set_flashdata('warning', "Ocorreu um problema ao cadastrar o(s) POP(s) do colaborador!");
+						}
+
+					}
+				}
+
 				/**
 				 * Envio de email
 				 */
 				$this->load->model('email_model', 'emailmodel');
 	
 				$empresa = $this->empresamodel->dados_empresa($_SESSION["idempresa"]);
-	
+
 				foreach ($empresa as $dados) {
 					
 					$enviar = array(
@@ -84,28 +119,8 @@ class Usuario extends CI_Controller {
 				/**
 				 * Fim do envio de email
 				 */
-	
-				$data->success = "Usuário ".$this->input->post('nome')." cadastrado com sucesso!";
-	
-				$info['pagina'] 	= "Usuários";
-				$info['pg'] 		= "empresa";
-				$info['submenu'] 	= "usuario";
-				$info["sub"]		= "usuariocad";
-	
-				$info['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
-				$info['full_cargos'] 		= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-				$info['full_horarios'] 	= $this->horasmodel->listar_horario($_SESSION["idempresa"]);
-				//dados do banco (nome da empresa, nome usuário);
-				$info['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-	
-				$this->load->view('template/html_header', $info);
-				$this->load->view('template/header');
-				$this->load->view('template/menu', $data);
-				$this->load->view('usuario_cadastro');
-				$this->load->view('template/footer');
-				$this->load->view('template/html_footer');
-	
-				//log do sistema
+
+				 //log do sistema
 				$mensagem = "Cadastrou novo usuario " . $this->input->post('nome');
 				$log = array(
 					'usuario' 	=> $_SESSION["idusuario"], 
@@ -115,27 +130,19 @@ class Usuario extends CI_Controller {
 				$this->logsistema->cadastrar_log_sistema($log);
 				//fim log do sistema
 	
+				$success = "Usuário ".$this->input->post('nome')." cadastrado com sucesso!";
+
+				$this->session->set_flashdata('success', $success);
+				redirect('home/usuario_cad');
+	
+				
 			} else {
 	
-				$data->error = "Não foi possivel cadastrar o usuário! Favor entre em contato com suporte e tente mais tarde novamente!";
+				//$data->error = "Não foi possivel cadastrar o usuário! Favor entre em contato com suporte e tente mais tarde novamente!";
+				$this->session->set_flashdata("error", "Não foi possível cadastrar o usuário! Favor entre em contato com nosso suporte e tente mais tarde novamente!");
+				redirect("home/usuario_cad");
 	
-				$dados['pagina'] 	= "Usuários";
-				$dados['pg'] 		= "empresa";
-				$dados['submenu'] 	= "usuario";
-				$dados["sub"]		= "usuariocad";
-	
-				$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
-				$dados['full_cargos']	 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-				$dados['full_horarios'] 	= $this->horasmodel->listar_horario($_SESSION["idempresa"]);
-				//dados do banco (nome da empresa, nome usuário);
-				$dados['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-	
-				$this->load->view('template/html_header', $dados);
-				$this->load->view('template/header');
-				$this->load->view('template/menu', $data);
-				$this->load->view('usuario_cadastro');
-				$this->load->view('template/footer');
-				$this->load->view('template/html_footer');
+				
 			}
 		}
 
@@ -157,24 +164,107 @@ class Usuario extends CI_Controller {
 
 		if ($this->usermodel->editar_usuario($dados, $idusuario)) {
 
-			$data->success = "Usuário atualizado com sucesso!";
+			$tipo_pop = $this->input->post("tipo_pop");
+			$qnt_pop = $this->input->post('qnt_pop');
 
-			$dados['pagina'] 	= "Usuários";
-			$dados['pg'] 		= "empresa";
-			$dados['submenu'] 	= "usuario";
+			if($qnt_pop > 0){
+				
+				for ($i=1; $i <= $qnt_pop; $i++) { 
 
-			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
-			$dados['usuario'] 		= $this->usermodel->dados_usuario($idusuario);
-			//dados do banco (nome da empresa);
-			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+					if(empty($this->input->post("id_arquivo_$i"))){
 
-			$this->load->view('template/html_header', $dados);
-			$this->load->view('template/header');
-			$this->load->view('template/menu', $data);
-			$this->load->view('usuarios_edit');
-			$this->load->view('template/footer');
-			$this->load->view('template/html_footer');
+						if($tipo_pop == "texto"){
+						
+							$pop = $this->input->post("pop_$i");
+				
+						} elseif($tipo_pop == "arquivo"){
+							//echo "entra no laço!";
+							$pop_name = $_FILES['pop_'.$i];
+							//print_r($pop_name);
+							$config['upload_path']          = './pop/';
+							$config['allowed_types']        = 'pdf';
+							$config['file_name']			= $pop_name["name"];
+				
+							$this->load->library('upload');
+							$this->upload->initialize($config);
+							if (!$this->upload->do_upload('pop_'.$i)){
+				
+								//$warning = "Ops! Pode ter ocorrido um problema ao cadastrar o POP do colaborador.";
+								$this->session->set_flashdata("warning", "Ops! Ocorreu um problema ao cadastrar o POP do colaborador.");
+								$pop = null;
+				
+							} else {
+								
+								$pop = $config["file_name"];
+							
+							}
+				
+						} 
+	
+						if(!empty($pop)){
+							$arquivos_pop = array(
+								'arquivo' 	   => $pop,
+								'fk_idusuario' => $idusuario
+							);
+		
+							if(!$this->popmodel->cadastrar_pop($arquivos_pop)){
+								$this->session->set_flashdata('warning', "Ocorreu um problema ao cadastrar o(s) POP(s) do colaborador!");
+							}
+						}
+
+					} else {
+						
+						if(($this->input->post("anexo_".$i) == "false") and ($tipo_pop == "texto")){
+
+							$id_pop = $this->input->post("id_arquivo_$id_pop");
+							$dados_pop = array('arquivo' => $this->input->post("pop_$i"));
+
+							$this->popmodel->editar_pop($dados_pop, $id_pop);
+
+						}
+
+						
+					}
+
+				}
+
+				$all_pop = $this->popmodel->pop_exist($idusuario);
+
+				$conta = 0;
+
+				foreach ($all_pop as $pop) {
+					
+					$conta++;
+					if($this->input->post("anexo_".$conta) == "true"){
+						
+						$id_pop = $this->input->post('id_arquivo_'.$conta);
+
+						$this->popmodel->excluir_pop($id_pop);
+
+						if($tipo_pop == "arquivo"){
+
+														
+							$dir = './pop/'.$pop->arquivo;
+
+							if(unlink($dir)){
+
+							echo 'Excluido com sucesso';
+
+							}else{
+
+							echo 'Erro ao excluir';
+
+							}
+						}
+
+					} 
+
+
+				}
+
+			}
+
+			$this->session->set_flashdata('success', 'Usuário atualizado com sucesso!');
 
 			//log do sistema
 			$mensagem = "Edição de dados do usuário ". $this->input->post('nome');
@@ -188,26 +278,12 @@ class Usuario extends CI_Controller {
 
 		} else {
 
-			$data->error = "Ocorreu um erro ao atualizar dados do usuário! Favor entre em contato com o suporte e tente novamente mais tarde!";
-
-			$dados['pagina'] 	= "Usuários";
-			$dados['pg'] 		= "empresa";
-			$dados['submenu'] 	= "usuario";
-
-			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
-			$dados['usuario'] 		= $this->usermodel->dados_usuario($idusuario);
-			//dados do banco (nome da empresa);
-			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-
-			$this->load->view('template/html_header', $dados);
-			$this->load->view('template/header');
-			$this->load->view('template/menu', $data);
-			$this->load->view('usuarios_edit');
-			$this->load->view('template/footer');
-			$this->load->view('template/html_footer');
-
+			$this->session->set_flashdata('error', 'Ocorreu um erro ao atualizar os dados do usuário! Favor entre em contato com o suporte e tente novamente mais tarde!');
+			
 		}
+
+		redirect("home/usuario/");
+
 	}
 
 	public function excluir_usuario(){
@@ -244,7 +320,8 @@ class Usuario extends CI_Controller {
 					
 				}
 
-				$data->success = "Usuário excluido com sucesso!";
+				$this->session->set_flashdata('success', 'Usuário excluido com sucesso!');
+				/*$data->success = "Usuário excluido com sucesso!";
 
 				$dados['pagina'] 	= "Usuários";
 				$dados['pg'] 		= "empresa";
@@ -260,7 +337,7 @@ class Usuario extends CI_Controller {
 				$this->load->view('template/menu', $data);
 				$this->load->view('usuarios');
 				$this->load->view('template/footer');
-				$this->load->view('template/html_footer');
+				$this->load->view('template/html_footer');*/
 
 				//log do sistema
 				$mensagem = "Excluiu o usuario $id";
@@ -274,7 +351,9 @@ class Usuario extends CI_Controller {
 
 			} else {
 
-				$data->error = "Ocorreu um problema ao excluir o usuário! Favor entre em contato com o suporte e tente mais tarde novamente!";
+				$this->session->set_flashdata('error', 'Ocorreu um problema ao excluir o usuário! Favor entre em contato com o suporte e tente mais tarde novamente!');
+
+				/*$data->error = "Ocorreu um problema ao excluir o usuário! Favor entre em contato com o suporte e tente mais tarde novamente!";
 
 				$dados['pagina'] 	= "Usuários";
 				$dados['pg'] 		= "empresa";
@@ -290,9 +369,11 @@ class Usuario extends CI_Controller {
 				$this->load->view('template/menu', $data);
 				$this->load->view('usuarios');
 				$this->load->view('template/footer');
-				$this->load->view('template/html_footer');
+				$this->load->view('template/html_footer');*/
 
 			}
+
+			redirect('home/usuario/');
 
 		} else {
 
@@ -315,7 +396,8 @@ class Usuario extends CI_Controller {
 
 		if ($this->usermodel->alterar_senha($usuario,$altera_senha)) {
 
-			$data->success = "Senha alterada com sucesso!";
+			$this->session->set_flashdata('success', 'Senha alterada com sucesso!');
+			/*$data->success = "Senha alterada com sucesso!";
 
 			$dados['pagina'] 	= "Usuários";
 			$dados['pg'] 		= "empresa";
@@ -332,7 +414,7 @@ class Usuario extends CI_Controller {
 			$this->load->view('template/menu', $data);
 			$this->load->view('usuarios_edit');
 			$this->load->view('template/footer');
-			$this->load->view('template/html_footer');
+			$this->load->view('template/html_footer');*/
 
 			//Log do sistema
 			$mensagem = "Alterou a senha do usuario $usuario";
@@ -346,7 +428,7 @@ class Usuario extends CI_Controller {
 
 		} else {
 
-			$data->error = "Ocorreu um problema ao alterar a senha. Favor entre em contato com o suporte e tente novamente mais tarde.";
+			/*$data->error = "Ocorreu um problema ao alterar a senha. Favor entre em contato com o suporte e tente novamente mais tarde.";
 
 			$dados['pagina'] 	= "Usuários";
 			$dados['pg'] 		= "empresa";
@@ -363,8 +445,11 @@ class Usuario extends CI_Controller {
 			$this->load->view('template/menu', $data);
 			$this->load->view('usuarios_edit');
 			$this->load->view('template/footer');
-			$this->load->view('template/html_footer');
+			$this->load->view('template/html_footer');*/
+			$this->session->set_flashdata('error', 'Ocorreu um problema ao alterar a senha! Favor entre em contato com o suporte e tente novamente mais tarde.');
 		}
+
+		redirect("editar_usuario");
 
 	}
 
@@ -380,6 +465,10 @@ class Usuario extends CI_Controller {
 			echo json_encode(array('mensagem' => 'Usuário válidado!', 'valido' => 'is'));
 		}
 
+	}
+
+	public function download_arquivo($id){
+		
 	}
 
 }

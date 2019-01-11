@@ -12,11 +12,12 @@ class Usuario_model extends CI_Model {
      * Utilizado no controller Usuario.php
      *
      * @param array $dados
-     * @return int retorna o numero de linhas afetadas
+     * @return int retorna o id do cadastro
      */
     public function cadastrar_usuario($dados){
         
-        return $this->db->insert('tbusuario', $dados);
+        $this->db->insert('tbusuario', $dados);
+        return $this->db->insert_id();
     }
 
     /**
