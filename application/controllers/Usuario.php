@@ -435,4 +435,23 @@ class Usuario extends CI_Controller {
 		}
 	}
 
+	public function download_file($id_file){
+
+		if((!isset($_SESSION["logado"])) && ($_SESSION['logado'] != true)){
+			redirect("/");
+		}
+
+		$this->load->helper('download');
+
+		$arquivos = $this->popmodel->pop_exist($id_file);
+				
+		foreach ($arquivos as $itens){
+			$diretorio = file_get_contents('./pop/'.$itens->arquivo);         
+			$arquivo = $itens->arquivo;
+			force_download($arquivo, $diretorio);      
+		}  
+
+
+	}
+
 }

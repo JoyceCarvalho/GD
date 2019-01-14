@@ -125,7 +125,7 @@
                                             if($ult == ".pdf"){
                                                 ?>
                                                 <div class="row col-sm-12" style="padding-left:30px">
-                                                    <a id="baixar_<?=$conta?>" style="cursor:pointer" href="<?=base_url("download_arquivo/$pop->id");?>" target="_blank"><?="Baixar " . $pop->arquivo ?> <i class="fa fa-download" aria-hidden="true"></i></a>&nbsp;
+                                                    <a id="baixar_<?=$conta?>" style="cursor:pointer" href="<?=base_url("download_file/$pop->id");?>" target="_blank"><?="Baixar " . $pop->arquivo ?> <i class="fa fa-download" aria-hidden="true"></i></a>&nbsp;
                                                     <a id="apagar_<?=$conta?>" href="javascript:void(0)" style="cursor:pointer;">Apagar Anexo <i class="fa fa-trash" aria-hidden="true"></i></a>
                                                     <a id="desfazer_<?=$conta?>" href="javascript:void(0)" style="display: none; cursor: pointer;">Desfazer <i class="fa fa-repeat" aria-hidden="true"></i></a>                                                
                                                     <input type="hidden" name="id_arquivo_<?=$conta?>" id="id_arquivo_<?=$conta?>" value="<?=$pop->id?>">
