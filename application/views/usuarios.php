@@ -1,3 +1,6 @@
+<?php
+$this->load->model("pop_model", "popmodel");
+?>
 <section class="tables">   
     <div class="container-fluid">
         <?php if (validation_errors()) : ?>
@@ -62,7 +65,25 @@
                                             if ((($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"]) or ($_SESSION["idusuario"] == $usuario->id)) && ($usuario->id != 1)) {
                                                 ?>
                                                 <tr>
-                                                    <td><?=$usuario->nome;?></td>
+                                                    <td>
+                                                        <?=$usuario->nome;?><br/>
+                                                        
+                                                        <?php
+                                                        $pop = $this->popmodel->listar_pop($usuario->id);
+                                                        if(!empty($pop)){
+                                                            foreach ($pop as $p) {
+                                                                $ult = substr($p->arquivo, -4);
+                                                            }
+                                                            
+                                                            if($ult == ".pdf"){
+                                                                ?>
+                                                                <a href="<?=base_url('download_arquivo/'.$usuario->id)?>" target="_blank">Baixar Arquivos</a>
+                                                                <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                        
+                                                    </td>
                                                     <td><?=$usuario->cargo;?></td>
                                                     <td><?=$usuario->usuario;?></td>
                                                     <td>

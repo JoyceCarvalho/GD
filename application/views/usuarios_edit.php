@@ -160,7 +160,7 @@
                                             <div class="form-group col-sm-12 row">
                                                 <label class='col-sm-3 form-control-label' id="label_pop_<?=$conta+1?>">POP:</label>
                                                 <div class='col-sm-9'>
-                                                    <input type='file' name="pop_<?=$conta?>" id="pop_<?=$conta+1;?>" class='form-control pop_file'>
+                                                    <input type='file' name="pop_<?=$conta+1?>" id="pop_<?=$conta+1;?>" class='form-control pop_file'>
                                                 </div>
                                             </div>
                                             <?php
@@ -420,12 +420,13 @@
     function adiciona_pop(){
 
         /*var elementos = document.getElementsByName('pop').length;*/
-        var elementos = $(".pop_file").length;
+        //var elementos = $(".pop_file").length;
+        var elementos = parseInt($('#qnt_pop').val());
         var tipo = "pop_"+elementos;
 
         elementos = parseInt(elementos) + 1;
 
-        //console.log('Existem ' + elementos);
+        console.log('Existem ' + elementos);
 
 
         var pop = document.getElementById(tipo).type;

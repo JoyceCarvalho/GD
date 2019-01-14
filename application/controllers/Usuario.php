@@ -77,7 +77,7 @@ class Usuario extends CI_Controller {
 				
 							} else {
 								
-								$pop = $config["file_name"];
+								$pop = $this->upload->file_name;
 							
 							}
 				
@@ -181,22 +181,24 @@ class Usuario extends CI_Controller {
 							//echo "entra no laço!";
 							$pop_name = $_FILES['pop_'.$i];
 							//print_r($pop_name);
-							$config['upload_path']          = './pop/';
-							$config['allowed_types']        = 'pdf';
-							$config['file_name']			= $pop_name["name"];
-				
-							$this->load->library('upload');
-							$this->upload->initialize($config);
-							if (!$this->upload->do_upload('pop_'.$i)){
-				
-								//$warning = "Ops! Pode ter ocorrido um problema ao cadastrar o POP do colaborador.";
-								$this->session->set_flashdata("warning", "Ops! Ocorreu um problema ao cadastrar o POP do colaborador.");
-								$pop = null;
-				
-							} else {
+							if(!empty($pop_name)){
+								$config['upload_path']          = './pop/';
+								$config['allowed_types']        = 'pdf';
+								$config['file_name']			= $pop_name["name"];
+					
+								$this->load->library('upload');
+								$this->upload->initialize($config);
+								if (!$this->upload->do_upload('pop_'.$i)){
+					
+									//$warning = "Ops! Pode ter ocorrido um problema ao cadastrar o POP do colaborador.";
+									$this->session->set_flashdata("warning", "Ops! Ocorreu um problema ao cadastrar o POP do colaborador.");
+									$pop = null;
+					
+								} else {
+									
+									$pop = $this->upload->file_name;
 								
-								$pop = $config["file_name"];
-							
+								}
 							}
 				
 						} 
@@ -216,9 +218,9 @@ class Usuario extends CI_Controller {
 						
 						if(($this->input->post("anexo_".$i) == "false") and ($tipo_pop == "texto")){
 
-							$id_pop = $this->input->post("id_arquivo_$id_pop");
+							$id_pop = $this->input->post("id_arquivo_$i");
 							$dados_pop = array('arquivo' => $this->input->post("pop_$i"));
-
+							
 							$this->popmodel->editar_pop($dados_pop, $id_pop);
 
 						}
@@ -226,39 +228,30 @@ class Usuario extends CI_Controller {
 						
 					}
 
-				}
-
-				$all_pop = $this->popmodel->pop_exist($idusuario);
-
-				$conta = 0;
-
-				foreach ($all_pop as $pop) {
-					
-					$conta++;
-					if($this->input->post("anexo_".$conta) == "true"){
+					if($this->input->post("anexo_".$i) == "true"){
 						
-						$id_pop = $this->input->post('id_arquivo_'.$conta);
+						$id_pop = $this->input->post('id_arquivo_'.$i);
 
 						$this->popmodel->excluir_pop($id_pop);
+						//echo $id_pop;
 
 						if($tipo_pop == "arquivo"){
 
+							$dados_pop = $this->popmodel->pop_exist($id_pop);
 														
-							$dir = './pop/'.$pop->arquivo;
-
-							if(unlink($dir)){
-
-							echo 'Excluido com sucesso';
-
-							}else{
-
-							echo 'Erro ao excluir';
-
+							foreach ($dados_pop as $pop) {
+								
+								$dir = './pop/'.$pop->arquivo;
+								
+								if(!unlink($dir)){
+	
+									$this->session->set_flashdata('warning', 'Ocorreu um problema ao excluir o arquivo!');
+	
+								}
 							}
 						}
 
 					} 
-
 
 				}
 
@@ -273,7 +266,7 @@ class Usuario extends CI_Controller {
 				'mensagem'  => $mensagem,
 				'data_hora' => date("Y-m-d H:i:s")
 			);
-			$this->logsistema->cadastrar_log_sistema($log);
+			//$this->logsistema->cadastrar_log_sistema($log);
 			//fim log do sistema
 
 		} else {
@@ -321,24 +314,7 @@ class Usuario extends CI_Controller {
 				}
 
 				$this->session->set_flashdata('success', 'Usuário excluido com sucesso!');
-				/*$data->success = "Usuário excluido com sucesso!";
-
-				$dados['pagina'] 	= "Usuários";
-				$dados['pg'] 		= "empresa";
-				$dados['submenu'] 	= "usuario";
-				$dados['sub']		= "usuariolist";
-
-				$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($_SESSION["idempresa"]);
-				//dados do banco (nome da empresa, nome usuário);
-				$dados['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-
-				$this->load->view('template/html_header', $dados);
-				$this->load->view('template/header');
-				$this->load->view('template/menu', $data);
-				$this->load->view('usuarios');
-				$this->load->view('template/footer');
-				$this->load->view('template/html_footer');*/
-
+				
 				//log do sistema
 				$mensagem = "Excluiu o usuario $id";
 				$log = array(
@@ -352,24 +328,6 @@ class Usuario extends CI_Controller {
 			} else {
 
 				$this->session->set_flashdata('error', 'Ocorreu um problema ao excluir o usuário! Favor entre em contato com o suporte e tente mais tarde novamente!');
-
-				/*$data->error = "Ocorreu um problema ao excluir o usuário! Favor entre em contato com o suporte e tente mais tarde novamente!";
-
-				$dados['pagina'] 	= "Usuários";
-				$dados['pg'] 		= "empresa";
-				$dados['submenu'] 	= "usuario";
-				$dados['sub']		= "usuariolist";
-
-				$dados['listagem_usuarios'] = $this->usermodel->listar_usuarios($id);
-				//dados do banco (nome da empresa);
-				$dados['nome_empresa'] 		= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-
-				$this->load->view('template/html_header', $dados);
-				$this->load->view('template/header');
-				$this->load->view('template/menu', $data);
-				$this->load->view('usuarios');
-				$this->load->view('template/footer');
-				$this->load->view('template/html_footer');*/
 
 			}
 
@@ -397,25 +355,7 @@ class Usuario extends CI_Controller {
 		if ($this->usermodel->alterar_senha($usuario,$altera_senha)) {
 
 			$this->session->set_flashdata('success', 'Senha alterada com sucesso!');
-			/*$data->success = "Senha alterada com sucesso!";
-
-			$dados['pagina'] 	= "Usuários";
-			$dados['pg'] 		= "empresa";
-			$dados['submenu'] 	= "usuario";
-
-			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
-			$dados['usuario'] 		= $this->usermodel->dados_usuario($usuario);
-			//dados do banco (nome da empresa);
-			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-
-			$this->load->view('template/html_header', $dados);
-			$this->load->view('template/header');
-			$this->load->view('template/menu', $data);
-			$this->load->view('usuarios_edit');
-			$this->load->view('template/footer');
-			$this->load->view('template/html_footer');*/
-
+			
 			//Log do sistema
 			$mensagem = "Alterou a senha do usuario $usuario";
 			$log = array(
@@ -428,24 +368,6 @@ class Usuario extends CI_Controller {
 
 		} else {
 
-			/*$data->error = "Ocorreu um problema ao alterar a senha. Favor entre em contato com o suporte e tente novamente mais tarde.";
-
-			$dados['pagina'] 	= "Usuários";
-			$dados['pg'] 		= "empresa";
-			$dados['submenu'] 	= "usuario";
-
-			$dados['full_cargos'] 	= $this->cargosmodel->listar_cargos($_SESSION["idempresa"]);
-			$dados['full_horarios'] = $this->horasmodel->listar_horario($_SESSION["idempresa"]);
-			$dados['usuario'] 		= $this->usermodel->dados_usuario($usuario);
-			//dados do banco (nome da empresa);
-			$dados['nome_empresa'] 	= $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-
-			$this->load->view('template/html_header', $dados);
-			$this->load->view('template/header');
-			$this->load->view('template/menu', $data);
-			$this->load->view('usuarios_edit');
-			$this->load->view('template/footer');
-			$this->load->view('template/html_footer');*/
 			$this->session->set_flashdata('error', 'Ocorreu um problema ao alterar a senha! Favor entre em contato com o suporte e tente novamente mais tarde.');
 		}
 
@@ -467,8 +389,50 @@ class Usuario extends CI_Controller {
 
 	}
 
-	public function download_arquivo($id){
+	public function download_arquivo($idusuario){
 		
+		if((!isset($_SESSION["logado"])) && ($_SESSION['logado'] != true)){
+			redirect("/");
+		}
+
+		$arquivos = $this->popmodel->listar_pop($idusuario);
+
+		if(empty($arquivos)){
+
+			$this->session->set_flashdata('warning', 'Não arquivos não encontrados');
+			
+		} else {
+			
+			if(count($arquivos) > 1){
+				//print_r($arquivos);
+				//exit();
+				$this->load->library('zip');
+
+				foreach ($arquivos as $arq) {
+					//echo $arq->arquivo;
+					//$this->zip->add_data('./pop/'.$arq->arquivo);
+					$path = './pop/'.$arq->arquivo;
+					//echo $path;exit();./pop/mps.br_tcc.pdf
+					$this->zip->add_data($path, file_get_contents($path));
+
+				}
+			
+				if(!empty($arquivos)){
+					$this->zip->archive("/path/pop_$idusuario.zip");
+					$this->zip->download("pop_$idusuario.zip");		
+				}
+			} elseif(count($arquivos) == 1){
+				
+				$this->load->helper('download');
+				
+				foreach ($arquivos as $itens){
+					$diretorio = file_get_contents('./pop/'.$itens->arquivo);         
+					$arquivo = $itens->arquivo;
+					force_download($arquivo, $diretorio);      
+				}  
+			}
+
+		}
 	}
 
 }

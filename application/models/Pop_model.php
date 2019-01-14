@@ -23,9 +23,9 @@ class Pop_model extends CI_Model{
      * @param int $id
      * @return object retorna um objeto de dados
      */
-    public function listar_pop($id){
+    public function listar_pop($idusuario){
         $this->db->from('tbpop');
-        $this->db->where('fk_idusuario', $id);
+        $this->db->where('fk_idusuario', $idusuario);
         
         return $this->db->get('')->result();
     }
@@ -44,14 +44,15 @@ class Pop_model extends CI_Model{
     }
 
     /**
-     * Método responsável por retornar o pop exitente de determinado usuario
+     * Método responsável por retornar os dados existentes de determinado pop
      * Utilizado no controller Usuario.php
      *
      * @param int $idusuario
      * @return object 
      */
-    public function pop_exist($idusuario){
+    public function pop_exist($id){
         $this->db->from('tbpop');
+        $this->db->where('id', $id);
 
         return $this->db->get()->result();
     }
