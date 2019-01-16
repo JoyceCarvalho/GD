@@ -279,8 +279,9 @@ class Documentos_model extends CI_Model {
      */
     public function erros_do_documento($idprotocolo){
         $this->db->select('dc.id as idprotocolo, er.titulo as titulo, ed.descricao as descricao, et.titulo as tipo, e.titulo as titulo_etapa, 
-        DATE_FORMAT(ed.data_hora, "%d/%m/%Y") as quando, u.nome as relator');
+        DATE_FORMAT(ed.data_hora, "%d/%m/%Y") as quando, u.nome as relator, ld.usuario as responsavel');
         $this->db->from('tbdocumentos_cad as dc');
+        $this->db->join('tblog_documentos as ld', "ld.documento = dc.id and ld.descricao = 'RETORNO COM ERRO'");
         $this->db->join('tberros_documentos as ed', 'ed.fk_iddocumentos = dc.id');
         $this->db->join('tberros as er', 'er.id = ed.fk_iderros');
         $this->db->join('tberros_tipo as et', 'et.id = er.fk_idtipo');

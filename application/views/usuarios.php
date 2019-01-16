@@ -66,6 +66,7 @@ $this->load->model("pop_model", "popmodel");
                                                 ?>
                                                 <tr>
                                                     <td>
+                                                    
                                                         <?=$usuario->nome;?><br/>
                                                         
                                                         <?php

@@ -71,6 +71,8 @@ $route['editar_usuario']          = "home/editar_usuario";
 $route['edit_usuario']            = "usuario/editar_usuario";
 $route['excluir_usuario']         = "usuario/excluir_usuario";
 $route['verifica_usuario']        = "usuario/verifica_user";
+$route['download_arquivo/(:num)'] = "usuario/download_arquivo/$1";
+$route['download_file/(:num)']    = "usuario/download_file/$1";
 
 // Rotas do referentes aos cargos
 $route['cad_cargo']      = "cargos/cadastrar_cargo";

@@ -126,7 +126,7 @@
                                         }
                                     }
 
-                                    if(isset($andamento_doc_f)){
+                                    /*if(isset($andamento_doc_f)){
                                         foreach ($andamento_doc_f as $documentos) {
                                             ?>
                                             <tr>
@@ -205,7 +205,7 @@
                                             </tr>
                                             <?php
                                         }
-                                    }
+                                    }*/
                                     ?>
                                 </tbody>
                             </table>
@@ -215,13 +215,6 @@
                                     ?>
                                     <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
                                     <?
-                                }
-                            }
-                            if(isset($andamento_doc_f)){
-                                foreach ($andamento_doc_f as $documentos) {
-                                    ?>
-                                    
-                                    <?php
                                 }
                             }
                             ?>

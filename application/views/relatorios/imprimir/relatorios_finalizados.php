@@ -164,6 +164,7 @@ foreach ($etapas_documento as $etapas) {
                     if ($erros_documento) {
                         
                         foreach ($erros_documento as $erros) {
+                            $responsavel = $this->usermodel->get_user($erros->responsavel);
                             ?>
                             <div class="panel panel-default sessao no-break">
                                 <div class="panel-heading">
@@ -171,7 +172,8 @@ foreach ($etapas_documento as $etapas) {
                                 </div>
                                 <div class="panel-body">
                                     <p>Erro de natureza <strong><?=$erros->tipo;?></strong> relatado por <?=$erros->relator;?> no dia <?=$erros->quando;?></p>
-                                    <p>Descrição: <?=$erros->descricao;?></p>
+                                    <p>Ocorreu na etapa <strong><?=$erros->titulo_etapa;?></strong> de responsabilidade de <?=$responsavel->nome;?></p>
+                                    <p>Descrição: <?=$erros->descricao;?></p>                                    
                                 </div>
                             </div>
                             <?php

@@ -7,17 +7,24 @@
                 </div>
             </div>
         <?php endif; ?>
-        <?php if (isset($error)) : ?>
+        <?php if($this->session->flashdata('error') == TRUE): ?>
             <div class="col-md-12">
                 <div class="alert alert-danger" role="alert">
-                    <?= $error ?>
+                    <?= $this->session->flashdata('error'); ?>
                 </div>
             </div>
         <?php endif; ?>
-        <?php if (isset($success)) : ?>
+        <?php if ($this->session->flashdata('success') == TRUE) : ?>
             <div class="col-md-12">
                 <div class="alert alert-success" role="alert">
-                    <?= $success ?>
+                    <?= $this->session->flashdata('success'); ?>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php if($this->session->flashdata('warning')): ?>
+            <div class="col-md-12">
+                <div class="alert alert-warning" role="alert">
+                    <?= $this->session->flashdata('warning'); ?>
                 </div>
             </div>
         <?php endif; ?>
@@ -53,7 +60,24 @@
                                             if (($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"]) or ($_SESSION["idusuario"] == $usuario->id)) {
                                                 ?>
                                                 <tr>
-                                                    <td><?=$usuario->nome;?></td>
+                                                    <td>
+                                                        <?=$usuario->nome;?><br/>
+                                                        
+                                                        <?php
+                                                        $pop = $this->popmodel->listar_pop($usuario->id);
+                                                        if(!empty($pop)){
+                                                            foreach ($pop as $p) {
+                                                                $ult = substr($p->arquivo, -4);
+                                                            }
+                                                            
+                                                            if($ult == ".pdf"){
+                                                                ?>
+                                                                <a href="<?=base_url('download_arquivo/'.$usuario->id)?>" target="_blank">Baixar Arquivos</a>
+                                                                <?php
+                                                            }
+                                                        }
+                                                        ?>                                                    
+                                                    </td>
                                                     <td><?=$usuario->cargo;?></td>
                                                     <td><?=$usuario->usuario;?></td>
                                                     <td>

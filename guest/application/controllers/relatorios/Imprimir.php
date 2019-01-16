@@ -203,11 +203,14 @@ class Imprimir extends CI_Controller {
 
         if ($_SESSION["guest_empresa"] == $usuario->fk_idempresa) {
 
+            $tempomedio = 0;
             $verifica_pause = $this->timermodel->verifica_pause($idusuario);
-            if($verifica_pause->action == "start"){
-                $tempomedio = $this->timermodel->tempo_documento_usuario($idusuario, $verifica_pause->id);
-            } else {
-                $tempomedio = $this->timermodel->tempo_documento_usuario_rel($idusuario);
+            if(!empty($verifica_pause)){
+                if($verifica_pause->action == "start"){
+                    $tempomedio = $this->timermodel->tempo_documento_usuario($idusuario, $verifica_pause->id);
+                } else {
+                    $tempomedio = $this->timermodel->tempo_documento_usuario_rel($idusuario);
+                }
             }
 
             $dados["usuario"]               = $usuario;

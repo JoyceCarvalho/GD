@@ -110,37 +110,39 @@ $this->load->model("cargos_model", "cargosmodel");
                                                 //trecho de codigo adaptado do 1º Gestão de Documentos (contém várias modificações)
                                                 $seconds    = 0;
                                                 $sum_media  = 0;
-                                                foreach ($tempomedio as $tempo) {
-                                                    $id = $tempo->idprotocolo;
-                                                    if ($id == $aux) {
-                                                        $action = $tempo->action;
-                                                        switch ($action) {
-                                                            case 'start':
-                                                                $seconds -= $tempo->timestamp;
-                                                                break;
-                                                            
-                                                            case 'pause':
-                                                                if($seconds !== 0){
-                                                                    $seconds += $tempo->timestamp;
-                                                                }
-                                                                break;
+                                                if($tempomedio > 0){
+                                                    foreach ($tempomedio as $tempo) {
+                                                        $id = $tempo->idprotocolo;
+                                                        if ($id == $aux) {
+                                                            $action = $tempo->action;
+                                                            switch ($action) {
+                                                                case 'start':
+                                                                    $seconds -= $tempo->timestamp;
+                                                                    break;
+                                                                
+                                                                case 'pause':
+                                                                    if($seconds !== 0){
+                                                                        $seconds += $tempo->timestamp;
+                                                                    }
+                                                                    break;
+                                                            }
+                                                        } else {
+                                                            $action = $tempo->action;
+                                                            switch ($action) {
+                                                                case 'start':
+                                                                    $seconds -= $tempo->timestamp;
+                                                                    break;
+                                                                
+                                                                case 'pause':
+                                                                    if($seconds !== 0){
+                                                                        $seconds += $tempo->timestamp;
+                                                                    }
+                                                                    break;
+                                                            }
+                                                            $count++;
                                                         }
-                                                    } else {
-                                                        $action = $tempo->action;
-                                                        switch ($action) {
-                                                            case 'start':
-                                                                $seconds -= $tempo->timestamp;
-                                                                break;
-                                                            
-                                                            case 'pause':
-                                                                if($seconds !== 0){
-                                                                    $seconds += $tempo->timestamp;
-                                                                }
-                                                                break;
-                                                        }
-                                                        $count++;
+                                                        $aux = $tempo->idprotocolo;
                                                     }
-                                                    $aux = $tempo->idprotocolo;
                                                 }
 
                                                 $sum_media += $seconds;
@@ -148,7 +150,7 @@ $this->load->model("cargos_model", "cargosmodel");
                                                 if($sum_media > 0){
 
                                                     $divide = $sum_media / $count;
-                                                    $mostraNumero = converteHoras(count($divide));
+                                                    $mostraNumero = converteHoras($divide);
 
                                                 } else {
 

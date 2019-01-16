@@ -17,6 +17,10 @@ class Usuario extends CI_Controller {
 
 	public function cadastro_usuario(){
 
+		if((!isset($_SESSION["logado"])) and ($_SESSION["logado"] != true)){
+			redirect('/');
+		}
+
 		$data = new stdClass();
 
 		$this->load->library('form_validation');
@@ -149,6 +153,10 @@ class Usuario extends CI_Controller {
 	}
 
 	public function editar_usuario(){
+
+		if((!isset($_SESSION["logado"])) and ($_SESSION["logado"] != true)){
+			redirect('/');
+		}
 
 		$data = new stdClass();
 

@@ -140,6 +140,45 @@ class Timer_model extends CI_Model {
     }
 
     /**
+     * Método responsável por verificar se o temporizador parou de contar ou não
+     * Utilizado no controller documentos/Transferencia.php 
+     *
+     * @param int $id_protocolo
+     * @return string retorna o valor da coluna action - start/pause
+     */
+    public function verifica_timer($id_protocolo){
+        $this->db->select('action');
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad', $id_protocolo);
+        $this->db->order_by('id desc');
+        return $this->db->get()->row('action');
+    }
+
+    /**
+     * Método responsável por pausar o temporizador que está em funcionamento
+     *
+     * @param [type] $id_protocolo
+     * @return void
+     */
+    public function troca_acao($id_protocolo){
+        $this->db->from('tbtimer');
+        $this->db->where('fk_iddoccad', $id_protocolo);
+        $this->db->order_by('id asc');
+        $data = $this->db->get()->row();
+
+        $dados = array(
+            'fk_iddoccad' => $id_protocolo,
+            'fk_idetapa'  => $data->fk_idetapa,
+            'action'      => "pause",
+            'timestamp'   => $data->timestamp,
+            'fk_idusuario' => $data->fk_idusuario,
+            'observacao'  => $data->observacao
+        );
+
+        return $this->db->insert('tbtimer', $dados);
+    }
+
+    /**
      * Método responsável por retornar os timers correspondentes a esse protocolo
      * Utilizado no controller relatorios/Relatorios.php e relatorios/Imprimir.php
      *

@@ -29,7 +29,7 @@ class Relatorios extends CI_Controller {
 
         $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
 
-        if (($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)) {
+        /*if (($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)) {
 
             $dados["andamento_doc_c"] = $this->docmodel->listar_documentos_em_andamento($_SESSION["idempresa"]);
 
@@ -38,7 +38,8 @@ class Relatorios extends CI_Controller {
             $dados["andamento_doc_f"] = $this->docmodel->listar_documentos_andamento_cargos($_SESSION["idusuario"]);
             $dados["andamento_doc_c"] = $this->docmodel->listar_documentos_andamento_funcionarios($_SESSION["idusuario"]);
             
-        }
+        }*/
+        $dados["andamento_doc_c"] = $this->docmodel->listar_documentos_em_andamento($_SESSION["idempresa"]);
 
         $this->load->view("template/html_header", $dados);
         $this->load->view("template/header");

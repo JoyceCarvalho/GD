@@ -34,7 +34,7 @@ class Home extends CI_Controller {
             $dados["meus_documentos"] = $total;
 
             //retorna a quantidade de documentos em andamento
-            if (($_SESSION["is_admin"] == true) || ($_SESSION["is_coordenador"])) {
+            /*if (($_SESSION["is_admin"] == true) || ($_SESSION["is_coordenador"])) {
 
                 $a = $this->docmodel->listar_documentos_em_andamento($_SESSION["idempresa"]);    
                 $andamento = count($a);
@@ -45,7 +45,9 @@ class Home extends CI_Controller {
                 $a2 = $this->docmodel->listar_documentos_andamento_funcionarios($_SESSION["idusuario"]);
                 $andamento = count($a1) + count($a2);
                 
-            }
+            }*/
+            $a = $this->docmodel->listar_documentos_em_andamento($_SESSION["idempresa"]);    
+            $andamento = count($a);
             $dados["em_andamento"] = $andamento;
 
             //retorna a quantidade de documentos com erro

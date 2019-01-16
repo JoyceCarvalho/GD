@@ -647,6 +647,14 @@ class Transferencia extends CI_Controller {
         //transforma a string em inteiro
         $idprotocolo = (int)$protocolo;
 
+        $this->load->model('timer_model', 'timermodel');
+
+        $verifica_timer = $this->timermodel->verifica_timer($idprotocolo);
+
+        if($verifica_timer == "start"){
+            $this->timermodel->troca_acao($idprotocolo);
+        }
+
         if ($this->docmodel->editar_documentos_log($idprotocolo)) {
             
             $dados = array(
