@@ -443,6 +443,7 @@ class Timer_model extends CI_Model {
         
         $this->db->select("action, timestamp, fk_iddoccad as idprotocolo");
         $this->db->from("tbtimer as t");
+        $this->db->join("tblog_documentos as ld", "ld.documento = t.fk_iddoccad and ld.descricao = 'FINALIZADO'");
         $this->db->join("tbusuario as u","u.id = t.fk_idusuario");
         $this->db->join("tbcargos as c", "c.id = u.fk_idcargos");
         $this->db->where("c.id", $idcargo);
@@ -450,6 +451,47 @@ class Timer_model extends CI_Model {
         $this->db->order_by("t.id");
         
         return $this->db->get()->result();
+    }
+
+    /**
+     * Lista documentos por cargo sem contar o ultimo registro
+     *
+     * @param int $idcargo
+     * @param int $idtimer
+     * @return int retorna numero de resultados
+     */
+    public function tempo_documento_cargo_without($idcargo, $idtimer){
+        
+        $this->db->select("action, timestamp, fk_iddoccad as idprotocolo");
+        $this->db->from("tbtimer as t");
+        $this->db->join("tblog_documentos as ld", "ld.documento = t.fk_iddoccad and ld.descricao = 'FINALIZADO'");
+        $this->db->join("tbusuario as u","u.id = t.fk_idusuario");
+        $this->db->join("tbcargos as c", "c.id = u.fk_idcargos");
+        $this->db->where("c.id", $idcargo);
+        $this->db->where('t.id != '.$idtimer);
+        $this->db->group_by("t.id");
+        $this->db->order_by("t.id");
+        
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Verifica ultimo registro de ação relativo o cargo
+     * Utilizado no controller Imprimir.php
+     *
+     * @param int $cargo
+     * @return void
+     */
+    public function verifica_pause_cargo($cargo){
+
+        $this->db->select('t.action as action, t.id as id');
+        $this->db->from('tbtimer as t');
+        $this->db->join('tbusuario as u', 'u.id = t.fk_idusuario');
+        $this->db->join('tbcargos as c', 'c.id = u.fk_idcargos');
+        $this->db->where('c.id', $cargo);
+        $this->db->order_by("t.id desc");
+        $this->db->limit(1);
+        return $this->db->get()->row();
     }
 
     /**

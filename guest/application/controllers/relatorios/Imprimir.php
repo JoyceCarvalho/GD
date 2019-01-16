@@ -179,9 +179,19 @@ class Imprimir extends CI_Controller {
             
             if ($cargos->fk_idempresa == $_SESSION["guest_empresa"]) {
                 
+                $tempomedio = 0;
+                $verifica_pause = $this->timermodel->verifica_pause_cargo($cargo);
+                if(!empty($verifica_pause)){
+                    if($verifica_pause->action == "start"){
+                        $tempomedio = $this->timermodel->tempo_documento_cargo_without($cargo, $verifica_pause->id);
+                    } else {
+                        $tempomedio = $this->timermodel->tempo_documento_cargo($cargo);
+                    }
+                }
+
                 $dados["dados_cargo"]           = $dados_cargo;
                 $dados["documento_trabalhados"] = $this->docmodel->documento_por_cargo($cargo);
-                $dados["tempo_medio"]           = $this->timermodel->tempo_documento_cargo($cargo);
+                $dados["tempo_medio"]           = $tempomedio;
 
                 $this->load->view("relatorios/imprimir/relatorios_tempo_cargo", $dados);
 
