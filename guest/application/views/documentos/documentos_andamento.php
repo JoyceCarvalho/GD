@@ -89,9 +89,13 @@
                                                 </td>
                                                 <td style="text-align: center;">
                                                     <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
+                                                    <?php 
+                                                    if(($documentos->idresponsavel == $_SESSION["idusuario"]) or ($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)){
+                                                    ?>
                                                     <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Documento com exigência</a><br/>
                                                     <?php 
-                                                    if ($documentos->idresponsavel == $_SESSION["idusuario"]) {
+                                                    }
+                                                    if (($documentos->idresponsavel == $_SESSION["idusuario"]) or ($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)) {
                                                         ?>
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
                                                         <?php
@@ -107,7 +111,7 @@
                                                     }
                                                     
                                                     $this->load->model('documentos_model', 'docmodel');
-                                                    if ($documentos->idresponsavel == $_SESSION["idusuario"]) {
+                                                    if (($documentos->idresponsavel == $_SESSION["idusuario"])  or ($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)) {
                                                         ?>
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
                                                         <?php
@@ -209,15 +213,6 @@
                                     ?>
                                 </tbody>
                             </table>
-                            <?php
-                            if($andamento_doc_c){
-                                foreach ($andamento_doc_c as $documentos) {
-                                    ?>
-                                    <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
-                                    <?
-                                }
-                            }
-                            ?>
                         </div>
                     </div>
                 </div>
@@ -228,6 +223,7 @@
     <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
         <div role="document" class="modal-dialog">
             <div class="modal-content">
+            
                 <div class="modal-header">
                     <h4 id="exampleModalLabel" class="modal-title"></h4>
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
