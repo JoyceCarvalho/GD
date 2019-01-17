@@ -79,6 +79,7 @@
     $(document).ready(function(){
 
         $("#feriado_tipo").change(function(){
+            
             var feriadoTipo = parseInt($("#feriado_tipo").val());
 
             if (feriadoTipo == 1) {

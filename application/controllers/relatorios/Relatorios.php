@@ -309,7 +309,6 @@ class Relatorios extends CI_Controller {
         $this->load->view('template/footer');
         $this->load->view('template/html_footer');
 
-
     }
 
     public function produtividade_individual(){

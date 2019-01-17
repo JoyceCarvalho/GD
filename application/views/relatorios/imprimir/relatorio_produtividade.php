@@ -16,11 +16,62 @@ $this->load->model("cargos_model", "cargosmodel");
         <link rel="shortcut icon" href="<?=base_url('assets/img/favicon.ico');?>">
         <!-- Bootstrap -->
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        
+        <!-- datepicker -->
+        <script type="text/javascript" src="<?=base_url("assets/bower_components/jquery/dist/jquery.min.js")?>"></script>
+        <script type="text/javascript" src="<?=base_url("assets/bower_components/moment/min/moment.min.js")?>"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="<?=base_url("assets/js/bootstrap.min.js")?>"></script>
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script type="text/javascript" src="<?=base_url("assets/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")?>"></script>
+        <!--<link href="<?//=base_url("assets/vendor/bootstrap/css/bootstrap.min.css")?>" rel="stylesheet">-->
+        <link rel="stylesheet" href="<?=base_url("assets/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css")?>" />
+
+        <script>
+            $( function() {
+                $( "#datepicker" ).datepicker(); 
+            } );
+        </script>
+        <style>        
+            .divFiltros{
+                margin-top: 15px;
+            }
+        </style>
     </head>
     <body class="app sidebar-mini rtl">
         <div class="row">
             <div class="col-md-12">
                 <div class="tile">
+                    <div class="row d-print-none">
+                        <div class="col-12">
+                            <div class="col-6">
+                                <div class="col-md-4 divFiltros" align="center">
+                                    <div class="form-group">
+                                        <label> De: </label>
+                                        <div class='input-group date'>
+                                            <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                            <input id="dataDe" name="dataDe" type='text' class="form-control" value="<?//=$dataDe;?>" required/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="col-md-4 divFiltros" align="center">
+                                    <div class="form-group">
+                                        <label> Até: </label>
+                                        <div class='input-group date'>
+                                            <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                            <input id="dataDe" name="dataDe" type='text' class="form-control" value="<?//=$dataDe;?>" required/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row d-print-none mt-2">
                         <div class="col-12 text-center">
                             <a class="btn btn-warning" href="javascript:window.print();" target="_blank"><i class="fa fa-print"></i> Imprimir</a>
@@ -110,7 +161,7 @@ $this->load->model("cargos_model", "cargosmodel");
                                                 $seconds    = 0;
                                                 $sum_media  = 0;
                                                 //print_r($tempomedio);
-                                                if($tempomedio > 0){
+                                                if(!empty($tempomedio)){
                                                     foreach ($tempomedio as $tempo) {
                                                         $id = $tempo->idprotocolo;
                                                         if ($id == $aux) {
@@ -148,7 +199,7 @@ $this->load->model("cargos_model", "cargosmodel");
                                                 $sum_media = $seconds;
                                                 //echo $seconds;
 
-                                                if($sum_media > 0){
+                                                if($sum_media != 0){
 
                                                     $divide = ($sum_media / $count);
                                                     //$mostraNumero = converteHoras(round($divide));
@@ -176,6 +227,20 @@ $this->load->model("cargos_model", "cargosmodel");
                 </div>
             </div>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('#dataDe').datetimepicker({
+                    viewMode: 'days',
+                    format: 'MM/YYYY'
+                    
+                }); 
+                $('#dataAte').datetimepicker({
+                    viewMode: 'days',
+                    format: 'MM/YYYY'
+                });    
+            });
+        </script>
         <script>
         window.addEventListener("DOMContentLoaded", function() {
 
@@ -220,7 +285,7 @@ $this->load->model("cargos_model", "cargosmodel");
 
         </script>
         <!-- Essential javascripts for application to work-->
-        <script src="<?=base_url('assets/js/jquery-3.2.1.min.js');?>"></script>
+        <!--<script src="<?//=base_url('assets/js/jquery-3.2.1.min.js');?>"></script>-->
         <script src="<?=base_url('assets/js/popper.min.js');?>"></script>
         <script src="<?=base_url('assets/js/bootstrap.min.js');?>"></script>
         <script src="<?=base_url('assets/js/main.js');?>"></script>
