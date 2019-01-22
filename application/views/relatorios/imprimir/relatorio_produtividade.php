@@ -18,58 +18,67 @@ $this->load->model("cargos_model", "cargosmodel");
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         
         <!-- datepicker -->
-        <script type="text/javascript" src="<?=base_url("assets/bower_components/jquery/dist/jquery.min.js")?>"></script>
-        <script type="text/javascript" src="<?=base_url("assets/bower_components/moment/min/moment.min.js")?>"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-        <script src="<?=base_url("assets/js/bootstrap.min.js")?>"></script>
-        <script src="http://code.jquery.com/jquery.js"></script>
-        <script type="text/javascript" src="<?=base_url("assets/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")?>"></script>
-        <!--<link href="<?//=base_url("assets/vendor/bootstrap/css/bootstrap.min.css")?>" rel="stylesheet">-->
-        <link rel="stylesheet" href="<?=base_url("assets/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css")?>" />
+        <!--<link href="<?//=base_url("assets/datetimepicker/sample/bootstrap/css/bootstrap.min.css");?>" rel="stylesheet" media="screen">
+        <link href="<?//=base_url("assets/datetimepicker/css/bootstrap-datetimepicker.min.css");?>" rel="stylesheet" media="screen">-->
 
-        <script>
-            $( function() {
-                $( "#datepicker" ).datepicker(); 
-            } );
-        </script>
         <style>        
             .divFiltros{
                 margin-top: 15px;
+            }
+
+            .botaoImprimir{
+                margin-top: 40px;
+                margin-bottom: 15px;
             }
         </style>
     </head>
     <body class="app sidebar-mini rtl">
         <div class="row">
+            <?php if($this->session->flashdata("error") == TRUE): ?>
+                <div class="col-md-12">
+                    <div class="alert alert-danger" role="alert">
+                        <?=$this->session->flashdata('error');?>
+                    </div>
+                </div>
+            <?php endif; ?>
             <div class="col-md-12">
                 <div class="tile">
                     <div class="row d-print-none">
                         <div class="col-12">
-                            <div class="col-6">
-                                <div class="col-md-4 divFiltros" align="center">
-                                    <div class="form-group">
-                                        <label> De: </label>
-                                        <div class='input-group date'>
-                                            <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                            <input id="dataDe" name="dataDe" type='text' class="form-control" value="<?//=$dataDe;?>" required/>
+                            <form method="post" action="<?=base_url("relatorio_produtividade/".$usuario->id)?>">
+                                <div class="col-6">
+                                    <div class="col-md-4 divFiltros" align="center">
+                                        <div class="form-group">
+                                            <label> De: </label>
+                                            <div class='input-group date dataDe'>
+                                                <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                                <input id="dataDe" name="dataDe" type='text' class="form-control" value="<?=$dataDe;?>" required/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="col-md-4 divFiltros" align="center">
-                                    <div class="form-group">
-                                        <label> Até: </label>
-                                        <div class='input-group date'>
-                                            <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                            <input id="dataDe" name="dataDe" type='text' class="form-control" value="<?//=$dataDe;?>" required/>
+                                <div class="col-6">
+                                    <div class="col-md-4 divFiltros" align="center">
+                                        <div class="form-group">
+                                            <label> Até: </label>
+                                            <div class='input-group date'>
+                                                <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                                <input id="dataAte" name="dataAte" type='text' class="form-control" value="<?=$dataAte;?>" required/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="col-md-1 botaoImprimir">
+                                    
+                                    <div class="form-group">
+                                        <button type="submit" name="filtrar" class="form-control btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filtrar</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="row d-print-none mt-2">
@@ -227,18 +236,33 @@ $this->load->model("cargos_model", "cargosmodel");
                 </div>
             </div>
         </div>
+        <!-- Essential javascripts for application to work-->
+        <script src="<?=base_url('assets/js/popper.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/bootstrap.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/main.js');?>"></script>
+        <!-- The javascript plugin to display page loading on top-->
+        <script src="<?=base_url('assets/js/jquery-3.2.1.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/plugins/pace.min.js');?>"></script>
+        <!-- Page specific javascripts-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!--<script type="text/javascript" src="<?//=base_url("assets/datetimepicker/sample/jquery/jquery-1.8.3.min.js");?>" charset="UTF-8"></script>-->
+        <!-- Page specific javascripts-->
+        <script type="text/javascript" src="<?=base_url("assets/js/plugins/bootstrap-datepicker.min.js")?>"></script>
+        <script type="text/javascript" src="<?=base_url("assets/js/plugins/select2.min.js");?>"></script>
+        <script type="text/javascript" src="<?=base_url("assets/js/plugins/bootstrap-datepicker.min.js");?>"></script>
         <script type="text/javascript">
-            $(document).ready(function(){
-                $('#dataDe').datetimepicker({
-                    viewMode: 'days',
-                    format: 'MM/YYYY'
-                    
-                }); 
-                $('#dataAte').datetimepicker({
-                    viewMode: 'days',
-                    format: 'MM/YYYY'
-                });    
+            $('#dataAte').datepicker({
+                minViewMode: 'months',
+                format: "mm/yyyy",
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            $("#dataDe").datepicker({
+                minViewMode: 'months',
+                format: "mm/yyyy",
+                autoclose: true,
+                todayHighlight: true
             });
         </script>
         <script>
@@ -284,13 +308,5 @@ $this->load->model("cargos_model", "cargosmodel");
         });
 
         </script>
-        <!-- Essential javascripts for application to work-->
-        <!--<script src="<?//=base_url('assets/js/jquery-3.2.1.min.js');?>"></script>-->
-        <script src="<?=base_url('assets/js/popper.min.js');?>"></script>
-        <script src="<?=base_url('assets/js/bootstrap.min.js');?>"></script>
-        <script src="<?=base_url('assets/js/main.js');?>"></script>
-        <!-- The javascript plugin to display page loading on top-->
-        <script src="<?=base_url('assets/js/plugins/pace.min.js');?>"></script>
-        <!-- Page specific javascripts-->
     </body>
 </html>

@@ -309,6 +309,25 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método responsável por retornar quantos erros por documento determinado usuário tem
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int $usuario
+     * @return int
+     */
+    public function erros_usuario_documento_date($usuario, $dataDe, $dataAte){
+        
+        $this->db->select('count(*) as total_doc');
+        $this->db->from('tblog_documentos');
+        $this->db->where('usuario =', $usuario);
+        $this->db->where('descricao = ', "RETORNO COM ERRO");
+        $this->db->where("DATE_FORMAT(data_hora, '%Y-%m') >= '$dataDe'");
+        $this->db->where("DATE_FORMAT(data_hora, '%Y-%m') <= '$dataAte'");
+        
+        return $this->db->get()->row('total_doc');
+    }
+
+    /**
      * Método responsável por retornar a etapa e o usuario da etapa anterior
      * Utilizado no controller documentos/Transferencia.php
      *
@@ -909,6 +928,24 @@ class Documentos_model extends CI_Model {
     }
 
     /**
+     * Método responsável por retornar o total de registro de documento cadastrado
+     * Utilizado no controller documentos/Transferencia.php e documentos/Documento.php
+     *
+     * @param string $usuariosAptos
+     * @return int
+     */
+    public function numero_documentos_data($usuariosAptos, $dataDe, $dataAte){
+        $this->db->select('count(*) as total');
+        $this->db->from('tblog_documentos');
+        $this->db->where("usuario in ($usuariosAptos)");
+        $this->db->where("ultima_etapa = 'true'");
+        $this->db->where("DATE_FORMAT(data_hora, '%Y-%m') >= '$dataDe'");
+        $this->db->where("DATE_FORMAT(data_hora, '%Y-%m') <= '$dataAte'");
+
+        return $this->db->get()->row('total');
+    }
+
+    /**
      * Método responsável por retornar a quantidade de documentos por usuario
      * Utilizado no controller documentos/Transferencia.php e documentos/Documento.php
      *
@@ -939,6 +976,24 @@ class Documentos_model extends CI_Model {
         $this->db->from('tblog_documentos as ldA');
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = ldA.documento and ldB.descricao = "FINALIZADO"');
         $this->db->where("ldA.usuario", $usuario);
+        
+        return $this->db->get()->row('total');
+    }
+
+    /**
+     * Método responsável por retornar a quantidade de documentos finalizado por determinado funcionario
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int $usuario
+     * @return int
+     */
+    public function quantidade_documentos_finalizados_usuario_date($usuario, $dataDe, $dataAte){
+        $this->db->select('count(*) as total');
+        $this->db->from('tblog_documentos as ldA');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = ldA.documento and ldB.descricao = "FINALIZADO"');
+        $this->db->where("ldA.usuario", $usuario);
+        $this->db->where("DATE_FORMAT(ldA.data_hora, '%Y-%m') >= '$dataDe'");
+        $this->db->where("DATE_FORMAT(ldA.data_hora, '%Y-%m') <= '$dataAte'");
         
         return $this->db->get()->row('total');
     }

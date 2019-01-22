@@ -378,6 +378,28 @@ class Timer_model extends CI_Model {
     }
 
     /**
+     * Método responsável por listar o tempo médio do usuário
+     * Utilizado nos controller relatorios/Imprimir.php e relatorios/Relatorios.php
+     *
+     * @param int $responsavel
+     * @return object
+     */
+    public function tempo_documento_usuario_date($responsavel, $idtimer, $dataDe, $dataAte){
+
+        $this->db->select('t.action as action, t.timestamp as timestamp, t.fk_iddoccad as idprotocolo');
+        $this->db->from('tbtimer as t');
+        $this->db->join('tblog_documentos as ld','ld.documento = t.fk_iddoccad');
+        $this->db->where('t.fk_idusuario', $responsavel);
+        $this->db->where("t.id != $idtimer");
+        $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') >= '$dataDe'"); 
+        $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') <= '$dataAte'");
+        $this->db->order_by('t.fk_iddoccad asc, ld.id asc');
+        
+        return $this->db->get()->result();
+
+    }
+
+    /**
      * Método responsável por listar o tempo médio do usuário nos documentos trabalhados (casos especificos)
      * Utilizado nos controller relatorios/Imprimir.php e relatorios/Relatorios.php
      *
@@ -389,6 +411,24 @@ class Timer_model extends CI_Model {
         $this->db->from('tbtimer');
         $this->db->where('fk_idusuario', $responsavel);
         $this->db->order_by('id asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por listar o tempo médio do usuário nos documentos trabalhados (casos especificos)
+     * Utilizado nos controller relatorios/Imprimir.php e relatorios/Relatorios.php
+     *
+     * @param int $responsavel
+     * @return object
+     */
+    public function tempo_documento_usuario_rel_date($responsavel, $dataDe, $dataAte){
+        $this->db->select('t.action as action, t.timestamp as timestamp, t.fk_iddoccad as idprotocolo');
+        $this->db->from('tbtimer as t');
+        $this->db->join('tblog_documentos as ld','ld.documento = t.fk_iddoccad');
+        $this->db->where('fk_idusuario', $responsavel);
+        $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') >= '$dataDe'"); 
+        $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') <= '$dataAte'");
+        $this->db->order_by('t.fk_iddoccad asc, ld.id asc');
         return $this->db->get()->result();
     }
 
