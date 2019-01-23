@@ -180,17 +180,43 @@ class Imprimir extends CI_Controller {
             if ($cargos->fk_idempresa == $_SESSION["idempresa"]) {
 
                 $tempomedio = 0;
-                $verifica_pause = $this->timermodel->verifica_pause_cargo($cargo);
-                if(!empty($verifica_pause)){
-                    if($verifica_pause->action == "start"){
-                        $tempomedio = $this->timermodel->tempo_documento_cargo_without($cargo, $verifica_pause->id);
-                    } else {
-                        $tempomedio = $this->timermodel->tempo_documento_cargo($cargo);
+
+                if((isset($_POST["dataDe"])) and (isset($_POST["dataAte"])) and (transforma_mes_ano($_POST["dataAte"]) > transforma_mes_ano($_POST["dataDe"]))){
+                    
+                    $dataDe = transforma_mes_ano($_POST["dataDe"]);
+                    $dataAte = transforma_mes_ano($_POST["dataAte"]);
+
+                    $verifica_pause = $this->timermodel->verifica_pause_cargo($cargo);
+                    if(!empty($verifica_pause)){
+                        if($verifica_pause->action == "start"){
+                            $tempomedio = $this->timermodel->tempo_documento_cargo_without_date($cargo, $verifica_pause->id, $dataDe, $dataAte);
+                        } else {
+                            $tempomedio = $this->timermodel->tempo_documento_cargo_date($cargo, $dataDe, $dataAte);
+                        }
                     }
+
+                    $documentos_trabalhados = $this->docmodel->documento_por_cargo_date($cargo, $dataDe, $dataAte);
+
+                } else{
+
+                    $verifica_pause = $this->timermodel->verifica_pause_cargo($cargo);
+                    if(!empty($verifica_pause)){
+                        if($verifica_pause->action == "start"){
+                            $tempomedio = $this->timermodel->tempo_documento_cargo_without($cargo, $verifica_pause->id);
+                        } else {
+                            $tempomedio = $this->timermodel->tempo_documento_cargo($cargo);
+                        }
+                    }
+
+                    $documentos_trabalhados = $this->docmodel->documento_por_cargo($cargo);
+
                 }
                 
                 $dados["dados_cargo"]           = $dados_cargo;
-                $dados["documento_trabalhados"] = $this->docmodel->documento_por_cargo($cargo);
+                $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+                $dados["dataDe"]                = (isset($_POST["dataDe"])) ? $_POST["dataDe"] : "";
+                $dados["dataAte"]               = (isset($_POST["dataAte"])) ? $_POST["dataAte"] : "";
+                $dados["documento_trabalhados"] = $documentos_trabalhados;
                 $dados["tempo_medio"]           = $tempomedio;
 
                 $this->load->view("relatorios/imprimir/relatorios_tempo_cargo", $dados);

@@ -494,6 +494,29 @@ class Timer_model extends CI_Model {
     }
 
     /**
+     * Método responsável por listar o tempo médio por cargos
+     * Utilizado na view relatorios/tempo_cargo.php
+     *
+     * @param int $idcargo
+     * @return object
+     */
+    public function tempo_documento_cargo_date($idcargo, $dataDe, $dataAte){
+        
+        $this->db->select("action, timestamp, fk_iddoccad as idprotocolo");
+        $this->db->from("tbtimer as t");
+        $this->db->join("tblog_documentos as ld", "ld.documento = t.fk_iddoccad and ld.descricao = 'FINALIZADO'");
+        $this->db->join("tbusuario as u","u.id = t.fk_idusuario");
+        $this->db->join("tbcargos as c", "c.id = u.fk_idcargos");
+        $this->db->where("c.id", $idcargo);
+        $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') >= '$dataDe'");
+        $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') <= '$dataAte'");
+        $this->db->group_by("t.id");
+        $this->db->order_by("t.id");
+        
+        return $this->db->get()->result();
+    }
+
+    /**
      * Lista documentos por cargo sem contar o ultimo registro
      *
      * @param int $idcargo
@@ -509,6 +532,30 @@ class Timer_model extends CI_Model {
         $this->db->join("tbcargos as c", "c.id = u.fk_idcargos");
         $this->db->where("c.id", $idcargo);
         $this->db->where('t.id != '.$idtimer);
+        $this->db->group_by("t.id");
+        $this->db->order_by("t.id");
+        
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Lista documentos por cargo sem contar o ultimo registro
+     *
+     * @param int $idcargo
+     * @param int $idtimer
+     * @return int retorna numero de resultados
+     */
+    public function tempo_documento_cargo_without_date($idcargo, $idtimer, $dataDe, $dataAte){
+        
+        $this->db->select("action, timestamp, fk_iddoccad as idprotocolo");
+        $this->db->from("tbtimer as t");
+        $this->db->join("tblog_documentos as ld", "ld.documento = t.fk_iddoccad and ld.descricao = 'FINALIZADO'");
+        $this->db->join("tbusuario as u","u.id = t.fk_idusuario");
+        $this->db->join("tbcargos as c", "c.id = u.fk_idcargos");
+        $this->db->where("c.id", $idcargo);
+        $this->db->where('t.id != '.$idtimer);
+        $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') >= '$dataDe'");
+        $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') <= '$dataAte'");
         $this->db->group_by("t.id");
         $this->db->order_by("t.id");
         

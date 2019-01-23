@@ -16,30 +16,73 @@ foreach ($dados_cargo as $cargo) {
         <title>SGT - Gestão e Tecnologia</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Joyce Carvalho">
-        <!-- Bootstrap CSS-->
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <!-- Font Awesome CSS-->
-        <link rel="stylesheet" href="<?=base_url('assets/vendor/font-awesome/css/font-awesome.min.css');?>">
-        <!-- Fontastic Custom icon font-->
-        <link rel="stylesheet" href="<?=base_url('assets/css/fontastic.css');?>">
-        <!-- Google fonts - Poppins -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
-        <!-- theme stylesheet-->
-        <link rel="stylesheet" href="<?=base_url('assets/css/style.blue.css');?>" id="theme-stylesheet">
-        <!-- Custom stylesheet - for your changes-->
-        <link rel="stylesheet" href="<?=base_url('assets/css/custom.css');?>">
-        <!-- Favicon-->
+        <!-- Main CSS-->
+        <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/main.css');?>">
+        <!-- Font-icon css-->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- Icone SGT -->
         <link rel="shortcut icon" href="<?=base_url('assets/img/favicon.ico');?>">
-        <!-- jQuery -->
-        <script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-
+        <!-- Bootstrap -->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <!-- CSS para impressão -->
         <link rel="stylesheet" href="<?=base_url("assets/css/imprimir.css");?>">
+        <style>
+            .divFiltros{
+                margin-top: 15px;
+            }
+
+            .botaoImprimir{
+                margin-top: 40px;
+                margin-bottom: 15px;
+            }   
+        </style>
     </head>
-    <body>
+    <body class="app sidebar-mini rtl">
         <div class="container-fluid panel panel-default wrapper">
             <div class="panel-body no-print text-center">
-                <a href="javascript:window.print()" class="btn btn-warning"><i class="fa fa-print"></i> Imprimir</a>
+                <div class="row d-print-none">
+                    <div class="col-12">
+                        <form method="post" action="<?=base_url("relatorio_tcargo/".$id_cargo)?>">
+                            <div class="col-6">
+                                <div class="col-md-4 divFiltros" align="center">
+                                    <div class="form-group">
+                                        <label> De: </label>
+                                        <div class='input-group date dataDe'>
+                                            <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                            <input id="dataDe" name="dataDe" type='text' class="form-control" value="<?=$dataDe;?>" required/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="col-md-4 divFiltros" align="center">
+                                    <div class="form-group">
+                                        <label> Até: </label>
+                                        <div class='input-group date'>
+                                            <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                            <input id="dataAte" name="dataAte" type='text' class="form-control" value="<?=$dataAte;?>" required/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1 botaoImprimir">
+                                
+                                <div class="form-group">
+                                    <button type="submit" name="filtrar" class="form-control btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filtrar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row d-print-none mt-2">
+                    <div class="col-12 text-center">
+                        <a href="javascript:window.print()" class="btn btn-warning"><i class="fa fa-print"></i> Imprimir</a>
+                    </div>
+                </div>
             </div>
 
             <div class="panel-body content">
@@ -103,30 +146,66 @@ foreach ($dados_cargo as $cargo) {
                         <div class="panel-body">
                             <?php
                             // Trecho adaptado do 1º gestão de documentos
-                            $seconds = 0;
-                            $sum_media = 0;
+                            $id         = 0;
+                            $aux        = 0;
+                            $count      = 0;
 
-                            foreach ($tempo_medio as $tempo) {
-                                
-                                $action = $tempo->action;
-                                switch ($action) {
-                                    case 'start':
-                                        $seconds -= $tempo->timestamp;
-                                        break;
-                                    
-                                    case 'pause':
-                                        if($seconds !== 0){
-                                            $seconds += $tempo->timestamp;
+                            //trecho de codigo adaptado do 1º Gestão de Documentos (contém várias modificações)
+                            $seconds    = 0;
+                            $sum_media  = 0;
+                            //print_r($tempomedio);
+                            if(!empty($tempo_medio)){
+                                foreach ($tempo_medio as $tempo) {
+                                    $id = $tempo->idprotocolo;
+                                    if ($id == $aux) {
+                                        $action = $tempo->action;
+                                        switch ($action) {
+                                            case 'start':
+                                                $seconds -= $tempo->timestamp;
+                                                break;
+                                            
+                                            case 'pause':
+                                                if($seconds !== 0){
+                                                    $seconds += $tempo->timestamp;
+                                                }
+                                                break;
                                         }
-                                        break;
+                                    } else {
+                                        $action = $tempo->action;
+                                        switch ($action) {
+                                            case 'start':
+                                                $seconds -= $tempo->timestamp;
+                                                break;
+                                            
+                                            case 'pause':
+                                                if($seconds !== 0){
+                                                    $seconds += $tempo->timestamp;
+                                                }
+                                                break;
+                                        }
+                                        $count++;
+                                    }
+                                    $aux = $tempo->idprotocolo;
                                 }
                             }
-                            $sum_media += $seconds;
-                            $mostraNumero = converteHoras($seconds);
 
-                            echo "O tempo médio desenvolvido no documento foi <strong>" . $mostraNumero . "</strong>";
+                            $sum_media = $seconds;
+                            //echo $seconds;
+
+                            if($sum_media != 0){
+
+                                $divide = ($sum_media / $count);
+                                //$mostraNumero = converteHoras(round($divide));
+
+                            } else {
+
+                                $divide = "00:00:00"; 
+
+                            }
                             
                             ?>
+                            <input type="hidden" name="t_total" id="t_total" value="<?=$divide;?>">
+                            <strong id="tempo_total"></strong>
                         </div>                                
 
                     </div> 
@@ -197,6 +276,77 @@ foreach ($dados_cargo as $cargo) {
             </div>
             <!-- Fim do conteudo -->
         </div>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!-- Essential javascripts for application to work-->
+        <script src="<?=base_url('assets/js/popper.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/bootstrap.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/main.js');?>"></script>
+        <!-- The javascript plugin to display page loading on top-->
+        <script src="<?=base_url('assets/js/jquery-3.2.1.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/plugins/pace.min.js');?>"></script>
+        <!-- Page specific javascripts-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!--<script type="text/javascript" src="<?//=base_url("assets/datetimepicker/sample/jquery/jquery-1.8.3.min.js");?>" charset="UTF-8"></script>-->
+        <!-- Page specific javascripts-->
+        <script type="text/javascript" src="<?=base_url("assets/js/plugins/bootstrap-datepicker.min.js")?>"></script>
+        <script type="text/javascript" src="<?=base_url("assets/js/plugins/select2.min.js");?>"></script>
+        <script type="text/javascript" src="<?=base_url("assets/js/plugins/bootstrap-datepicker.min.js");?>"></script>
+        <script type="text/javascript">
+            $('#dataAte').datepicker({
+                minViewMode: 'months',
+                format: "mm/yyyy",
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            $("#dataDe").datepicker({
+                minViewMode: 'months',
+                format: "mm/yyyy",
+                autoclose: true,
+                todayHighlight: true
+            });
+        </script>
+        <script>
+        window.addEventListener("DOMContentLoaded", function() {
+
+            var format = function(seconds) {
+                var tempos = {
+                    segundos: 60
+                ,   minutos: 60
+                ,   horas: 24
+                ,   dias: ''
+                };
+                var parts = [], string = '', resto, dias;
+                for (var unid in tempos) {
+                    if (typeof tempos[unid] === 'number') {
+                        resto = seconds % tempos[unid];
+                        seconds = (seconds - resto) / tempos[unid];
+                    } else {
+                        resto = seconds;
+                    }
+                    parts.unshift(resto);
+                }
+                dias = parts.shift();
+                if (dias) {
+                    string = dias + (dias > 1 ? ' dias ' : ' dia ');
+                }
+                for (var i = 0; i < 3; i++) {
+                    parts[i] = ('0' + parts[i]).substr(-2);
+                }
+                string += parts.join(':');
+                return string;
+            };
+
+            $(function (){
+
+                $(document).ready(function() {
+
+                    var tempo_total = parseInt($("#t_total").val());
+                    $('#tempo_total').html(format(++tempo_total));
+                });
+
+            })
+        });
+
+        </script>
     </body>
 </html>
