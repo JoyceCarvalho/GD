@@ -72,8 +72,7 @@ $this->load->model("cargos_model", "cargosmodel");
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-1 botaoImprimir">
-                                    
+                                <div class="col-md-1 botaoImprimir">                                    
                                     <div class="form-group">
                                         <button type="submit" name="filtrar" class="form-control btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filtrar</button>
                                     </div>

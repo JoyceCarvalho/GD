@@ -322,19 +322,57 @@ class Relatorios extends CI_Controller {
         $dados["submenu"] = "produtividade";
         $dados["sub"]     = "individual";
 
-        $verifica_pause = $this->timermodel->verifica_pause($_SESSION["idusuario"]);
-        if($verifica_pause->action == "start"){
-            $tempomedio = $this->timermodel->tempo_documento_usuario($_SESSION["idusuario"], $verifica_pause->id);
+        $tempomedio = 0;
+
+        if((isset($_POST["dataDe"])) and (isset($_POST["dataAte"])) and (transforma_mes_ano($_POST["dataAte"]) > transforma_mes_ano($_POST["dataDe"]))){
+
+            $dataDe = transforma_mes_ano($_POST["dataDe"]);
+            $dataAte = transforma_mes_ano($_POST["dataAte"]);
+
+            $verifica_pause = $this->timermodel->verifica_pause($_SESSION["idusuario"]);
+            if(!empty($verifica_pause)){
+                
+                if($verifica_pause->action == "start"){
+                    $tempomedio = $this->timermodel->tempo_documento_usuario_date($_SESSION["idusuario"], $verifica_pause->id, $dataDe, $dataAte);
+                } else {
+                    $tempomedio = $this->timermodel->tempo_documento_usuario_rel_date($_SESSION["idusuario"], $dataDe, $dataAte);
+                }
+            }
+
+            $documentos_finalizados = $this->docmodel->quantidade_documentos_finalizados_usuario_date($_SESSION["idusuario"], $dataDe, $dataAte);
+            $documentos_andamento = $this->docmodel->numero_documentos_data($_SESSION["idusuario"], $dataDe, $dataAte);       
+            $erros_user = $this->docmodel->erros_usuario_documento_date($_SESSION["idusuario"], $dataDe, $dataAte);       
+
         } else {
-            $tempomedio = $this->timermodel->tempo_documento_usuario_rel($_SESSION["idusuario"]);
+
+            $verifica_pause = $this->timermodel->verifica_pause($_SESSION["idusuario"]);
+            if(!empty($verifica_pause)){
+                if($verifica_pause->action == "start"){
+                    $tempomedio = $this->timermodel->tempo_documento_usuario($_SESSION["idusuario"], $verifica_pause->id);
+                } else {
+                    $tempomedio = $this->timermodel->tempo_documento_usuario_rel($_SESSION["idusuario"]);
+                }
+            }
+
+            $documentos_finalizados = $this->docmodel->quantidade_documentos_finalizados_usuario($_SESSION["idusuario"]);
+            $documentos_andamento = $this->docmodel->numero_documentos($_SESSION["idusuario"]);
+            $erros_user = $this->docmodel->erros_usuario_documento($_SESSION["idusuario"]);
+        }
+
+        if((isset($_POST["dataDe"])) and (isset($_POST["dataAte"])) and (transforma_mes_ano($_POST["dataAte"]) < transforma_mes_ano($_POST["dataDe"]))){
+            
+            $this->session->set_flashdata("error", "A data ATÉ não pode ser menor que a data DE");
+
         }
 
         $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
         $dados['usuario']               = $this->usermodel->dados_usuario($_SESSION["idusuario"]);
-        $dados["documentos_fnalizados"] = $this->docmodel->quantidade_documentos_finalizados_usuario($_SESSION["idusuario"]);
-        $dados["documentos_andamento"]  = $this->docmodel->numero_documentos($_SESSION["idusuario"]);
+        $dados["dataDe"]                = (isset($_POST["dataDe"])) ? $_POST["dataDe"] : "";
+        $dados["dataAte"]               = (isset($_POST["dataAte"])) ? $_POST["dataAte"] : "";
+        $dados["documentos_fnalizados"] = $documentos_finalizados;
+        $dados["documentos_andamento"]  = $documentos_andamento;
         $dados["tempomedio"]            = $tempomedio;
-        $dados["erros_user"]            = $this->docmodel->erros_usuario_documento($_SESSION["idusuario"]);
+        $dados["erros_user"]            = $erros_user;
         
         $this->load->view('template/html_header', $dados);
         $this->load->view('template/header');

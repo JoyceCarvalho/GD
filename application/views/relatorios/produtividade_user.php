@@ -3,10 +3,36 @@ $this->load->model('cargos_model', 'cargosmodel');
 ?>
 <section class="tables">
     <div class="container-fluid">
-        
         <div class="row">        
             <div class="col-lg-12">     
                 <div class="tile">
+                    <div class="row d-print-none">
+                        <form method="post" action="<?=base_url("produtividade_individual")?>" class="col-12">                                    
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label> De: </label>
+                                    <div class='input-group date dataDe'>
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                        <input id="dataDe" name="dataDe" type='text' class="form-control" value="<?=$dataDe;?>" required/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label> Até: </label>
+                                    <div class='input-group date'>
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                        <input id="dataAte" name="dataAte" type='text' class="form-control" value="<?=$dataAte;?>" required/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" style="padding-top: 30px">
+                                    <button type="submit" name="filtrar" class="form-control btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filtrar</button>
+                                </div>
+                            </div>                                
+                        </form>
+                    </div>      
                     <section class="invoice">
                         <div class="col-12">
                             <div class="row mb-4">
@@ -90,45 +116,49 @@ $this->load->model('cargos_model', 'cargosmodel');
                                                 //trecho de codigo adaptado do 1º Gestão de Documentos (contém várias modificações)
                                                 $seconds    = 0;
                                                 $sum_media  = 0;
-                                                foreach ($tempomedio as $tempo) {
-                                                    $id = $tempo->idprotocolo;
-                                                    if ($id == $aux) {
-                                                        $action = $tempo->action;
-                                                        switch ($action) {
-                                                            case 'start':
-                                                                $seconds -= $tempo->timestamp;
-                                                                break;
-                                                            
-                                                            case 'pause':
-                                                                if($seconds !== 0){
-                                                                    $seconds += $tempo->timestamp;
-                                                                }
-                                                                break;
+                                                //print_r($tempomedio);
+                                                if(!empty($tempomedio)){
+                                                    foreach ($tempomedio as $tempo) {
+                                                        $id = $tempo->idprotocolo;
+                                                        if ($id == $aux) {
+                                                            $action = $tempo->action;
+                                                            switch ($action) {
+                                                                case 'start':
+                                                                    $seconds -= $tempo->timestamp;
+                                                                    break;
+                                                                
+                                                                case 'pause':
+                                                                    if($seconds !== 0){
+                                                                        $seconds += $tempo->timestamp;
+                                                                    }
+                                                                    break;
+                                                            }
+                                                        } else {
+                                                            $action = $tempo->action;
+                                                            switch ($action) {
+                                                                case 'start':
+                                                                    $seconds -= $tempo->timestamp;
+                                                                    break;
+                                                                
+                                                                case 'pause':
+                                                                    if($seconds !== 0){
+                                                                        $seconds += $tempo->timestamp;
+                                                                    }
+                                                                    break;
+                                                            }
+                                                            $count++;
                                                         }
-                                                    } else {
-                                                        $action = $tempo->action;
-                                                        switch ($action) {
-                                                            case 'start':
-                                                                $seconds -= $tempo->timestamp;
-                                                                break;
-                                                            
-                                                            case 'pause':
-                                                                if($seconds !== 0){
-                                                                    $seconds += $tempo->timestamp;
-                                                                }
-                                                                break;
-                                                        }
-                                                        $count++;
+                                                        $aux = $tempo->idprotocolo;
                                                     }
-                                                    $aux = $tempo->idprotocolo;
                                                 }
-                                                
-                                                $sum_media += $seconds;
 
-                                                if($sum_media > 0){
+                                                $sum_media = $seconds;
+                                                //echo $seconds;
 
-                                                    $divide = $sum_media / $count;
-                                                    //$mostraNumero = converteHoras($divide);
+                                                if($sum_media != 0){
+
+                                                    $divide = ($sum_media / $count);
+                                                    //$mostraNumero = converteHoras(round($divide));
 
                                                 } else {
 
@@ -136,9 +166,9 @@ $this->load->model('cargos_model', 'cargosmodel');
 
                                                 }
 
-                                                //echo $mostraNumero;
+                                                //echo $sum_media;
                                                 ?>
-                                                <input type="hidden" name="tempo_total" id="t_total" value="<?=$divide?>">
+                                                <input type="hidden" name="t_total" id="t_total" value="<?=$divide;?>">
                                                 <strong id="tempo_total"></strong>
                                             </td>
                                             <td>
@@ -151,13 +181,42 @@ $this->load->model('cargos_model', 'cargosmodel');
                         </div>
                         <div class="row d-print-none mt-2">
                             <div class="col-12 text-right"><a class="btn btn-primary" href="javascript:window.print();" target="_blank"><i class="fa fa-print"></i> Imprimir</a></div>
-                        </div>                        
+                        </div>                  
                     </section>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<!-- Essential javascripts for application to work-->
+<script src="<?=base_url('assets/js/popper.min.js');?>"></script>
+<script src="<?=base_url('assets/js/bootstrap.min.js');?>"></script>
+<script src="<?=base_url('assets/js/main.js');?>"></script>
+<!-- The javascript plugin to display page loading on top-->
+<script src="<?=base_url('assets/js/jquery-3.2.1.min.js');?>"></script>
+<script src="<?=base_url('assets/js/plugins/pace.min.js');?>"></script>
+<!-- Page specific javascripts-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!--<script type="text/javascript" src="<?//=base_url("assets/datetimepicker/sample/jquery/jquery-1.8.3.min.js");?>" charset="UTF-8"></script>-->
+<!-- Page specific javascripts-->
+<script type="text/javascript" src="<?=base_url("assets/js/plugins/bootstrap-datepicker.min.js")?>"></script>
+<script type="text/javascript" src="<?=base_url("assets/js/plugins/select2.min.js");?>"></script>
+<script type="text/javascript" src="<?=base_url("assets/js/plugins/bootstrap-datepicker.min.js");?>"></script>
+<script type="text/javascript">
+    $('#dataAte').datepicker({
+        minViewMode: 'months',
+        format: "mm/yyyy",
+        autoclose: true,
+        todayHighlight: true
+    });
+
+    $("#dataDe").datepicker({
+        minViewMode: 'months',
+        format: "mm/yyyy",
+        autoclose: true,
+        todayHighlight: true
+    });
+</script>
 <script>
 window.addEventListener("DOMContentLoaded", function() {
 

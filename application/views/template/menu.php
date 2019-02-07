@@ -218,7 +218,7 @@
           <?php if((($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true))): ?>
             <li <?=($submenu == "produtividade") ? "class='active'" : "" ?>><a href="<?=base_url("produtividade_grupo");?>"><i class="fa fa-line-chart"></i> Produtividade Individual</a></li>
           <?php else: ?>
-            <li <?=($submenu == "produtividade") ? "class='active'" : "" ?>><a href="<?=base_url("produtividade_indivudual");?>"><i class="fa fa-line-chart"></i> Produtividade Individual</a></li>
+            <li <?=($submenu == "produtividade") ? "class='active'" : "" ?>><a href="<?=base_url("produtividade_individual");?>"><i class="fa fa-line-chart"></i> Produtividade Individual</a></li>
           <?php endif; ?>
 
           <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
