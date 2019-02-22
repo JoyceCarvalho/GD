@@ -164,8 +164,8 @@ class Documentos_model extends CI_Model {
      * @return object
      */
     public function documento_por_cargo($cargo){
-        $this->db->select("d.id as iddocumento, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
-        ldA.data_hora AS data_criacao, u.nome AS nome_usuario, dc.id as idprotocolo");
+        $this->db->select("d.id as iddocumento, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, 
+        DATE_FORMAT(dc.prazo, '%d/%m/%Y') as prazo_documento, DATE_FORMAT(ldB.data_hora, '%d/%m/%Y') as data_finalizacao, DATE_FORMAT(ldA.data_hora, '%d/%m/%Y') AS data_criacao, u.nome AS nome_usuario, dc.id as idprotocolo");
         $this->db->from("tbdocumentos_cad AS dc");
         $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
         $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="cargo"');
@@ -181,15 +181,15 @@ class Documentos_model extends CI_Model {
     }
 
     /**
-     * Método para listagem de documento por cargo
+     * Método para listagem de documento por cargo por filtro de dias
      * Utilizado no controller relatorios/Imprimir.php 
      *
      * @param int $cargo
      * @return object
      */
     public function documento_por_cargo_date($cargo, $dataDe, $dataAte){
-        $this->db->select("d.id as iddocumento, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
-        ldA.data_hora AS data_criacao, u.nome AS nome_usuario, dc.id as idprotocolo");
+        $this->db->select("d.id as iddocumento, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, 
+        DATE_FORMAT(dc.prazo, '%d/%m/%Y') as prazo_documento, DATE_FORMAT(ldB.data_hora, '%d/%m/%Y') as data_finalizacao, DATE_FORMAT(ldA.data_hora, '%d/%m/%Y') AS data_criacao, u.nome AS nome_usuario, dc.id as idprotocolo");
         $this->db->from("tbdocumentos_cad AS dc");
         $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
         $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="cargo"');
@@ -201,6 +201,84 @@ class Documentos_model extends CI_Model {
         $this->db->where("DATE_FORMAT(ldA.data_hora, '%Y-%m') >= '$dataDe'");
         $this->db->where("DATE_FORMAT(ldA.data_hora, '%Y-%m') <= '$dataAte'");
         $this->db->group_by("dc.id");
+        $this->db->order_by("ldA.data_hora asc");
+
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método para listagem de documento por cargo por filtro de dias por protocolo
+     * Utilizado no controller relatorios/Imprimir.php 
+     *
+     * @param int $cargo
+     * @param int $dataDe
+     * @param int $dataAte
+     * @param int $iddocumento
+     * @return object
+     */
+    public function documento_por_cargo_dateDoc($cargo, $dataDe, $dataAte, $iddocumento){
+        $this->db->select("d.id as iddocumento, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, 
+        DATE_FORMAT(dc.prazo, '%d/%m/%Y') as prazo_documento, DATE_FORMAT(ldB.data_hora, '%d/%m/%Y') as data_finalizacao, DATE_FORMAT(ldA.data_hora, '%d/%m/%Y') AS data_criacao, u.nome AS nome_usuario, dc.id as idprotocolo");
+        $this->db->from("tbdocumentos_cad AS dc");
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
+        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="cargo"');
+        $this->db->join("tbgrupo AS g", "g.id = d.fk_idgrupo");
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join("tbusuario as u", "u.fk_idcargos = c.fk_idcargo", 'left');
+        $this->db->where("c.fk_idcargo", $cargo);
+        $this->db->where("DATE_FORMAT(ldA.data_hora, '%Y-%m') >= '$dataDe'");
+        $this->db->where("DATE_FORMAT(ldA.data_hora, '%Y-%m') <= '$dataAte'");
+        $this->db->where('d.id', $iddocumento);
+        $this->db->group_by("dc.id");
+        $this->db->order_by("ldA.data_hora asc");
+
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método para listagem de documento por cargo por filtro de documentos
+     *
+     * @param int $cargo
+     * @param int $iddocumento
+     * @return object
+     */
+    public function documento_cargo_filtro($cargo, $iddocumento){
+        $this->db->select("d.id as iddocumento, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, 
+        DATE_FORMAT(dc.prazo, '%d/%m/%Y') as prazo_documento, DATE_FORMAT(ldB.data_hora, '%d/%m/%Y') as data_finalizacao, DATE_FORMAT(ldA.data_hora, '%d/%m/%Y') AS data_criacao, u.nome AS nome_usuario, dc.id as idprotocolo");
+        $this->db->from("tbdocumentos_cad AS dc");
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
+        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="cargo"');
+        $this->db->join("tbgrupo AS g", "g.id = d.fk_idgrupo");
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join("tbusuario as u", "u.fk_idcargos = c.fk_idcargo", 'left');
+        $this->db->where("c.fk_idcargo", $cargo);
+        $this->db->where('d.id', $iddocumento);
+        $this->db->group_by("dc.id");
+        $this->db->order_by("ldA.data_hora asc");
+
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por mostrar os documentos que foram trabalhados por determinado cargo
+     * Utilizado no controller relatorios/Imprimir.php 
+     *
+     * @param int $cargo
+     * @return object
+     */
+    public function filtro_documento_cargo($cargo){
+        $this->db->select("d.*");
+        $this->db->from("tbdocumentos_cad AS dc"); 
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
+        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="cargo"');
+        $this->db->join("tbgrupo AS g", "g.id = d.fk_idgrupo");
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join('tbusuario as u', 'u.fk_idcargos = c.fk_idcargo', 'left');
+        $this->db->where("c.fk_idcargo = $cargo");
+        $this->db->group_by('d.id');
         $this->db->order_by("ldA.data_hora asc");
 
         return $this->db->get()->result();

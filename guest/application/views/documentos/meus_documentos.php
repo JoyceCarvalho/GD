@@ -51,199 +51,102 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                        if (!empty($documentos_cargo)) {
-                                            foreach ($documentos_cargo as $documentos) {
-                                                ?>
-                                                <tr>
-                                                    <td><?=$documentos->protocolo;?></td>
-                                                    <td>
-                                                        <?=$documentos->documento;?><br/>
-                                                        <strong><?=$documentos->grupo;?></strong>
-                                                    </td>
-                                                    <td>
-                                                        <?php
-                                                        if(!empty($documentos->prazo)){
+                                <?php                                        
+                                    if ($documentos_usuario) {
+                                        foreach ($documentos_usuario as $documentos) {
+                                            ?>
+                                            <tr>
+                                                <td><?=$documentos->protocolo;?></td>
+                                                <td>
+                                                    <?=$documentos->documento;?><br/>
+                                                    <strong><?=$documentos->grupo;?></strong>
+                                                </td>
+                                                <td>
+                                                    <?php
+                                                    if(!empty($documentos->prazo)){
+                                                        ?>
+                                                        Documento: <?=converte_data($documentos->prazo);?> <br/>
+                                                        <strong>
+                                                            <?php
+                                                            $this->load->model('etapas_model', 'etapasmodel');
+                                                            $prazo = $this->etapasmodel->prazo_etapa($documentos->idprotocolo, $documentos->idetapa);
+                                                            echo "Etapa: ".converte_data($prazo);
                                                             ?>
-                                                            Documento: <?=converte_data($documentos->prazo);?> <br/>
-                                                            <strong>
-                                                                <?php
-                                                                $this->load->model('etapas_model', 'etapasmodel');
-                                                                $prazo = $this->etapasmodel->prazo_etapa($documentos->idprotocolo, $documentos->idetapa);
-                                                                echo "Etapa: ".converte_data($prazo);
-                                                                ?>
-                                                            </strong>
+                                                        </strong>
+                                                        <?php
+                                                    } else {
+                                                        ?>
+                                                        <strong>Documento sem prazo!</strong>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <td><?=$documentos->etapa;?></td>
+                                                <td><?=converte_datetime($documentos->data_criacao);?></td>
+                                                <td style="text-align: center;">
+                                                    <?php 
+                                                        $this->load->model('DocEtapas_model', 'docetapamodel');
+                                                        $last_step = $this->docetapamodel->ultima_etapa($documentos->iddocumento);
+                                                        if ($last_step == $documentos->idetapa) {
+                                                            ?>
+                                                            <a href="<?=base_url('finalizar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockA_<?=$documentos->idprotocolo?>">Finalizar Documento</a><br/>
                                                             <?php
                                                         } else {
                                                             ?>
-                                                            <strong>Documento sem prazo!</strong>
+                                                            <a href="<?=base_url('proxima_etapa/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockB_<?=$documentos->idprotocolo;?>">Encaminhar Próxima Etapa</a><br/>
                                                             <?php
                                                         }
-                                                        ?>
-                                                    </td>
-                                                    <td><?=$documentos->etapa;?></td>
-                                                    <td><?=converte_datetime($documentos->data_criacao);?></td>
-                                                    <td style="text-align: center;">
-                                                        <?php 
-                                                            $this->load->model('DocEtapas_model', 'docetapamodel');
-                                                            $last_step = $this->docetapamodel->ultima_etapa($documentos->iddocumento);
-                                                            if ($last_step == $documentos->idetapa) {
-                                                                ?>
-                                                                <a href="<?=base_url('finalizar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockA_<?=$documentos->idprotocolo?>">Finalizar Documento</a>
-                                                                <?php
-                                                            } else {
-                                                                ?>
-                                                                <a href="<?=base_url('proxima_etapa/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockB_<?=$documentos->idprotocolo?>">Encaminhar Próxima Etapa</a>
-                                                                <?php
-                                                            }
-                                                            
-                                                            if ($documentos->ordem > 1) {
-                                                                ?>
-                                                                <a href="<?=base_url('etapa_aterior/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockC_<?=$documentos->idprotocolo;?>">Retornar Etapa Aterior</a>
-                                                                <?php
-                                                            }
-                                                            if($documentos->ordem == 1){
-                                                                ?>
-                                                                <a href="<?=base_url('editar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Editar Documento</a>
-                                                                <?php
-                                                            }
-                                                        ?>
-                                                        <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                        <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD_<?=$documentos->idprotocolo;?>">Documento com exigência</a><br/>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="blockE_<?=$documentos->idprotocolo;?>" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
-                                                        <?php 
                                                         
                                                         if ($documentos->ordem > 1) {
                                                             ?>
-                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>" class="blockF_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
+                                                            <a href="<?=base_url('etapa_aterior/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockC_<?=$documentos->idprotocolo;?>">Retornar Etapa Aterior</a><br/>
                                                             <?php
                                                         }
-
-                                                        $this->load->model('erros_model', 'errosmodel');
-                                                        
-                                                        $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
-
-                                                        if ($contador > 0) {
+                                                        if($documentos->ordem == 1){
                                                             ?>
-                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a><br/>
+                                                            <a href="<?=base_url('editar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Editar Documento</a><br/>
                                                             <?php
                                                         }
+                                                    ?>
+                                                    <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
+                                                    <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD_<?=$documentos->idprotocolo;?>">Documento com exigência</a><br/>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="blockE_<?=$documentos->idprotocolo;?>" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
+                                                    <?php 
+
+                                                    if ($documentos->ordem > 1) {
                                                         ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>" class="blockF_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
                                                         <?php
-                                                        $this->load->model('documentos_model', 'docmodel');
+                                                    }
+                                                    $this->load->model('erros_model', 'errosmodel');
+                                                    
+                                                    $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
 
-                                                        if ($this->docmodel->verifica_observacoes($documentos->idprotocolo)) {
-                                                            ?>
-                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a><br/>
-                                                            <?php
-                                                        }
+                                                    if ($contador > 0) {
                                                         ?>
-                                                        <div class="line"></div>
-                                                        <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
-                                                        <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
-                                                        <button id="post_<?=$documentos->idprotocolo;?>" class="btn btn-sm btn-info" href="#">Iniciar</button>
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                            }
-                                        } 
-                                        
-                                        if ($documentos_usuario) {
-                                            foreach ($documentos_usuario as $documentos) {
-                                                ?>
-                                                <tr>
-                                                    <td><?=$documentos->protocolo;?></td>
-                                                    <td>
-                                                        <?=$documentos->documento;?><br/>
-                                                        <strong><?=$documentos->grupo;?></strong>
-                                                    </td>
-                                                    <td>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a><br/>
                                                         <?php
-                                                        if(!empty($documentos->prazo)){
-                                                            ?>
-                                                            Documento: <?=converte_data($documentos->prazo);?> <br/>
-                                                            <strong>
-                                                                <?php
-                                                                $this->load->model('etapas_model', 'etapasmodel');
-                                                                $prazo = $this->etapasmodel->prazo_etapa($documentos->idprotocolo, $documentos->idetapa);
-                                                                echo "Etapa: ".converte_data($prazo);
-                                                                ?>
-                                                            </strong>
-                                                            <?php
-                                                        } else {
-                                                            ?>
-                                                            <strong>Documento sem prazo!</strong>
-                                                            <?php
-                                                        }
-                                                        ?>
-                                                    </td>
-                                                    <td><?=$documentos->etapa;?></td>
-                                                    <td><?=converte_datetime($documentos->data_criacao);?></td>
-                                                    <td style="text-align: center;">
-                                                        <?php 
-                                                            $this->load->model('DocEtapas_model', 'docetapamodel');
-                                                            $last_step = $this->docetapamodel->ultima_etapa($documentos->iddocumento);
-                                                            if ($last_step == $documentos->idetapa) {
-                                                                ?>
-                                                                <a href="<?=base_url('finalizar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockA_<?=$documentos->idprotocolo?>">Finalizar Documento</a><br/>
-                                                                <?php
-                                                            } else {
-                                                                ?>
-                                                                <a href="<?=base_url('proxima_etapa/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockB_<?=$documentos->idprotocolo;?>">Encaminhar Próxima Etapa</a><br/>
-                                                                <?php
-                                                            }
-                                                            
-                                                            if ($documentos->ordem > 1) {
-                                                                ?>
-                                                                <a href="<?=base_url('etapa_aterior/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockC_<?=$documentos->idprotocolo;?>">Retornar Etapa Aterior</a><br/>
-                                                                <?php
-                                                            }
-                                                            if($documentos->ordem == 1){
-                                                                ?>
-                                                                <a href="<?=base_url('editar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Editar Documento</a><br/>
-                                                                <?php
-                                                            }
-                                                        ?>
-                                                        <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                        <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD_<?=$documentos->idprotocolo;?>">Documento com exigência</a><br/>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="blockE_<?=$documentos->idprotocolo;?>" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
-                                                        <?php 
+                                                    }
+                                                    ?>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
+                                                    <?php
+                                                    $this->load->model('documentos_model', 'docmodel');
 
-                                                        if ($documentos->ordem > 1) {
-                                                            ?>
-                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>" class="blockF_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
-                                                            <?php
-                                                        }
-                                                        $this->load->model('erros_model', 'errosmodel');
-                                                        
-                                                        $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
-
-                                                        if ($contador > 0) {
-                                                            ?>
-                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a><br/>
-                                                            <?php
-                                                        }
+                                                    if ($this->docmodel->verifica_observacoes($documentos->idprotocolo) > 0) {
                                                         ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a><br/>
                                                         <?php
-                                                        $this->load->model('documentos_model', 'docmodel');
-
-                                                        if ($this->docmodel->verifica_observacoes($documentos->idprotocolo) > 0) {
-                                                            ?>
-                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a><br/>
-                                                            <?php
-                                                        }
-                                                        ?>
-                                                        <div class="line"></div>
-                                                        <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
-                                                        <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
-                                                        <button id="post_<?=$documentos->idprotocolo;?>" class="btn btn-sm btn-info" href="#">Iniciar</button>
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                            }
+                                                    }
+                                                    ?>
+                                                    <div class="line"></div>
+                                                    <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
+                                                    <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
+                                                    <button id="post_<?=$documentos->idprotocolo;?>" class="btn btn-sm btn-info" href="#">Iniciar</button>
+                                                </td>
+                                            </tr>
+                                            <?php
                                         }
+                                    }
                                     ?>
                                 </tbody>
                             </table>
@@ -346,6 +249,10 @@ window.addEventListener("DOMContentLoaded", function() {
 		
 			$.post('get_time', { pro: id_pro }, function(resp){
 				$('#post_'+id_pro).text(resp.running ? 'Pausar' : 'Iniciar');
+                if(!resp.running){
+                    $('.blockA_'+id_pro).css("pointer-events", "none");
+					$('.blockB_'+id_pro).css("pointer-events", "none");
+                }
 				tempo = resp.seconds;
 				timer();
                 //console.log('Retorna o tipo ' + resp.running);

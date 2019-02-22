@@ -35,12 +35,12 @@
                             <div class="col-sm-3"></div>                     
                             <div class="col-sm-3">
                                 <form action="<?=base_url('ausencia');?>">
-                                    <button type="submit" style="color: white;" class="btn btn-warning">Ausência Funcinário</button>
+                                    <button type="submit" style="color: white;" class="btn btn-warning">Ausência Funcionário</button>
                                 </form>
                             </div>
                             <div class="col-sm-3">
                                 <form action="<?=base_url('ferias');?>">
-                                    <button class="btn btn-danger">Férias Funcinário</button>
+                                    <button class="btn btn-danger">Férias Funcionário</button>
                                 </form>
                             </div>
                         </div>

@@ -4,6 +4,7 @@ defined("BASEPATH") or exit("No direct script access allowed");
 class Imprimir extends CI_Controller {
     
     function __construct(){
+
         parent::__construct();
 
         $this->load->model("documentos_model", "docmodel");
@@ -42,6 +43,7 @@ class Imprimir extends CI_Controller {
                 $this->load->view('errors/acesso_restrito');
 
             }
+
         }
 
     }
@@ -86,6 +88,7 @@ class Imprimir extends CI_Controller {
             }
 
         }
+
     }
 
     public function imprimir_tempo_medio_mensal($empresa, $date){
@@ -136,6 +139,7 @@ class Imprimir extends CI_Controller {
                 $this->load->view('errors/acesso_restrito');
 
             }
+
         }
 
     }
@@ -181,7 +185,9 @@ class Imprimir extends CI_Controller {
                 
                 $tempomedio = 0;
 
-                if((isset($_POST["dataDe"])) and (isset($_POST["dataAte"])) and (transforma_mes_ano($_POST["dataAte"]) > transforma_mes_ano($_POST["dataDe"]))){
+                if((!empty($_POST["dataDe"])) and (!empty($_POST["dataAte"])) 
+                and (transforma_mes_ano($_POST["dataAte"]) >= transforma_mes_ano($_POST["dataDe"])) 
+                and ($_POST["documento_filtro"] == "nda")){
                     
                     $dataDe = transforma_mes_ano($_POST["dataDe"]);
                     $dataAte = transforma_mes_ano($_POST["dataAte"]);
@@ -196,8 +202,22 @@ class Imprimir extends CI_Controller {
                     }
 
                     $documentos_trabalhados = $this->docmodel->documento_por_cargo_date($cargo, $dataDe, $dataAte);
+                    
 
-                } else{
+                } elseif(!empty($_POST["documento_filtro"]) and (empty($_POST["dataDe"])) and (empty($_POST["dataAte"])) and ($_POST["documento_filtro"] != "nda")){
+
+                    $verifica_pause = $this->timermodel->verifica_pause_cargo($cargo);
+                    if(!empty($verifica_pause)){
+                        if($verifica_pause->action == "start"){
+                            $tempomedio = $this->timermodel->tempo_documento_cargo_without_doc($cargo, $verifica_pause->id, $_POST["documento_filtro"]);
+                        } else {
+                            $tempomedio = $this->timermodel->tempo_documento_cargo_doc($cargo, $_POST["documento_filtro"]);
+                        }
+                    }
+
+                    $documentos_trabalhados = $this->docmodel->documento_cargo_filtro($cargo, $_POST["documento_filtro"]);
+                    
+                } elseif(empty($_POST)) {
 
                     $verifica_pause = $this->timermodel->verifica_pause_cargo($cargo);
                     if(!empty($verifica_pause)){
@@ -209,6 +229,22 @@ class Imprimir extends CI_Controller {
                     }
 
                     $documentos_trabalhados = $this->docmodel->documento_por_cargo($cargo);
+                    
+                } else {
+
+                    $dataDe = transforma_mes_ano($_POST["dataDe"]);
+                    $dataAte = transforma_mes_ano($_POST["dataAte"]);
+
+                    $verifica_pause = $this->timermodel->verifica_pause_cargo($cargo);
+                    if(!empty($verifica_pause)){
+                        if($verifica_pause->action == "start"){
+                            $tempomedio = $this->timermodel->tempo_documento_cargo_without_dateDoc($cargo, $verifica_pause->id, $dataDe, $dataAte, $_POST["documento_filtro"]);
+                        } else {
+                            $tempomedio = $this->timermodel->tempo_documento_cargo_dateDoc($cargo, $dataDe, $dataAte, $_POST["documento_filtro"]);
+                        }
+                    }
+
+                    $documentos_trabalhados = $this->docmodel->documento_por_cargo_dateDoc($cargo, $dataDe, $dataAte, $_POST["documento_filtro"]);
 
                 }
 
@@ -216,6 +252,8 @@ class Imprimir extends CI_Controller {
                 $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
                 $dados["dataDe"]                = (isset($_POST["dataDe"])) ? $_POST["dataDe"] : "";
                 $dados["dataAte"]               = (isset($_POST["dataAte"])) ? $_POST["dataAte"] : "";
+                $dados["sel_doc"]               = (isset($_POST["documento_filtro"])) ? $_POST["documento_filtro"] : "";
+                $dados["documentos_filtro"]     = $this->docmodel->filtro_documento_cargo($cargo);
                 $dados["documento_trabalhados"] = $documentos_trabalhados;
                 $dados["tempo_medio"]           = $tempomedio;
 

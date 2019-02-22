@@ -77,12 +77,13 @@ class Competencia extends CI_Controller {
 
             $iddocumento = $this->input->post('iddocumento');
             $total_etapa = $this->input->post('quant_etapas');
-            $tipo        = $this->input->post('tipo');
-
+            
             $titulo = $this->logsistema->retorna_titulo_documento($iddocumento);
             $aux_edicao = false;
 
             for ($i=1; $i <= $total_etapa; $i++) { 
+
+                $tipo = $this->input->post("tipo_$i");
 
                 if ($tipo == "funcionario") {
                     

@@ -377,7 +377,7 @@ class Usuario extends CI_Controller {
 			
 		}
 
-		redirect('editar_usuario');
+		redirect('home/usuario/');
 
 	}
 

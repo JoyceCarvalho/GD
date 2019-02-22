@@ -517,6 +517,57 @@ class Timer_model extends CI_Model {
     }
 
     /**
+     * Método responsável por listar o tempo médio por cargos
+     * Utilizado na view relatorios/tempo_cargo.php
+     *
+     * @param int $idcargo
+     * @param int $dataDe
+     * @param int $dataAte
+     * @param int $iddocumento
+     * @return object
+     */
+    public function tempo_documento_cargo_dateDoc($idcargo, $dataDe, $dataAte, $iddocumento){
+        
+        $this->db->select("action, timestamp, fk_iddoccad as idprotocolo");
+        $this->db->from("tbtimer as t");
+        $this->db->join("tblog_documentos as ld", "ld.documento = t.fk_iddoccad and ld.descricao = 'FINALIZADO'");
+        $this->db->join("tbdocumentos_cad as dc", "dc.id = ld.documento");
+        $this->db->join("tbusuario as u","u.id = t.fk_idusuario");
+        $this->db->join("tbcargos as c", "c.id = u.fk_idcargos");
+        $this->db->where("c.id", $idcargo);
+        $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') >= '$dataDe'");
+        $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') <= '$dataAte'");
+        $this->db->where("dc.fk_iddocumento", $iddocumento);
+        $this->db->group_by("t.id");
+        $this->db->order_by("t.id");
+        
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por listar o tempo médio por cargos (protocolo por documentos)
+     * Utilizado na view relatorios/tempo_cargo.php
+     *
+     * @param int $idcargo
+     * @return object
+     */
+    public function tempo_documento_cargo_doc($idcargo, $iddocumento){
+        
+        $this->db->select("action, timestamp, fk_iddoccad as idprotocolo");
+        $this->db->from("tbtimer as t");
+        $this->db->join("tblog_documentos as ld", "ld.documento = t.fk_iddoccad and ld.descricao = 'FINALIZADO'");
+        $this->db->join("tbdocumentos_cad as dc", "dc.id = ld.documento");
+        $this->db->join("tbusuario as u","u.id = t.fk_idusuario");
+        $this->db->join("tbcargos as c", "c.id = u.fk_idcargos");
+        $this->db->where("c.id", $idcargo);
+        $this->db->where("dc.fk_iddocumento", $iddocumento);
+        $this->db->group_by("t.id");
+        $this->db->order_by("t.id");
+        
+        return $this->db->get()->result();
+    }
+
+    /**
      * Lista documentos por cargo sem contar o ultimo registro
      *
      * @param int $idcargo
@@ -556,6 +607,59 @@ class Timer_model extends CI_Model {
         $this->db->where('t.id != '.$idtimer);
         $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') >= '$dataDe'");
         $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') <= '$dataAte'");
+        $this->db->group_by("t.id");
+        $this->db->order_by("t.id");
+        
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Lista documentos por cargo sem contar o ultimo registro
+     *
+     * @param int $idcargo
+     * @param int $idtimer
+     * @param string $dataDe
+     * @param string $dataAte
+     * @param int $iddocumento
+     * @return int retorna numero de resultados
+     */
+    public function tempo_documento_cargo_without_dateDoc($idcargo, $idtimer, $dataDe, $dataAte, $iddocumento){
+        
+        $this->db->select("action, timestamp, fk_iddoccad as idprotocolo");
+        $this->db->from("tbtimer as t");
+        $this->db->join("tblog_documentos as ld", "ld.documento = t.fk_iddoccad and ld.descricao = 'FINALIZADO'");
+        $this->db->join("tbdocumentos_cad as dc", "dc.id = ld.documento");
+        $this->db->join("tbusuario as u","u.id = t.fk_idusuario");
+        $this->db->join("tbcargos as c", "c.id = u.fk_idcargos");
+        $this->db->where("c.id", $idcargo);
+        $this->db->where('t.id != '.$idtimer);
+        $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') >= '$dataDe'");
+        $this->db->where("DATE_FORMAT(ld.data_hora, '%Y-%m') <= '$dataAte'");
+        $this->db->where("dc.fk_iddocumento", $iddocumento);
+        $this->db->group_by("t.id");
+        $this->db->order_by("t.id");
+        
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Lista documentos por cargo sem contar o ultimo registro (protocolo por documento)
+     *
+     * @param int $idcargo
+     * @param int $idtimer
+     * @return int retorna numero de resultados
+     */
+    public function tempo_documento_cargo_without_doc($idcargo, $idtimer, $iddocumento){
+        
+        $this->db->select("action, timestamp, fk_iddoccad as idprotocolo");
+        $this->db->from("tbtimer as t");
+        $this->db->join("tblog_documentos as ld", "ld.documento = t.fk_iddoccad and ld.descricao = 'FINALIZADO'");
+        $this->db->join("tbdocumentos_cad as dc", "dc.id = ld.documento");
+        $this->db->join("tbusuario as u","u.id = t.fk_idusuario");
+        $this->db->join("tbcargos as c", "c.id = u.fk_idcargos");
+        $this->db->where("c.id", $idcargo);
+        $this->db->where('t.id != '.$idtimer);
+        $this->db->where("dc.fk_iddocumento", $iddocumento);
         $this->db->group_by("t.id");
         $this->db->order_by("t.id");
         

@@ -379,7 +379,7 @@ class Usuario extends CI_Controller {
 			$this->session->set_flashdata('error', 'Ocorreu um problema ao alterar a senha! Favor entre em contato com o suporte e tente novamente mais tarde.');
 		}
 
-		redirect("editar_usuario");
+		redirect("home/usuario/");
 
 	}
 

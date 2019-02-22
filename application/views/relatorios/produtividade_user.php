@@ -7,7 +7,7 @@ $this->load->model('cargos_model', 'cargosmodel');
             <div class="col-lg-12">     
                 <div class="tile">
                     <div class="row d-print-none">
-                        <form method="post" action="<?=base_url("produtividade_individual")?>" class="col-12">                                    
+                        <form method="post" action="<?=base_url("produtividade_individual")?>" class="col-12" autocomplete="off">                                    
                             <div class="form-group row">
                                 <div class="col-sm-3">
                                     <label> De: </label>

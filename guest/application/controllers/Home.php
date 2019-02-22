@@ -29,8 +29,9 @@ class Home extends CI_Controller {
             
             //retorna a quantidade de documentos no link meus documentos
             $funcionario = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
-            $cargo = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
-            $total = count($funcionario) + count($cargo);
+            //$cargo = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
+            //$total = count($funcionario) + count($cargo);
+            $total = count($funcionario);
             $dados["meus_documentos"] = $total;
 
             //retorna a quantidade de documentos em andamento

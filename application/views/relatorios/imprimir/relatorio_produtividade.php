@@ -45,7 +45,7 @@ $this->load->model("cargos_model", "cargosmodel");
                 <div class="tile">
                     <div class="row d-print-none">
                         <div class="col-12">
-                            <form method="post" action="<?=base_url("relatorio_produtividade/".$usuario->id)?>">
+                            <form method="post" action="<?=base_url("relatorio_produtividade/".$usuario->id)?>" autocomplete="off">
                                 <div class="col-6">
                                     <div class="col-md-4 divFiltros" align="center">
                                         <div class="form-group">

@@ -59,30 +59,6 @@
                                 </div>
                             </div>
                             
-                            <div class="form-group row">
-                                <label class="col-sm-3 form-control-label">Tipo</label>
-                                <div class="col-sm-9">
-                                    <select name="tipo" id="choice" class="form-control">
-                                        <option> -- Selecione -- </option>
-                                        <?php 
-                                        $sel_1 = "";
-                                        $sel_2 = "";
-                                        foreach ($competencia_d as $comp) {
-                                            if ($comp->tipo == "cargo") {
-                                                $sel_2 = "selected=\"selected\"";
-                                                $sel_1 = "";
-                                            } else {
-                                                $sel_1 = "selected=\"selected\"";
-                                                $sel_2 = "";
-                                            }
-                                        }
-                                        ?>
-                                        <option <?=$sel_1;?> value="funcionario">Funcionários</option>
-                                        <option <?=$sel_2;?> value="cargo">Cargos</option>
-                                    </select>
-                                </div>
-                            </div>
-
                             <div class="line"></div>
 
                             <h3 class=card-body>Etapas</h3>
@@ -95,9 +71,19 @@
                                         ?>
                                         <div class="col-sm-12">
                                             <div class="form-group row">
-                                                <label class="col-sm-3 form-control-label"><?=$comp->etapa;?></label>
+                                                <label class="col-sm-3 form-control-label"><?=$i. "º " . $comp->etapa;?></label>
                                                 <input type="hidden" name="etapa_<?=$i?>" value="<?=$comp->fk_idetapa?>">
                                                 <div class="col-sm-9">
+                                                    <div class="form-group row col-sm-12">
+                                                        <label class="col-sm-3 form-control-label">Tipo</label>
+                                                        <div class="col-sm-9">
+                                                            <select name="tipo_<?=$i?>" id="choice_<?=$i?>" class="form-control">
+                                                                <option> -- Selecione -- </option>
+                                                                <option value="funcionario">Funcionários</option>
+                                                                <option selected="selected" value="cargo">Cargos</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                     <select id="etapa_<?=$i;?>" name="idtipo_<?=$i;?>" class="form-control">
                                                         <?php 
                                                         foreach ($dados_cargo as $cargo ) {
@@ -115,6 +101,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="line"></div>
                                         <?php
                                     } else {
                                         
@@ -122,9 +109,19 @@
                                         ?>
                                         <div class="col-sm-12">
                                             <div class="form-group row">
-                                                <label class="col-sm-3 form-control-label"><?=$comp->etapa;?></label>
+                                                <label class="col-sm-3 form-control-label"><?=$i. "º " . $comp->etapa;?></label>
                                                 <input type="hidden" name="etapa_<?=$i?>" value="<?=$comp->fk_idetapa?>">
                                                 <div class="col-sm-9">
+                                                    <div class="form-group row col-sm-12">
+                                                        <label class="col-sm-3 form-control-label">Tipo</label>
+                                                        <div class="col-sm-9">
+                                                            <select name="tipo_<?=$i?>" id="choice_<?=$i?>" class="form-control">
+                                                                <option> -- Selecione -- </option>
+                                                                <option selected="selected" value="funcionario">Funcionários</option>
+                                                                <option value="cargo">Cargos</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                     <select id="etapa_<?=$i;?>" name="idtipo_<?=$i;?>" class="form-control">
                                                         <?php
                                                         foreach ($dados_usuario as $user) {
@@ -142,6 +139,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="line"></div>
                                         <?php
                                     }
                                 }
@@ -152,15 +150,26 @@
                                     ?>
                                     <div class="col-sm-12">
                                         <div class="form-group row">
-                                            <label class="col-sm-3 form-control-label"><?=$etapas->etapa;?></label>
+                                            <label class="col-sm-3 form-control-label"><?=$i. "º " . $etapas->etapa;?></label>
                                             <input type="hidden" name="etapa_<?=$i?>" value="<?=$etapas->idetapa?>">
                                             <div class="col-sm-9">
+                                                <div class="form-group row col-sm-12">
+                                                    <label class="col-sm-3 form-control-label">Tipo</label>
+                                                    <div class="col-sm-9">
+                                                        <select name="tipo_<?=$i?>" id="choice_<?=$i?>" class="form-control">
+                                                            <option> -- Selecione -- </option>
+                                                            <option value="funcionario">Funcionários</option>
+                                                            <option value="cargo">Cargos</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                                 <select id="etapa_<?=$i;?>" name="idtipo_<?=$i;?>" class="form-control">
                                                     <option> - Selecione - </option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="line"></div>
                                     <?php
                                 }
                             }
@@ -186,7 +195,34 @@
 
     $(document).ready(function(){
         // Retorna todos os funcionários/cargos do sistema
-        $('#choice').change(function(e){
+        var total_etapas = $("#quant_etapas").val();
+
+        for(let i = 0; i <= total_etapas; i++){
+            
+            $('#choice_'+i).change(function(e){
+                var tipo = $('#choice_'+i).val();
+                $('#mensagem').html('<span class="mensagem">Aguarde, carregando ...</span>');  
+                        
+                $.getJSON('<?=base_url();?>'+'tipo_comp/'+tipo, function (dados){ 
+                    
+                    if (dados.length > 0){	
+                        var option = '<option>Selecione o '+tipo+'</option>';
+                        $.each(dados, function(i, obj){
+                            option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
+                        })
+                        $('#mensagem').html('<span class="mensagem">Total de estados encontrados.: '+dados.length+'</span>'); 
+                    }else{
+                        var option = "<option>Nenhum dado encontrado!</option>"  
+                    }
+                    //console.log(total_etapas);
+                    
+                    $('#etapa_'+i).html(option).show();  
+                    
+                })
+            });
+
+        }
+        /*$('#choice').change(function(e){
             var tipo = $('#choice').val();
             $('#mensagem').html('<span class="mensagem">Aguarde, carregando ...</span>');  
                     
@@ -208,7 +244,7 @@
                 }
                 
             })
-        });
+        });*/
 
     });
 

@@ -501,7 +501,8 @@ class Documento extends CI_Controller {
             $dados["submenu"]   = "meusdocs";
 
             $dados["nome_empresa"]       = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["documentos_cargo"]   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
+            //$dados["documentos_cargo"]   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
+            $dados["documentos_cargo"]   = "";
             $dados["documentos_usuario"] = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
             
 
@@ -543,7 +544,8 @@ class Documento extends CI_Controller {
             $dados["submenu"]   = "meusdocs";
 
             $dados["nome_empresa"]       = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-            $dados["documentos_cargo"]   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
+            //$dados["documentos_cargo"]   = $this->docmodel->listar_meus_documentos_cargos($_SESSION["idusuario"]);
+            $dados["documentos_cargo"]   = "";
             $dados["documentos_usuario"] = $this->docmodel->listar_meus_documentos_funcionario($_SESSION["idusuario"]);
             
 

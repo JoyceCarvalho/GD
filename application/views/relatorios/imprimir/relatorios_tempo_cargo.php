@@ -1,5 +1,5 @@
 <?php
-ini_set('display_errors', 'off');
+//ini_set('display_errors', 'off');
 
 $this->load->model("timer_model", "timermodel");
 
@@ -42,7 +42,7 @@ foreach ($dados_cargo as $cargo) {
             <div class="panel-body no-print text-center">
                 <div class="row d-print-none">
                     <div class="col-12">
-                        <form method="post" action="<?=base_url("relatorio_tcargo/".$id_cargo)?>">
+                        <form method="post" action="<?=base_url("relatorio_tcargo/".$id_cargo)?>" autocomplete="off">
                             <div class="col-6">
                                 <div class="col-md-4 divFiltros" align="center">
                                     <div class="form-group">
@@ -51,7 +51,7 @@ foreach ($dados_cargo as $cargo) {
                                             <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
-                                            <input id="dataDe" name="dataDe" type='text' class="form-control" value="<?=$dataDe;?>" required/>
+                                            <input id="dataDe" name="dataDe" type='text' class="form-control" value="<?=$dataDe;?>"/>
                                         </div>
                                     </div>
                                 </div>
@@ -64,11 +64,33 @@ foreach ($dados_cargo as $cargo) {
                                             <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
-                                            <input id="dataAte" name="dataAte" type='text' class="form-control" value="<?=$dataAte;?>" required/>
+                                            <input id="dataAte" name="dataAte" type='text' class="form-control" value="<?=$dataAte;?>"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-6">
+                                <div class="col-md-4 divFiltros" align="center">
+                                    <div class="form-group">
+                                        <label>Documento:</label>
+                                        <div class="col-sm-9">
+                                            <select name="documento_filtro" style="height: auto; width:auto" class="form-control">
+                                                <option value="nda"> - Selecione - </option>
+                                                <?php
+                                                if(!empty($documentos_filtro)){
+                                                    foreach ($documentos_filtro as $filtro_doc) {
+                                                        ?>
+                                                        <option <?=($filtro_doc->id == $sel_doc) ? "selected=\"selected\"" : "" ?> value="<?=$filtro_doc->id?>"><?=$filtro_doc->titulo?></option>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-md-1 botaoImprimir">
                                 
                                 <div class="form-group">
@@ -212,66 +234,104 @@ foreach ($dados_cargo as $cargo) {
                     
                 </div>
             </div>
-            <div class="panel panel-default sessao no-break geral">
+            <div class="panel panel-default sessao no-break geral">  
                 <div class="panel-heading">
-                    <span class="titulo-sessao">Documentos</span>
+                    <span class="titulo-sessao">Protocolos</span>
                 </div>
                 <div class="panel-body">
-                
-                    <div class="col-sm-4">
-                        <table class="table table-striped table-bordered table-condensed">
-                            <thead>
-                                <tr>
-                                    <th>Protocolo</th>
-                                    <th>Documento</th>
-                                    <th>Grupo</th>
-                                    <th>Tempo total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <?php 
-                                foreach ($documento_trabalhados as $documento) {
-                                    ?>                                
-                                    <tr>    
-                                        <td><?=$documento->protocolo;?></td>
-                                        <td><?=$documento->documento;?></td>
-                                        <td><?=$documento->grupo;?></td>
-                                        <td>
-                                            <?php
-                                            $timer = $this->timermodel->listar_timer($documento->idprotocolo);
 
-                                            // Trecho adaptado do 1º gestão de documentos
-                                            $seconds = 0;
-                                            $sum_media = 0;
-                                            foreach ($timer as $t) {
-                                                //echo $t->id . "<br/>";
-                                                $action = $t->action;
-                                                switch ($action) {
-                                                    case 'start':
-                                                        $seconds -= $t->timestamp;
-                                                        break;
-                                                    
-                                                    case 'pause':
-                                                        if($seconds !== 0){
-                                                            $seconds += $t->timestamp;
-                                                        }
-                                                        break;
-                                                }
-                                            }
-                                            $sum_media += $seconds;
-                                            $mostraNumero = converteHoras($sum_media);
+                    <div class="line"></div>
 
-                                            echo $mostraNumero;
-                                            ?>
-                                        </td>
-                                    </tr>
+                    <?php 
+                    foreach ($documento_trabalhados as $doc ) {
+                        ?>
+                        <div class="panel panel-default sessao">
+                            <div class="panel-heading">
+                                <span class="subtitulo"><?=$doc->protocolo;?></span>
+                            </div>
+                            
+                            <div class="panel-body">
+                                <p>Documento: <?=$doc->documento;?></p>
+                                <p>Data de criação: <?=$doc->data_criacao;?></p>
+                                <p>Documento criado por <?=$doc->nome_usuario;?></p>
+                                <?php if(!empty($doc->prazo_documento)): ?>
+                                    <p>Prazo para finalização do documento <?=$doc->prazo_documento;?></p>
+                                <?php else: ?>
+                                    <p>Documento sem prazos para finalização!</p>
+                                <?php endif; ?>
+
+                                <p>Documento finalizado em <?=$doc->data_finalizacao;?></p>
+
+                                <p>
                                     <?php
-                                }
-                                ?>  
-                            </tbody>
-                        </table>
-                    </div>
+                                    $quantidade_etapas = $this->docetapa->qnt_etapas_por_documento($doc->idprotocolo);
+                                    $verfica = $this->timermodel->verifica_reinicio($doc->idprotocolo);
+
+                                    if($verfica){
+                                        $timer = $this->timermodel->listar_timer_suspenso($doc->idprotocolo);
+                                    } else {
+                                        $timer = $this->timermodel->listar_timer($doc->idprotocolo);
+                                    }
+
+                                    // Trecho adaptado do 1º gestão de documentos
+                                    $seconds = 0;
+                                    $sum_media = 0;
+                                    $media = 0;
+                                    foreach ($timer as $t) {
+                                        $action = $t->action;
+                                        switch ($action) {
+                                            case 'start':
+                                                $seconds -= $t->timestamp;
+                                                break;
+                                            
+                                            case 'pause':
+                                                if($seconds !== 0){
+                                                    $seconds += $t->timestamp;
+                                                }
+                                                break;
+                                        }
+                                    }
+                                    $sum_media = $seconds/$quantidade_etapas;
+                                    
+                                    $mostraNumero = converteHoras(round($sum_media));
+
+                                    ?>
+                                    <strong>Tempo médio do documento <?=$mostraNumero;/*?> </strong>
+                                </p>
+
+                                <p>
+                                    <?php
+                                    $timer = $this->timermodel->listar_timer($doc->idprotocolo);
+
+                                    // Trecho adaptado do 1º gestão de documentos
+                                    $seconds = 0;
+                                    $sum_media = 0;
+                                    foreach ($timer as $t) {
+                                        //echo $t->id . "<br/>";
+                                        $action = $t->action;
+                                        switch ($action) {
+                                            case 'start':
+                                                $seconds -= $t->timestamp;
+                                                break;
+                                            
+                                            case 'pause':
+                                                if($seconds !== 0){
+                                                    $seconds += $t->timestamp;
+                                                }
+                                                break;
+                                        }
+                                    }
+                                    $sum_media += $seconds;
+                                    $mostraNumero = converteHoras($sum_media);
+
+                                    ?>
+                                    <strong>Tempo total do documento <?=$mostraNumero;*/?> </strong>
+                                </p>
+                            </div>                                
+                        </div> 
+                            <?php
+                    }
+                    ?>               
                 </div>
             </div>
             <!-- Fim do conteudo -->
