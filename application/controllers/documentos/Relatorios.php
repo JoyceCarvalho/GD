@@ -50,6 +50,29 @@ class Relatorios extends CI_Controller {
 
     }
 
+    public function nao_iniciados(){
+
+        if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
+            redirect("/");
+        }
+
+        $dados["pagina"]  = "Documentos não iniciados";
+        $dados["pg"]      = "documentos";
+        $dados["submenu"] = "nao_iniciados";
+
+        $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+
+        $dados["documentos_n_iniciados"] = $this->docmodel->listar_documentos_nao_iniciados($_SESSION["idempresa"]);
+
+        $this->load->view("template/html_header", $dados);
+        $this->load->view("template/header");
+        $this->load->view("template/menu");
+        $this->load->view("documentos/documentos_n_iniciados");
+        $this->load->view("template/footer");
+        $this->load->view("template/html_footer");
+
+    }
+
     public function documentos_com_erro(){
 
         if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
@@ -453,6 +476,12 @@ class Relatorios extends CI_Controller {
             redirect("/");
         }
 
+        if($this->input->post("nao_iniciado") == "1") {
+            $time = false;
+        } else {
+            $time = true;
+        }
+
         $data = new stdClass();
 
         $idprotocolo = $this->input->post("idprotocolo");
@@ -473,17 +502,20 @@ class Relatorios extends CI_Controller {
 
         if($this->docmodel->cadastrar_log_documento($documento)){
 
-            $this->load->model('timer_model', 'timermodel');
+            if($time){
 
-            $dados = array(
-                'fk_iddoccad'   => $idprotocolo,
-                'fk_idetapa'    => $etapa,
-                'action'        => "pause",
-                'timestamp'     => time(),
-                'observacao'    => "PENDENTE"
-            );
-    
-            $this->timermodel->cadastrar_tempo($dados);
+                $this->load->model('timer_model', 'timermodel');
+
+                $dados = array(
+                    'fk_iddoccad'   => $idprotocolo,
+                    'fk_idetapa'    => $etapa,
+                    'action'        => "pause",
+                    'timestamp'     => time(),
+                    'observacao'    => "PENDENTE"
+                );
+        
+                $this->timermodel->cadastrar_tempo($dados);
+            }
 
             /**
              * Envio de email
@@ -512,7 +544,8 @@ class Relatorios extends CI_Controller {
              * Fim do envio de email
              */
 
-            $data->success = "Documento transferido com sucesso";
+             $this->session->set_flashdata("success", "Documento transferido com sucesso!");
+            /*$data->success = "Documento transferido com sucesso";
 
             $dados["pagina"]    = "Documentos Pendentes";
             $dados["pg"]        = "documentos";
@@ -526,11 +559,13 @@ class Relatorios extends CI_Controller {
             $this->load->view("template/menu", $data);
             $this->load->view("documentos/documentos_pendentes");
             $this->load->view("template/footer");
-            $this->load->view("template/html_footer");
+            $this->load->view("template/html_footer");*/
 
         } else {
 
-            $data->error = "Ocorreu um problema ao transferir o documento. Favor entre em contato com o suporte e tente novamente mais tarde";
+            $this->session->set_flashdata("error", "Ocorreu um problema ao transferir o documento. Favor entre em contato com o suporte e tente novamente mais tarde");
+
+            /*$data->error = "Ocorreu um problema ao transferir o documento. Favor entre em contato com o suporte e tente novamente mais tarde";
 
             $dados["pagina"]  = "Documentos Pendentes";
             $dados["pg"]      = "documentos";
@@ -544,8 +579,14 @@ class Relatorios extends CI_Controller {
             $this->load->view("template/menu", $data);
             $this->load->view("documentos/documentos_pendentes");
             $this->load->view("template/footer");
-            $this->load->view("template/html_footer");
+            $this->load->view("template/html_footer");*/
 
+        }
+
+        if($time){
+            redirect("pendentes");
+        } else {
+            redirect("nao_iniciados");
         }
 
     }

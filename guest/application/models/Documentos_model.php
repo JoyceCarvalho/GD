@@ -284,7 +284,6 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->result();
     }
 
-
     /**
      * Método para pegar o id do documento
      * Utilizado no controller documento/Documento.php
@@ -527,11 +526,16 @@ class Documentos_model extends CI_Model {
      */
     public function historico_documentos_dados($idprotocolo){
         $this->db->select("ld.descricao as descricao, u.nome as nome, DATE_FORMAT(ld.data_hora, '%d/%m/%Y') as data, DATE_FORMAT(ld.data_hora,'%H:%i') as hora, 
-        e.titulo as etapa, ld.documento as idprotocolo, e.id as idetapa, c.motivo as motivo");
+        e.titulo as etapa, ld.documento as idprotocolo, e.id as idetapa, c.motivo as motivo, et.titulo as natureza_erro, er.titulo as tipo_erro, 
+        ed.descricao as erro, o.descricao as observacao");
         $this->db->from("tblog_documentos as ld");
         $this->db->join("tbusuario as u", "u.id = ld.usuario", "left");
         $this->db->join("tbetapa as e", "e.id = ld.etapa", "left");
         $this->db->join('tbcancelamento as c', 'c.fk_iddocumento = ld.documento', 'left');
+        $this->db->join("tberros_documentos as ed", "ed.fk_iddocumentos = ld.documento and ed.fk_idetapa = e.id and (ld.descricao = 'RETORNO COM ERRO')", "left");
+        $this->db->join('tberros as er', 'er.id = ed.fk_iderros', 'left');
+        $this->db->join('tberros_tipo as et', 'et.id = er.fk_idtipo', 'left');
+        $this->db->join('tbobservacoes as o', 'o.fk_idprotocolo = ld.documento and o.fk_idetapa = e.id', 'left');
         $this->db->where("ld.documento", $idprotocolo);
         $this->db->order_by("ld.id asc");
 
@@ -584,7 +588,7 @@ class Documentos_model extends CI_Model {
         e.titulo AS etapa, ldA.data_hora AS data_criacao, u.nome AS nome_usuario, de.ordem as ordem, dc.id as idprotocolo');
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
-        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="cargo"', 'left');
+        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="cargo"');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
         $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
@@ -610,7 +614,7 @@ class Documentos_model extends CI_Model {
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
-        $this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="funcionario"');
+        //$this->db->join('tbcompetencias as c', 'c.fk_iddocumento = d.id and c.tipo="funcionario"');
         $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
         $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
@@ -644,6 +648,39 @@ class Documentos_model extends CI_Model {
         $this->db->where("d.fk_idempresa = $empresa");
         $this->db->where('ldB.descricao != "FINALIZADO"');
         $this->db->order_by('de.ordem asc, ldA.data_hora asc');
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por retornar os documentos que não foram iniciados ainda
+     * Utilizado no controller documentos/Relatório.php
+     *
+     * @param int $empresa
+     * @return object
+     */
+    public function listar_documentos_nao_iniciados($empresa){
+        // subquery
+        $this->db->select("fk_idusuario");
+        $this->db->from("tbtimer");
+        $this->db->where("dc.id = tbtimer.fk_iddoccad and ldB.etapa = tbtimer.fk_idetapa");
+        $subquery = $this->db->get_compiled_select();
+
+        $this->db->select('d.id as iddocumento, e.id as idetapa, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
+        e.titulo AS etapa, DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.id AS idresponsavel, u.nome AS nome_usuario, de.ordem as ordem, 
+        dc.id as idprotocolo, ldB.descricao as descricao');
+        $this->db->from("tbdocumentos_cad AS dc");
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
+        $this->db->join("tbgrupo AS g", "g.id = d.fk_idgrupo");
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
+        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
+        $this->db->where("d.fk_idempresa = $empresa");
+        $this->db->where("ldB.usuario not in($subquery)");
+        $this->db->where('ldB.descricao != "FINALIZADO"');
+        $this->db->order_by("de.ordem asc, ldA.data_hora asc");
+        
         return $this->db->get()->result();
     }
 
@@ -1032,7 +1069,7 @@ class Documentos_model extends CI_Model {
         return $this->db->get()->row('total');
     }
 
-    /**
+     /**
      * Método responsável por retornar o total de registro de documento cadastrado
      * Utilizado no controller documentos/Transferencia.php e documentos/Documento.php
      *

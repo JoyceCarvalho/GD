@@ -28,77 +28,96 @@
                 <div class="card">
         
                     <div class="card-header d-flex align-items-center">
-                        <h3 class="h4">Documentos Pendentes</h3>
+                        <h3 class="h4">Documentos Não Iniciados</h3>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">                       
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>
                                     <tr>
-                                        <th>Protocolo</th>
-                                        <th>Documento<br/>/Grupo</th>
-                                        <th>Prazo Documento</th>
-                                        <th>Data de Criação</th>
-                                        <th>Data Pendente</th>
-                                        <th>Etapa</th>
-                                        <th></th>
+                                        <th width="10%">Protocolo</th>
+                                        <th width="25%">Documento<br/>/Grupo</th>
+                                        <th width="10%">Prazos</th>
+                                        <th width="10%">Etapas</th>
+                                        <th width="15%">Responsável</th>
+                                        <th width="30%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                        foreach ($doc_pendentes as $documentos) {
-                                            ?>
-                                            <tr>
-                                                <td><?=$documentos->protocolo;?></td>
-                                                <td>
-                                                    <?=$documentos->documento;?><br/>
-                                                    <strong><?=$documentos->grupo;?></strong>
-                                                </td>
-                                                <td>
+                                    foreach ($documentos_n_iniciados as $documentos) {
+                                        ?>
+                                        <tr>
+                                            <td><?=$documentos->protocolo;?></td>
+                                            <td>
+                                                <?=$documentos->documento;?><br/>
+                                                <strong><?=$documentos->grupo;?></strong>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                if(!empty($documentos->prazo)){
+                                                    echo "Documento: ".converte_data($documentos->prazo);
+                                                    ?>
+                                                    <br/>
+                                                    <strong>
+                                                        <?php
+                                                        $this->load->model('etapas_model', 'etapasmodel');
+                                                        $prazo = $this->etapasmodel->prazo_etapa($documentos->idprotocolo, $documentos->idetapa);
+                                                        echo "Etapa: ".converte_data($prazo);
+                                                        ?>
+                                                    </strong>
                                                     <?php
-                                                    if(!empty($documentos->prazo)){
-                                                        echo "".converte_data($documentos->prazo) . "<br/>";
-                                                    } else {
-                                                        echo "<strong>Documento sem prazo!</strong>";
-                                                    }
+                                                } else {
                                                     ?>
-                                                </td>
-                                                <td><?=$documentos->data_criacao;?></td>
-                                                <td><?=$documentos->data_pendente;?></td>
-                                                <td><?=$documentos->etapa_nome;?></td>
-                                                <td style="text-align: center;">
-                                                    <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="transfere_<?=$documentos->idprotocolo;?>">Transferir Documento</a><br/>
-                                                    <?php 
-                                                    $this->load->model('erros_model', 'errosmodel');
-                                                    
-                                                    $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
-
-                                                    if ($contador > 0) {
-                                                        ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a><br/>
-                                                        <?php
+                                                    <strong>Documento sem prazo!</strong>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </td>
+                                            <td><?=$documentos->etapa;?></td>
+                                            <td>
+                                                <?php
+                                                if(!empty($documentos->nome_usuario)){
+                                                    echo $documentos->nome_usuario;
+                                                } else {
+                                                    if($documentos->descricao == "PENDENTE"){
+                                                        echo "<strong>Documento Pendente</strong> - Sem responsável";
                                                     }
+                                                }
+                                                ?>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
+                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="transfere_<?=$documentos->idprotocolo;?>">Transferir Documento</a><br/>
+                                                <?php 
+                                                $this->load->model('erros_model', 'errosmodel');
+                                                
+                                                $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
 
-                                                    if($documentos->idresponsavel == $_SESSION["idusuario"]){
-                                                        ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
-                                                        <?php
-                                                    }
-                                                    $this->load->model('documentos_model', 'docmodel');
-
-                                                    if ($this->docmodel->verifica_observacoes($documentos->idprotocolo) > 0) {
-                                                        ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a><br/>
-                                                        <?php
-                                                    }
+                                                if ($contador > 0) {
                                                     ?>
-                                                    <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
-                                                    <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
-                                                </td>
-                                            </tr>
-                                            <?php
-                                        }
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a><br/>
+                                                    <?php
+                                                }
+
+                                                if($documentos->idresponsavel == $_SESSION["idusuario"]){
+                                                    ?>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
+                                                    <?php
+                                                }
+                                                $this->load->model('documentos_model', 'docmodel');
+
+                                                if ($this->docmodel->verifica_observacoes($documentos->idprotocolo) > 0) {
+                                                    ?>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a><br/>
+                                                    <?php
+                                                }
+                                                ?>
+                                                <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
                                     ?>
                                 </tbody>
                             </table>
@@ -156,55 +175,11 @@
 <script>
 window.addEventListener("DOMContentLoaded", function() {
 	
-    var format = function(seconds) {
-		var tempos = {
-			segundos: 60
-		,   minutos: 60
-		,   horas: 24
-		,   dias: ''
-		};
-		var parts = [], string = '', resto, dias;
-		for (var unid in tempos) {
-			if (typeof tempos[unid] === 'number') {
-				resto = seconds % tempos[unid];
-				seconds = (seconds - resto) / tempos[unid];
-			} else {
-				resto = seconds;
-			}
-			parts.unshift(resto);
-		}
-		dias = parts.shift();
-		if (dias) {
-			string = dias + (dias > 1 ? ' dias ' : ' dia ');
-		}
-		for (var i = 0; i < 3; i++) {
-			parts[i] = ('0' + parts[i]).substr(-2);
-		}
-		string += parts.join(':');
-		return string;
-	};
-
-	$(function(){
+    $(function(){
 			
 		$.each($('input[id=id_protocolo]'),function (){
 
 			var id_pro = $(this).val();
-
-            var tempo = 0;
-			var interval = 0;
-			var timer = function(){ 
-				$('.timer_'+id_pro).html(format(++tempo));
-			};
-
-            //console.log(id_pro);
-            $.post('get_time_pendente', { pro: id_pro }, function(resp){
-                //console.log(resp);
-				tempo = resp.seconds;
-				timer();
-				if (resp.running) {
-					interval = setInterval(timer, 1000);
-				}
-			});
 	
             $('#historico_'+id_pro).click(function(e){
 
@@ -466,7 +441,8 @@ window.addEventListener("DOMContentLoaded", function() {
                     if (dados.length>0 ) {
                         //console.log(dados);
                         var body2 = '<form method="post" action="<?=base_url("transfere_para");?>">';
-                        body2 += '<input name="idprotocolo" value="'+id_pro+'" type="hidden" >'
+                        body2 += '<input name="idprotocolo" value="'+id_pro+'" type="hidden" >';
+                        body2 += '<input name="nao_iniciado" value="1" type="hidden">';
                         body2 += '<div class="form-group">';
                         body2 += '<label> Transferir para: </label>';
                         body2 += '<select class="form-control" name="usuario">';

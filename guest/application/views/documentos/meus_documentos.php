@@ -473,6 +473,7 @@ window.addEventListener("DOMContentLoaded", function() {
                         body2 = "<strong>Não foram configurados os tipos de erro!<br/>";
                         body2 += "Favor vá até o menu configurações cadastre-os e tente novamente!</strong>"
                     }
+                    $('#erro').show();
                     $('#erro_form').html(body2).show();
                     $('#historico_documento').hide();
                     $('#cancelamento').hide();
@@ -521,6 +522,7 @@ window.addEventListener("DOMContentLoaded", function() {
                     } else {
                         reset();
                     }
+                    $("#erro").show();
                     $("#erro_form").html(body2).show();
                     
                 })

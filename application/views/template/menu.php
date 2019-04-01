@@ -193,6 +193,7 @@
           <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
             <li <?=($submenu == "pendente") ? "class='active'" : "" ?>><a href="<?=base_url('pendentes');?>"><i class="fa fa-hourglass-half"></i> Documentos Pendentes</a></li>
           <?php endif; ?>
+          <li <?=($submenu == "nao_iniciados") ? "class='active'" : ""?>> <a href="<?=base_url("nao_iniciados");?>"><i class="fa fa-play-circle"></i> Documentos não iniciados</a></li>
         </ul>
       </li>
 

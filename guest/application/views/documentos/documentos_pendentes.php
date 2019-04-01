@@ -1,4 +1,4 @@
-<section class="tables"> 
+<section class="tables">   
     <div class="container-fluid">
         <?php if (validation_errors()) : ?>
             <div class="col-md-12">
@@ -7,17 +7,17 @@
                 </div>
             </div>
         <?php endif; ?>
-        <?php if (isset($error)) : ?>
+        <?php if ($this->session->flashdata("error")) : ?>
             <div class="col-md-12">
                 <div class="alert alert-danger" role="alert">
-                    <?= $error ?>
+                    <?= $this->session->flashdata("error"); ?>
                 </div>
             </div>
         <?php endif; ?>
-        <?php if (isset($success)) : ?>
+        <?php if ($this->session->flashdata("success")) : ?>
             <div class="col-md-12">
                 <div class="alert alert-success" role="alert">
-                    <?= $success ?>
+                    <?= $this->session->flashdata("success"); ?>
                 </div>
             </div>
         <?php endif; ?>
@@ -268,6 +268,7 @@ window.addEventListener("DOMContentLoaded", function() {
                             data += '</div>';
                             data += '<hr/>'
                         });
+                        data += '<a href="<?=base_url();?>imprimir_historico/'+id_pro+'" target="_blank" class="btn btn-sm btn-warning" style="color: white"><i class="fa fa-print"></i> Imprimir</a>';
                     } else {
                         reset();
                     }

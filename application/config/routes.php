@@ -175,6 +175,7 @@ $route["pendentes"]                  = "documentos/Relatorios/documentos_pendent
 $route["get_time_pendente"]          = "documentos/Documento/get_time_pendente";
 $route["transferencia"]              = "documentos/Relatorios/tranferencia_documento";
 $route["transfere_para"]             = "documentos/Relatorios/transfere_para";
+$route["nao_iniciados"]              = "documentos/Relatorios/nao_iniciados";
 
 //Rotas referentes a pasta relatorios
 $route["finalizados"]                       = "relatorios/Relatorios/finalizados";
