@@ -139,12 +139,14 @@
                                                     }
                                                     ?>
                                                     <div class="line"></div>
+                                                    <!--<input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?//=$documentos->idprotocolo;?>">-->
                                                     <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
                                                     <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
                                                     <button id="post_<?=$documentos->idprotocolo;?>" class="btn btn-sm btn-info" href="#">Iniciar</button>
                                                 </td>
+                                                
                                             </tr>
-                                            <?php
+                                            <?php                                            
                                         }
                                     }
                                     ?>
@@ -237,71 +239,72 @@ window.addEventListener("DOMContentLoaded", function() {
 			
 		$.each($('input[id=id_protocolo]'),function (){
 
-			var id_pro = $(this).val();
-	
-			var tempo = 0;
-			var interval = 0;
-			var timer = function(){ 
-				$('.timer_'+id_pro).html(format(++tempo));
-			};
+            var id_pro = $(this).val();
+            //var id_pro = $('#id_protocolo').val();
+    
+            var tempo = 0;
+            var interval = 0;
+            var timer = function(){ 
+                $('.timer_'+id_pro).html(format(++tempo));
+            };
             //console.log(id_pro);
             //console.log(format(++tempo));
-		
-			$.post('get_time', { pro: id_pro }, function(resp){
-				$('#post_'+id_pro).text(resp.running ? 'Pausar' : 'Iniciar');
+        
+            $.post('get_time', { pro: id_pro }, function(resp){
+                $('#post_'+id_pro).text(resp.running ? 'Pausar' : 'Iniciar');
                 if(!resp.running){
                     $('.blockA_'+id_pro).css("pointer-events", "none");
-					$('.blockB_'+id_pro).css("pointer-events", "none");
+                    $('.blockB_'+id_pro).css("pointer-events", "none");
                 }
-				tempo = resp.seconds;
-				timer();
+                tempo = resp.seconds;
+                timer();
                 //console.log('Retorna o tipo ' + resp.running);
-				if (resp.running) {
-					interval = setInterval(timer, 1000);
-				}
-				botao = $('#post_'+id_pro).text();
-				if(botao === "Pausar"){
-					$('.blockA_'+id_pro).css("pointer-events", "none");
-					$('.blockB_'+id_pro).css("pointer-events", "none");
-					$('.blockC_'+id_pro).css("pointer-events", "none");
-					$('.blockD_'+id_pro).css("pointer-events", "none");
+                if (resp.running) {
+                    interval = setInterval(timer, 1000);
+                }
+                botao = $('#post_'+id_pro).text();
+                if(botao === "Pausar"){
+                    $('.blockA_'+id_pro).css("pointer-events", "none");
+                    $('.blockB_'+id_pro).css("pointer-events", "none");
+                    $('.blockC_'+id_pro).css("pointer-events", "none");
+                    $('.blockD_'+id_pro).css("pointer-events", "none");
                     $('.blockE_'+id_pro).css("pointer-events", "none");
                     $('.blockF_'+id_pro).css("pointer-events", "none");
-				}
-			});
-			
-			$('#post_'+id_pro).on('click', function(){ 
-				var btn = this;
-				btn.disabled = true;
-				$.post('grava_acao', { pro: id_pro }, function(resp){
+                }
+            });
+            
+            $('#post_'+id_pro).on('click', function(){ 
+                var btn = this;
+                btn.disabled = true;
+                $.post('grava_acao', { pro: id_pro }, function(resp){
                     //console.log(id_pro);
-					btn.disabled = false;
-					$(btn).text(resp.running ? 'Pausar' : 'Iniciar');
-					if (resp.running) {
-						timer();
-						interval = setInterval(timer, 1000);
-					} else {
-						clearInterval(interval);
-					}
+                    btn.disabled = false;
+                    $(btn).text(resp.running ? 'Pausar' : 'Iniciar');
+                    if (resp.running) {
+                        timer();
+                        interval = setInterval(timer, 1000);
+                    } else {
+                        clearInterval(interval);
+                    }
                     //console.log(resp.running);
-					botao = $('#post_'+id_pro).text();
-					if(botao === "Pausar"){
-						$('.blockA_'+id_pro).css("pointer-events", "none");
-						$('.blockB_'+id_pro).css("pointer-events", "none");
-						$('.blockC_'+id_pro).css("pointer-events", "none");
-						$('.blockD_'+id_pro).css("pointer-events", "none");
+                    botao = $('#post_'+id_pro).text();
+                    if(botao === "Pausar"){
+                        $('.blockA_'+id_pro).css("pointer-events", "none");
+                        $('.blockB_'+id_pro).css("pointer-events", "none");
+                        $('.blockC_'+id_pro).css("pointer-events", "none");
+                        $('.blockD_'+id_pro).css("pointer-events", "none");
                         $('.blockE_'+id_pro).css("pointer-events", "none");
                         $('.blockF_'+id_pro).css("pointer-events", "none");
-					}else{
-						$('.blockA_'+id_pro).css("pointer-events", "");
-						$('.blockB_'+id_pro).css("pointer-events", "");
-						$('.blockC_'+id_pro).css("pointer-events", "");
-						$('.blockD_'+id_pro).css("pointer-events", "");
+                    }else{
+                        $('.blockA_'+id_pro).css("pointer-events", "");
+                        $('.blockB_'+id_pro).css("pointer-events", "");
+                        $('.blockC_'+id_pro).css("pointer-events", "");
+                        $('.blockD_'+id_pro).css("pointer-events", "");
                         $('.blockE_'+id_pro).css("pointer-events", "");
                         $('.blockF_'+id_pro).css("pointer-events", "");
-					}
-				});
-			});
+                    }
+                });
+            });
 
             $('#historico_'+id_pro).click(function(e){
 
@@ -613,7 +616,6 @@ window.addEventListener("DOMContentLoaded", function() {
                 });
 
             });
-
 		});
 		
 	});

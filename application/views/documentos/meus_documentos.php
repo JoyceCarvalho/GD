@@ -42,20 +42,23 @@
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>
                                     <tr>
+                                        <th width="5%">#</th>
                                         <th width="10%">Protocolo</th>
                                         <th width="25%">Documento<br/>/Grupo</th>
                                         <th width="10%">Prazos</th>
                                         <th width="10%">Etapas</th>
-                                        <th width="15%">Data de Criação</th>
+                                        <th width="10%">Data de Criação</th>
                                         <th width="30%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php                                        
                                     if ($documentos_usuario) {
+                                        $i = 1;
                                         foreach ($documentos_usuario as $documentos) {
                                             ?>
                                             <tr>
+                                                <td scope="row"><strong><?=$i++;?></strong></td>
                                                 <td><?=$documentos->protocolo;?></td>
                                                 <td>
                                                     <?=$documentos->documento;?><br/>
@@ -108,14 +111,15 @@
                                                             <?php
                                                         }
                                                     ?>
-                                                    <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                    <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD_<?=$documentos->idprotocolo;?>">Documento com exigência</a><br/>
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="blockE_<?=$documentos->idprotocolo;?>" id="cancelar_<?=$documentos->idprotocolo;?>">Cancelar Documento</a><br/>
+                                                    <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" onclick="javascript:historico(<?=$documentos->idprotocolo;?>)">Ver Histórico Documento</a><br/>
+                                                    <!--<a href="<?//=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockD_<?//=$documentos->idprotocolo;?>">Documento com exigência</a><br/>-->
+                                                    <a href="javascript:void(0)" onclick="javascript:doc_exigencia('<?=md5($documentos->idprotocolo).$documentos->idprotocolo;?>')" class="blockD_<?=$documentos->idprotocolo;?>">Documento com exigência</a><br/>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="blockE_<?=$documentos->idprotocolo;?>" onclick="cancelarDoc(<?=$documentos->idprotocolo;?>)">Cancelar Documento</a><br/>
                                                     <?php 
 
                                                     if ($documentos->ordem > 1) {
                                                         ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>" class="blockF_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" onclick="erroDoc(<?=$documentos->idprotocolo;?>)" class="blockF_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
                                                         <?php
                                                     }
                                                     $this->load->model('erros_model', 'errosmodel');
@@ -124,22 +128,22 @@
 
                                                     if ($contador > 0) {
                                                         ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a><br/>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" onclick="vizualizar_erro(<?=$documentos->idprotocolo;?>)" style="color:red;">Ver Erros</a><br/>
                                                         <?php
                                                     }
                                                     ?>
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" onclick="apontarObservacao(<?=$documentos->idprotocolo;?>)"> Apontar Observação</a><br/>
                                                     <?php
                                                     $this->load->model('documentos_model', 'docmodel');
 
                                                     if ($this->docmodel->verifica_observacoes($documentos->idprotocolo) > 0) {
                                                         ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a><br/>
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" onclick="ver_obs(<?=$documentos->idprotocolo;?>)" style="color:green"> Ver Observações</a><br/>
                                                         <?php
                                                     }
                                                     ?>
                                                     <div class="line"></div>
-                                                    <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
+                                                    <!--<input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?//=$documentos->idprotocolo;?>">-->
                                                     <div class="timer_<?=$documentos->idprotocolo;?>">0 segundos</div>
                                                     <button id="post_<?=$documentos->idprotocolo;?>" class="btn btn-sm btn-info" href="#">Iniciar</button>
                                                 </td>
@@ -153,11 +157,16 @@
                         </div>
                     </div>
                 </div>
+                <?php 
+                foreach ($documentos_usuario as $documentos) {
+                    echo '<input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="'.$documentos->idprotocolo.'">';
+                }
+                ?>
             </div>
         </div>    
     </div>
     <!-- Modal-->
-    <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+    <!--<div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
         <div role="document" class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -169,7 +178,7 @@
 
                 <div class="modal-body" id="historico_documento"></div>
                 
-                <form action="<?=base_url('cancelar_documento');?>" method="post" id="cancelamento">
+                <form action="<?//=base_url('cancelar_documento');?>" method="post" id="cancelamento">
                     
                     <div class="modal-body" id="conteudo">                                                
                         <div class="form-group">
@@ -179,12 +188,12 @@
 
                 </form>
 
-                <form action="<?=base_url('observacao_cad');?>" method="post" id="observacao">
+                <form action="<?//=base_url('observacao_cad');?>" method="post" id="observacao">
                     <div class="modal-body" id="obs"></div>
                 </form>
 
 
-                <form action="<?=base_url("erro_documento_cad");?>" method="post" id="erro">
+                <form action="<?//=base_url("erro_documento_cad");?>" method="post" id="erro">
                     
                     <div class="modal-body" id="doc_conteudo"></div>
 
@@ -198,7 +207,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 </section>
 <script src="http://code.jquery.com/jquery.js"></script>
 <script>
@@ -244,10 +253,11 @@ window.addEventListener("DOMContentLoaded", function() {
 			var timer = function(){ 
 				$('.timer_'+id_pro).html(format(++tempo));
 			};
-            //console.log(id_pro);
-            //console.log(format(++tempo));
+            console.log(id_pro);
+            console.log(format(++tempo));
 		
 			$.post('get_time', { pro: id_pro }, function(resp){
+                //console.log(resp);
 				$('#post_'+id_pro).text(resp.running ? 'Pausar' : 'Iniciar');
                 if(!resp.running){
                     $('.blockA_'+id_pro).css("pointer-events", "none");
@@ -303,7 +313,7 @@ window.addEventListener("DOMContentLoaded", function() {
 				});
 			});
 
-            $('#historico_'+id_pro).click(function(e){
+            /*$('#historico_'+id_pro).click(function(e){
 
                 //var iddocumento = $('#id_protocolo').val();
                 //console.log(id_pro);
@@ -612,7 +622,7 @@ window.addEventListener("DOMContentLoaded", function() {
                     $('#erro_form').hide();
                 });
 
-            });
+            });*/
 
 		});
 		

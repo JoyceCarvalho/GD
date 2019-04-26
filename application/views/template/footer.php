@@ -23,4 +23,47 @@
         </div>
       </div>
     </div>
-    
+    <!-- Modal-->
+    <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+        <div role="document" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="exampleModalLabel" class="modal-title"></h4>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                </div>
+
+                <div class="modal-body" id="conteudo">                                                
+                    <div class="img-fluid col-xs-12" style="text-align: center;">
+                        <img src="<?=base_url("assets/img/loading2.gif")?>" alt="loading">
+                    </div>
+                </div>
+                <div class="modal-body" id="conteudo_body"></div>
+
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-danger"><i class="fa fa-times"></i> Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal exigência -->
+    <div class="modal fade" id="modal-exigencia" tabindex="-1" role="dialog" aria-labelledby="modal-area" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" id="div_id">
+                <div class="modal-header">
+                    <h4 id="exampleModalLabel" class="modal-title">Documento com exigência</h4>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                </div>
+
+                <form name="exigencia" method="post" action="<?=base_url("suspender")?>">
+                    <div class="modal-body" id="modal-corpo">
+                        <input id="exigencia" type="hidden" name="id"> 
+                        Você realmente quer deixar o documento aguardando exigência?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" name="memoria-delete" class="btn btn-danger">Confirmar</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal exigência -->

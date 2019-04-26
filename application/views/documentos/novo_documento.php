@@ -21,6 +21,13 @@
                 </div>
             </div>
         <?php endif; ?>
+        <?php if ($this->session->flashdata('warning') == TRUE) : ?>
+            <div class="col-md-12">
+                <div class="alert alert-warning" role="alert">
+                    <?= $this->session->flashdata('warning'); ?>
+                </div>
+            </div>
+        <?php endif; ?>
         <?php if($this->session->flashdata('error_date') == TRUE): ?>
             <div class="col-md-12">
                 <div class="alert alert-danger" role="alert">
@@ -30,11 +37,8 @@
         <?php endif; ?>
         <div id="data_erro"></div>
         <div class="row">
-
             <div class="col-lg-12">
-    
                 <div class="card">
-        
                     <div class="card-header d-flex align-items-center">
                         <h3 class="h4">Novo Documento</h3>
                     </div>
