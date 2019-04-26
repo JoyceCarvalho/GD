@@ -624,13 +624,15 @@ class Transferencia extends CI_Controller {
 
     }
 
-    public function suspender_documento($identificador){
+    public function suspender_documento(){
 
         if((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)){
             redirect("/");
         }
 
         $data = new stdClass();
+
+        $identificador = $this->input->post("id");
 
         //transforma o identificador em um array
         $id = str_split($identificador);

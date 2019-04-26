@@ -109,6 +109,7 @@
                                                         </div>
                                                     </div>
                                                     <select id="etapa_<?=$i;?>" name="idtipo_<?=$i;?>" class="form-control">
+                                                        <option value=""> -- Selecione -- </option>
                                                         <?php 
                                                         foreach ($dados_cargo as $cargo ) {
                                                             if($cargo->id == $comp->fk_idcargo){
@@ -147,6 +148,7 @@
                                                         </div>
                                                     </div>
                                                     <select id="etapa_<?=$i;?>" name="idtipo_<?=$i;?>" class="form-control">
+                                                        <option value=""> -- Selecione -- </option>
                                                         <?php
                                                         foreach ($dados_usuario as $user) {
                                                             if ($user->id == $comp->fk_idusuario) {

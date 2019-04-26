@@ -21,6 +21,13 @@
                 </div>
             </div>
         <?php endif; ?>
+        <?php if ($this->session->flashdata('warning') == TRUE) : ?>
+            <div class="col-md-12">
+                <div class="alert alert-warning" role="alert">
+                    <?= $this->session->flashdata('warning'); ?>
+                </div>
+            </div>
+        <?php endif; ?>
         <?php if($this->session->flashdata('error_date') == TRUE): ?>
             <div class="col-md-12">
                 <div class="alert alert-danger" role="alert">

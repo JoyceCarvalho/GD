@@ -62,7 +62,7 @@
                                                 <td><?=$documentos->data_erro;?></td>
                                                 <td><?=$documentos->nome_usuario;?></td>
                                                 <td style="text-align: center;">
-                                                <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" onclick="javascript:historico(<?=$documentos->idprotocolo;?>)">Ver Histórico Documento</a><br/>
+                                                    <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" onclick="javascript:historico(<?=$documentos->idprotocolo;?>)">Ver Histórico Documento</a><br/>
                                                     <?php
                                                     $this->load->model('documentos_model', 'docmodel');
                                                     if ($documentos->idresponsavel == $_SESSION["idusuario"]) {

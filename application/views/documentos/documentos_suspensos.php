@@ -29,11 +29,8 @@
             </div>
         <?php endif; ?>
         <div class="row">
-
-            <div class="col-lg-12">
-    
+            <div class="col-lg-12">   
                 <div class="card">
-        
                     <div class="card-header d-flex align-items-center">
                         <h3 class="h4">Documentos aguardando exigência</h3>
                     </div>
@@ -151,9 +148,6 @@ window.addEventListener("DOMContentLoaded", function() {
 		return string;
 	};
 
-
-
-
 	$(function(){
 			
 		$.each($('input[id=id_protocolo]'),function (){
@@ -175,8 +169,8 @@ window.addEventListener("DOMContentLoaded", function() {
 				if (resp.running) {
 					interval = setInterval(timer, 1000);
 				}
-			});
 
+			});
 
 		});
 		
