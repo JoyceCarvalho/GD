@@ -476,14 +476,9 @@ class Relatorios extends CI_Controller {
             redirect("/");
         }
 
-        if($this->input->post("nao_iniciado") == "1") {
-            $time = false;
-        } else {
-            $time = true;
-        }
-
         $data = new stdClass();
 
+        $time = false;
         $idprotocolo = $this->input->post("idprotocolo");
         $usuario = $this->input->post('usuario');
 
@@ -502,9 +497,13 @@ class Relatorios extends CI_Controller {
 
         if($this->docmodel->cadastrar_log_documento($documento)){
 
-            if($time){
+            $this->load->model('timer_model', 'timermodel');
 
-                $this->load->model('timer_model', 'timermodel');
+            if($this->timermodel->verifica_timer($idprotocolo) == "start") {
+                $time = true;
+            }
+
+            if($time){
 
                 $dados = array(
                     'fk_iddoccad'   => $idprotocolo,

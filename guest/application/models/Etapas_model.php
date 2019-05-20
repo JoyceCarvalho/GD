@@ -102,7 +102,7 @@ class Etapas_model extends CI_Model {
      */
     public function listar_etapas_json($documento){
         
-        $this->db->select('e.id as id, e.titulo as titulo, de.iddocumento as iddocumento');
+        $this->db->select('e.id as id, e.titulo as titulo, de.iddocumento as iddocumento, de.prazo_def as prazo_def');
         $this->db->from('tbetapa as e');
         $this->db->join('tbdocumentoetapa as de', 'de.idetapa = e.id');
         $this->db->where('iddocumento = ', $documento);

@@ -604,8 +604,8 @@ class Transferencia extends CI_Controller {
                         'tipo'      => 'retorno',
                         'protocolo' => $doc->protocolo,
                         'documento' => $doc->documento_nome,
-                        'email'     => $usuario->email_usuario,
-                        'usuario'   => $usuario->usuario_nome
+                        'email'     => (!empty($usuario->email_usuario)) ? $usuario->email_usuario : "",
+                        'usuario'   => (!empty($usuario->usuario_nome)) ? $usuario->usuario_nome : ""
                     );
                     
                 }

@@ -5,13 +5,14 @@ class Documento extends CI_Controller {
 
     function __construct(){
         parent::__construct();
-
-        $this->load->model('empresa_model', 'empresamodel');
-        $this->load->model('documentos_model', 'docmodel');
+       
         $this->load->model('grupo_model', 'grupomodel');
         $this->load->model('etapas_model', 'etapasmodel');
+        $this->load->model('empresa_model', 'empresamodel');
         $this->load->model('DocEtapas_model', 'docetapamodel');
+        $this->load->model('documentos_model', 'docmodel');
         $this->load->model('LogsSistema_model', 'logsistema');
+        
     }
 
 	public function index()	{
@@ -70,79 +71,62 @@ class Documento extends CI_Controller {
     public function cadastrar_documentos(){
 
         if((isset($_SESSION["logado"])) && ($_SESSION["logado"] == true)){
+            //print_r($this->input->post());exit();
 
-            $data = new stdClass();
-
-            $dados = array(
-                'titulo' => $this->input->post('titulo'),
-                'fk_idgrupo' => $this->input->post('grupo'),
-                'fk_idempresa' => $_SESSION["idempresa"]
-            );
-
-            $iddocumento = $this->docmodel->cadastrar_documentos($dados);
-
-            $etapa = $this->input->post('total');
-
-            for($i=1; $i<=$etapa; $i++){
-                $doc_etapa = array(
-                    'iddocumento' => $iddocumento,
-                    'idetapa'     => $this->input->post("etapa[$i]"),
-                    'ordem'       => $i
+            if($this->docmodel->verifica_documento_existente($this->input->post('titulo'), $this->input->post('grupo'), $_SESSION["idempresa"]) == 0){
+                $dados = array(
+                    'titulo' => $this->input->post('titulo'),
+                    'fk_idgrupo' => $this->input->post('grupo'),
+                    'fk_idempresa' => $_SESSION["idempresa"]
                 );
-                //print_r($doc_etapas);
-                $cadastro = $this->docetapamodel->cadastrar_documento_etapa($doc_etapa);
-            }
-
-            if($cadastro){
-
-                $data->success = "Documento ".$this->input->post('titulo')." cadastrado com sucesso!";
-
-                $dados["pagina"]    = "Documentos";
-                $dados["pg"]        = "configuracao";
-                $dados["submenu"]   = "documento";
-                $dados["sub"]       = "doccad";
-
-                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["listar_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-                $dados["listar_etapas"] = $this->etapasmodel->listar_etapas($_SESSION["idempresa"]);
-
-                $this->load->view('template/html_header', $dados);
-                $this->load->view('template/header');
-                $this->load->view('template/menu', $data);
-                $this->load->view('config/documento_cadastrar');
-                $this->load->view('template/footer');
-                $this->load->view('template/html_footer');
-
-                //log sistema
-                $mensagem = "Cadastrou o documento " . $this->input->post('titulo');
-                $log = array(
-                    'usuario'   => $_SESSION["idusuario"],
-                    'mensagem'  => $mensagem,
-                    'data_hora' => date("Y-m-d H:i:s")
-                );
-                $this->logsistema->cadastrar_log_sistema($log);
-                //fim log sistema
-
+                if($this->input->post('prazo_doc') == "on"){
+                    $dados['prazo_final'] = $this->input->post("prazo_final");
+                } 
+    
+                $iddocumento = $this->docmodel->cadastrar_documentos($dados);
+    
+                $etapa = $this->input->post('total');
+    
+                for($i=1; $i<=$etapa; $i++){
+                    $doc_etapa = array(
+                        'iddocumento' => $iddocumento,
+                        'idetapa'     => $this->input->post("etapa[$i]"),
+                        'ordem'       => $i
+                    );
+                    if($this->input->post("prazo_fx[$i]") == "on"){
+                        $doc_etapa["prazo_def"] = $this->input->post("prazo[$i]");
+                    }
+                    //print_r($doc_etapas);
+                    $cadastro = $this->docetapamodel->cadastrar_documento_etapa($doc_etapa);
+                    unset($doc_etapa);
+                }
+    
+                if($cadastro){
+    
+                    $this->session->set_flashdata("success", "Documento ".$this->input->post('titulo')." cadastrado com sucesso!");
+    
+                    //log sistema
+                    $mensagem = "Cadastrou o documento " . $this->input->post('titulo');
+                    $log = array(
+                        'usuario'   => $_SESSION["idusuario"],
+                        'mensagem'  => $mensagem,
+                        'data_hora' => date("Y-m-d H:i:s")
+                    );
+                    $this->logsistema->cadastrar_log_sistema($log);
+                    //fim log sistema
+    
+                } else {
+    
+                    $this->session->set_flashdata('error', "Ocorreu um problema ao cadastrar o documento! Favor entre em contato com o suporte e tente novamente mais tarde!");
+    
+                }
             } else {
-
-                $data->error = "Ocorreu um problema ao cadastrar o documento! Favor entre em contato com o suporte e tente novamente mais tarde!";
-
-                $dados["pagina"]    = "Documentos";
-                $dados["pg"]        = "configuracao";
-                $dados["submenu"]   = "documento";
-                $dados["doccad"]    = "doccad";
-
-                $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["listar_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-                $dados["listar_etapas"] = $this->etapasmodel->listar_etapas($_SESSION["idempresa"]);
-
-                $this->load->view('template/html_header', $dados);
-                $this->load->view('template/header');
-                $this->load->view('template/menu', $data);
-                $this->load->view('config/documento_cadastrar');
-                $this->load->view('template/footer');
-                $this->load->view('template/html_footer');
+                $this->session->set_flashdata("error", "Documento já existente! Não foi possivel cadastrá-lo!");
             }
+
+            redirect("documentos_cad");
+        } else {
+            redirect("/");
         }
 
     }
@@ -162,7 +146,7 @@ class Documento extends CI_Controller {
 
             $this->load->model('grupo_model', 'grupomodel');
             $dados["full_grupos"]       = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-            $dados["listar_etapas"]       = $this->etapasmodel->listar_etapas($_SESSION["idempresa"]);
+            $dados["listar_etapas"]     = $this->etapasmodel->listar_etapas($_SESSION["idempresa"]);
             $dados["documento_etapa"]   = $this->docetapamodel->listar_docetapa($id);
 
             $this->load->view('template/html_header', $dados);
@@ -191,6 +175,12 @@ class Documento extends CI_Controller {
                 'fk_idgrupo'    => $this->input->post('grupo')
             );
 
+            if($this->input->post('prazo_doc') == "on"){
+                $dados['prazo_final'] = $this->input->post("prazo_final");
+            } else {
+                $dados['prazo_final'] = NULL;
+            }
+
             $total = $this->input->post('total');
 
             if($total > 1){
@@ -207,40 +197,29 @@ class Documento extends CI_Controller {
                     'ordem'       => $i
                 );
 
-                if($this->docetapamodel->verifica_docetapa($iddocumento, $idetapa)){
-
-                    $this->docetapamodel->editar_docetapa($iddocumento, $idetapa, $docetapa);
-
-                } else {
-                    
-                    $this->docetapamodel->cadastrar_documento_etapa($docetapa);
-
+                if($this->input->post("prazo_fx[$i]") == "on"){
+                    $docetapa["prazo_def"] = $this->input->post("prazo[$i]");
                 }
 
+                if($this->docetapamodel->verifica_docetapa($iddocumento, $idetapa)){
+                    $this->docetapamodel->editar_docetapa($iddocumento, $idetapa, $docetapa);
+                } else {                 
+                    $this->docetapamodel->cadastrar_documento_etapa($docetapa);
+                }
+                unset($docetapa);
+
+            }
+
+            $this->load->model('competencia_model', 'compmodel');
+
+            //verifica a existência de competencias se houver serão excluidas
+            if($this->compmodel->retorna_cadastrados($iddocumento) > 0){
+                $this->compmodel->excluir_compentecias($iddocumento);
             }
 
             if($this->docmodel->editar_documentos($dados, $iddocumento)){
 
-                $data->success = "Documento ".$this->input->post('titulo')." atualizado com sucesso!";
-
-                $dados["pagina"]    = "Documentos";
-                $dados["pg"]        = "configuracao";
-                $dados["submenu"]   = "documento";
-
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["dados_documento"]   = $this->docmodel->dados_documentos($iddocumento);
-
-                $this->load->model('grupo_model', 'grupomodel');
-                $dados["full_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-                $dados["listar_etapas"]       = $this->etapasmodel->listar_etapas($_SESSION["idempresa"]);
-                $dados["documento_etapa"]   = $this->docetapamodel->listar_docetapa($iddocumento);
-
-                $this->load->view('template/html_header', $dados);
-                $this->load->view('template/header');
-                $this->load->view('template/menu', $data);
-                $this->load->view('config/documento_editar');
-                $this->load->view('template/footer');
-                $this->load->view('template/html_footer');
+                $this->session->set_flashdata("success", "Documento ".$this->input->post('titulo')." atualizado com sucesso!");
 
                 //log do sistema
                 $mensagem = "Edição do documento " . $this->input->post('titulo');
@@ -254,27 +233,12 @@ class Documento extends CI_Controller {
 
             } else {
 
-                $data->error = "Ocorreu um problema ao editar o documento! Favor entre em contato com o suporte e tente novamente mais tarde.";
+                $this->session->set_flashdata("error", "Ocorreu um problema ao editar o documento! Favor entre em contato com o suporte e tente novamente mais tarde.");
 
-                $dados["pagina"]    = "Documentos";
-                $dados["pg"]        = "configuracao";
-                $dados["submenu"]   = "documento";
-
-                $dados["nome_empresa"]      = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-                $dados["dados_documento"]   = $this->docmodel->dados_documentos($iddocumento);
-
-                $this->load->model('grupo_model', 'grupomodel');
-                $dados["full_grupos"] = $this->grupomodel->listar_grupos($_SESSION["idempresa"]);
-                $dados["listar_etapas"]       = $this->etapasmodel->listar_etapas($_SESSION["idempresa"]);
-                $dados["documento_etapa"]   = $this->docetapamodel->listar_docetapa($iddocumento);
-
-                $this->load->view('template/html_header', $dados);
-                $this->load->view('template/header');
-                $this->load->view('template/menu', $data);
-                $this->load->view('config/documento_editar');
-                $this->load->view('template/footer');
-                $this->load->view('template/html_footer');
             }
+            redirect("documentos");
+        } else {
+            redirect("/");
         }
     }
 
@@ -290,22 +254,7 @@ class Documento extends CI_Controller {
 
             if($this->docmodel->excluir_documentos($id)){
 
-                $data->success = "Documento excluido com sucesso!";
-
-                $dados["pagina"]    = "Documentos";
-                $dados["pg"]        = "configuracao";
-                $dados["submenu"]   = "documento";
-                $dados["sub"]       = "doclist";
-
-                $dados["listagem_documento"]    = $this->docmodel->listar_documentos($_SESSION["idempresa"]);
-                $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-
-                $this->load->view('template/html_header', $dados);
-                $this->load->view('template/header');
-                $this->load->view('template/menu', $data);
-                $this->load->view('config/documento');
-                $this->load->view('template/footer');
-                $this->load->view('template/html_footer');
+                $this->session->set_flashdata("success", "Documento excluido com sucesso!");
 
                 //log do sistema
                 $mensagem = "Excluiu o documento " . $titulo;
@@ -319,24 +268,12 @@ class Documento extends CI_Controller {
 
             } else {
 
-                $data->error = "Ocorreu um problema ao excluir os dados! Favor entre em contato com o suporte e tente novamente mais tarde.";
-
-                $dados["pagina"]    = "Documentos";
-                $dados["pg"]        = "configuracao";
-                $dados["submenu"]   = "documento";
-                $dados["sub"]       = "doclist";
-
-                $dados["listagem_documento"]    = $this->docmodel->listar_documentos($_SESSION["idempresa"]);
-                $dados["nome_empresa"]          = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
-
-                $this->load->view('template/html_header', $dados);
-                $this->load->view('template/header');
-                $this->load->view('template/menu', $data);
-                $this->load->view('config/documento');
-                $this->load->view('template/footer');
-                $this->load->view('template/html_footer');
+                $this->session->set_flashdata("error", "Ocorreu um problema ao excluir os dados! Favor entre em contato com o suporte e tente novamente mais tarde.");
                 
             }
+            redirect("documentos");
+        } else {
+            redirect("/");
         }
     }
 

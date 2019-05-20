@@ -120,6 +120,7 @@ class Usuario_model extends CI_Model {
         $this->db->join('tbempresa', 'tbusuario.fk_idempresa = tbempresa.id');
         $this->db->where("tbusuario.usuario = '{$usuario}'");
         $this->db->where("tbempresa.cliente_code = '{$cliente_code}'");
+        $this->db->where('tbusuario.ativo = 1');
 
 		return $this->db->get()->row('id');
     }

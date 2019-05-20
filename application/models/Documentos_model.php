@@ -567,10 +567,27 @@ class Documentos_model extends CI_Model {
      */
     public function listar_documentos_json($grupo){
         
-        $this->db->select('d.id as id, d.titulo as titulo, g.titulo as grupo, ');
+        $this->db->select('d.id as id, d.titulo as titulo, g.titulo as grupo');
         $this->db->from('tbdocumento as d');
         $this->db->join('tbgrupo as g', "d.fk_idgrupo = g.id");
         $this->db->where('d.fk_idgrupo =', $grupo);
+        $query = $this->db->get();
+
+        return json_encode($query->result());
+    }
+
+    /**
+     * Função para listar os prazos da tabela tbdocumentos em formato json
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param int $iddocumento
+     * @return json retorna um json com os dados
+     */
+    public function listar_prazosDocumentos_json($iddocumento){
+        
+        $this->db->select('prazo_final');
+        $this->db->from('tbdocumento');
+        $this->db->where('id =', $iddocumento);
         $query = $this->db->get();
 
         return json_encode($query->result());
@@ -1256,6 +1273,23 @@ class Documentos_model extends CI_Model {
         $this->db->where('ultima_etapa = "true"');
         return $this->db->get()->result();
 
+    }
+
+    /**
+     * Método responsável por retornar se o titulo do documento já foi cadastrado ou não
+     * Utilizado no controller config/Documento.php
+     *
+     * @param string $titulo
+     * @param int $empresa
+     * @return int
+     */
+    public function verifica_documento_existente($titulo, $grupo, $empresa){
+        $this->db->select("count(*) as total");
+        $this->db->from("tbdocumento");
+        $this->db->where("titulo = '$titulo'");
+        $this->db->where("fk_idgrupo", $grupo);
+        $this->db->where("fk_idempresa", $empresa);
+        return $this->db->get()->row('total');
     }
 
 }

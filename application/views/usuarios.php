@@ -42,7 +42,7 @@ $this->load->model("pop_model", "popmodel");
                     </div>
                     <div class="card-body">
 
-			<?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
+			        <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
 		                <div class="form-group">
 		                    <a href="<?=base_url('home/usuario_cad')?>" class="btn btn-sm btn-success">Cadastrar Usuários</a>
 		                </div>

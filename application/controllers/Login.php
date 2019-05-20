@@ -26,7 +26,6 @@ class Login extends CI_Controller {
 
   }
 
-
   public function login(){
 
     // cria um objeto data

@@ -73,7 +73,9 @@
                                                             <?php
                                                             $this->load->model('etapas_model', 'etapasmodel');
                                                             $prazo = $this->etapasmodel->prazo_etapa($documentos->idprotocolo, $documentos->idetapa);
-                                                            echo "Etapa: ".converte_data($prazo);
+                                                            if(!empty($prazo)){
+                                                                echo "Etapa: ".converte_data($prazo);
+                                                            }
                                                             ?>
                                                         </strong>
                                                         <?php

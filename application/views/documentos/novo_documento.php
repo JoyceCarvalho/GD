@@ -147,40 +147,105 @@
 
             $.getJSON('<?=base_url();?>'+'find_steps/'+iddocumento, function (dados){
                 if (dados.length>0) {
+                    var time = new Date();
+                    console.log(time);
+                    
                     var option = '<div class="col-sm-12" id="steps">';
                     $.each(dados, function(i, obj){
                         j++;
                         option += '<div class="form-group row">';
                         option +=   '<input type="hidden" name="etapas['+j+']" value="'+obj.id+'">';
                         option +=   '<label class="col-sm-3 form-control-label">'+obj.titulo+'</label>';
+                        //outraData.setDate(time.getDate() + obj.prazo_def);
+                        var outraData = new Date(time.getTime() + (obj.prazo_def * 24 * 60 * 60 * 1000));
+                        if((outraData.getMonth()+1) < 10){
+                            var mes = "0" + (outraData.getMonth()+1);
+                        } else {
+                            var mes = (outraData.getMonth()+1);
+                        }
+
+                        if(outraData.getDate() < 10){
+                            var dia = "0" + outraData.getDate();
+                        } else {
+                            var dia = outraData.getDate();
+                        }
+
+                        var data = outraData.getFullYear()+"-"+ mes +"-"+dia;
+                        //console.log(outraData);
+                        if(obj.prazo_def == null){
+                            data = "";
+                        }
                         option +=   '<div class="col-sm-9">';
-                        option +=       '<input type="date" id="prazo_etapa_'+j+'" name="prazo['+j+']" class="form-control">';
+                        option +=       '<input type="date" id="prazo_etapa_'+j+'" value="'+data+'" name="prazo['+j+']" class="form-control">';
                         option +=       '<div id="mensagem_'+j+'"></div>';
                         option +=   '</div>';
                         option += '</div>';
-                    })
-                    option += '<div class="line"></div>';
-                    option +=   '<hr>';
-                    option +=   '<div class="form-group row">';
-                    option +=       '<label class="form-control-label col-sm-3"> <strong>Prazo Final do documento</strong></label>';
-                    option +=       '<div class="col-sm-9">';
-                    option +=           '<input type="date" name="prazo_final" id="prazo_final" class="form-control">';
-                    option +=           '<div id="mensagem"></div>';
-                    option +=       '</div>';
-                    option +=   '</div>';
-                    option +=   '<input type="hidden" name="prazo_etapa" value="'+dados.length+'">';
-                    option += "</div>";
-                    $('#mensagem').html('<span class="mensagem">Total de estados encontrados.: '+dados.length+'</span>'); 
-                    $('#if_prazos').val('1');
-                    
+                        time = outraData;
+                    });
                     console.log("Total de etapas "+dados.length+"!");
-
                     
                 } else {
                     reset();
                     $('#mensagem').html('<span class="mensagem">Não foram encontrados documentos cadastrados neste grupo!</span>');
                 }
                 $('#addprazo').html(option).show();
+
+                $.getJSON('<?=base_url();?>'+'find_deadline/'+iddocumento, function (dados){
+                    var option = '<div class="col-sm-12" id="deadline">';
+                    var dataIni = new Date();
+                    if(dados.length > 0){
+                        $.each(dados, function(i, obj2){
+                            var dataFinal = new Date(dataIni.getTime() + (obj2.prazo_final * 24 * 60 * 60 * 1000)); 
+                            console.log(obj2.prazo_final);    
+                            if((dataFinal.getMonth()+1) < 10){
+                                var mes = "0" + (dataFinal.getMonth()+1);
+                            } else {
+                                var mes = (dataFinal.getMonth()+1);
+                            }
+                            if(dataFinal.getDate() < 10){
+                                var dia = "0" + dataFinal.getDate();
+                            } else {
+                                var dia = dataFinal.getDate();
+                            }
+                            
+                            if(obj2.prazo_final == null){
+                                var prazo = "";
+                            } else {
+                                var prazo = dataFinal.getFullYear()+"-"+ mes +"-"+dia;
+                            }
+                            //console.log(prazo);
+                            option += '<div class="line"></div>';
+                            option +=   '<hr>';
+                            option +=   '<div class="form-group col-sm-12 row">';
+                            option +=       '<label class="form-control-label col-sm-3"> <strong>Prazo Final do documento</strong></label>';
+                            option +=       '<div class="col-sm-9">';
+                            option +=           '<input type="date" name="prazo_final" value="'+prazo+'" id="prazo_final" class="form-control">';
+                            option +=           '<div id="mensagem"></div>';
+                            option +=       '</div>';
+                            option +=   '</div>';
+                            option +=   '<input type="hidden" name="prazo_etapa" value="'+dados.length+'">';
+                            option += "</div>";
+                        });
+                    } else {
+                        option += '<div class="line"></div>';
+                        option +=   '<hr>';
+                        option +=   '<div class="form-group row">';
+                        option +=       '<label class="form-control-label col-sm-3"> <strong>Prazo Final do documento</strong></label>';
+                        option +=       '<div class="col-sm-9">';
+                        option +=           '<input type="date" name="prazo_final" id="prazo_final" class="form-control">';
+                        option +=           '<div id="mensagem"></div>';
+                        option +=       '</div>';
+                        option +=   '</div>';
+                        option +=   '<input type="hidden" name="prazo_etapa" value="'+dados.length+'">';
+                        option += "</div>";
+                    }
+                    option += "</div>";
+
+                    $('#if_prazos').val('1');
+
+                    var main = document.getElementById('addprazo');
+                    main.insertAdjacentHTML('beforeend', option);
+                });
 
                 var quantidade = dados.length;
                 var data_hoje = $("#data_atual").val();
@@ -236,6 +301,16 @@
                 
             });
         });
+
+        $("#sel_docs").change(function(){
+            if (document.querySelectorAll('#steps').length) {
+                $('#addprazo').html("").show();   
+                $('#if_prazos').val('0');                             
+            }
+
+            $("#p_doc").show();
+
+        })
 
     });
 

@@ -16,6 +16,12 @@ mas fica por sua conta e risco '\_(>.<)_/` -->
             $('html, body').animate({scrollTop : 0},800);
             return false;
         }); 
+        
+        $("#myModal").on('hide.bs.modal', function(){
+            $('#exampleModalLabel').html("");
+            $('#conteudo').html('<div class="img-fluid col-xs-12" style="text-align: center;"><img src="<?=base_url("assets/img/loading2.gif")?>" alt="loading"></div>');
+            $('#conteudo_body').html("");
+        });
     });
 
     function doc_exigencia(id){

@@ -1389,7 +1389,7 @@
 
 
 	var _intVal = function ( s ) {
-		var integer = parseInt( s, 10 );
+		var integer = parseInt( s, 50 );
 		return !isNaN(integer) && isFinite(s) ? integer : null;
 	};
 
@@ -4131,8 +4131,8 @@
 		}
 
 		_fnClearTable( settings );
-		settings._iRecordsTotal   = parseInt(recordsTotal, 10);
-		settings._iRecordsDisplay = parseInt(recordsFiltered, 10);
+		settings._iRecordsTotal   = parseInt(recordsTotal, 50);
+		settings._iRecordsDisplay = parseInt(recordsFiltered, 50);
 
 		for ( var i=0, ien=data.length ; i<ien ; i++ ) {
 			_fnAddData( settings, data[i] );
@@ -4798,7 +4798,7 @@
 
 	function _fnLengthChange ( settings, val )
 	{
-		var len = parseInt( val, 10 );
+		var len = parseInt( val, 50 );
 		settings._iDisplayLength = len;
 
 		_fnLengthOverflow( settings );
@@ -8454,7 +8454,7 @@
 				switch( match[2] ) {
 					case 'visIdx':
 					case 'visible':
-						var idx = parseInt( match[1], 10 );
+						var idx = parseInt( match[1], 50 );
 						// Visible index given, convert to column index
 						if ( idx < 0 ) {
 							// Counting from the right
@@ -9106,8 +9106,8 @@
 		var iThis, iThat;
 
 		for ( var i=0, iLen=aThat.length ; i<iLen ; i++ ) {
-			iThis = parseInt( aThis[i], 10 ) || 0;
-			iThat = parseInt( aThat[i], 10 ) || 0;
+			iThis = parseInt( aThis[i], 50 ) || 0;
+			iThat = parseInt( aThat[i], 50 ) || 0;
 
 			// Parts are the same, keep comparing
 			if (iThis === iThat) {
@@ -10156,11 +10156,11 @@
 		 *  @example
 		 *    $(document).ready( function() {
 		 *      $('#example').dataTable( {
-		 *        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+		 *        "lengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
 		 *      } );
 		 *    } );
 		 */
-		"aLengthMenu": [ 10, 25, 50, 100 ],
+		"aLengthMenu": [ 50, 100, 150, 200 ],
 
 
 		/**
@@ -11184,7 +11184,7 @@
 		 *      } );
 		 *    } )
 		 */
-		"iDisplayLength": 10,
+		"iDisplayLength": 50,
 
 
 		/**
@@ -11606,11 +11606,11 @@
 			 *      $('#example').dataTable( {
 			 *        "language": {
 			 *          "lengthMenu": 'Display <select>'+
-			 *            '<option value="10">10</option>'+
-			 *            '<option value="20">20</option>'+
-			 *            '<option value="30">30</option>'+
-			 *            '<option value="40">40</option>'+
 			 *            '<option value="50">50</option>'+
+			 *            '<option value="100">100</option>'+
+			 *            '<option value="150">150</option>'+
+			 *            '<option value="200">200</option>'+
+			 *            '<option value="250">250</option>'+
 			 *            '<option value="-1">All</option>'+
 			 *            '</select> records'
 			 *        }
@@ -13629,9 +13629,9 @@
 		/**
 		 * Paging display length
 		 *  @type int
-		 *  @default 10
+		 *  @default 50
 		 */
-		"_iDisplayLength": 10,
+		"_iDisplayLength": 50,
 
 		/**
 		 * Paging start point - aiDisplay index
@@ -15007,7 +15007,7 @@
 					flo = flo.toFixed( precision );
 					d = Math.abs( flo );
 
-					var intPart = parseInt( d, 10 );
+					var intPart = parseInt( d, 50 );
 					var floatPart = precision ?
 						decimal+(d - intPart).toFixed( precision ).substring( 2 ):
 						'';

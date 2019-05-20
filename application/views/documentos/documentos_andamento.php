@@ -35,10 +35,11 @@
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>
                                     <tr>
+                                        <th width="2%"><strong>#</strong></th>
                                         <th width="10%">Protocolo</th>
                                         <th width="25%">Documento<br/>/Grupo</th>
-                                        <th width="10%">Prazos</th>
-                                        <th width="10%">Etapas</th>
+                                        <th width="9%">Prazos</th>
+                                        <th width="9%">Etapas</th>
                                         <th width="15%">Responsável</th>
                                         <th width="30%"></th>
                                     </tr>
@@ -46,9 +47,11 @@
                                 <tbody>
                                     <?php
                                     if($andamento_doc_c){
+                                        $i = 1;
                                         foreach ($andamento_doc_c as $documentos) {
                                             ?>
                                             <tr>
+                                                <td scope="row"><strong><?=$i++;?></strong></td>
                                                 <td><?=$documentos->protocolo;?></td>
                                                 <td>
                                                     <?=$documentos->documento;?><br/>
@@ -130,87 +133,6 @@
                                             <?php
                                         }
                                     }
-
-                                    /*if(isset($andamento_doc_f)){
-                                        foreach ($andamento_doc_f as $documentos) {
-                                            ?>
-                                            <tr>
-                                                <td><?=$documentos->protocolo;?></td>
-                                                <td>
-                                                    <?=$documentos->documento;?><br/>
-                                                    <strong><?=$documentos->grupo;?></strong>
-                                                </td>
-                                                <td>
-                                                    <?php
-                                                    if(!empty($documentos->prazo)){
-                                                        echo "Documento: ".converte_data($documentos->prazo);
-                                                        ?>
-                                                        <br/>
-                                                        <strong>
-                                                            <?php
-                                                            $this->load->model('etapas_model', 'etapasmodel');
-                                                            $prazo = $this->etapasmodel->prazo_etapa($documentos->idprotocolo, $documentos->idetapa);
-                                                            echo "Etapa: ".converte_data($prazo);
-                                                            ?>
-                                                        </strong>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <strong>Documento sem prazo!</strong>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                </td>
-                                                <td><?=$documentos->etapa;?></td>
-                                                <td>
-                                                    <?php
-                                                    if(!empty($documentos->nome_usuario)){
-                                                        echo $documentos->nome_usuario;
-                                                    } else {
-                                                        if($documentos->descricao == "PENDENTE"){
-                                                            echo "<strong>Documento Pendente</strong> - Sem responsável";
-                                                        }
-                                                    }
-                                                    ?>
-                                                </td>
-                                                <td style="text-align: center;">
-                                                    <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" id="historico_<?=$documentos->idprotocolo;?>">Ver Histórico Documento</a><br/>
-                                                    <a href="<?=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Documento com exigência</a><br/>
-                                                    <?php 
-                                                    if ($documentos->idresponsavel == $_SESSION["idusuario"]) {
-                                                        ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="erro_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
-                                                        <?php
-                                                    }
-                                                    $this->load->model('erros_model', 'errosmodel');
-                                                    
-                                                    $contador = $this->errosmodel->conta_erros($documentos->idprotocolo);
-
-                                                    if ($contador > 0) {
-                                                        ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="vizualizar_erro_<?=$documentos->idprotocolo;?>" style="color:red;">Ver Erros</a><br/>
-                                                        <?php
-                                                    }
-                                                    
-                                                    $this->load->model('documentos_model', 'docmodel');
-                                                    if ($documentos->idresponsavel == $_SESSION["idusuario"]) {
-                                                        ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="observacao_<?=$documentos->idprotocolo;?>"> Apontar Observação</a><br/>
-                                                        <?php
-                                                    }
-
-                                                    if ($this->docmodel->verifica_observacoes($documentos->idprotocolo)) {
-                                                        ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" id="ver_obs_<?=$documentos->idprotocolo;?>" style="color:green"> Ver Observações</a>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                    <input class="id_protocolo" name="id_protocolo" id="id_protocolo" type="hidden" value="<?=$documentos->idprotocolo;?>">
-                                                </td>
-                                            </tr>
-                                            <?php
-                                        }
-                                    }*/
                                     ?>
                                 </tbody>
                             </table>

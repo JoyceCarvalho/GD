@@ -35,10 +35,11 @@
                             <table class="table table-striped table-hover" id="datatable">
                                 <thead>
                                     <tr>
+                                        <th width="2%"><strong>#</strong></th>
                                         <th width="10%">Protocolo</th>
                                         <th width="25%">Documento<br/>/Grupo</th>
-                                        <th width="10%">Prazos</th>
-                                        <th width="10%">Etapas</th>
+                                        <th width="9%">Prazos</th>
+                                        <th width="9%">Etapas</th>
                                         <th width="15%">Responsável</th>
                                         <th width="30%"></th>
                                     </tr>
@@ -46,9 +47,11 @@
                                 <tbody>
                                     <?php
                                     if($andamento_doc_c){
+                                        $i = 1;
                                         foreach ($andamento_doc_c as $documentos) {
                                             ?>
                                             <tr>
+                                                <td scope="row"><strong><?=$i++;?></strong></td>
                                                 <td><?=$documentos->protocolo;?></td>
                                                 <td>
                                                     <?=$documentos->documento;?><br/>

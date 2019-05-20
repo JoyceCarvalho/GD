@@ -37,7 +37,7 @@ class Relatorios extends CI_Controller {
             $dados["andamento_doc_c"] = $this->docmodel->listar_documentos_andamento_funcionarios($_SESSION["idusuario"]);
             
         }*/
-        $dados["andamento_doc_c"] = $this->docmodel->listar_documentos_em_andamento($_SESSION["idempresa"]);
+        $dados["andamento_doc_c"] = $this->docmodel->listar_documentos_em_andamento($_SESSION["guest_empresa"]);
 
         $this->load->view("template/html_header", $dados);
         $this->load->view("template/header");
@@ -58,9 +58,9 @@ class Relatorios extends CI_Controller {
         $dados["pg"]      = "documentos";
         $dados["submenu"] = "nao_iniciados";
 
-        $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["idempresa"]);
+        $dados["nome_empresa"]  = $this->empresamodel->nome_empresa($_SESSION["guest_empresa"]);
 
-        $dados["documentos_n_iniciados"] = $this->docmodel->listar_documentos_nao_iniciados($_SESSION["idempresa"]);
+        $dados["documentos_n_iniciados"] = $this->docmodel->listar_documentos_nao_iniciados($_SESSION["guest_empresa"]);
 
         $this->load->view("template/html_header", $dados);
         $this->load->view("template/header");

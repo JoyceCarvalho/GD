@@ -70,18 +70,22 @@ class Documento extends CI_Controller {
         
                     for ($i=1; $i <= $steps_number; ++$i) { 
                         
-                        if($this->input->post("prazo[$i]") >= date('Y-m-d')){
-
-                            $validate = true;
-
-                        } else {
-
-                            $validate = false;
+                        if(!empty($this->input->post("prazos[$i]"))){
                             
-                        //arrumar está retornando uma pagina em branco
-                            //exit();
-                            $this->session->set_flashdata('error_date', 'As datas de prazo não podem ser inferior à data de criação do documento!');
-                            redirect("novo_documento");
+                            if($this->input->post("prazo[$i]") >= date('Y-m-d')){
+
+                                $validate = true;
+    
+                            } else {
+    
+                                $validate = false;
+                                
+                            //arrumar está retornando uma pagina em branco
+                                //exit();
+                                $this->session->set_flashdata('error_date', 'As datas de prazo não podem ser inferior à data de criação do documento!');
+                                redirect("novo_documento");
+    
+                            } 
 
                         }
         
@@ -116,19 +120,22 @@ class Documento extends CI_Controller {
 
             if(isset($steps_number)){
 
-                for ($i=1; $i <= $steps_number; ++$i) { 
-                    //echo "<br/>".$i."<br/>";
-                    $etapas = array(
-                        'prazo'           => $this->input->post("prazo[$i]"),
-                        'fk_idetapas'     => $this->input->post("etapas[$i]"),
-                        'fk_iddocumento'  => $iddocumento
-                    );
-
-                    //echo "Prazos";
-                    //print_r($etapas);
-                    //echo "<br/>";
-                    $prazos = $this->etapasmodel->cadastrar_etapas_prazos($etapas);
-
+                if(!empty($this->input->post("prazo[$i]"))){
+                    
+                    for ($i=1; $i <= $steps_number; ++$i) { 
+                        //echo "<br/>".$i."<br/>";
+                        $etapas = array(
+                            'prazo'           => $this->input->post("prazo[$i]"),
+                            'fk_idetapas'     => $this->input->post("etapas[$i]"),
+                            'fk_iddocumento'  => $iddocumento
+                        );
+    
+                        //echo "Prazos";
+                        //print_r($etapas);
+                        //echo "<br/>";
+                        $prazos = $this->etapasmodel->cadastrar_etapas_prazos($etapas);
+    
+                    }
                 }
 
             }
@@ -640,7 +647,6 @@ class Documento extends CI_Controller {
                     $documento = $this->docmodel->dados_documento_cad($idprotocolo);
                     $usuario = $this->docmodel->retorna_email_usuario($idprotocolo);
 
-
                     foreach ($documento as $doc) {
                         
                         $enviar = array(
@@ -724,6 +730,10 @@ class Documento extends CI_Controller {
 
         echo $this->docmodel->listar_documentos_json($value);
 
+    }
+
+    public function buscar_prazosDocumento($value){
+        echo $this->docmodel->listar_prazosDocumentos_json($value);
     }
 
     public function busca_etapas($value){

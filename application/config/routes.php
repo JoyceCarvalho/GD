@@ -149,6 +149,7 @@ $route["vizualizar_erros/(:any)"]    = "conf/Erros/visualizar_erros_documento/$1
 $route["novo_documento"]             = "documentos/Documento";
 $route["find_doc/(:num)"]            = "documentos/Documento/busca_documentos/$1";
 $route["find_steps/(:num)"]          = "documentos/Documento/busca_etapas/$1";
+$route["find_deadline/(:num)"]       = "documentos/Documento/buscar_prazosDocumento/$1";
 $route["cad_novo_doc"]               = "documentos/Documento/cadastrar_novo_documento";
 $route["meusdocumentos"]             = "documentos/Documento/meus_documentos";
 $route["get_time"]                   = "documentos/Documento/get_time";
