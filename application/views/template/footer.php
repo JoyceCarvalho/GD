@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                     <p><a href="http://www.sgtgestaoetecnologia.com.br" class="external">SGT - Gestão e Tecnologia</a> &copy; 2018</p>
-                    <p><a href="" class="external"> Manual Gestão de Documentos</a></p>
+                    <!--<p><a href="" class="external"> Manual Gestão de Prazos e Produtividade</a></p>-->
                     </div>
                     <div class="col-sm-6 text-right">
                         <p>

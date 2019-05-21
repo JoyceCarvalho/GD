@@ -30,7 +30,7 @@
                                     Descrição: <?=$descricao;?>
                                 </p>
                                 <br/>
-                                <a href="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/meusdocumentos">Acesse o Gestão de Documentos para visualizar o documento completo!</a>
+                                <a href="http://gestaoprazos.sgtgestaoetecnologia.com.br/meusdocumentos">Acesse o Gestão de Prazos e Produtividade para visualizar o documento completo!</a>
                             </div>
                         </div>
                     </section>

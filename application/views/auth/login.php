@@ -33,7 +33,7 @@
               <div class="form d-flex align-items-center">
                 <div class="content">
                   <div class="logo">
-                    <h1 style="color: dodgerblue;">Gestão de Documentos</h1>
+                    <h1 style="color: dodgerblue;">Gestão de Prazos e Produtividade</h1>
                     <hr>
                   </div>
                   <form id="login-form" method="post" action="<?=base_url('login_auth');?>">

@@ -38,7 +38,7 @@ class Email_model extends CI_Model {
             $this->email->cc($coordenador);
         }
 
-        $this->email->subject('SGT - Gestão de Documentos');
+        $this->email->subject('SGT - Gestão de Prazos e Produtividade');
 
         if ($dados["tipo"] == "novo") {
 

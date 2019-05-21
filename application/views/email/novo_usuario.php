@@ -24,13 +24,13 @@
                         </div>
                         <div class="row">
                             <div class="col-12 table-responsive">
-                                <p>Olá, <?=$nome;?>! Seja bem-vindo ao SGT - Gestão de Documentos!</p>
+                                <p>Olá, <?=$nome;?>! Seja bem-vindo ao SGT - Gestão de Prazos e Produtividade!</p>
                                 <p>Seus dados de acesso são: <br/> 
                                 Código da Empresa: <?=$cliente_code;?> <br/>
                                 Usuário: <?=$usuario;?><br/> 
                                 Senha: <?=$pass;?></p>
                                 <br/>
-                                <a href="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos">Acesse o Gestão de Documentos!</a>
+                                <a href="http://gestaoprazos.sgtgestaoetecnologia.com.br/">Acesse o Gestão de Prazos e Produtividade!</a>
                             </div>
                         </div>
                     </section>
