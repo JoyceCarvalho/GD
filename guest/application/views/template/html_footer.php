@@ -359,16 +359,16 @@
 
     <!-- Javascript files-->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="<?=base_url('assets/vendor/popper.js/umd/popper.min.js')?>"> </script>
-    <script src="<?=base_url('assets/vendor/bootstrap/js/bootstrap.min.js');?>"></script>
-    <script src="<?=base_url('assets/vendor/jquery.cookie/jquery.cookie.js');?>"> </script>
-    <script src="<?=base_url('assets/vendor/datatables/jquery.dataTables.js');?>"></script>
-    <script src="<?=base_url('assets/vendor/datatables/dataTables.bootstrap4.js');?>"></script>
-    <script src="<?=base_url('assets/vendor/jquery-validation/jquery.validate.min.js');?>"></script>
-    <script src="<?=base_url('assets/js/jquery.mask.min.js');?>"></script>
-    <script src="<?=base_url('assets/js/custom.js');?>"></script>
+    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/jquery.mask.min.js"></script>
+    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/custom.js"></script>
     <!-- Main File-->
-    <script src="<?=base_url('assets/js/front.js');?>"></script>
+    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/front.js"></script>
 
     <!--<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>-->

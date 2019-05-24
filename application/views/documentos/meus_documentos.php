@@ -94,11 +94,11 @@
                                                         $last_step = $this->docetapamodel->ultima_etapa($documentos->iddocumento);
                                                         if ($last_step == $documentos->idetapa) {
                                                             ?>
-                                                            <a href="<?=base_url('finalizar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockA_<?=$documentos->idprotocolo?>">Finalizar Documento</a><br/>
+                                                            <a href="<?=base_url('finalizar_documento/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" id="blockA_<?=$documentos->idprotocolo?>" class="blockA_<?=$documentos->idprotocolo?>">Finalizar Documento</a><br/>
                                                             <?php
                                                         } else {
                                                             ?>
-                                                            <a href="<?=base_url('proxima_etapa/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" class="blockB_<?=$documentos->idprotocolo;?>">Encaminhar Próxima Etapa</a><br/>
+                                                            <a href="<?=base_url('proxima_etapa/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>" id="blockB_<?=$documentos->idprotocolo;?>" class="blockB_<?=$documentos->idprotocolo;?>">Encaminhar Próxima Etapa</a><br/>
                                                             <?php
                                                         }
                                                         
@@ -274,6 +274,10 @@ window.addEventListener("DOMContentLoaded", function() {
 					}
 				});
 			});
+
+            $('#blockB_'+id_pro).on('click', function(){ 
+                $('.blockB_'+id_pro).css("pointer-events", "none");
+            })
 
 		});
 		

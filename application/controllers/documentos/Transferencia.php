@@ -449,7 +449,20 @@ class Transferencia extends CI_Controller {
 
                             asort($usuariosAptosQuantidade);
 
-                            $controlaMenor = 1;
+                            $verificaQuantidade = 0;
+                            foreach ($usuariosAptosQuantidade as $key => $quantidade) {
+                                if($verificaQuantidade == 0){
+                                    $verificaQuantidade = $quantidade;
+                                    $idEscolhidoPrimeiraEtapa = $key;
+                                }
+
+                                if($verificaQuantidade > $quantidade){
+                                    $verificaQuantidade = $quantidade;
+                                    $idEscolhidoPrimeiraEtapa = $key;
+                                }
+                            }
+
+                            /*$controlaMenor = 1;
                             foreach ($usuariosAptosQuantidade as $key => $quantidade) {
                                 if ($controlaMenor == 1) {
                                     
@@ -472,7 +485,7 @@ class Transferencia extends CI_Controller {
                             
                             $numeroRandomicoPrimeiraEtapa = rand(0,$contaUsuarioAptosPrimeiraEtapa - 1);
                             
-                            $idEscolhidoPrimeiraEtapa = $usuariosAptosPrimeiraEtapa[$numeroRandomicoPrimeiraEtapa];
+                            $idEscolhidoPrimeiraEtapa = $usuariosAptosPrimeiraEtapa[$numeroRandomicoPrimeiraEtapa];*/
 
                             $transfereProximaEtapa = array(
                                 'descricao' => 'TRANSFERIDO', 

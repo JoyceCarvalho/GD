@@ -22,8 +22,8 @@
               <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
                 
                 <!-- Logout    -->
-                <li class="nav-item"><a href="http://localhost/GestaoDocumentos_CI/" class="nav-link logout"><i class="fa fa-backward"></i>Voltar</a></li>
-                <!--<li class="nav-item"><a href="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/" class="nav-link logout"><i class="fa fa-backward"></i>Voltar</a></li>-->
+                <!--<li class="nav-item"><a href="http://localhost/GestaoDocumentos_CI/" class="nav-link logout"><i class="fa fa-backward"></i>Voltar</a></li>-->
+                <li class="nav-item"><a href="http://gestaoprazos.sgtgestaoetecnologia.com.br/" class="nav-link logout"><i class="fa fa-backward"></i>Voltar</a></li>
               </ul>
             </div>
           </div>

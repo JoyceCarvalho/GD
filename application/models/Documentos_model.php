@@ -571,6 +571,7 @@ class Documentos_model extends CI_Model {
         $this->db->from('tbdocumento as d');
         $this->db->join('tbgrupo as g', "d.fk_idgrupo = g.id");
         $this->db->where('d.fk_idgrupo =', $grupo);
+        $this->db->order_by('d.titulo asc');
         $query = $this->db->get();
 
         return json_encode($query->result());

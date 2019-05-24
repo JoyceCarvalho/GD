@@ -80,7 +80,7 @@ class Documento extends CI_Controller {
     
                                 $validate = false;
                                 
-                            //arrumar está retornando uma pagina em branco
+                                //arrumar está retornando uma pagina em branco
                                 //exit();
                                 $this->session->set_flashdata('error_date', 'As datas de prazo não podem ser inferior à data de criação do documento!');
                                 redirect("novo_documento");
