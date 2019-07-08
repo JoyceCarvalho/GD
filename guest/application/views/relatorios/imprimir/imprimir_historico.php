@@ -6,11 +6,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Main CSS-->
-        <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/main.css');?>">
+        <link rel="stylesheet" type="text/css" href="<?=base_url("assets/css/main.css")?>">
         <!-- Font-icon css-->
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Icone SGT -->
-        <link rel="shortcut icon" href="<?=base_url('assets/img/favicon.ico');?>">
+        <link rel="shortcut icon" href="<?=base_url("assets/img/favicon.ico")?>">
         <!-- Bootstrap -->
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     </head>
@@ -31,11 +31,11 @@
                                     foreach ($nome_empresa as $empresa) {
                                         if (!empty($empresa->logo_code)) {
                                             ?>
-                                            <img class="img-responsive" src="<?=base_url();?>assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>">
+                                            <img class="img-responsive" src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>">
                                             <?php
                                         } else {
                                             ?>
-                                            <img class="img-responsive" src="<?=base_url("assets/img/logo_sgt.png");?>" alt="<?=$empresa->nome;?>">
+                                            <img class="img-responsive" src="<?=base_url("assets/img/logo_sgt.png")?>" alt="<?=$empresa->nome;?>">
                                             <?php
                                         }
                                     }   
@@ -50,7 +50,7 @@
                             <div class="col-4">
                                 <div class="col-xs-6 col-md-6"></div>
                                 <div class="col-xs-6 col-md-6">
-                                    <img class="pull-right img-responsive" src="<?=base_url("assets/img/logo_sgt.png");?>" alt="SGT - Gestão e Tecnologia">
+                                    <img class="pull-right img-responsive" src="<?=base_url("assets/img/logo_sgt.png")?>" alt="SGT - Gestão e Tecnologia">
                                 </div>
                             </div>
                         </div>
@@ -136,12 +136,12 @@
             </div>
         </div>
         <!-- Essential javascripts for application to work-->
-        <script src="<?=base_url('assets/js/jquery-3.2.1.min.js');?>"></script>
-        <script src="<?=base_url('assets/js/popper.min.js');?>"></script>
-        <script src="<?=base_url('assets/js/bootstrap.min.js');?>"></script>
-        <script src="<?=base_url('assets/js/main.js');?>"></script>
+        <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/jquery-3.2.1.min.js"></script>
+        <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/popper.min.js"></script>
+        <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/bootstrap.min.js"></script>
+        <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/main.js"></script>
         <!-- The javascript plugin to display page loading on top-->
-        <script src="<?=base_url('assets/js/plugins/pace.min.js');?>"></script>
+        <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/plugins/pace.min.js"></script>
         <!-- Page specific javascripts-->
     </body>
 </html>

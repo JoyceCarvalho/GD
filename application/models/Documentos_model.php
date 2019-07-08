@@ -662,9 +662,10 @@ class Documentos_model extends CI_Model {
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
         $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
         $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
-        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
+        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa', 'left');
         $this->db->where("d.fk_idempresa = $empresa");
         $this->db->where('ldB.descricao != "FINALIZADO"');
+        $this->db->where('ldB.descricao != "CANCELADO"');
         $this->db->order_by('de.ordem asc, ldA.data_hora asc');
         return $this->db->get()->result();
     }
@@ -681,6 +682,9 @@ class Documentos_model extends CI_Model {
         $this->db->select("fk_idusuario");
         $this->db->from("tbtimer");
         $this->db->where("dc.id = tbtimer.fk_iddoccad and ldB.etapa = tbtimer.fk_idetapa");
+        //$this->db->where("tbtimer.observacao is null");
+        $this->db->where("tbtimer.observacao is not null"); 
+        $this->db->where("tbtimer.observacao != 'REINICIO'");
         $subquery = $this->db->get_compiled_select();
 
         $this->db->select('d.id as iddocumento, e.id as idetapa, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
@@ -720,9 +724,10 @@ class Documentos_model extends CI_Model {
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
         $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
         $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
-        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
+        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa', 'left');
         $this->db->where("u.id = $idusuario");
         $this->db->where('ldB.descricao != "FINALIZADO"');
+        $this->db->where('ldB.descricao != "CANCELADO"');
         $this->db->group_by('d.id');
         $this->db->order_by('de.ordem asc, ldA.data_hora asc');
         return $this->db->get()->result();
@@ -746,9 +751,10 @@ class Documentos_model extends CI_Model {
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.ultima_etapa = "true"');
         $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
         $this->db->join('tbetapa as e', 'e.id = ldB.etapa', 'left');
-        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa');
+        $this->db->join('tbdocumentoetapa as de', 'de.iddocumento = d.id and de.idetapa = ldB.etapa', 'left');
         $this->db->where('c.fk_idusuario', $idusuario);
         $this->db->where('ldB.descricao != "FINALIZADO"');
+        $this->db->where('ldB.descricao != "CANCELADO"');
         $this->db->group_by('d.id');
         $this->db->order_by('de.ordem asc, ldA.data_hora asc');
         return $this->db->get()->result();
@@ -1290,6 +1296,23 @@ class Documentos_model extends CI_Model {
         $this->db->where("titulo = '$titulo'");
         $this->db->where("fk_idgrupo", $grupo);
         $this->db->where("fk_idempresa", $empresa);
+        return $this->db->get()->row('total');
+    }
+
+    /**
+     * Método responsável pela verificação da existência de um mesmo protocolo no sistema
+     * Utilizado no controller documentos/Documento.php
+     *
+     * @param string $protocolo
+     * @param int $empresa
+     * @return int retorna a quantidade de resultados encontrados
+     */
+    public function verifica_protocolo_existente($protocolo, $empresa){
+        $this->db->select("COUNT(*) as total");
+        $this->db->from("tbdocumentos_cad as dc");
+        $this->db->join("tbdocumento as d", "d.id = dc.fk_iddocumento");
+        $this->db->where("dc.protocolo = '$protocolo'");
+        $this->db->where("d.fk_idempresa = '$empresa'");
         return $this->db->get()->row('total');
     }
 

@@ -973,4 +973,18 @@ class Documento extends CI_Controller {
     public function ver_observacao($id){
         echo $this->docmodel->listar_observacoes_json($id);
     }
+
+    public function verifica_protocolo(){
+        
+        $protocolo = $_POST["protocolo"];
+
+		$pro = $this->docmodel->verifica_protocolo_existente($protocolo, $_SESSION["guest_empresa"]);
+
+		if($pro > 0){
+			echo json_encode(array('mensagem' => 'Esse protocolo já existe no sistema!', 'valido' => 'maybe'));
+		} else {
+			echo json_encode(array('mensagem' => 'Protocolo válidado!', 'valido' => 'is'));
+        }
+        
+    }
 }

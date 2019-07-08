@@ -47,7 +47,7 @@ class Home extends CI_Controller {
                 $andamento = count($a1) + count($a2);
                 
             }*/
-            $a = $this->docmodel->listar_documentos_em_andamento($_SESSION["idempresa"]);    
+            $a = $this->docmodel->listar_documentos_em_andamento($_SESSION["guest_empresa"]);    
             $andamento = count($a);
             $dados["em_andamento"] = $andamento;
 

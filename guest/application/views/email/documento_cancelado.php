@@ -30,7 +30,7 @@
                                     <?=$motivo;?>
                                 </p>
                                 <br/>
-                                <a href="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/meusdocumentos">Acesse o Gestão de Documentos para visualizar o documento completo!</a>
+                                <a href="<?=base_url("meusdocumentos")?>">Acesse o Gestão de Documentos para visualizar o documento completo!</a>
                             </div>
                         </div>
                     </section>

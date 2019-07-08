@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                     <p><a href="http://www.sgtgestaoetecnologia.com.br" class="external">SGT - Gestão e Tecnologia</a> &copy; 2018</p>
-                    <p><a href="" class="external"> Manual Gestão de Documentos</a></p>
+                    <!--<p><a href="" class="external"> Manual Gestão de Documentos</a></p>-->
                     </div>
                     <div class="col-sm-6 text-right">
                         <p>
@@ -34,7 +34,7 @@
 
                 <div class="modal-body" id="conteudo">                                                
                     <div class="img-fluid col-xs-12" style="text-align: center;">
-                        <img src="<?=base_url("assets/img/loading2.gif")?>" alt="loading">
+                        <img src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/img/loading2.gif" alt="loading">
                     </div>
                 </div>
                 <div class="modal-body" id="conteudo_body"></div>
@@ -54,14 +54,14 @@
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                 </div>
 
-                <form name="exigencia" method="post" action="<?=base_url("suspender")?>">
+                <form id="formExigencia" name="exigencia" method="post" action="<?=base_url("suspender")?>">
                     <div class="modal-body" id="modal-corpo">
                         <input id="exigencia" type="hidden" name="id"> 
                         Você realmente quer deixar o documento aguardando exigência?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" name="memoria-delete" class="btn btn-danger">Confirmar</button>
+                        <button type="submit"  id="sendExigencia" name="exigencia" class="btn btn-danger">Confirmar</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->

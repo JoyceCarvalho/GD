@@ -26,7 +26,7 @@
                             <div class="col-12 table-responsive">
                                 <p>O documento <strong><?=$documento;?></strong> de protocolo <strong><?=$protocolo;?></strong><br/> retornou a etapa anterior</p>
                                 <br/>
-                                <a href="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/meusdocumentos">Acesse o Gestão de Documentos para visualizar o documento completo!</a>
+                                <a href="<?=base_url("meusdocumentos")?>">Acesse o Gestão de Documentos para visualizar o documento completo!</a>
                             </div>
                         </div>
                     </section>

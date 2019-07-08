@@ -13,22 +13,22 @@ date_default_timezone_set('America/Sao_Paulo');
         <!-- Bootstrap CSS-->
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <!-- Font Awesome CSS-->
-        <link rel="stylesheet" href="<?=base_url('assets/vendor/font-awesome/css/font-awesome.min.css');?>">
+        <link rel="stylesheet" href="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/font-awesome/css/font-awesome.min.css">
         <!-- Fontastic Custom icon font-->
-        <link rel="stylesheet" href="<?=base_url('assets/css/fontastic.css');?>">
+        <link rel="stylesheet" href="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/css/fontastic.css">
         <!-- Google fonts - Poppins -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
         <!-- theme stylesheet-->
-        <link rel="stylesheet" href="<?=base_url('assets/css/style.blue.css');?>" id="theme-stylesheet">
+        <link rel="stylesheet" href="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/css/style.blue.css" id="theme-stylesheet">
         <!-- Custom stylesheet - for your changes-->
-        <link rel="stylesheet" href="<?=base_url('assets/css/custom.css');?>">
+        <link rel="stylesheet" href="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/css/custom.css">
         <!-- Favicon-->
-        <link rel="shortcut icon" href="<?=base_url('assets/img/favicon.ico');?>">
+        <link rel="shortcut icon" href="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/img/favicon.ico">
         <!-- jQuery -->
-        <script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
         <!-- CSS para impressão -->
-        <link rel="stylesheet" href="<?=base_url("assets/css/imprimir.css");?>">
+        <link rel="stylesheet" href="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/css/imprimir.css">
     </head>
     <body>
         <div class="container-fluid panel panel-default wrapper">
@@ -47,11 +47,11 @@ date_default_timezone_set('America/Sao_Paulo');
                                     if (!empty($empresa->logo_code)) {
                                         ?>
                                         <!--<img class="pull-right img-responsive" src="<?//=base_url();?>assets/img/logo_empresas/<?//=$empresa->logo_code;?>" alt="<?//=$empresa->nome;?>">-->
-                                        <img src="http://www.sgtgestaoetecnologia.com.br/gestaodocumentos/assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>" class="pull-right img-responsive">
+                                        <img src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/img/logo_empresas/<?=$empresa->logo_code;?>" alt="<?=$empresa->nome;?>" class="pull-right img-responsive">
                                         <?php
                                     } else {
                                         ?>
-                                        <img class="pull-right img-responsive" src="<?=base_url("assets/img/logo_sgt.png");?>" alt="<?=$empresa->nome;?>">
+                                        <img class="pull-right img-responsive" src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/img/logo_sgt.png" alt="<?=$empresa->nome;?>">
                                         <?php
                                     }
                                 }   
@@ -61,7 +61,7 @@ date_default_timezone_set('America/Sao_Paulo');
                                 <h1 class="title no-print"> <?=$titulo_grupo;?> </h1>                                  
                             </div>
                             <div class="col-xs-3 col-md-3">
-                                <img class="pull-right img-responsive" src="<?=base_url("assets/img/logo_sgt.png");?>" alt="SGT - Gestão e Tecnologia">
+                                <img class="pull-right img-responsive" src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/img/logo_sgt.png" alt="SGT - Gestão e Tecnologia">
                             </div>
                         </div>
                     </div>

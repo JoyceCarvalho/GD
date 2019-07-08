@@ -24,6 +24,15 @@ mas fica por sua conta e risco '\_(>.<)_/` -->
         });
     });
 
+    var form = document.getElementById("formExigencia");
+    var send = $("#sendExigencia");
+
+    $(form).submit(function(event){
+        if (form.checkValidity()) {
+            send.attr('style', 'visibility: hidden');
+        }
+    });
+
     function doc_exigencia(id){
         $("#modal-exigencia").modal("show");
         $("#exigencia").val(id);
@@ -34,7 +43,6 @@ mas fica por sua conta e risco '\_(>.<)_/` -->
         //console.log(id_pro);
         $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
         if (dados.length>0) {
-            var titulo = 'Histórico do Documento';
             var body = '<div class="form-group">';
             $.each(dados, function(i, obj){
             body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
@@ -47,7 +55,7 @@ mas fica por sua conta e risco '\_(>.<)_/` -->
                 body += '<p> Não há informações disponíveis no momento. Caso o problema persista entre em contato com o suporte. </p>';
             body += '</div>';
         }
-        $('#exampleModalLabel').html(titulo).show();
+        $('#exampleModalLabel').html("Histórico do Documento").show();
         $("#conteudo").html(body).show();
         });
 
@@ -97,7 +105,6 @@ mas fica por sua conta e risco '\_(>.<)_/` -->
 
         $.getJSON('<?=base_url();?>'+'historico_documento/'+id_pro, function (dados){
             if (dados.length>0) {
-                var titulo = 'Cancelar documento';
                 var body = '<div class="form-group">';
                 $.each(dados, function(i, obj){
                     body += '<label><strong>Grupo:</strong> '+obj.nome_grupo+'</label><br/>';
@@ -122,7 +129,7 @@ mas fica por sua conta e risco '\_(>.<)_/` -->
                 body += '</div>';
             var body2 = "";
             }
-            $('#exampleModalLabel').html(titulo).show();
+            $('#exampleModalLabel').html("Cancelar documento").show();
             $('#conteudo').html(body).show();
             $('#conteudo_body').html(body2).show();
         });

@@ -30,7 +30,7 @@
                                 Usuário: <?=$usuario;?><br/> 
                                 Senha: <?=$pass;?></p>
                                 <br/>
-                                <a href="http://gestaoprazos.sgtgestaoetecnologia.com.br/">Acesse o Gestão de Prazos e Produtividade!</a>
+                                <a href="<?=base_url()?>">Acesse o Gestão de Prazos e Produtividade!</a>
                             </div>
                         </div>
                     </section>

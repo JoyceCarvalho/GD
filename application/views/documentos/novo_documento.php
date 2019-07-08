@@ -43,11 +43,12 @@
                         <h3 class="h4">Novo Documento</h3>
                     </div>
                     <div class="card-body">
-                        <form action="<?=base_url("cad_novo_doc");?>" method="post">
+                        <form id="formID" action="<?=base_url("cad_novo_doc");?>" method="post">
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Protocolo</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="protocolo" onkeydown="upperCaseF(this)" required>
+                                    <input type="text" class="form-control" id="protocolo" name="protocolo" onkeydown="upperCaseF(this)" required>
+                                    <div id="resposta"></div>
                                 </div>
                             </div>
 
@@ -97,7 +98,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-6 offset-sm-3">
                                     <a href="<?=base_url('meusdocumentos');?>" class="btn btn-sm btn-secondary"><i class="fa fa-backward"></i> Voltar</a>
-                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Salvar Informações</button>
+                                    <button id="send" type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Salvar Informações</button>
                                 </div>
                             </div>
                         </form>
@@ -107,8 +108,28 @@
         </div>    
     </div>
 </section>
-
+<script src="https://code.jquery.com/jquery.js"></script>
 <script  type="text/javascript">
+    $('#protocolo').blur(function() {         
+        $.ajax({ 
+            url: '<?=base_url();?>verifica_protocolo/', 
+            type: 'POST', 
+            data:{"protocolo" : $('#protocolo').val()}, 
+            success: function(data) { 
+                data = $.parseJSON(data); 
+                //console.log(data); 
+                if(data.valido == "maybe"){
+                    var input = '<div style="color:#FFA92F;">'+data.mensagem+'</div>';
+                    $("#resposta").html(input);
+                    $("#protocolo").css('border-color', '#FFA92F');
+                } else {
+                    var input = '<div style="color:#28a745;">'+data.mensagem+'</div>';
+                    $("#resposta").html(input);
+                    $("#protocolo").css('border-color', '#28a745');
+                }
+            } 
+        }); 
+    });
 
     $(document).ready(function(){
         // Retorna todos os documentos relacionados a aquele grupo
@@ -310,7 +331,16 @@
 
             $("#p_doc").show();
 
-        })
+        });
+
+        var formID = document.getElementById("formID");
+        var send = $("#send");
+
+        $(formID).submit(function(event){
+            if (formID.checkValidity()) {
+                send.attr('disabled', 'disabled');
+            }
+        });
 
     });
 

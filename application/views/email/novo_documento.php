@@ -36,7 +36,7 @@
                                 <?php endif; ?>
                                 </p>
                                 <br/>
-                                <a href="http://gestaoprazos.sgtgestaoetecnologia.com.br/meusdocumentos">Acesse o Gestão de Prazos e Produtividade para visualizar o documento completo!</a>
+                                <a href="<?=base_url("meusdocumentos")?>">Acesse o Gestão de Prazos e Produtividade para visualizar o documento completo!</a>
                             </div>
                         </div>
                     </section>

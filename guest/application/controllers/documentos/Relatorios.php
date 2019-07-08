@@ -157,11 +157,13 @@ class Relatorios extends CI_Controller {
         $this->load->view('template/html_footer');
     }
 
-    public function reverte_suspensao($identificador){
+    public function reverte_suspensao(){
 
         if ((!isset($_SESSION["logado"])) && ($_SESSION["logado"] != true)) {
             redirect("/");
         }
+
+        $identificador = $this->input->post("id");
 
         //transforma o identificador em um array
         $id = str_split($identificador);
@@ -178,68 +180,304 @@ class Relatorios extends CI_Controller {
         //transforma a string em inteiro
         $idprotocolo = (int)$protocolo;
 
-        $etapa_atual = $this->docmodel->etapa_documento($idprotocolo);
+        if(isset($_POST["exigencia_reiniciar"])){
 
-        $anterior = $this->docmodel->etapa_anterior($idprotocolo, $etapa_atual);
+            $recebido = $this->etapasmodel->listar_etapa_ordem($idprotocolo);
 
-        $usuario_anterior = $anterior->usuario;
-        $etapa_anterior = $anterior->etapa;
-
-        if($this->docmodel->editar_documentos_log($idprotocolo)){
-
-            $this->load->model('timer_model', 'timermodel');
-
-            if ($usuario_anterior == 0) {
-
-                $status = "Pendente";
+            if($this->docmodel->editar_documentos_log($idprotocolo)){
                 
-                $retornar1 = array(
-                    'descricao'     => "RETORNO SUSPENSÃO", 
-                    'data_hora'     => date("Y-m-d H:i:s"),
-                    'ultima_etapa'  => "false",
-                    'usuario'       => 0,
-                    'etapa'         => $etapa_anterior,
-                    'documento'     => $idprotocolo
-                );
+                $documento = $this->docmodel->documento_id($idprotocolo);
 
-                $this->docmodel->cadastrar_log_documento($retornar1);
+                //$usuario = $this->compmodel->competencia_user($documento, $recebido);
+
+                $verificarDataAusencia = date("Y-m-d");
+
+                $verificadosUsuariosAptos = $this->compmodel->verifica_usuario_apto($documento, $recebido);
+
+                if($verificadosUsuariosAptos == 0){
+
+                    $status = "Pendente";
+                    
+                    $retornar1 = array(
+                        'descricao'     => "RETORNO SUSPENSÃO", 
+                        'data_hora'     => date("Y-m-d H:i:s"),
+                        'ultima_etapa'  => "false",
+                        'usuario'       => 0,
+                        'etapa'         => $recebido,
+                        'documento'     => $idprotocolo
+                    );
+
+                    $this->docmodel->cadastrar_log_documento($retornar1);
+                    
+                    $dados = array(
+                        'fk_iddoccad'   => $idprotocolo,
+                        'fk_idetapa'    => $recebido,
+                        'action'        => "pause",
+                        'timestamp'     => time(),
+                        'observacao'    => "SUSPENSO"
+                    );
+            
+                    $this->timermodel->cadastrar_tempo($dados);
+
+                    $pendente = array(
+                        'documento'     => $idprotocolo, 
+                        'etapa'         => $recebido,
+                        'usuario'       => 0,
+                        'descricao'     => 'PENDENTE',
+                        'data_hora'     => date("Y-m-d H:i:s"),
+                        'ultima_etapa'  => 'true'
+                    );
+                    
+                    //echo "documento pendente";
+                    //print_r($pendente);
+                    //echo "<br/>";
+                    $documento_log2 = $this->docmodel->cadastrar_log_documento($pendente);
+
+                    $dados = array(
+                        'fk_iddoccad'   => $idprotocolo,
+                        'fk_idetapa'    => $recebido,
+                        'action'        => "start",
+                        'timestamp'     => time(),
+                        'observacao'    => "PENDENTE"
+                    );
                 
-                $dados = array(
-                    'fk_iddoccad'   => $idprotocolo,
-                    'fk_idetapa'    => $etapa_anterior,
-                    'action'        => "pause",
-                    'timestamp'     => time(),
-                    'observacao'    => "SUSPENSO"
-                );
-        
-                $this->timermodel->cadastrar_tempo($dados);
+                    $this->timermodel->cadastrar_tempo($dados);
 
-                $retornar = array(
-                    'descricao'     => "PENDENTE", 
-                    'data_hora'     => date("Y-m-d H:i:s"),
-                    'ultima_etapa'  => "true",
-                    'usuario'       => 0,
-                    'etapa'         => $etapa_anterior,
-                    'documento'     => $idprotocolo
-                );
+                } else {
+
+                    $usuariosAptos = $this->compmodel->usuario_apto($documento, $recebido, $verificarDataAusencia);
+
+                    foreach ($usuariosAptos as $usuarios ) {
+                        
+                        if ($usuarios->tipo == "funcionario") {
+                            
+                            $usuarios_aptos[] = $usuarios->fk_idusuario;
+                            $usuariosAptosQuantidade[$usuarios->fk_idusuario] = 0;
+
+                        } else {
+                            
+                            $usuariosAptosCargo = $this->usermodel->usuario_por_cargo($usuarios->fk_idcargo, $verificarDataAusencia);
+
+                            foreach ($usuariosAptosCargo as $user ) {
+                                
+                                $usuarios_aptos[] = $user->id;
+                                $usuariosAptosQuantidade[$user->id] = 0;
+                                
+                            }
+
+                        }
+                        
+
+                    }     
+
+                    $usuariosAptosImplode = implode(",", $usuarios_aptos);
+
+                    $contaUsuariosAptos = count($usuarios_aptos);
+
+                    $verificaNumeroDocumentos = $this->docmodel->numero_documentos($usuariosAptosImplode);
+
+                    if ($verificaNumeroDocumentos == 0) {
+
+                        //echo "<br/> contaUsuariosAptos: $contaUsuariosAptos <br/>";
+                        
+                        if ($contaUsuariosAptos > 1) {
+
+                            $usuarios_documentos = $this->docmodel->documento_por_usuario($usuariosAptosImplode);
+
+                            if($usuarios_documentos > 0){
+                                
+                                $idEscolhido = $usuarios_documentos;
+
+                            } else {
+                                $numeroRandomico = rand(0, $contaUsuariosAptos);
+
+                                $idEscolhido = $usuarios_aptos[$numeroRandomico];
+                            }
+
+                        } else {
+
+                            $idEscolhido = $usuarios_aptos[0];
+
+                        }
+
+                        $status = "retorno";
+
+                        $transfereProximaEtapa = array(
+                            'descricao'     => "RETORNO SUSPENSÃO", 
+                            'data_hora'     => date("Y-m-d H:i:s"),
+                            'ultima_etapa'  => "true",
+                            'usuario'       => $idEscolhido,
+                            'etapa'         => $recebido,
+                            'documento'     => $idprotocolo
+                        );
+
+                        $mensagem = "retornado";
+                    
+                        $dados = array(
+                            'fk_iddoccad'   => $idprotocolo,
+                            'fk_idetapa'    => $recebido,
+                            'action'        => "pause",
+                            'timestamp'     => time(),
+                            'observacao'    => "SUSPENSO"
+                        );
                 
-                $dados = array(
-                    'fk_iddoccad'   => $idprotocolo,
-                    'fk_idetapa'    => $etapa_anterior,
-                    'action'        => "start",
-                    'timestamp'     => time(),
-                    'observacao'    => "PENDENTE"
-                );
-        
-                $this->timermodel->cadastrar_tempo($dados);
+                        $this->timermodel->cadastrar_tempo($dados);
 
-                $mensagem = "pendente";
+                        //echo "documento recebido 1";
+                        //print_r($transfereProximaEtapa);
+                        //echo "<br/>";
+                        $documento_log2 = $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
 
+                        $idMostraDirecionamento = $idEscolhido;
+                    } else {
+
+                        $usuarios_quantidada_documento = $this->docmodel->quantidade_documentos_usuario($usuariosAptosImplode);
+
+                        foreach ($usuarios_quantidada_documento as $usuariosDocumento ) {
+                            
+                            $usuariosAptosQuantidade[$usuariosDocumento->usuario] = $usuariosDocumento->quantidade_documento;
+
+                        }
+
+                        asort($usuariosAptosQuantidade);
+
+                        $controlaMenor = 1;
+                        foreach ($usuariosAptosQuantidade as $key => $quantidade) {
+                            if ($controlaMenor == 1) {
+                                
+                                $quantidadeVerificar = $quantidade;
+                                $usuariosAptosPrimeiraEtapa[] = $key;
+
+                            } else {
+
+                                if ($quantidadeVerificar = $quantidade) {
+                                    $usuariosAptosPrimeiraEtapa[] = $key;
+                                }
+
+                            }
+
+                            $controlaMenor ++;
+
+                        }
+
+                        $contaUsuarioAptosPrimeiraEtapa = count($usuariosAptosPrimeiraEtapa);
+                        
+                        $numeroRandomicoPrimeiraEtapa = rand(0,$contaUsuarioAptosPrimeiraEtapa - 1);
+                        
+                        $idEscolhidoPrimeiraEtapa = $usuariosAptosPrimeiraEtapa[$numeroRandomicoPrimeiraEtapa];
+
+                        $status = "retorno";
+
+                        $transfereProximaEtapa = array(
+                            'descricao'     => "RETORNO SUSPENSÃO", 
+                            'data_hora'     => date("Y-m-d H:i:s"),
+                            'ultima_etapa'  => "true",
+                            'usuario'       => $idEscolhidoPrimeiraEtapa,
+                            'etapa'         => $recebido,
+                            'documento'     => $idprotocolo
+                        );
+
+                        $mensagem = "retornado";
+                    
+                        $dados = array(
+                            'fk_iddoccad'   => $idprotocolo,
+                            'fk_idetapa'    => $recebido,
+                            'action'        => "pause",
+                            'timestamp'     => time(),
+                            'observacao'    => "SUSPENSO"
+                        );
+                
+                        $this->timermodel->cadastrar_tempo($dados);
+
+                        //echo "documento recebido 2";
+                        //print_r($transfereProximaEtapa);
+                        //echo "<br/>";
+                        $documento_log2 = $this->docmodel->cadastrar_log_documento($transfereProximaEtapa);
+
+                        $idMostraDirecionamento = $idEscolhidoPrimeiraEtapa;
+
+                    }
+
+                }
+                
+                if ($documento_log2) {
+
+                    /**
+                    * Envio de email
+                    */
+                    $this->load->model('email_model', 'emailmodel');
+
+                    $dados = $this->docmodel->dados_documento_cad($idprotocolo);
+                    $usuario = $this->docmodel->retorna_email_usuario($idprotocolo);
+            
+                    if ($usuario) {
+                    
+                        foreach ($dados as $doc) {
+                    
+                            $enviar = array(
+                                'tipo'      => 'retorno_suspensao',
+                                'protocolo' => $doc->protocolo,
+                                'documento' => $doc->documento_nome,
+                                'email'     => $usuario->email_usuario,
+                                'usuario'   => $usuario->usuario_nome,
+                                'status'    => $status
+                            );  
+                        
+                        }
+
+                    } else {
+
+                        $responsavel = $this->docmodel->retorna_email_responsavel($idprotocolo);
+
+                        foreach ($dados as $doc) {
+                        
+                            $enviar = array(
+                                'tipo'      => 'retorno_suspensao',
+                                'protocolo' => $doc->protocolo,
+                                'documento' => $doc->documento_nome,
+                                'email'     => $responsavel->email_usuario,
+                                'usuario'   => $responsavel->usuario_nome,
+                                'status'    => $status
+                            );
+                            
+                        }
+
+                    }
+
+                    $this->emailmodel->enviar_email($enviar);
+
+                    /**
+                    * Fim do envio de email
+                    */
+
+                    $this->session->set_flashdata('success', 'Documento com exigência concluída!');
+                    redirect("suspenso");
+
+                } else {
+
+                    $this->session->set_flashdata('error', 'Ocorreu um problema ao transferir o documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
+                    redirect("suspenso");
+                    
+                }
+            
             } else {
+
+                $this->session->set_flashdata('error', 'Ocorreu um problema ao transferir o documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
+                redirect("suspenso");
+
+            }
+        } elseif(isset($_POST["exigencia_continuar"])){
+            
+            $anterior = $this->docmodel->etapa_anterior($idprotocolo, 0);
+
+            $usuario_anterior = $anterior->usuario;
+            $etapa_anterior = $anterior->etapa;
+
+            if($this->docmodel->editar_documentos_log($idprotocolo)){
 
                 $status = "retorno";
 
-                $retornar = array(
+                $transfereProximaEtapa = array(
                     'descricao'     => "RETORNO SUSPENSÃO", 
                     'data_hora'     => date("Y-m-d H:i:s"),
                     'ultima_etapa'  => "true",
@@ -249,7 +487,7 @@ class Relatorios extends CI_Controller {
                 );
 
                 $mensagem = "retornado";
-             
+            
                 $dados = array(
                     'fk_iddoccad'   => $idprotocolo,
                     'fk_idetapa'    => $etapa_anterior,
@@ -260,65 +498,73 @@ class Relatorios extends CI_Controller {
         
                 $this->timermodel->cadastrar_tempo($dados);
 
-            }
+                //echo "documento recebido 1";
+                //print_r($transfereProximaEtapa);
+                //echo "<br/>";
+                if ($this->docmodel->cadastrar_log_documento($transfereProximaEtapa)) {
 
-            if ($this->docmodel->cadastrar_log_documento($retornar)) {
+                    /**
+                    * Envio de email
+                    */
+                    $this->load->model('email_model', 'emailmodel');
 
-                 /**
-                 * Envio de email
-                 */
-                $this->load->model('email_model', 'emailmodel');
-
-                $dados = $this->docmodel->dados_documento_cad($idprotocolo);
-                $usuario = $this->docmodel->retorna_email_usuario($idprotocolo);
+                    $dados = $this->docmodel->dados_documento_cad($idprotocolo);
+                    $usuario = $this->docmodel->retorna_email_usuario($idprotocolo);
             
-                if ($usuario) {
+                    if ($usuario) {
                     
-                    foreach ($dados as $doc) {
+                        foreach ($dados as $doc) {
                     
-                        $enviar = array(
-                            'tipo'      => 'retorno_suspensao',
-                            'protocolo' => $doc->protocolo,
-                            'documento' => $doc->documento_nome,
-                            'email'     => $usuario->email_usuario,
-                            'usuario'   => $usuario->usuario_nome,
-                            'status'    => $status
-                        );
+                            $enviar = array(
+                                'tipo'      => 'retorno_suspensao',
+                                'protocolo' => $doc->protocolo,
+                                'documento' => $doc->documento_nome,
+                                'email'     => (!empty($usuario->email_usuario)) ? $usuario->email_usuario : "",
+                                'usuario'   => (!empty($usuario->usuario_nome)) ? $usuario->usuario_nome : "",
+                                'status'    => $status
+                            );  
                         
+                        }
+
+                    } else {
+
+                        $responsavel = $this->docmodel->retorna_email_responsavel($idprotocolo);
+
+                        foreach ($dados as $doc) {
+                        
+                            $enviar = array(
+                                'tipo'      => 'retorno_suspensao',
+                                'protocolo' => $doc->protocolo,
+                                'documento' => $doc->documento_nome,
+                                'email'     => (!empty($responsavel->email_usuario)) ? $responsavel->email_usuario : "",
+                                'usuario'   => (!empty($responsavel->usuario_nome)) ? $responsavel->usuario_nome : "",
+                                'status'    => $status
+                            );
+                            
+                        }
+
                     }
+
+                    $this->emailmodel->enviar_email($enviar);
+
+                    /**
+                    * Fim do envio de email
+                    */
+
+                    $this->session->set_flashdata('success', 'Documento com exigência concluída!');
+                    redirect("suspenso");
 
                 } else {
 
-                    $responsavel = $this->docmodel->retorna_email_responsavel($idprotocolo);
-
-                    foreach ($dados as $doc) {
+                    $this->session->set_flashdata('error', 'Ocorreu um problema ao transferir o documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
+                    redirect("suspenso");
                     
-                        $enviar = array(
-                            'tipo'      => 'retorno_suspensao',
-                            'protocolo' => $doc->protocolo,
-                            'documento' => $doc->documento_nome,
-                            'email'     => $responsavel->email_usuario,
-                            'usuario'   => $responsavel->usuario_nome,
-                            'status'    => $status
-                        );
-                        
-                    }
-
                 }
-
-                $this->emailmodel->enviar_email($enviar);
-
-                /**
-                 * Fim do envio de email
-                 */
-
-                $this->session->set_flashdata('success', 'Documento com exigência concluída!');
-                redirect("meusdocumentos");
 
             } else {
 
                 $this->session->set_flashdata('error', 'Ocorreu um problema ao transferir o documento! Favor entre em contato com o suporte e tente novamente mais tarde.');
-                redirect("meusdocumentos");
+                redirect("suspenso");
                 
             }
 

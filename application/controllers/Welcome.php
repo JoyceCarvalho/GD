@@ -24,8 +24,8 @@ class Welcome extends CI_Controller {
 	}
 
 	public function teste(){
-		//echo time();
-		redirect("http://gestaoprazos.sgtgestaoetecnologia.com.br");
+		echo time();
+		//redirect("http://gestaoprazos.sgtgestaoetecnologia.com.br");
 	}
 
 }

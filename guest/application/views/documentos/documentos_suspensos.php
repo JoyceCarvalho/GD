@@ -22,11 +22,8 @@
             </div>
         <?php endif; ?>
         <div class="row">
-
             <div class="col-lg-12">
-    
-                <div class="card">
-        
+                <div class="card">        
                     <div class="card-header d-flex align-items-center">
                         <h3 class="h4">Documentos aguardando exigência</h3>
                     </div>
@@ -68,7 +65,8 @@
                                                 <td><?=$documentos->nome_usuario;?></td>
                                                 <td style="text-align: center;">
                                                     <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" onclick="javascript:historico(<?=$documentos->idprotocolo;?>)">Ver Histórico Documento</a><br/>
-                                                    <a href="<?=base_url('reverte_suspensao/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Exigência concluída</a><br/>
+                                                    <!--<a href="<?//=base_url('reverte_suspensao/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Exigência concluída</a><br/>-->
+                                                    <a href="javascript:void(0)" onclick="javascript:exigencia_ok('<?=md5($documentos->idprotocolo).$documentos->idprotocolo;?>')">Exigência concluída</a><br/>
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" onclick="erroDoc(<?=$documentos->idprotocolo;?>)" class="blockF_<?=$documentos->idprotocolo;?>">Apontar Erro</a><br/>
                                                     <?php 
                                                         $this->load->model('erros_model', 'errosmodel');
@@ -109,7 +107,34 @@
             </div>
         </div>    
     </div>
-<script src="http://code.jquery.com/jquery.js"></script>
+    <!-- Modal exigência -->
+    <div class="modal fade" id="modal-concluir_exigencia" tabindex="-1" role="dialog" aria-labelledby="modal-area" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" id="div_id">
+                <div class="modal-header">
+                    <h4 id="exampleModalLabel" class="modal-title">Documento com exigência</h4>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                </div>
+
+                <form id="formID" name="exigencia" method="post" action="<?=base_url("reverte_suspensao")?>">
+                    <div class="modal-body" id="modal-corpo">
+                        <input id="exigencia-concluida" type="hidden" name="id"> 
+                        <p>Exigência concluida?</p>
+                        <strong>
+                            Reiniciar Serviço: irá retornar o serviço para a primeira etapa, reiniciando o trabalho no documento.<br/>
+                            Continuar Serviço: irá retornar o serviço para a última etapa executada antes do período em exigência.
+                        </strong>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="send1" name="exigencia_reiniciar" class="btn btn-info">Reiniciar Serviço</button>
+                        <button type="submit" id="send2" name="exigencia_continuar" class="btn btn-success">Continuar Serviço</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal exigência -->
+<script src="https://code.jquery.com/jquery.js"></script>
 <script>
 window.addEventListener("DOMContentLoaded", function() {
 	
@@ -169,5 +194,21 @@ window.addEventListener("DOMContentLoaded", function() {
 		
 	});
 	
+});
+
+function exigencia_ok(id){
+    $("#modal-concluir_exigencia").modal("show");
+    $("#exigencia-concluida").val(id);
+}
+
+var formID = document.getElementById("formID");
+var send1 = $("#send1");
+var send2 = $("#send2");
+
+$(formID).submit(function(event){
+    if (formID.checkValidity()) {
+        send1.attr('style', 'visibility: hidden');
+        send2.attr('style', 'visibility: hidden');
+    }
 });
 </script>

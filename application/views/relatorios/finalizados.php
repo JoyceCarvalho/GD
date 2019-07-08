@@ -206,7 +206,7 @@
         </div>
     </div>
 </section>
-<script src="http://code.jquery.com/jquery.js"></script>
+<script src="https://code.jquery.com/jquery.js"></script>
 <script>
 window.addEventListener("DOMContentLoaded", function() {
 	

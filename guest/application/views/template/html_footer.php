@@ -19,16 +19,25 @@
 
         $("#myModal").on('hide.bs.modal', function(){
             $('#exampleModalLabel').html("");
-            $('#conteudo').html('<div class="img-fluid col-xs-12" style="text-align: center;"><img src="<?=base_url("assets/img/loading2.gif")?>" alt="loading"></div>');
+            $('#conteudo').html('<div class="img-fluid col-xs-12" style="text-align: center;"><img src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/img/loading2.gif" alt="loading"></div>');
             $('#conteudo_body').html("");
         });
         
       });
 
-      function doc_exigencia(id){
-          $("#modal-exigencia").modal("show");
-          $("#exigencia").val(id);
-      }
+        var form = document.getElementById("formExigencia");
+        var send = $("#sendExigencia");
+
+        $(form).submit(function(event){
+            if (form.checkValidity()) {
+                send.attr('style', 'visibility: hidden');
+            }
+        });
+
+        function doc_exigencia(id){
+            $("#modal-exigencia").modal("show");
+            $("#exigencia").val(id);
+        }
       
         function historico(id_pro){
             //var iddocumento = $('#id_protocolo').val();
@@ -359,16 +368,16 @@
 
     <!-- Javascript files-->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/popper.js/umd/popper.min.js"> </script>
-    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/jquery.cookie/jquery.cookie.js"> </script>
-    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/datatables/jquery.dataTables.js"></script>
-    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/datatables/dataTables.bootstrap4.js"></script>
-    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/jquery-validation/jquery.validate.min.js"></script>
-    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/jquery.mask.min.js"></script>
-    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/custom.js"></script>
+    <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/jquery.mask.min.js"></script>
+    <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/custom.js"></script>
     <!-- Main File-->
-    <script src="http://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/front.js"></script>
+    <script src="https://gestaoprazos.sgtgestaoetecnologia.com.br/assets/js/front.js"></script>
 
     <!--<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>-->

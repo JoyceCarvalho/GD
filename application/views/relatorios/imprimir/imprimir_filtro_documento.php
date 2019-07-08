@@ -24,7 +24,7 @@ date_default_timezone_set('America/Sao_Paulo');
         <!-- Favicon-->
         <link rel="shortcut icon" href="<?=base_url('assets/img/favicon.ico');?>">
         <!-- jQuery -->
-        <script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
         <!-- CSS para impressão -->
         <link rel="stylesheet" href="<?=base_url("assets/css/imprimir.css");?>">
