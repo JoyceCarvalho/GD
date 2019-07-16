@@ -265,15 +265,15 @@ class Usuario_model extends CI_Model {
         //subquery1
         $this->db->select('fk_idusuario');
         $this->db->from('tbausencia');
-        $this->db->where('dia_inicio >', $dataAtual);
-        $this->db->where('dia_fim < ', $dataAtual);
+        $this->db->where('dia_inicio <=', $dataAtual);
+        $this->db->where('dia_fim >= ', $dataAtual);
         $subquery1 = $this->db->get_compiled_select();
 
         //subquery2
         $this->db->select('fk_idusuario');
         $this->db->from('tbferias_func');
-        $this->db->where('dia_inicio >', $dataAtual);
-        $this->db->where('dia_fim <', $dataAtual);
+        $this->db->where('dia_inicio <', $dataAtual);
+        $this->db->where('dia_fim >', $dataAtual);
         $subquery2 = $this->db->get_compiled_select(); 
 
         //query
@@ -298,8 +298,8 @@ class Usuario_model extends CI_Model {
         //Subquery1
         $this->db->select('fk_idusuario');
         $this->db->from('tbferias_func');
-        $this->db->where('NOW() < dia_inicio');
-        $this->db->where('NOW() > dia_fim');
+        $this->db->where('NOW() > dia_inicio');
+        $this->db->where('NOW() < dia_fim');
         $subquery = $this->db->get_compiled_select();
 
         //Subquery2

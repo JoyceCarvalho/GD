@@ -666,6 +666,7 @@ class Documentos_model extends CI_Model {
         $this->db->where("d.fk_idempresa = $empresa");
         $this->db->where('ldB.descricao != "FINALIZADO"');
         $this->db->where('ldB.descricao != "CANCELADO"');
+        $this->db->group_by("dc.id");
         $this->db->order_by('de.ordem asc, ldA.data_hora asc');
         return $this->db->get()->result();
     }

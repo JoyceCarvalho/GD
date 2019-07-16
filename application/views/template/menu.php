@@ -203,9 +203,9 @@
         </a>
 
         <ul id="relatorio" class="collapse list-unstyled <?=($pg == "relatorio") ? "show" : "" ?>">
+          
+          <li <?=($submenu == "finalizado") ? "class='active'" : "" ?>> <a href="<?=base_url('finalizados');?>"> <i class="fa fa-tags"></i>Finalizados </a></li>
           <?php if(($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)): ?>
-            <li <?=($submenu == "finalizado") ? "class='active'" : "" ?>> <a href="<?=base_url('finalizados');?>"> <i class="fa fa-tags"></i>Finalizados </a></li>
-            
             <li <?=($submenu == "tempo") ? "class='active'" : "" ?>> 
               <a href="#tempo_medio" aria-expanded="<?=($submenu == "tempo") ? "true" : "false" ?>" data-toggle="collapse"> 
                 <i class="fa fa-clock-o"></i>Tempo Médio 
