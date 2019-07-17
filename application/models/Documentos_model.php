@@ -679,13 +679,18 @@ class Documentos_model extends CI_Model {
      * @return object
      */
     public function listar_documentos_nao_iniciados($empresa){
-        // subquery
-        $this->db->select("fk_idusuario");
+        // subquery old
+        /*$this->db->select("fk_idusuario");
         $this->db->from("tbtimer");
         $this->db->where("dc.id = tbtimer.fk_iddoccad and ldB.etapa = tbtimer.fk_idetapa");
         //$this->db->where("tbtimer.observacao is null");
         $this->db->where("tbtimer.observacao is not null"); 
-        $this->db->where("tbtimer.observacao != 'REINICIO'");
+        $this->db->where("tbtimer.observacao = 'PENDENTE'");
+        $subquery = $this->db->get_compiled_select();*/
+        $this->db->select("fk_idusuario");
+        $this->db->from("tbtimer");
+        $this->db->where("dc.id = tbtimer.fk_iddoccad and ldB.etapa = tbtimer.fk_idetapa");
+        $this->db->where("tbtimer.observacao is null"); 
         $subquery = $this->db->get_compiled_select();
 
         $this->db->select('d.id as iddocumento, e.id as idetapa, dc.protocolo AS protocolo, d.titulo AS documento, g.titulo AS grupo, dc.prazo AS prazo, 
@@ -702,6 +707,7 @@ class Documentos_model extends CI_Model {
         $this->db->where("d.fk_idempresa = $empresa");
         $this->db->where("ldB.usuario not in($subquery)");
         $this->db->where('ldB.descricao != "FINALIZADO"');
+        $this->db->group_by("dc.id");
         $this->db->order_by("de.ordem asc, ldA.data_hora asc");
         
         return $this->db->get()->result();
