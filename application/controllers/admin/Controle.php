@@ -394,7 +394,7 @@ class Controle extends CI_Controller {
       $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
       $this->load->view('template/html_header', $dados);
-      $this->load->view('template/header');
+      $this->load->view('template/header', $data);
       $this->load->view('template/menu');
       $this->load->view('admin/cadastrar_empresa');
       $this->load->view('template/footer');
@@ -412,7 +412,7 @@ class Controle extends CI_Controller {
       $dados['nome_empresa'] = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
       $this->load->view('template/html_header', $dados);
-      $this->load->view('template/header');
+      $this->load->view('template/header', $data);
       $this->load->view('template/menu');
       $this->load->view('admin/cadastrar_empresa');
       $this->load->view('template/footer');
