@@ -96,11 +96,14 @@
                                                     <a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal" onclick="javascript:historico(<?=$documentos->idprotocolo;?>)">Ver Histórico Documento</a><br/>
                                                     <?php 
                                                     if(($documentos->idresponsavel == $_SESSION["idusuario"]) or ($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)){
-                                                    ?>
-                                                    <!--<a href="<?//=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Documento com exigência</a><br/>-->
-                                                    <a href="javascript:void(0)" onclick="javascript:doc_exigencia('<?=md5($documentos->idprotocolo).$documentos->idprotocolo;?>')" >Documento com exigência</a><br/>
-                                                    <?php 
+                                                        ?>
+                                                        <!--<a href="<?//=base_url('suspender/'.md5($documentos->idprotocolo).$documentos->idprotocolo);?>">Documento com exigência</a><br/>-->
+                                                        <a href="javascript:void(0)" onclick="javascript:doc_exigencia('<?=md5($documentos->idprotocolo).$documentos->idprotocolo;?>')" >Documento com exigência</a><br/>
+                                                        <?php 
                                                     }
+                                                    ?>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="blockE_<?=$documentos->idprotocolo;?>" onclick="cancelarDoc(<?=$documentos->idprotocolo;?>)">Cancelar Documento</a><br/>
+                                                    <?php
                                                     if (($documentos->idresponsavel == $_SESSION["idusuario"]) or ($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)) {
                                                         ?>
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" onclick="erroDoc(<?=$documentos->idprotocolo;?>)">Apontar Erro</a><br/>
@@ -115,14 +118,11 @@
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" onclick="vizualizar_erro(<?=$documentos->idprotocolo;?>)" style="color:red;">Ver Erros</a><br/>
                                                         <?php
                                                     }
+                                                    ?>
                                                     
-                                                    $this->load->model('documentos_model', 'docmodel');
-                                                    if (($documentos->idresponsavel == $_SESSION["idusuario"])  or ($_SESSION["is_admin"] == true) or ($_SESSION["is_coordenador"] == true)) {
-                                                        ?>
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" onclick="apontarObservacao(<?=$documentos->idprotocolo;?>)"> Apontar Observação</a><br/>
-                                                        <?php
-                                                    }
-
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" onclick="apontarObservacao(<?=$documentos->idprotocolo;?>)"> Apontar Observação</a><br/>
+                                                    
+                                                    <?php                                                    
                                                     if ($this->docmodel->verifica_observacoes($documentos->idprotocolo)) {
                                                         ?>
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" onclick="ver_obs(<?=$documentos->idprotocolo;?>)" style="color:green"> Ver Observações</a><br/>
