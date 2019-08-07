@@ -40,7 +40,12 @@ foreach ($dados_mensais as $documentos) {
 }
 
 $total_documentos = count($dados_mensais);
-$tempo_medio_mes = converteHoras(round($media/$total_documentos));
+if($total_documentos > 0){
+    //$tempo_medio_mes = converteHoras(round($media/$total_documentos));
+    $tempo_medio_mes = $media/$total_documentos;
+} else {
+    $tempo_medio_mes = "00:00:00";
+}
 
 ?>
 <!DOCTYPE html>
@@ -51,25 +56,26 @@ $tempo_medio_mes = converteHoras(round($media/$total_documentos));
         <title>SGT - Gestão e Tecnologia</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Joyce Carvalho">
-        <!-- Bootstrap CSS-->
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <!-- Font Awesome CSS-->
-        <link rel="stylesheet" href="<?=base_url('assets/vendor/font-awesome/css/font-awesome.min.css');?>">
-        <!-- Fontastic Custom icon font-->
-        <link rel="stylesheet" href="<?=base_url('assets/css/fontastic.css');?>">
-        <!-- Google fonts - Poppins -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
-        <!-- theme stylesheet-->
-        <link rel="stylesheet" href="<?=base_url('assets/css/style.blue.css');?>" id="theme-stylesheet">
-        <!-- Custom stylesheet - for your changes-->
-        <link rel="stylesheet" href="<?=base_url('assets/css/custom.css');?>">
-        <!-- Favicon-->
+        <!-- Main CSS-->
+        <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/main.css');?>">
+        <!-- Font-icon css-->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- Icone SGT -->
         <link rel="shortcut icon" href="<?=base_url('assets/img/favicon.ico');?>">
-        <!-- jQuery -->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
+        <!-- Bootstrap -->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <!-- CSS para impressão -->
         <link rel="stylesheet" href="<?=base_url("assets/css/imprimir.css");?>">
+        <style>
+            .divFiltros{
+                margin-top: 15px;
+            }
+
+            .botaoImprimir{
+                margin-top: 40px;
+                margin-bottom: 15px;
+            }   
+        </style>
     </head>
     <body>
         <div class="container-fluid panel panel-default wrapper">
@@ -136,7 +142,9 @@ $tempo_medio_mes = converteHoras(round($media/$total_documentos));
                         </div>
                         
                         <div class="panel-body">
-                            O tempo médio mensal foi <strong><?=$tempo_medio_mes?></strong>
+                            O tempo médio mensal foi 
+                            <input type="hidden" name="t_total" id="t_total" value="<?=$tempo_medio_mes;?>">
+                            <strong id="tempo_total"></strong>
                         </div>                                
 
                     </div> 
@@ -145,76 +153,131 @@ $tempo_medio_mes = converteHoras(round($media/$total_documentos));
             </div>
             <div class="panel panel-default sessao no-break geral">
                 <div class="panel-heading">
-                    <span class="titulo-sessao">Documentos</span>
+                    <span class="titulo-sessao">Protocolos</span>
                 </div>
                 <div class="panel-body">
                 
-                    <div class="col-sm-3">
-                        <table class="table table-striped table-bordered table-condensed">
-                            <thead>
-                                <tr>
-                                    <th>Protocolo</th>
-                                    <th>Documento</th>
-                                    <th>Grupo</th>
-                                    <th>Tempo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    <div class="line"></div>
                                 
-                                <?php 
-                                foreach ($dados_mensais as $documento) {
-                                    ?>                                
-                                    <tr>    
-                                        <td><?=$documento->protocolo;?></td>
-                                        <td><?=$documento->documento;?></td>
-                                        <td><?=$documento->grupo;?></td>
-                                        <td>
-                                            <?php
-                                            $quantidade_etapas = $this->docetapa->qnt_etapas_por_documento($documento->idprotocolo);
-                                            $verfica = $this->timermodel->verifica_reinicio($documento->idprotocolo);
-                                            if($verfica > 0){
-                                                $tempo = $this->timermodel->listar_timer_suspenso($documento->idprotocolo);
-                                            } else {
-                                                $tempo = $this->timermodel->listar_timer($documento->idprotocolo);
-                                            }
+                    <?php 
+                    foreach ($dados_mensais as $documento) {
+                        ?>                                
+                       <div class="panel panel-default sessao">
+                            <div class="panel-heading">
+                                <span class="subtitulo"><?=$documento->protocolo;?></span>
+                            </div>
+                            
+                            <div class="panel-body">
+                                <p>Documento: <?=$documento->documento;?></p>
+                                <p>Data de criação: <?=$documento->data_criacao;?></p>
+                                <p>Documento criado por <?=$documento->nome_usuario;?></p>
+                                <?php if(!empty($documento->prazo_documento)): ?>
+                                    <p>Prazo para finalização do documento <?=$documento->prazo_documento;?></p>
+                                <?php else: ?>
+                                    <p>Documento sem prazos para finalização!</p>
+                                <?php endif; ?>
 
-                                            // Trecho adaptado do 1º gestão de documentos
-                                            $seconds = 0;
-                                            $sum_media = 0;
-                                            foreach ($tempo as $t) {
-                                                
-                                                $action = $t->action;
-                                                switch ($action) {
-                                                    case 'start':
-                                                        $seconds -= $t->timestamp;
-                                                    break;
-                                                    
-                                                    case 'pause':
-                                                        if ($seconds !== 0) {
-                                                            $seconds += $t->timestamp;
-                                                        }
-                                                    break;
-                                                }
+                                <p>Documento finalizado em <?=$documento->data_finalizacao;?></p>
 
-                                            }
-
-                                            $sum_media = $seconds/$quantidade_etapas;
-                                            $mostraNumero = converteHoras(round($sum_media));
-
-                                            echo $mostraNumero;
-                                            ?>
-                                        </td>
-                                    </tr>
-                                    <?php
+                                <p>
+                                <?php
+                                $quantidade_etapas = $this->docetapa->qnt_etapas_por_documento($documento->idprotocolo);
+                                $verfica = $this->timermodel->verifica_reinicio($documento->idprotocolo);
+                                if($verfica > 0){
+                                    $tempo = $this->timermodel->listar_timer_suspenso($documento->idprotocolo);
+                                } else {
+                                    $tempo = $this->timermodel->listar_timer($documento->idprotocolo);
                                 }
-                                ?>  
-                            </tbody>
-                        </table>
-                    </div>
+
+                                // Trecho adaptado do 1º gestão de documentos
+                                $seconds = 0;
+                                $sum_media = 0;
+                                foreach ($tempo as $t) {
+                                    
+                                    $action = $t->action;
+                                    switch ($action) {
+                                        case 'start':
+                                            $seconds -= $t->timestamp;
+                                        break;
+                                        
+                                        case 'pause':
+                                            if ($seconds !== 0) {
+                                                $seconds += $t->timestamp;
+                                            }
+                                        break;
+                                    }
+
+                                }
+
+                                $sum_media = $seconds/$quantidade_etapas;
+                                $mostraNumero = converteHoras(round($sum_media));
+
+                                echo "<strong>Tempo médio do documento " . $mostraNumero . "</strong>";
+                                ?>
+                                </p>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    ?>
                 </div>
             </div>
             <!-- Fim do conteudo -->
         </div>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="<?=base_url('assets/js/popper.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/bootstrap.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/main.js');?>"></script>
+        <!-- The javascript plugin to display page loading on top-->
+        <script src="<?=base_url('assets/js/jquery-3.2.1.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/plugins/pace.min.js');?>"></script>
+        <!-- Page specific javascripts-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!--<script type="text/javascript" src="<?//=base_url("assets/datetimepicker/sample/jquery/jquery-1.8.3.min.js");?>" charset="UTF-8"></script>-->
+        <!-- Page specific javascripts-->
+        <script type="text/javascript" src="<?=base_url("assets/js/plugins/bootstrap-datepicker.min.js")?>"></script>
+        <script type="text/javascript" src="<?=base_url("assets/js/plugins/select2.min.js");?>"></script>
+        <script type="text/javascript" src="<?=base_url("assets/js/plugins/bootstrap-datepicker.min.js");?>"></script>
+        <script>
+        window.addEventListener("DOMContentLoaded", function() {
+
+            var format = function(seconds) {
+                var tempos = {
+                    segundos: 60
+                ,   minutos: 60
+                ,   horas: 24
+                ,   dias: ''
+                };
+                var parts = [], string = '', resto, dias;
+                for (var unid in tempos) {
+                    if (typeof tempos[unid] === 'number') {
+                        resto = seconds % tempos[unid];
+                        seconds = (seconds - resto) / tempos[unid];
+                    } else {
+                        resto = seconds;
+                    }
+                    parts.unshift(resto);
+                }
+                dias = parts.shift();
+                if (dias) {
+                    string = dias + (dias > 1 ? ' dias ' : ' dia ');
+                }
+                for (var i = 0; i < 3; i++) {
+                    parts[i] = ('0' + parts[i]).substr(-2);
+                }
+                string += parts.join(':');
+                return string;
+            };
+
+            $(function (){
+
+                $(document).ready(function() {
+
+                    var tempo_total = parseInt($("#t_total").val());
+                    $('#tempo_total').html(format(++tempo_total));
+                });
+
+            })
+        });
+        </script>
     </body>
 </html>

@@ -6,6 +6,7 @@ $this->load->model('DocEtapas_model', 'docetapa');
 
 $media = 0;
 foreach ($documentos_grupo as $documentos) {
+    
     $quantidade_etapas = $this->docetapa->qnt_etapas_por_documento($documentos->idprotocolo);
     $verfica = $this->timermodel->verifica_reinicio($documentos->idprotocolo);
 
@@ -38,7 +39,12 @@ foreach ($documentos_grupo as $documentos) {
 }
 
 $quantidade_documentos = count($documentos_grupo);
-$tempo_medio_grupo = converteHoras(round($media/$quantidade_documentos));
+if($quantidade_documentos > 0){
+    //$tempo_medio_grupo = converteHoras(round($media/$quantidade_documentos));
+    $tempo_medio_grupo = $media/$quantidade_documentos;
+} else {
+    $tempo_medio_grupo = "00:00:00";
+}
 
 ?>
 <!DOCTYPE html>
@@ -49,30 +55,63 @@ $tempo_medio_grupo = converteHoras(round($media/$quantidade_documentos));
         <title>SGT - Gestão e Tecnologia</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Joyce Carvalho">
-        <!-- Bootstrap CSS-->
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <!-- Font Awesome CSS-->
-        <link rel="stylesheet" href="<?=base_url('assets/vendor/font-awesome/css/font-awesome.min.css');?>">
-        <!-- Fontastic Custom icon font-->
-        <link rel="stylesheet" href="<?=base_url('assets/css/fontastic.css');?>">
-        <!-- Google fonts - Poppins -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
-        <!-- theme stylesheet-->
-        <link rel="stylesheet" href="<?=base_url('assets/css/style.blue.css');?>" id="theme-stylesheet">
-        <!-- Custom stylesheet - for your changes-->
-        <link rel="stylesheet" href="<?=base_url('assets/css/custom.css');?>">
-        <!-- Favicon-->
+        
+        <!-- Main CSS-->
+        <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/main.css');?>">
+        <!-- Font-icon css-->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- Icone SGT -->
         <link rel="shortcut icon" href="<?=base_url('assets/img/favicon.ico');?>">
-        <!-- jQuery -->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
+        <!-- Bootstrap -->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <!-- CSS para impressão -->
         <link rel="stylesheet" href="<?=base_url("assets/css/imprimir.css");?>">
+        <style>
+            .divFiltros{
+                margin-top: 15px;
+            }
+
+            .botaoImprimir{
+                margin-top: 40px;
+                margin-bottom: 15px;
+            }   
+        </style>
     </head>
     <body>
         <div class="container-fluid panel panel-default wrapper">
             <div class="panel-body no-print text-center">
-                <a href="javascript:window.print()" class="btn btn-warning"><i class="fa fa-print"></i> Imprimir</a>
+                <div class="row d-print-none">
+                    <div class="col-12">
+                        <form method="post" action="<?=base_url("relatorio_tempo_grupo/".$id_grupo)?>" autocomplete="off">
+                            <div class="col-6">
+                                <div class="col-md-4 divFiltros" align="center">
+                                    <div class="form-group">
+                                        <label> De: </label>
+                                        <div class='input-group date dataAno'>
+                                            <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                            <input id="dataAno" name="dataMesAno" type='text' class="form-control" value="<?=$dataMesAno;?>"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-1 botaoImprimir">
+                                
+                                <div class="form-group">
+                                    <button type="submit" name="filtrar" class="form-control btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filtrar</button>
+                                </div>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row d-print-none mt-2">
+                    <div class="col-12 text-center">
+                        <a href="javascript:window.print()" class="btn btn-warning"><i class="fa fa-print"></i> Imprimir</a>
+                    </div>
+                </div>
             </div>
 
             <div class="panel-body content">
@@ -134,7 +173,10 @@ $tempo_medio_grupo = converteHoras(round($media/$quantidade_documentos));
                         </div>
                         
                         <div class="panel-body">
-                            O tempo médio do grupo foi <strong><?=$tempo_medio_grupo?></strong>
+                            <!-- O tempo médio do grupo foi <strong><?//=$tempo_medio_grupo?></strong>-->
+                            O tempo médio do grupo foi
+                            <input type="hidden" name="t_total" id="t_total" value="<?=$tempo_medio_grupo;?>">
+                            <strong id="tempo_total"></strong>
                         </div>                            
                     </div>                   
                 </div>
@@ -206,7 +248,7 @@ $tempo_medio_grupo = converteHoras(round($media/$quantidade_documentos));
                                 </p>
                             </div>                                
                         </div> 
-                            <?php
+                        <?php
                     }
                     ?>               
                 </div>
@@ -214,6 +256,69 @@ $tempo_medio_grupo = converteHoras(round($media/$quantidade_documentos));
             
             <!-- Fim do conteudo -->
         </div>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="<?=base_url('assets/js/popper.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/bootstrap.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/main.js');?>"></script>
+        <!-- The javascript plugin to display page loading on top-->
+        <script src="<?=base_url('assets/js/jquery-3.2.1.min.js');?>"></script>
+        <script src="<?=base_url('assets/js/plugins/pace.min.js');?>"></script>
+        <!-- Page specific javascripts-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!--<script type="text/javascript" src="<?//=base_url("assets/datetimepicker/sample/jquery/jquery-1.8.3.min.js");?>" charset="UTF-8"></script>-->
+        <!-- Page specific javascripts-->
+        <script type="text/javascript" src="<?=base_url("assets/js/plugins/bootstrap-datepicker.min.js")?>"></script>
+        <script type="text/javascript" src="<?=base_url("assets/js/plugins/select2.min.js");?>"></script>
+        <script type="text/javascript" src="<?=base_url("assets/js/plugins/bootstrap-datepicker.min.js");?>"></script>
+        <script type="text/javascript">
+            $('#dataAno').datepicker({
+                minViewMode: 'months',
+                format: "mm/yyyy",
+                autoclose: true,
+                todayHighlight: true
+            });
+        </script>
+        <script>
+        window.addEventListener("DOMContentLoaded", function() {
+
+            var format = function(seconds) {
+                var tempos = {
+                    segundos: 60
+                ,   minutos: 60
+                ,   horas: 24
+                ,   dias: ''
+                };
+                var parts = [], string = '', resto, dias;
+                for (var unid in tempos) {
+                    if (typeof tempos[unid] === 'number') {
+                        resto = seconds % tempos[unid];
+                        seconds = (seconds - resto) / tempos[unid];
+                    } else {
+                        resto = seconds;
+                    }
+                    parts.unshift(resto);
+                }
+                dias = parts.shift();
+                if (dias) {
+                    string = dias + (dias > 1 ? ' dias ' : ' dia ');
+                }
+                for (var i = 0; i < 3; i++) {
+                    parts[i] = ('0' + parts[i]).substr(-2);
+                }
+                string += parts.join(':');
+                return string;
+            };
+
+            $(function (){
+
+                $(document).ready(function() {
+
+                    var tempo_total = parseInt($("#t_total").val());
+                    $('#tempo_total').html(format(++tempo_total));
+
+                });
+
+            })
+        });
+        </script>
     </body>
 </html>

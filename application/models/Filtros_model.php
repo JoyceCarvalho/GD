@@ -38,7 +38,7 @@ class Filtros_model extends CI_Model {
     public function resultado_filtro_grupo($empresa, $filtro){
         $this->db->select('dc.id as idprotocolo, dc.protocolo AS protocolo, d.id as iddocumento, d.titulo AS documento, g.titulo AS grupo, 
         DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.nome AS nome_usuario, DATE_FORMAT(ldB.data_hora, "%d/%m/%Y") as data_finalizacao, 
-        DATE_FORMAT(dc.prazo, "%d/%m/%Y") as prazo_documento');
+        DATE_FORMAT(dc.prazo, "%d/%m/%Y") as prazo_documento, g.id as id_grupo');
         $this->db->from('tbdocumentos_cad AS dc');
         $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
         $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
@@ -46,6 +46,31 @@ class Filtros_model extends CI_Model {
         $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
         $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
         $this->db->where('d.fk_idempresa', $empresa);
+        $this->db->where('g.id', $filtro);
+        $this->db->order_by("ldA.data_hora asc");
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Método responsável por retornar o resultado do filtro do grupo do documento por determinado mes
+     * Utilizado no controller relatorios/Relatorios.php 
+     *
+     * @param int $empresa
+     * @param int $filtro
+     * @return object
+     */
+    public function resultado_filtro_grupo_mesano($empresa, $filtro, $mesano){
+        $this->db->select('dc.id as idprotocolo, dc.protocolo AS protocolo, d.id as iddocumento, d.titulo AS documento, g.titulo AS grupo, 
+        DATE_FORMAT(ldA.data_hora, "%d/%m/%Y") AS data_criacao, u.nome AS nome_usuario, DATE_FORMAT(ldB.data_hora, "%d/%m/%Y") as data_finalizacao, 
+        DATE_FORMAT(dc.prazo, "%d/%m/%Y") as prazo_documento, g.id as id_grupo');
+        $this->db->from('tbdocumentos_cad AS dc');
+        $this->db->join('tbdocumento as d', 'd.id = dc.fk_iddocumento');
+        $this->db->join('tbgrupo AS g', 'g.id = d.fk_idgrupo');
+        $this->db->join('tblog_documentos as ldA', 'ldA.documento = dc.id and ldA.descricao = "CRIADO"');
+        $this->db->join('tblog_documentos as ldB', 'ldB.documento = dc.id and ldB.descricao = "FINALIZADO"');
+        $this->db->join('tbusuario as u', 'u.id = ldB.usuario', 'left');
+        $this->db->where('d.fk_idempresa', $empresa);
+        $this->db->where("DATE_FORMAT(ldB.data_hora, '%Y-%m') = '$mesano'");
         $this->db->where('g.id', $filtro);
         $this->db->order_by("ldA.data_hora asc");
         return $this->db->get()->result();

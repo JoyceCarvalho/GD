@@ -127,9 +127,30 @@ class Imprimir extends CI_Controller {
         foreach ($dados_grupo as $grupo) {
             
             if ($grupo->fk_idempresa == $_SESSION["idempresa"]) {
+
+                $documento_grupo = "";
+
+                if((!empty($_POST["dataMesAno"])) 
+                and (transforma_mes_ano($_POST["dataMesAno"]))){
+                    
+                    $dataMesAno = transforma_mes_ano($_POST["dataMesAno"]);
+
+                    $documento_grupo = $this->filtromodel->resultado_filtro_grupo_mesano($_SESSION["idempresa"], $grupo->id, $dataMesAno);
+                    //print_r($this->db->last_query()); exit;
+
+                } else{
+
+                    $dataMesAno = "";
+
+                    $documento_grupo = $this->filtromodel->resultado_filtro_grupo($_SESSION["idempresa"], $grupo->id);
+
+                }
                 
                 $dados["titulo_grupo"]     = $grupo->titulo;
-                $dados["documentos_grupo"] = $this->filtromodel->resultado_filtro_grupo($_SESSION["idempresa"], $grupo->id);
+                $dados["id_grupo"]         = $grupo->id;
+                //$dados["documentos_grupo"] = $this->filtromodel->resultado_filtro_grupo($_SESSION["idempresa"], $grupo->id);
+                $dados["documentos_grupo"] = $documento_grupo;
+                $dados["dataMesAno"]       = (isset($_POST["dataMesAno"])) ? $_POST["dataMesAno"] : "";;
                 $dados["nome_empresa"]     = $this->empresamodel->nome_empresa($_SESSION['idempresa']);
 
                 $this->load->view('relatorios/imprimir/tempo_filtro_grupo', $dados);
